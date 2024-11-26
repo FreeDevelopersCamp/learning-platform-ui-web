@@ -1,12 +1,16 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import {
+  HiEnvelope,
+  HiHashtag,
   HiOutlineCalendarDays,
   HiOutlineCog6Tooth,
   HiOutlineHome,
-  HiOutlineHomeModern,
   HiOutlineUsers,
+  HiPresentationChartLine,
 } from "react-icons/hi2";
+import { RiDragDropLine } from "react-icons/ri";
+import { HiChatBubbleLeftRight } from "react-icons/hi2";
 
 const NavList = styled.ul`
   display: flex;
@@ -60,25 +64,49 @@ function MainNav() {
         <li>
           <StyledNavLink to="/dashboard">
             <HiOutlineHome />
-            <span>Home</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/bookings">
-            <HiOutlineCalendarDays />
-            <span>Bookings</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/cabins">
-            <HiOutlineHomeModern />
-            <span>Cabins</span>
+            <span>Dashboard</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/users">
             <HiOutlineUsers />
             <span>Users</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/cabins">
+            <HiPresentationChartLine />
+            <span>Roadmaps</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/settings">
+            <HiHashtag />
+            <span>Blogs</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/settings">
+            <HiEnvelope />
+            <span>Email</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/settings">
+            <HiChatBubbleLeftRight />
+            <span>Chat</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/users">
+            <HiOutlineCalendarDays />
+            <span>Calender</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/settings">
+            <RiDragDropLine />
+            <span>Task Board</span>
           </StyledNavLink>
         </li>
         <li>

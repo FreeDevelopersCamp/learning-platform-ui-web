@@ -16,7 +16,7 @@ import { HiArrowUpOnSquare } from "react-icons/hi2";
 import { useCheckout } from "../check-in-out/useCheckout";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import { useDeleteBooking } from "./useDeleteBooking";
+import { useDeleteUser } from "./useDeleteUser";
 import Empty from "../../ui/Empty";
 
 const HeadingGroup = styled.div`
@@ -28,7 +28,7 @@ const HeadingGroup = styled.div`
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
   const { checkout, isCheckingOut } = useCheckout();
-  const { deleteBooking, isDeleting } = useDeleteBooking();
+  const { deleteBooking, isDeleting } = useDeleteUser();
 
   const moveBack = useMoveBack();
   const navigate = useNavigate();

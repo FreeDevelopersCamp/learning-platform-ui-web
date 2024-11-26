@@ -1,11 +1,13 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
+import { User } from "../../services/user/user";
 
-export function useBookings() {
+export function useUser() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
+
+  const user = new User();
 
   // FILTER
   const filterValue = searchParams.get("status");
@@ -13,7 +15,6 @@ export function useBookings() {
     !filterValue || filterValue === "all"
       ? null
       : { field: "status", value: filterValue };
-  // { field: "totalPrice", value: 5000, method: "gte" };
 
   // SORT
   const sortByRaw = searchParams.get("sortBy") || "startDate-desc";
@@ -24,29 +25,28 @@ export function useBookings() {
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
 
   // QUERY
-  const {
-    isLoading,
-    data: { data: bookings, count } = {},
-    error,
-  } = useQuery({
-    queryKey: ["bookings", filter, sortBy, page],
-    queryFn: () => getBookings({ filter, sortBy, page }),
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["users", filter, sortBy, page],
+    queryFn: () => user.list({ filter, sortBy, page }),
   });
+
+  const users = data?.items || [];
+  const count = users?.length || 0;
 
   // PRE-FETCHING
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (page < pageCount)
     queryClient.prefetchQuery({
-      queryKey: ["bookings", filter, sortBy, page + 1],
-      queryFn: () => getBookings({ filter, sortBy, page: page + 1 }),
+      queryKey: ["users", filter, sortBy, page + 1],
+      queryFn: () => user.list({ filter, sortBy, page: page + 1 }),
     });
 
   if (page > 1)
     queryClient.prefetchQuery({
-      queryKey: ["bookings", filter, sortBy, page - 1],
-      queryFn: () => getBookings({ filter, sortBy, page: page - 1 }),
+      queryKey: ["users", filter, sortBy, page - 1],
+      queryFn: () => user.list({ filter, sortBy, page: page - 1 }),
     });
 
-  return { isLoading, error, bookings, count };
+  return { isLoading, error, users, count };
 }
