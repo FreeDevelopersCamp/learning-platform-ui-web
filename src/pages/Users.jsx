@@ -2,6 +2,7 @@ import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 import UserTable from "../features/users/UserTable";
 import UserTableOperations from "../features/users/UserTableOperations";
+import { UserSelectionProvider } from "../context/UserSelectionContext";
 
 function Bookings() {
   return (
@@ -11,7 +12,9 @@ function Bookings() {
         <UserTableOperations />
       </Row>
 
-      <UserTable />
+      <UserSelectionProvider>
+        <UserTable />
+      </UserSelectionProvider>
     </>
   );
 }

@@ -105,4 +105,40 @@ export default class Owner extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags owner
+   * @name Approve
+   * @request GET:/owner/approve/{id}
+   * @secure
+   * @response `default` Approve result
+   */
+  approve(id: string, params = {}) {
+    return this.request({
+      path: `/owner/approve/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags owner
+   * @name Reject
+   * @request DELETE:/owner/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  reject(id: string, params = {}) {
+    return this.request({
+      path: `/owner/reject/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

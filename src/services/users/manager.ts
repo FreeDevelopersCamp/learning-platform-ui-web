@@ -105,4 +105,40 @@ export default class Manager extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags manager
+   * @name Approve
+   * @request GET:/manager/approve/{id}
+   * @secure
+   * @response `default` Approve result
+   */
+  approve(id: string, params = {}) {
+    return this.request({
+      path: `/manager/approve/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags manager
+   * @name Reject
+   * @request DELETE:/manager/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  reject(id: string, params = {}) {
+    return this.request({
+      path: `/manager/reject/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

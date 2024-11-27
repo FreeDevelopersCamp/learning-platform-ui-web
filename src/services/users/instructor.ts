@@ -105,4 +105,40 @@ export default class Instructor extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags instructor
+   * @name Approve
+   * @request GET:/instructor/approve/{id}
+   * @secure
+   * @response `default` Approve result
+   */
+  approve(id: string, params = {}) {
+    return this.request({
+      path: `/instructor/approve/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags instructor
+   * @name Reject
+   * @request DELETE:/instructor/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  reject(id: string, params = {}) {
+    return this.request({
+      path: `/instructor/reject/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

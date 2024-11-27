@@ -105,4 +105,22 @@ export default class Learner extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags learner
+   * @name Approve
+   * @request GET:/learner/approve/{id}
+   * @secure
+   * @response `default` Approve result
+   */
+  approve(id: string, params = {}) {
+    return this.request({
+      path: `/learner/approve/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
 }

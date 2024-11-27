@@ -105,4 +105,40 @@ export default class AccountManager extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags AccountManager
+   * @name Approve
+   * @request GET:/AccountManager/approve/{id}
+   * @secure
+   * @response `default` Approve result
+   */
+  approve(id: string, params = {}) {
+    return this.request({
+      path: `/AccountManager/approve/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags AccountManager
+   * @name Reject
+   * @request DELETE:/AccountManager/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  reject(id: string, params = {}) {
+    return this.request({
+      path: `/AccountManager/reject/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

@@ -105,4 +105,40 @@ export default class ContentManager extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags ContentManager
+   * @name Approve
+   * @request GET:/ContentManager/approve/{id}
+   * @secure
+   * @response `default` Approve result
+   */
+  approve(id: string, params = {}) {
+    return this.request({
+      path: `/ContentManager/approve/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags ContentManager
+   * @name Reject
+   * @request DELETE:/ContentManager/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  reject(id: string, params = {}) {
+    return this.request({
+      path: `/ContentManager/reject/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

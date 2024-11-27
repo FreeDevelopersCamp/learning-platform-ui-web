@@ -1,11 +1,18 @@
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { HiEye } from "react-icons/hi2";
+import styled from "styled-components";
+import { HiEye, HiTrash } from "react-icons/hi2";
+import { FcCancel, FcCheckmark } from "react-icons/fc";
 
+import { useApproveUser } from "./useApproveUser";
+import { useRejectUser } from "./useRejectUser";
+import { useDeleteUser } from "./useDeleteUser";
+
+import ConfirmApprove from "../../ui/ConfirmApprove";
+import ConfirmReject from "../../ui/ConfirmReject";
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
-import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
+import Modal from "../../ui/Modal";
 
 const User = styled.div`
   font-size: 1.6rem;
@@ -18,18 +25,42 @@ const Stacked = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-
-  & span:first-child {
-    font-weight: 500;
-  }
-
-  & span:last-child {
-    color: var(--color-grey-500);
-    font-size: 1.2rem;
-  }
 `;
 
-function BookingRow({
+const statusToTagName = {
+  1: "blue",
+  2: "green",
+  3: "silver",
+};
+
+const statusToTagText = {
+  1: "Pending",
+  2: "Activated",
+  3: "Deactivated",
+};
+
+const getRoleCode = (role) => {
+  switch (role) {
+    case "0":
+      return "Admin";
+    case "1":
+      return "Owner";
+    case "2":
+      return "Manager";
+    case "3":
+      return "Account Manager";
+    case "4":
+      return "Content Manager";
+    case "5":
+      return "Instructor";
+    case "6":
+      return "Learner";
+    default:
+      return "Unknown";
+  }
+};
+
+function UserRow({
   user: {
     _id: userId,
     userName,
@@ -42,49 +73,13 @@ function BookingRow({
   children,
 }) {
   const navigate = useNavigate();
-
-  const statusToTagName = {
-    1: "blue",
-    2: "green",
-    3: "silver",
-  };
-
-  const statusToTagText = {
-    1: "Pending",
-    2: "Activated",
-    3: "Deactivated",
-  };
-
-  let roleCode;
-
-  switch (role) {
-    case "0":
-      roleCode = "Admin";
-      break;
-    case "1":
-      roleCode = "Owner";
-      break;
-    case "2":
-      roleCode = "Manager";
-      break;
-    case "3":
-      roleCode = "Account Manager";
-      break;
-    case "4":
-      roleCode = "Content Manager";
-      break;
-    case "5":
-      roleCode = "Instructor";
-      break;
-    case "6":
-      roleCode = "Learner";
-      break;
-    default:
-      roleCode = "Unknown";
-      break;
-  }
+  const { isApproving, approveUser } = useApproveUser();
+  const { isRejecting, rejectUser } = useRejectUser();
+  const { isDeleting, deleteUser } = useDeleteUser();
 
   if (!image) image = "../../../public/default-user.png";
+
+  let roleCode = getRoleCode(role);
 
   return (
     <Table.Row>
@@ -114,11 +109,73 @@ function BookingRow({
             >
               See details
             </Menus.Button>
+
+            {(statusToTagText[status] === "Pending" ||
+              statusToTagText[status] === "Deactivated") && (
+              <Modal.Open opens="approve">
+                <Menus.Button icon={<FcCheckmark />}>
+                  {statusToTagText[status] === "Deactivated"
+                    ? "Activate "
+                    : "Approve "}
+                  user
+                </Menus.Button>
+              </Modal.Open>
+            )}
+
+            {(statusToTagText[status] === "Pending" ||
+              statusToTagText[status] === "Activated") && (
+              <Modal.Open opens="reject">
+                <Menus.Button icon={<FcCancel />}>
+                  {statusToTagText[status] === "Activated"
+                    ? "Deactivate "
+                    : "Reject "}
+                  user
+                </Menus.Button>
+              </Modal.Open>
+            )}
+
+            {statusToTagText[status] === "Deactivated" && (
+              <Modal.Open opens="delete">
+                <Menus.Button icon={<HiTrash />}>Delete user</Menus.Button>
+              </Modal.Open>
+            )}
           </Menus.List>
         </Menus.Menu>
+
+        {(statusToTagText[status] === "Pending" ||
+          statusToTagText[status] === "Deactivated") && (
+          <Modal.Window name="approve">
+            <ConfirmApprove
+              resourceName="user"
+              disabled={isApproving || isRejecting || isDeleting}
+              onConfirm={approveUser}
+            />
+          </Modal.Window>
+        )}
+
+        {(statusToTagText[status] === "Pending" ||
+          statusToTagText[status] === "Activated") && (
+          <Modal.Window name="reject">
+            <ConfirmReject
+              resourceName="user"
+              disabled={isApproving || isRejecting || isDeleting}
+              onConfirm={rejectUser}
+            />
+          </Modal.Window>
+        )}
+
+        {statusToTagText[status] === "Deactivated" && (
+          <Modal.Window name="delete">
+            <ConfirmReject
+              resourceName="user"
+              disabled={isApproving || isRejecting || isDeleting}
+              onConfirm={deleteUser}
+            />
+          </Modal.Window>
+        )}
       </Modal>
     </Table.Row>
   );
 }
 
-export default BookingRow;
+export default UserRow;

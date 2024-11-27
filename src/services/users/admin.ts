@@ -105,4 +105,40 @@ export default class Admin extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags admin
+   * @name Approve
+   * @request GET:/admin/approve/{id}
+   * @secure
+   * @response `default` Approve result
+   */
+  approve(id: string, params = {}) {
+    return this.request({
+      path: `/admin/approve/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags admin
+   * @name Reject
+   * @request DELETE:/admin/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  reject(id: string, params = {}) {
+    return this.request({
+      path: `/admin/reject/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

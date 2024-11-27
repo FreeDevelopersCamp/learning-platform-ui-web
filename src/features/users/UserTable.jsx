@@ -1,9 +1,6 @@
-import { useState } from "react";
-
 import FormControlLabel from "@mui/material/FormControlLabel";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import CheckBoxOutlineBlank from "@mui/icons-material/CheckBoxOutlineBlank";
 
+import { useUserSelection } from "../../context/UserSelectionContext";
 import { useUser } from "../../hooks/users/useUser";
 
 import UserRow from "./UserRow";
@@ -15,32 +12,16 @@ import Pagination from "../../ui/Pagination";
 import { ColorCheckbox } from "../../ui/LabelledCheckbox";
 
 function UserTable() {
-  const [selectedRows, setSelectedRows] = useState([]);
   const { users, isLoading, count } = useUser();
+  const { selectedUsers, handleSelectUser, handleSelectAllUsers } =
+    useUserSelection();
 
   if (isLoading) return <Spinner />;
   if (!users?.length) return <Empty resourceName="users" />;
 
-  const handleSelectAll = (e) => {
-    const isChecked = e.target.checked;
-    if (isChecked) {
-      setSelectedRows(users.map((user) => user.id));
-    } else {
-      setSelectedRows([]);
-    }
-  };
-
-  const handleCheckboxChange = (id) => {
-    setSelectedRows((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((rowId) => rowId !== id)
-        : [...prevSelected, id]
-    );
-  };
-
-  const isAllSelected = users.every((user) => selectedRows.includes(user.id));
+  const isAllSelected = users.every((user) => selectedUsers.includes(user.id));
   const isIndeterminate =
-    selectedRows.length > 0 && selectedRows.length < users.length;
+    selectedUsers.length > 0 && selectedUsers.length < users.length;
 
   return (
     <Menus>
@@ -51,11 +32,11 @@ function UserTable() {
               control={
                 <ColorCheckbox
                   color="default"
-                  onChange={handleSelectAll}
+                  onChange={(e) =>
+                    handleSelectAllUsers(users, e.target.checked)
+                  }
                   checked={isAllSelected}
                   indeterminate={isIndeterminate}
-                  icon={<CheckBoxOutlineBlank />}
-                  checkedIcon={<CheckBoxIcon />}
                   size="large"
                 />
               }
@@ -76,10 +57,8 @@ function UserTable() {
                 control={
                   <ColorCheckbox
                     color="default"
-                    onChange={() => handleCheckboxChange(user.id)}
-                    checked={selectedRows.includes(user.id)}
-                    icon={<CheckBoxOutlineBlank />}
-                    checkedIcon={<CheckBoxIcon />}
+                    onChange={() => handleSelectUser(user.id)}
+                    checked={selectedUsers.includes(user.id)}
                     size="large"
                   />
                 }
