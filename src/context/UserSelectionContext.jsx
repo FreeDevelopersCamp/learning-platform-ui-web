@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useState } from "react";
 
+import { useUser } from "../hooks/users/useUser";
+import { useApproveUser } from "../features/users/useApproveUser";
+import { useRejectUser } from "../features/users/useRejectUser";
+import { useDeleteUser } from "../features/users/useDeleteUser";
+import { useDeactivateUser } from "../features/users/useDeactivateUser";
+
+import Spinner from "../ui/Spinner";
 const UserSelectionContext = createContext();
 
 export const useUserSelection = () => {
@@ -8,6 +15,14 @@ export const useUserSelection = () => {
 
 export const UserSelectionProvider = ({ children }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const { users, isLoading } = useUser();
+  const { isApproving, approveUser } = useApproveUser();
+  const { isRejecting, rejectUser } = useRejectUser();
+  const { isDeactivating, deactivateUser } = useDeactivateUser();
+  const { isDeleting, deleteUser } = useDeleteUser();
+
+  if (isLoading || isApproving || isRejecting || isDeleting || isDeactivating)
+    return <Spinner />;
 
   const handleSelectUser = (id) => {
     setSelectedUsers((prev) =>
@@ -24,14 +39,32 @@ export const UserSelectionProvider = ({ children }) => {
   };
 
   const handleApproveSelectedUsers = () => {
-    // Logic to approve selected users
+    selectedUsers.forEach((userId) => {
+      const user = users.find((u) => u.id === userId);
+      if (user) approveUser(user);
+    });
   };
 
   const handleRejectSelectedUsers = () => {
-    // Logic to reject selected users
+    selectedUsers.forEach((userId) => {
+      const user = users.find((u) => u.id === userId);
+      if (user) rejectUser(user);
+    });
   };
 
-  const handleDeleteSelectedUsers = () => {};
+  const handleDeleteSelectedUsers = () => {
+    selectedUsers.forEach((userId) => {
+      const user = users.find((u) => u.id === userId);
+      if (user) deleteUser(user);
+    });
+  };
+
+  const handleDeactivateSelectedUsers = () => {
+    selectedUsers.forEach((userId) => {
+      const user = users.find((u) => u.id === userId);
+      if (user) deactivateUser(user);
+    });
+  };
 
   return (
     <UserSelectionContext.Provider
@@ -42,6 +75,7 @@ export const UserSelectionProvider = ({ children }) => {
         handleApproveSelectedUsers,
         handleRejectSelectedUsers,
         handleDeleteSelectedUsers,
+        handleDeactivateSelectedUsers,
       }}
     >
       {children}

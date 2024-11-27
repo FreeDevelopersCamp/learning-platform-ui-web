@@ -20,7 +20,13 @@ const StyledConfirmApprove = styled.div`
   }
 `;
 
-function ConfirmApprove({ resourceName, onConfirm, disabled, onCloseModal }) {
+function ConfirmApprove({
+  resourceName,
+  onConfirm,
+  disabled,
+  onCloseModal,
+  roleId,
+}) {
   return (
     <StyledConfirmApprove>
       <Heading as="h3">Approve {resourceName}</Heading>
@@ -34,7 +40,11 @@ function ConfirmApprove({ resourceName, onConfirm, disabled, onCloseModal }) {
         >
           Cancel
         </Button>
-        <Button variation="primary" disabled={disabled} onClick={onConfirm}>
+        <Button
+          variation="primary"
+          disabled={disabled}
+          onClick={() => onConfirm(roleId)}
+        >
           Approve
         </Button>
       </div>

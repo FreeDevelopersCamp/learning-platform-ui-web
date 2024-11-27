@@ -52,7 +52,7 @@ function UserTable() {
         <Table.Body
           data={users}
           render={(user) => (
-            <UserRow key={user.id} user={user}>
+            <UserRow key={user.roleId} user={user}>
               <FormControlLabel
                 control={
                   <ColorCheckbox

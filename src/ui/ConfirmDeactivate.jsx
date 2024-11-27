@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import Heading from "./Heading";
 
-const StyledConfirmReject = styled.div`
+const StyledConfirmDeactivate = styled.div`
   width: 40rem;
   display: flex;
   flex-direction: column;
@@ -20,14 +20,11 @@ const StyledConfirmReject = styled.div`
   }
 `;
 
-function ConfirmReject({ resourceName, onConfirm, disabled, onCloseModal }) {
+function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
   return (
-    <StyledConfirmReject>
-      <Heading as="h3">Reject {resourceName}</Heading>
-      <p>
-        Are you sure you want to reject this {resourceName} permanently? This
-        action cannot be undone.
-      </p>
+    <StyledConfirmDeactivate>
+      <Heading as="h3">Deactivate {resourceName}</Heading>
+      <p>Are you sure you want to deactivate this {resourceName}?</p>
 
       <div>
         <Button
@@ -38,11 +35,11 @@ function ConfirmReject({ resourceName, onConfirm, disabled, onCloseModal }) {
           Cancel
         </Button>
         <Button variation="danger" disabled={disabled} onClick={onConfirm}>
-          Reject
+          Deactivate
         </Button>
       </div>
-    </StyledConfirmReject>
+    </StyledConfirmDeactivate>
   );
 }
 
-export default ConfirmReject;
+export default ConfirmDelete;

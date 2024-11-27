@@ -7,11 +7,11 @@ export function useRejectUser() {
 
   const { isLoading: isApproving, mutate: rejectUser } = useMutation({
     mutationFn: async (user) => {
-      await getServiceInstanceByRole(user.role).reject(user._id);
+      await getServiceInstanceByRole(user.role).reject(user.roleId);
     },
     onSuccess: () => {
       toast.success("Users successfully rejected");
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["role"] });
     },
     onError: (err) => toast.error(err.message),
   });

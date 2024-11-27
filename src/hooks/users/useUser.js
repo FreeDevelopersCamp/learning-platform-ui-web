@@ -43,7 +43,7 @@ export function useUser() {
       }
 
       return {
-        queryKey: ["role", user.role, user._id],
+        queryKey: ["role", user.role, user.id],
         queryFn: () => serviceInstance?.getByUserId(user._id),
         enabled: !!serviceInstance, // Only fetch if serviceInstance is valid
         onError: () =>
@@ -57,6 +57,7 @@ export function useUser() {
     const query = roleQueries[index];
     return {
       ...user,
+      roleId: query?.data?._id,
       status: query?.data?.status || "-1", // Default to "Unknown" if data isn't available
     };
   });
