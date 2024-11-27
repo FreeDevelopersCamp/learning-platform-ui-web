@@ -1,14 +1,11 @@
 import styled from "styled-components";
-import { HiEye, HiShieldExclamation } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
+import { HiEye } from "react-icons/hi2";
 
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
-
-// import { useCheckout } from "../check-in-out/useCheckout";
-// import { useDeleteUser } from "./useDeleteUser";
 
 const User = styled.div`
   font-size: 1.6rem;
@@ -32,18 +29,11 @@ const Stacked = styled.div`
   }
 `;
 
-// const Amount = styled.div`
-//   font-family: "Sono";
-//   font-weight: 500;
-// `;
-
 function BookingRow({
   user: { _id: userId, userName, image, role, personalInformation, contacts },
   children,
 }) {
   const navigate = useNavigate();
-  // const { checkout, isCheckingOut } = useCheckout();
-  // const { deleteBooking, isDeleting } = useDeleteUser();
 
   const statusToTagName = {
     pending: "blue",
@@ -100,12 +90,7 @@ function BookingRow({
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
-      <User className="flex gap-4">
-        <span>
-          <HiShieldExclamation />
-        </span>
-        {roleCode}
-      </User>
+      <User className="flex items-center gap-4">{roleCode}</User>
 
       <Modal>
         <Menus.Menu>
@@ -117,38 +102,8 @@ function BookingRow({
             >
               See details
             </Menus.Button>
-
-            {/* <Menus.Button
-                icon={<HiArrowDownOnSquare />}
-                onClick={() => navigate(`/checkin/${bookingId}`)}
-              >
-                Check in
-              </Menus.Button>
-            
-
-            {status === "checked-in" && (
-              <Menus.Button
-                icon={<HiArrowUpOnSquare />}
-                onClick={() => checkout(bookingId)}
-                disabled={isCheckingOut}
-              >
-                Check out
-              </Menus.Button>
-            )} */}
-
-            {/* <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash />}>Delete booking</Menus.Button>
-            </Modal.Open> */}
           </Menus.List>
         </Menus.Menu>
-
-        {/* <Modal.Window name="delete">
-          <ConfirmDelete
-            resourceName="user"
-            disabled={isDeleting}
-            onConfirm={() => deleteBooking(bookingId)}
-          />
-        </Modal.Window> */}
       </Modal>
     </Table.Row>
   );

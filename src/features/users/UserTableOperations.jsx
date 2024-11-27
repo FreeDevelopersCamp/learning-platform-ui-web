@@ -32,13 +32,13 @@ function UserTableOperations() {
 
       <SortBy
         options={[
-          { value: "startDate-desc", label: "Sort by date (recent first)" },
-          { value: "startDate-asc", label: "Sort by date (earlier first)" },
+          { value: "name-desc", label: "Sort by name (A - Z)" },
+          { value: "name-asc", label: "Sort by name (Z - A)" },
           {
-            value: "totalPrice-desc",
-            label: "Sort by amount (high first)",
+            value: "role-desc",
+            label: "Sort by role (Admin first)",
           },
-          { value: "totalPrice-asc", label: "Sort by amount (low first)" },
+          { value: "role-asc", label: "Sort by role (Learner first)" },
         ]}
       />
     </TableOperations>

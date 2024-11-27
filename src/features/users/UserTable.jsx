@@ -1,103 +1,50 @@
-import BookingRow from "./BookingRow";
+import { useState } from "react";
+
+import FormControlLabel from "@mui/material/FormControlLabel";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CheckBoxOutlineBlank from "@mui/icons-material/CheckBoxOutlineBlank";
+
+import { useUser } from "../../hooks/user/useUser";
+
+import UserRow from "./UserRow";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import Empty from "../../ui/Empty";
 import Spinner from "../../ui/Spinner";
 import Pagination from "../../ui/Pagination";
-import { useState } from "react";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { ColorCheckbox } from "../../ui/LabelledCheckbox";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import CheckBoxOutlineBlank from "@mui/icons-material/CheckBoxOutlineBlank";
-// import { useDeleteUser } from "./useDeleteUser";
-// import Button from "../../ui/Button";
-import { useUser } from "./useUser";
-import { PAGE_SIZE } from "../../utils/constants";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 function UserTable() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const [selectedRows, setSelectedRows] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  // const { isDeleting, deleteBooking } = useDeleteUser();
-
-  let { users, isLoading } = useUser();
-
-  // Read page number from URL query params when component mounts
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const page = parseInt(urlParams.get("page")) || 1;
-    setCurrentPage(page);
-  }, [location.search]);
+  const { users, isLoading, count } = useUser();
 
   if (isLoading) return <Spinner />;
-
-  if (!users) return <Empty resourceName="users" />;
-
-  const expandedUsers = users.flatMap((user) =>
-    user.roles.map((role) => ({
-      ...user,
-      role,
-      id: `${user._id}-${role}`, // Composite unique ID
-      roles: undefined,
-    }))
-  );
+  if (!users?.length) return <Empty resourceName="users" />;
 
   const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      // Select all rows on the current page using the composite id
-      const currentPageIds = expandedUsers
-        .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
-        .map((user) => user.id);
-      setSelectedRows(currentPageIds);
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      setSelectedRows(users.map((user) => user.id));
     } else {
-      setSelectedRows([]); // Deselect all rows
+      setSelectedRows([]);
     }
   };
 
   const handleCheckboxChange = (id) => {
-    setSelectedRows((prev) =>
-      prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
+    setSelectedRows((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((rowId) => rowId !== id)
+        : [...prevSelected, id]
     );
   };
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-
-    // Remove the current 'page' parameter and set the new one
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set("page", newPage); // Set or update the 'page' parameter
-
-    // Update the URL with the new page number and any other query params (like 'status')
-    navigate(`${location.pathname}?${urlParams.toString()}`);
-  };
-
-  const currentPageUsers = expandedUsers.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
-  );
-
-  const isAllSelected = currentPageUsers.every((user) =>
-    selectedRows.includes(user.id)
-  );
-
+  const isAllSelected = users.every((user) => selectedRows.includes(user.id));
   const isIndeterminate =
-    selectedRows.length > 0 && selectedRows.length < currentPageUsers.length;
-
-  // const handleDeleteSelected = () => {
-  //   if (selectedRows.length > 0) {
-  //     deleteBooking(selectedRows);
-  //   }
-  //   setSelectedRows([]);
-  // };
+    selectedRows.length > 0 && selectedRows.length < users.length;
 
   return (
     <Menus>
-      <Table columns="0.4fr 2.1fr 2.2fr 1.1fr 1.4fr 3.2rem">
-        {/* Table Header */}
+      <Table columns="0.4fr 2.3fr 2.5fr 1.5fr 1.5fr 0.5fr ">
         <Table.Header>
           <div>
             <FormControlLabel
@@ -122,41 +69,27 @@ function UserTable() {
         </Table.Header>
 
         <Table.Body
-          data={currentPageUsers}
+          data={users}
           render={(user) => (
-            <BookingRow key={`${user.id}`} user={user}>
+            <UserRow key={user.id} user={user}>
               <FormControlLabel
                 control={
                   <ColorCheckbox
                     color="default"
-                    onChange={() => handleCheckboxChange(user.id)} // Use composite id
-                    checked={selectedRows.includes(user.id)} // Use composite id
+                    onChange={() => handleCheckboxChange(user.id)}
+                    checked={selectedRows.includes(user.id)}
                     icon={<CheckBoxOutlineBlank />}
                     checkedIcon={<CheckBoxIcon />}
                     size="large"
                   />
                 }
               />
-            </BookingRow>
+            </UserRow>
           )}
         />
 
-        {/* Table Footer */}
         <Table.Footer>
-          <Pagination
-            count={expandedUsers.length}
-            onPageChange={handlePageChange}
-            currentPage={currentPage}
-          >
-            {/* Add Delete Button for Selected Rows */}
-            {/* <Button
-              onClick={handleDeleteSelected}
-              disabled={isDeleting || selectedRows.length === 0}
-              variation="danger"
-            >
-              {isDeleting ? "Deleting..." : "Delete Selected"}
-            </Button> */}
-          </Pagination>
+          <Pagination count={count} />
         </Table.Footer>
       </Table>
     </Menus>
