@@ -4,7 +4,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlank from "@mui/icons-material/CheckBoxOutlineBlank";
 
-import { useUser } from "../../hooks/user/useUser";
+import { useUser } from "../../hooks/users/useUser";
 
 import UserRow from "./UserRow";
 import Table from "../../ui/Table";

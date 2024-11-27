@@ -30,15 +30,29 @@ const Stacked = styled.div`
 `;
 
 function BookingRow({
-  user: { _id: userId, userName, image, role, personalInformation, contacts },
+  user: {
+    _id: userId,
+    userName,
+    image,
+    role,
+    personalInformation,
+    contacts,
+    status,
+  },
   children,
 }) {
   const navigate = useNavigate();
 
   const statusToTagName = {
-    pending: "blue",
-    activated: "green",
-    deactivated: "silver",
+    1: "blue",
+    2: "green",
+    3: "silver",
+  };
+
+  const statusToTagText = {
+    1: "Pending",
+    2: "Activated",
+    3: "Deactivated",
   };
 
   let roleCode;
@@ -72,8 +86,6 @@ function BookingRow({
 
   if (!image) image = "../../../public/default-user.png";
 
-  const status = "pending";
-
   return (
     <Table.Row>
       {children}
@@ -88,7 +100,7 @@ function BookingRow({
 
       <User>{contacts.email}</User>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+      <Tag type={statusToTagName[status]}>{statusToTagText[status]}</Tag>
 
       <User className="flex items-center gap-4">{roleCode}</User>
 

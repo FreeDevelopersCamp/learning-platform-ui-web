@@ -1,6 +1,19 @@
 import { ContentType, HttpClient } from "../http-client";
 
-export class Learner extends HttpClient {
+export default class Learner extends HttpClient {
+  private static instance: Learner;
+
+  private constructor() {
+    super(); // Call the parent class constructor
+  }
+
+  public static getInstance(): Learner {
+    if (!Learner.instance) {
+      Learner.instance = new Learner();
+    }
+    return Learner.instance;
+  }
+
   /**
    * No description
    *
@@ -51,6 +64,24 @@ export class Learner extends HttpClient {
   getById(id, params = {}) {
     return this.request({
       path: `/learner/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags learner
+   * @name GetByUserId
+   * @request GET:/learner/user/userId={id}
+   * @secure
+   * @response `default` learner information
+   */
+  getByUserId(id, params = {}) {
+    return this.request({
+      path: `/learner/user/${id}`,
       method: "GET",
       secure: true,
       ...params,

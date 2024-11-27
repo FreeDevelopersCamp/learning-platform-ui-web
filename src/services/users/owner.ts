@@ -1,6 +1,19 @@
 import { ContentType, HttpClient } from "../http-client";
 
-export class Owner extends HttpClient {
+export default class Owner extends HttpClient {
+  private static instance: Owner;
+
+  private constructor() {
+    super(); // Call the parent class constructor
+  }
+
+  public static getInstance(): Owner {
+    if (!Owner.instance) {
+      Owner.instance = new Owner();
+    }
+    return Owner.instance;
+  }
+
   /**
    * No description
    *
@@ -51,6 +64,24 @@ export class Owner extends HttpClient {
   getById(id, params = {}) {
     return this.request({
       path: `/owner/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags owner
+   * @name GetByUserId
+   * @request GET:/owner/user/userId={id}
+   * @secure
+   * @response `default` owner information
+   */
+  getByUserId(id, params = {}) {
+    return this.request({
+      path: `/owner/user/${id}`,
       method: "GET",
       secure: true,
       ...params,

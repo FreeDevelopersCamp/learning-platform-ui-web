@@ -1,6 +1,19 @@
 import { ContentType, HttpClient } from "../http-client";
 
-export class Admin extends HttpClient {
+export default class Admin extends HttpClient {
+  private static instance: Admin;
+
+  private constructor() {
+    super(); // Call the parent class constructor
+  }
+
+  public static getInstance(): Admin {
+    if (!Admin.instance) {
+      Admin.instance = new Admin();
+    }
+    return Admin.instance;
+  }
+
   /**
    * No description
    *
@@ -51,6 +64,24 @@ export class Admin extends HttpClient {
   getById(id, params = {}) {
     return this.request({
       path: `/admin/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags admin
+   * @name GetByUserId
+   * @request GET:/admin/user/userId={id}
+   * @secure
+   * @response `default` admin information
+   */
+  getByUserId(id, params = {}) {
+    return this.request({
+      path: `/admin/user/${id}`,
       method: "GET",
       secure: true,
       ...params,

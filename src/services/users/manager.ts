@@ -1,6 +1,19 @@
 import { ContentType, HttpClient } from "../http-client";
 
-export class Manager extends HttpClient {
+export default class Manager extends HttpClient {
+  private static instance: Manager;
+
+  private constructor() {
+    super(); // Call the parent class constructor
+  }
+
+  public static getInstance(): Manager {
+    if (!Manager.instance) {
+      Manager.instance = new Manager();
+    }
+    return Manager.instance;
+  }
+
   /**
    * No description
    *
@@ -51,6 +64,24 @@ export class Manager extends HttpClient {
   getById(id, params = {}) {
     return this.request({
       path: `/manager/${id}`,
+      method: "GET",
+      secure: true,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags manager
+   * @name GetByUserId
+   * @request GET:/manager/user/userId={id}
+   * @secure
+   * @response `default` manager information
+   */
+  getByUserId(id, params = {}) {
+    return this.request({
+      path: `/manager/user/${id}`,
       method: "GET",
       secure: true,
       ...params,
