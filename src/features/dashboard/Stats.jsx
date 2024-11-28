@@ -1,53 +1,62 @@
-import {
-  HiOutlineBanknotes,
-  HiOutlineBriefcase,
-  HiOutlineCalendarDays,
-  HiOutlineChartBar,
-} from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 import Stat from "./Stat";
-import { formatCurrency } from "../../utils/helpers";
 
-function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
-  // 1.
-  const numBookings = bookings.length;
+function Stats({ users }) {
+  const navigate = useNavigate();
 
-  // 2.
-  const sales = bookings.reduce((acc, cur) => acc + cur.totalPrice, 0);
-
-  // 3.
-  const checkins = confirmedStays.length;
-
-  // 4.
-  const occupation =
-    confirmedStays.reduce((acc, cur) => acc + cur.numNights, 0) /
-    (numDays * cabinCount);
-  // num checked in nights / all available nights (num days * num cabins)
+  const totalAdmins = users.filter((user) => user?.role?.includes("0"));
+  const totalOwners = users.filter((user) => user?.role?.includes("1"));
+  const totalManagers = users.filter((user) => user?.role?.includes("2"));
+  const totalAccountManagers = users.filter((user) =>
+    user?.role?.includes("3")
+  );
+  const totalContentManagers = users.filter((user) =>
+    user?.role?.includes("4")
+  );
+  const Instructors = users.filter((user) => user?.role?.includes("5"));
+  const totalLearners = users.filter((user) => user?.role?.includes("6"));
 
   return (
     <>
       <Stat
-        title="Bookings"
-        color="blue"
-        icon={<HiOutlineBriefcase />}
-        value={numBookings}
+        title="Total Users"
+        data={users}
+        onClick={() => navigate("/users")}
       />
       <Stat
-        title="Sales"
-        color="green"
-        icon={<HiOutlineBanknotes />}
-        value={formatCurrency(sales)}
+        title="Admins"
+        data={totalAdmins}
+        onClick={() => navigate("/users?role=admin")}
       />
       <Stat
-        title="Check ins"
-        color="indigo"
-        icon={<HiOutlineCalendarDays />}
-        value={checkins}
+        title="Owners"
+        data={totalOwners}
+        onClick={() => navigate("/users?role=owner")}
       />
       <Stat
-        title="Occupancy rate"
-        color="yellow"
-        icon={<HiOutlineChartBar />}
-        value={Math.round(occupation * 100) + "%"}
+        title="Managers"
+        data={totalManagers}
+        onClick={() => navigate("/users?role=manager")}
+      />
+      <Stat
+        title="Account Managers"
+        data={totalAccountManagers}
+        onClick={() => navigate("/users?role=account-manager")}
+      />
+      <Stat
+        title="Content Managers"
+        data={totalContentManagers}
+        onClick={() => navigate("/users?role=content-manager")}
+      />
+      <Stat
+        title="Instructors"
+        data={Instructors}
+        onClick={() => navigate("/users?role=instructor")}
+      />
+      <Stat
+        title="Learners"
+        data={totalLearners}
+        onClick={() => navigate("/users?role=learner")}
       />
     </>
   );

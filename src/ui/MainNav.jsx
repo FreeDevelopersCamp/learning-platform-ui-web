@@ -11,6 +11,7 @@ import {
 } from "react-icons/hi2";
 import { RiDragDropLine } from "react-icons/ri";
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
+import { BsShieldLock } from "react-icons/bs";
 
 const NavList = styled.ul`
   display: flex;
@@ -71,6 +72,12 @@ function MainNav() {
           <StyledNavLink to="/users">
             <HiOutlineUsers />
             <span>Users</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/permissions">
+            <BsShieldLock />
+            <span>Permissions</span>
           </StyledNavLink>
         </li>
         <li>

@@ -141,4 +141,22 @@ export default class Manager extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags manager
+   * @name Reject
+   * @request DELETE:/manager/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  deactivate(id: string, params = {}) {
+    return this.request({
+      path: `/manager/deactivate/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

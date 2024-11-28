@@ -123,4 +123,22 @@ export default class Learner extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags learner
+   * @name Reject
+   * @request DELETE:/learner/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  deactivate(id: string, params = {}) {
+    return this.request({
+      path: `/learner/deactivate/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

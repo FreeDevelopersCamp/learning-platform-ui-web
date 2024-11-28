@@ -141,4 +141,22 @@ export default class Owner extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags owner
+   * @name Reject
+   * @request DELETE:/owner/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  deactivate(id: string, params = {}) {
+    return this.request({
+      path: `/owner/deactivate/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

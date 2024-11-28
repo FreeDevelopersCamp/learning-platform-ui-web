@@ -142,6 +142,7 @@ export function useUsers() {
     isLoading: usersLoading || roleQueries.some((q) => q.isLoading),
     error: usersError || roleQueries.some((q) => q.error),
     users: currentPageUsers,
-    count: usersWithStatus.length,
+    count: sortedUsers.length,
+    totalUsers: usersWithStatus,
   };
 }

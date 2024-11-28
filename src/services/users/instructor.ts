@@ -141,4 +141,22 @@ export default class Instructor extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags instructor
+   * @name Reject
+   * @request DELETE:/instructor/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  deactivate(id: string, params = {}) {
+    return this.request({
+      path: `/instructor/deactivate/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

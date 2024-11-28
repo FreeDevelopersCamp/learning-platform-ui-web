@@ -141,4 +141,22 @@ export default class Admin extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags admin
+   * @name Reject
+   * @request DELETE:/admin/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  deactivate(id: string, params = {}) {
+    return this.request({
+      path: `/admin/deactivate/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }
