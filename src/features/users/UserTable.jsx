@@ -1,7 +1,7 @@
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { useUserSelection } from "../../context/UserSelectionContext";
-import { useUser } from "../../hooks/users/useUser";
+import { useUsers } from "../../hooks/users/useUsers";
 
 import UserRow from "./UserRow";
 import Table from "../../ui/Table";
@@ -12,14 +12,16 @@ import Pagination from "../../ui/Pagination";
 import { ColorCheckbox } from "../../ui/LabelledCheckbox";
 
 function UserTable() {
-  const { users, isLoading, count } = useUser();
+  const { users, isLoading, count } = useUsers();
   const { selectedUsers, handleSelectUser, handleSelectAllUsers } =
     useUserSelection();
 
   if (isLoading) return <Spinner />;
   if (!users?.length) return <Empty resourceName="users" />;
 
-  const isAllSelected = users.every((user) => selectedUsers.includes(user.id));
+  const isAllSelected = users.every((user) =>
+    selectedUsers.includes(user.roleId)
+  );
   const isIndeterminate =
     selectedUsers.length > 0 && selectedUsers.length < users.length;
 
@@ -52,13 +54,13 @@ function UserTable() {
         <Table.Body
           data={users}
           render={(user) => (
-            <UserRow key={user.roleId} user={user}>
+            <UserRow key={`${user.roleId}`} user={user}>
               <FormControlLabel
                 control={
                   <ColorCheckbox
                     color="default"
-                    onChange={() => handleSelectUser(user.id)}
-                    checked={selectedUsers.includes(user.id)}
+                    onChange={() => handleSelectUser(user.roleId)}
+                    checked={selectedUsers.includes(user.roleId)}
                     size="large"
                   />
                 }

@@ -141,4 +141,22 @@ export default class ContentManager extends HttpClient {
       ...params,
     });
   }
+
+  /**
+   * No description
+   *
+   * @tags ContentManager
+   * @name Reject
+   * @request DELETE:/ContentManager/reject/{id}
+   * @secure
+   * @response `default` Reject result
+   */
+  deactivate(id: string, params = {}) {
+    return this.request({
+      path: `/ContentManager/deactivate/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  }
 }

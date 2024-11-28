@@ -59,7 +59,7 @@ export class User extends HttpClient {
    * @secure
    * @response `default` User information
    */
-  getById(id, params = {}) {
+  getById(id: string, params = {}) {
     return this.request({
       path: `/user/${id}`,
       method: "GET",
@@ -77,7 +77,7 @@ export class User extends HttpClient {
    * @secure
    * @response `default` Deleted result
    */
-  delete(id, params = {}) {
+  delete(id: string, params = {}) {
     return this.request({
       path: `/user/${id}`,
       method: "DELETE",

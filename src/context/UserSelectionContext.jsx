@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-import { useUser } from "../hooks/users/useUser";
+import { useUsers } from "../hooks/users/useUsers";
 import { useApproveUser } from "../features/users/useApproveUser";
 import { useRejectUser } from "../features/users/useRejectUser";
 import { useDeleteUser } from "../features/users/useDeleteUser";
@@ -15,7 +15,7 @@ export const useUserSelection = () => {
 
 export const UserSelectionProvider = ({ children }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const { users, isLoading } = useUser();
+  const { users, isLoading } = useUsers();
   const { isApproving, approveUser } = useApproveUser();
   const { isRejecting, rejectUser } = useRejectUser();
   const { isDeactivating, deactivateUser } = useDeactivateUser();
@@ -24,58 +24,54 @@ export const UserSelectionProvider = ({ children }) => {
   if (isLoading || isApproving || isRejecting || isDeleting || isDeactivating)
     return <Spinner />;
 
-  const handleSelectUser = (id) => {
+  const handleSelectUser = (roleId) => {
     setSelectedUsers((prev) =>
-      prev.includes(id) ? prev.filter((userId) => userId !== id) : [...prev, id]
+      prev.includes(roleId)
+        ? prev.filter((userId) => userId !== roleId)
+        : [...prev, roleId]
     );
   };
 
   const handleSelectAllUsers = (users, isSelected) => {
     if (isSelected) {
-      setSelectedUsers(users.map((user) => user.id));
+      setSelectedUsers(users.map((user) => user.roleId));
     } else {
       setSelectedUsers([]);
     }
   };
 
-  const handleApproveSelectedUsers = () => {
-    selectedUsers.forEach((userId) => {
-      const user = users.find((u) => u.id === userId);
-      if (user) approveUser(user);
-    });
-  };
-
-  const handleRejectSelectedUsers = () => {
-    selectedUsers.forEach((userId) => {
-      const user = users.find((u) => u.id === userId);
-      if (user) rejectUser(user);
-    });
-  };
-
-  const handleDeleteSelectedUsers = () => {
-    selectedUsers.forEach((userId) => {
-      const user = users.find((u) => u.id === userId);
-      if (user) deleteUser(user);
-    });
-  };
-
-  const handleDeactivateSelectedUsers = () => {
-    selectedUsers.forEach((userId) => {
-      const user = users.find((u) => u.id === userId);
-      if (user) deactivateUser(user);
-    });
+  const handleUserAction = async (action) => {
+    const userMap = new Map(users.map((user) => [user.roleId, user]));
+    await Promise.all(
+      selectedUsers.map(async (userId) => {
+        const user = userMap.get(userId);
+        if (user) {
+          switch (action) {
+            case "approve":
+              return approveUser(user);
+            case "reject":
+              return rejectUser(user);
+            case "delete":
+              return deleteUser(user);
+            case "deactivate":
+              return deactivateUser(user);
+            default:
+              throw new Error(`Unknown action: ${action}`);
+          }
+        }
+      })
+    );
+    setSelectedUsers([]);
   };
 
   return (
     <UserSelectionContext.Provider
       value={{
         selectedUsers,
+        setSelectedUsers,
         handleSelectUser,
         handleSelectAllUsers,
-        handleApproveSelectedUsers,
-        handleRejectSelectedUsers,
-        handleDeleteSelectedUsers,
-        handleDeactivateSelectedUsers,
+        handleUserAction,
       }}
     >
       {children}

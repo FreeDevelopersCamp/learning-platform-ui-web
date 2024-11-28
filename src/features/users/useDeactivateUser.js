@@ -11,7 +11,7 @@ export function useDeactivateUser() {
     },
     onSuccess: () => {
       toast.success("Users successfully deactivated");
-      queryClient.invalidateQueries({ queryKey: ["role"] });
+      queryClient.invalidateQueries({ queryKey: ["users", "role"] });
     },
     onError: (err) => toast.error(err.message),
   });

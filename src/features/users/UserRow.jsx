@@ -18,6 +18,8 @@ import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
+import UserAvatar from "../authentication/UserAvatar";
+import { useEffect, useState } from "react";
 
 const Email = styled.div`
   font-size: 1.6rem;
@@ -83,43 +85,31 @@ function UserRow({ user, children }) {
   } = user;
 
   const navigate = useNavigate();
-  const { isApproving, approveUser } = useApproveUser();
-  const { isRejecting, rejectUser } = useRejectUser();
-  const { isDeleting, deleteUser } = useDeleteUser();
-  const { isDeactivating, deactivateUser } = useDeactivateUser();
+  const { isApproving } = useApproveUser();
+  const { isRejecting } = useRejectUser();
+  const { isDeleting } = useDeleteUser();
+  const { isDeactivating } = useDeactivateUser();
 
-  const {
-    selectedUsers,
-    handleApproveSelectedUsers,
-    handleRejectSelectedUsers,
-    handleDeleteSelectedUsers,
-    handleDeactivateSelectedUsers,
-  } = useUserSelection();
+  const { selectedUsers, handleSelectUser, handleUserAction } =
+    useUserSelection();
 
   if (!image) image = "../../../public/default-user.png";
 
   let roleCode = getRoleCode(role);
+  const [pendingAction, setPendingAction] = useState(null); // Tracks the current action
 
-  function handleApproveUser(user) {
-    console.log("Approving>>>: ", user);
-    const currentUser = { ...user, role: role }; // Attach current role explicitly
-    if (!selectedUsers?.length) approveUser(currentUser);
-    else handleApproveSelectedUsers();
-  }
+  useEffect(() => {
+    if (selectedUsers?.length && pendingAction) {
+      handleUserAction(pendingAction);
+      setPendingAction(null); // Reset action after handling
+    }
+  }, [selectedUsers, pendingAction, handleUserAction]);
 
-  function handleRejectUser() {
-    if (!selectedUsers?.length) rejectUser(user);
-    else handleRejectSelectedUsers();
-  }
-
-  function handleDeleteUser() {
-    if (!selectedUsers?.length) deleteUser(user);
-    else handleDeleteSelectedUsers();
-  }
-
-  function handleDeactivateUser(user) {
-    if (!selectedUsers?.length) deactivateUser(user);
-    else handleDeactivateSelectedUsers();
+  async function handleUserActionWrapper(roleId, actionType) {
+    if (!selectedUsers?.length) {
+      await handleSelectUser(roleId);
+    }
+    setPendingAction(actionType); // Set the desired action
   }
 
   return (
@@ -127,7 +117,7 @@ function UserRow({ user, children }) {
       {children}
 
       <div className="flex gap-4">
-        <img className="w-14 h-14 mt-2" src={image} alt={userName} />
+        <UserAvatar user={user} />
         <Stacked>
           <User>{`${personalInformation.name.first} ${personalInformation.name.last}`}</User>
           <span>{userName}</span>
@@ -142,8 +132,8 @@ function UserRow({ user, children }) {
 
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={userId} />
-          <Menus.List id={userId}>
+          <Menus.Toggle id={user.roleId} />
+          <Menus.List id={user.roleId}>
             <Menus.Button
               icon={<HiEye />}
               onClick={() => navigate(`/users/${userId}`)}
@@ -153,8 +143,11 @@ function UserRow({ user, children }) {
 
             {(statusToTagText[status] === "Pending" ||
               statusToTagText[status] === "Deactivated") && (
-              <Modal.Open opens={`approve-${user.id}`}>
-                <Menus.Button icon={<PersonAddAltTwoToneIcon />}>
+              <Modal.Open opens={`approve-${user.roleId}`}>
+                <Menus.Button
+                  key={`${user.roleId}`}
+                  icon={<PersonAddAltTwoToneIcon />}
+                >
                   {statusToTagText[status] === "Deactivated"
                     ? "Activate "
                     : "Approve "}
@@ -164,7 +157,7 @@ function UserRow({ user, children }) {
             )}
 
             {statusToTagText[status] === "Pending" && (
-              <Modal.Open opens="reject">
+              <Modal.Open opens={`reject-${user.roleId}`}>
                 <Menus.Button icon={<PersonOffTwoToneIcon />}>
                   Reject user
                 </Menus.Button>
@@ -172,13 +165,13 @@ function UserRow({ user, children }) {
             )}
 
             {statusToTagText[status] === "Deactivated" && (
-              <Modal.Open opens="delete">
+              <Modal.Open opens={`delete-${user.roleId}`}>
                 <Menus.Button icon={<HiTrash />}>Delete user</Menus.Button>
               </Modal.Open>
             )}
 
             {statusToTagText[status] === "Activated" && (
-              <Modal.Open opens="deactivate">
+              <Modal.Open opens={`deactivate-${user.roleId}`}>
                 <Menus.Button icon={<PersonOffTwoToneIcon />}>
                   Deactivated user
                 </Menus.Button>
@@ -189,51 +182,53 @@ function UserRow({ user, children }) {
 
         {(statusToTagText[status] === "Pending" ||
           statusToTagText[status] === "Deactivated") && (
-          <Modal.Window name={`approve-${user.id}`}>
+          <Modal.Window name={`approve-${user.roleId}`}>
             <ConfirmApprove
               resourceName="user"
               disabled={
                 isApproving || isRejecting || isDeleting || isDeactivating
               }
-              onConfirm={() => handleApproveUser(user)}
+              onConfirm={() => handleUserActionWrapper(user.roleId, "approve")}
               key={user.roleId}
             />
           </Modal.Window>
         )}
 
         {statusToTagText[status] === "Pending" && (
-          <Modal.Window name="reject" key={user.roleId}>
+          <Modal.Window name={`reject-${user.roleId}`} key={user.roleId}>
             <ConfirmReject
               resourceName="user"
               disabled={
                 isApproving || isRejecting || isDeleting || isDeactivating
               }
-              onConfirm={handleRejectUser}
+              onConfirm={() => handleUserActionWrapper(user.roleId, "reject")}
             />
           </Modal.Window>
         )}
 
         {statusToTagText[status] === "Deactivated" && (
-          <Modal.Window name="delete" key={user.roleId}>
+          <Modal.Window name={`delete-${user.roleId}`} key={user.roleId}>
             <ConfirmDelete
               resourceName="user"
               disabled={
                 isApproving || isRejecting || isDeleting || isDeactivating
               }
-              onConfirm={handleDeleteUser}
+              onConfirm={() => handleUserActionWrapper(user.roleId, "delete")}
             />
           </Modal.Window>
         )}
 
         {statusToTagText[status] === "Activated" && (
-          <Modal.Window name="deactivate" key={user.roleId}>
+          <Modal.Window name={`deactivate-${user.roleId}`} key={user.roleId}>
             <ConfirmDeactivate
               resourceName="user"
               resourceId={user.roleId}
               disabled={
                 isApproving || isRejecting || isDeleting || isDeactivating
               }
-              onConfirm={() => handleDeactivateUser(user)}
+              onConfirm={() =>
+                handleUserActionWrapper(user.roleId, "deactivate")
+              }
             />
           </Modal.Window>
         )}
