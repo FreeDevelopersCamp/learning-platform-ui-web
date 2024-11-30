@@ -6,7 +6,7 @@ import type {
   ResponseType,
 } from "axios";
 import axios from "axios";
-import { Token } from "./auth/Auth/types";
+import { Token } from "./auth/types";
 
 export type QueryParamsType = Record<string | number, any>;
 

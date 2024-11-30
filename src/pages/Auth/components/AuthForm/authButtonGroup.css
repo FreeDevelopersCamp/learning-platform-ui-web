@@ -1,0 +1,7 @@
+/* AuthButtonGroup.css */
+.auth-button img {
+  margin: 0 10px 0 15px;
+  width: 30px; /* Adjust size for better fit */
+  height: 30px; /* Adjust size for better fit */
+  object-fit: contain;
+}

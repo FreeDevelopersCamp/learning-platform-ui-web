@@ -4,14 +4,14 @@ import UserTable from "../features/users/UserTable";
 import UserTableOperations from "../features/users/UserTableOperations";
 import { UserSelectionProvider } from "../context/UserSelectionContext";
 
-function Bookings() {
+function Users() {
   return (
     <>
+      console.log("Users");
       <Row type="horizontal">
         <Heading as="h1">All users</Heading>
         <UserTableOperations />
       </Row>
-
       <UserSelectionProvider>
         <UserTable />
       </UserSelectionProvider>
@@ -19,4 +19,4 @@ function Bookings() {
   );
 }
 
-export default Bookings;
+export default Users;

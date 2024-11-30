@@ -10,9 +10,11 @@
  */
 
 import { ChangePassword, CreateUserDto, Login, Token } from "./types";
-import { ContentType, HttpClient, RequestParams } from "../../http-client";
+import { ContentType, HttpClient, RequestParams } from "../http-client";
 
-export class Auth<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
+export class Auth<
+  SecurityDataType = unknown
+> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *

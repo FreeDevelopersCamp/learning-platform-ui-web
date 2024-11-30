@@ -1,0 +1,118 @@
+.introduction-section {
+  background-color: #ffffff;
+  padding: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.introduction-content {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  padding: 2rem;
+  gap: 5rem;
+}
+
+.introduction-image-wrapper {
+  position: relative;
+  width: 550px;
+  height: 550px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+  border: none;
+}
+
+.introduction-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.icon-background {
+  position: absolute;
+  bottom: 30px;
+  right: -10%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 130px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 25px;
+}
+
+.icon-overlay {
+  width: 80px;
+  height: 80px;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.icon-overlay img {
+  margin: 12px 0 0 15px;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.introduction-text {
+  width: 50%;
+  text-align: left;
+}
+
+.introduction-text h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.2;
+}
+
+.introduction-text .highlight {
+  color: #0000ff;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+}
+
+.browse-courses {
+  height: 55px;
+  background-color: #0000ff;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.browse-courses:hover {
+  background-color: #000099;
+}
+
+.start-learning {
+  color: #333333;
+  font-size: 1.6rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.start-learning:hover {
+  color: #0000ff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
