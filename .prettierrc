@@ -1,0 +1,10 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "endOfLine": "lf",
+  "rules": {
+    "linebreak-style": ["error", "unix"],
+    "prefer-const": "off",
+    "no-unused-vars": ["warn", { "varsIgnorePattern": "^_" }]
+  }
+}

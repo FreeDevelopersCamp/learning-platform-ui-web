@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { ContentType, HttpClient } from "../http-client";
+import { ContentType, HttpClient } from '../http-client';
 
 export class User extends HttpClient {
   /**
@@ -24,7 +24,7 @@ export class User extends HttpClient {
   list(params = {}) {
     return this.request({
       path: `/user`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -42,10 +42,28 @@ export class User extends HttpClient {
   update(data, params = {}) {
     return this.request({
       path: `/user`,
-      method: "PATCH",
+      method: 'PATCH',
       body: data,
       secure: true,
       type: ContentType.Json,
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags user
+   * @name GetByUserName
+   * @request GET:/user/userId/{userName}
+   * @secure
+   * @response `default` User information
+   */
+  getByUserName(userName: string, params = {}) {
+    return this.request({
+      path: `/user/userId/${userName}`,
+      method: 'GET',
+      secure: true,
       ...params,
     });
   }
@@ -62,7 +80,7 @@ export class User extends HttpClient {
   getById(id: string, params = {}) {
     return this.request({
       path: `/user/${id}`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -80,7 +98,7 @@ export class User extends HttpClient {
   delete(id: string, params = {}) {
     return this.request({
       path: `/user/${id}`,
-      method: "DELETE",
+      method: 'DELETE',
       secure: true,
       ...params,
     });
