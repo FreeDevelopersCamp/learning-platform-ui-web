@@ -7,7 +7,6 @@ import { UserSelectionProvider } from "../context/UserSelectionContext";
 function Users() {
   return (
     <>
-      console.log("Users");
       <Row type="horizontal">
         <Heading as="h1">All users</Heading>
         <UserTableOperations />
