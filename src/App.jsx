@@ -11,6 +11,10 @@ import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
 import HomePage from './pages/Home/HomePage';
 
+
+import { DarkModeProvider } from "./context/DarkModeContext";
+import Instructor from "./pages/Instructor/InstructorPage";
+
 import AppLayout from './ui/AppLayout';
 import Instructor from './pages/Instructor/Instructor';
 import ProtectedRoute from './ui/ProtectedRoute';
@@ -42,7 +46,17 @@ function App() {
                   <Dashboard />
                 </ProtectedRoute>
               }
-            />
+            >
+              <Route index element={<Navigate replace to="home" />} />
+              <Route path="home" element={<HomePage />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="users" element={<Users />} />
+            </Route>
+
+            {/* <Route path="login" element={<Login />} /> */}
+            <Route path="instructor" element={<Instructor />} />
+            <Route path="*" element={<PageNotFound />} />
+          
             <Route
               path="admin/users"
               element={

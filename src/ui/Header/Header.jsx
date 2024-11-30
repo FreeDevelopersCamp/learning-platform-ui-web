@@ -13,7 +13,6 @@ const HeaderContainer = styled.header`
   background-color: var(--color-grey-100);
   color: var(--color-grey-800);
   padding: 0px 20px;
-  margin-bottom: 5px;
 `;
 
 // Component
