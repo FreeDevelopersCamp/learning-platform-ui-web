@@ -9,11 +9,11 @@
  * ---------------------------------------------------------------
  */
 
-import { ChangePassword, CreateUserDto, Login, Token } from "./types";
-import { ContentType, HttpClient, RequestParams } from "../http-client";
+import { ChangePassword, CreateUserDto, Login, Token } from './types';
+import { ContentType, HttpClient, RequestParams } from '../http-client';
 
 export class Auth<
-  SecurityDataType = unknown
+  SecurityDataType = unknown,
 > extends HttpClient<SecurityDataType> {
   /**
    * No description
@@ -27,7 +27,7 @@ export class Auth<
   register = (data: CreateUserDto, params: RequestParams = {}) =>
     this.request<any, Token>({
       path: `/Auth/register`,
-      method: "POST",
+      method: 'POST',
       body: data,
       secure: true,
       type: ContentType.Json,
@@ -45,7 +45,7 @@ export class Auth<
   login = (data: Login, params: RequestParams = {}) =>
     this.request<any, Token>({
       path: `/Auth/login`,
-      method: "POST",
+      method: 'POST',
       body: data,
       secure: true,
       type: ContentType.Json,
@@ -63,7 +63,7 @@ export class Auth<
   changePassword = (data: ChangePassword, params: RequestParams = {}) =>
     this.request<any, Token>({
       path: `/Auth/changePassword`,
-      method: "POST",
+      method: 'POST',
       body: data,
       secure: true,
       type: ContentType.Json,
@@ -81,7 +81,7 @@ export class Auth<
   killSession = (params: RequestParams = {}) =>
     this.request<any, boolean>({
       path: `/Auth/logout`,
-      method: "POST",
+      method: 'POST',
       secure: true,
       ...params,
     });

@@ -1,42 +1,37 @@
-import styled from "styled-components";
-import { useUser } from "../hooks/users/useUser";
-import Spinner from "./Spinner";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const FullPage = styled.div`
-  height: 100vh;
-  background-color: var(--color-grey-50);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-function ProtectedRoute({ children }) {
+const ProtectedRoute = ({ role, children }) => {
   const navigate = useNavigate();
 
-  // 1. Load the authenticated user
-  // const { isLoading, isAuthenticated } = useUser();
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log('Token:', token);
 
-  // 2. If there is NO authenticated user, redirect to the /login
-  // useEffect(
-  //   function () {
-  //     if (!isAuthenticated && !isLoading) navigate("/login");
-  //   },
-  //   [isAuthenticated, isLoading, navigate]
-  // );
+    const roles = localStorage.getItem('roles');
+    console.log('Roles:', roles);
 
-  // // 3. While loading, show a spinner
-  // if (isLoading)
-  //   return (
-  //     <FullPage>
-  //       <Spinner />
-  //     </FullPage>
-  //   );
+    if (!token) {
+      navigate('/auth');
+      return;
+    }
 
-  // 4. If there IS a user, render the app
-  // if (isAuthenticated) return children;
-  return true;
-}
+    if (!roles || !roles.includes(role)) {
+      navigate('/not-authorized');
+      return;
+    }
+
+    switch (role) {
+      case '0':
+        navigate('/admin/dashboard');
+        break;
+      default:
+        navigate('/not-authorized');
+        break;
+    }
+  }, [navigate, role]);
+
+  return children; // Return children elements if all checks pass
+};
 
 export default ProtectedRoute;
