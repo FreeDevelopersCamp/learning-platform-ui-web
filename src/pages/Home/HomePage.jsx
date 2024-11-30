@@ -1,4 +1,10 @@
-// import React, { useState, useEffect } from "react";
+function HomePage() {
+  return <div>Home Page</div>;
+}
+
+export default HomePage;
+
+// import React, { useSHome Pagetate, useEffect } from "react";
 // import { useSearchParams } from "react-router-dom";
 
 // import Header from "../../components/Header/Header";
@@ -32,31 +38,30 @@
 
 //   return (
 //     <>
-//           {/* <div>
+//       {/* <div>
 //         <h2>Welcome, {user?.name || "Guest"}!</h2>
 //         <p>{user?.email ? `Email: ${user.email}` : "No email provided."}</p>
 //       </div> */}
 
 //       {/* <!-- ===== Content Area Start ===== --> */}
 //       <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-//           {/* <!-- ===== Header Start ===== --> */}
-//           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-//           {/* <!-- ===== Header End ===== --> */}
+//         {/* <!-- ===== Header Start ===== --> */}
+//         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+//         {/* <!-- ===== Header End ===== --> */}
 
-//           {/* <!-- ===== Main Content Start ===== --> */}
-//           <main>
-//             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-
+//         {/* <!-- ===== Main Content Start ===== --> */}
+//         <main>
+//           <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
 //             <BootcampSection />
-//       <IntroductionSection />
-//       <EducationStats />
-//       <InstructorSection />
-//       <Footer />
-//             </div>
-//           </main>
-//           {/* <!-- ===== Main Content End ===== --> */}
-//         </div>
-//         {/* <!-- ===== Content Area End ===== --> */}
+//             <IntroductionSection />
+//             <EducationStats />
+//             <InstructorSection />
+//             <Footer />
+//           </div>
+//         </main>
+//         {/* <!-- ===== Main Content End ===== --> */}
+//       </div>
+//       {/* <!-- ===== Content Area End ===== --> */}
 //     </>
 //   );
 // };

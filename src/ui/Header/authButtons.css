@@ -1,0 +1,38 @@
+/* AuthButtons Styling */
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.auth-buttons .login-button-homePage,
+.auth-buttons .signup-button-homePage {
+  padding: 15px 25px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box; /* Include border in total width and height */
+}
+
+.auth-buttons .login-button-homePage {
+  border: 2px solid #0000ff;
+  color: #0000ff;
+  background-color: transparent;
+}
+
+.auth-buttons .signup-button-homePage {
+  background-color: #0000ff;
+  color: #fff;
+  border: 2px solid #0000ff;
+}
+
+.auth-buttons .login-button-homePage:hover {
+  color: #fff;
+  background-color: #000099;
+}
+
+.auth-buttons .signup-button-homePage:hover {
+  background-color: #000099;
+}
