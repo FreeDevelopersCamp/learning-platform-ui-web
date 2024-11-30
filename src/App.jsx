@@ -9,8 +9,10 @@ import Users from "./pages/Users";
 // import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import HomePage from "./pages/Home/HomePage";
-import AppLayout from "./pages/Dashboard/ui/AppLayout";
+
+import AppLayout from "./ui/AppLayout";
 import { DarkModeProvider } from "./context/DarkModeContext";
+import Instructor from "./pages/Instructor/Instructor";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,10 +39,11 @@ function App() {
                 // </ProtectedRoute>
               }
             >
-              <Route index element={<Navigate replace to="/" />} />
-              <Route path="/" element={<HomePage />} />
+              <Route index element={<Navigate replace to="home" />} />
+              <Route path="home" element={<HomePage />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="users" element={<Users />} />{" "}
+              <Route path="instructor" element={<Instructor />} />
             </Route>
 
             {/* <Route path="login" element={<Login />} /> */}
