@@ -25,6 +25,9 @@ const ProtectedRoute = ({ role, children }) => {
       case '0':
         navigate('/admin/dashboard');
         break;
+      case '5':
+        navigate('/instructor/dashboard');
+        break;
       default:
         navigate('/not-authorized');
         break;
