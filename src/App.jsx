@@ -5,8 +5,7 @@ import { Toaster } from 'react-hot-toast';
 
 import GlobalStyles from './styles/GlobalStyles';
 import Dashboard from './pages/Dashboard/Dashboard';
-import Users from './pages/admin/Users';
-import Permissions from './pages/admin/Permissions';
+import Users from './pages/Users';
 import AuthPage from './pages/Auth/AuthPage';
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
@@ -39,16 +38,24 @@ function App() {
             <Route path="home" element={<HomePage />} />
           </Route>
 
-          <Route
-            element={
-              <ProtectedRoute>
-                <AppLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="admin/dashboard" element={<Dashboard />} />
-            <Route path="admin/users" element={<Users />} />
-            <Route path="admin/permissions" element={<Permissions />} />
+          <Route element={<AppLayout />}>
+            <Route
+              path="admin/dashboard"
+              element={
+                <ProtectedRoute role="0">
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="admin/users"
+              element={
+                <ProtectedRoute role="0">
+                  <Users />
+                </ProtectedRoute>
+              }
+            />
 
             <Route
               path="instructor/dashboard"
