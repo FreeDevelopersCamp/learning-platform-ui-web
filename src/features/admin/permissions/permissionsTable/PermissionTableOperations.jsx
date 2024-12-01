@@ -1,21 +1,10 @@
 import SortBy from '../../../../ui/SortBy.jsx';
-import Filter from '../../../../ui/Filter.jsx';
 import FilterList from '../../../../ui/FilterList.jsx';
 import TableOperations from '../../../../ui/TableOperations.jsx';
 
-function UserTableOperations() {
+function PermissionTableOperations() {
   return (
     <TableOperations>
-      <Filter
-        filterField="status"
-        options={[
-          { value: 'all', label: 'All' },
-          { value: 'pending', label: 'Pending' },
-          { value: 'activated', label: 'Active' },
-          { value: 'deactivated', label: 'Inactive' },
-        ]}
-      />
-
       <FilterList
         filterField="role"
         options={[
@@ -32,17 +21,17 @@ function UserTableOperations() {
 
       <SortBy
         options={[
-          { value: 'name-desc', label: 'Sort by name (A - Z)' },
-          { value: 'name-asc', label: 'Sort by name (Z - A)' },
+          { value: 'name-asc', label: 'Sort by name (A - Z)' },
+          { value: 'name-desc', label: 'Sort by name (Z - A)' },
           {
-            value: 'role-desc',
+            value: 'role-asc',
             label: 'Sort by role (Admin first)',
           },
-          { value: 'role-asc', label: 'Sort by role (Learner first)' },
+          { value: 'role-desc', label: 'Sort by role (Learner first)' },
         ]}
       />
     </TableOperations>
   );
 }
 
-export default UserTableOperations;
+export default PermissionTableOperations;
