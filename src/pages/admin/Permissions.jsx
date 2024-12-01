@@ -3,7 +3,7 @@ import Row from '../../ui/Row';
 import PermissionTable from '../../features/admin/permissions/permissionsTable/PermissionTable';
 import PermissionTableOperations from '../../features/admin/permissions/permissionsTable/PermissionTableOperations';
 
-function Users() {
+function Permissions() {
   return (
     <>
       <Row type="horizontal">
@@ -15,4 +15,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default Permissions;

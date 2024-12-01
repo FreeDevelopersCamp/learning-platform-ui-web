@@ -45,7 +45,7 @@ const HeaderContainer = styled.div`
       font-weight: bold;
       color: #2c3e50;
       letter-spacing: 1px;
-      margin-right: 77px;
+      margin-right: 65px;
     }
   }
 
