@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from '../../ui/Dashboard/Sidebar-v1';
 import Header from '../../ui/Dashboard/Header';
-import Dashboard from '../../ui/Dashboard/Dashboard';
+// import Dashboard from '../../ui/Dashboard/Dashboard';
 import styled from 'styled-components';
 
 const InstructorPageContainer = styled.div`
@@ -20,11 +20,7 @@ const InstructorPage = () => {
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
-  return (
-    <InstructorPageContainer>
-      <Dashboard />
-    </InstructorPageContainer>
-  );
+  return <InstructorPageContainer>zzzzzzzzzzzzz</InstructorPageContainer>;
 };
 
 export default InstructorPage;

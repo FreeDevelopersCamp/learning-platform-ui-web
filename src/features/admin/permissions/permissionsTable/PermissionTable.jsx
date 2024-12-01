@@ -8,7 +8,6 @@ import Pagination from '../../../../ui/Pagination';
 import Table from '../../../../ui/Table';
 import Menus from '../../../../ui/Menus';
 import Modal from '../../../../ui/Modal';
-import Button from './../../../../ui/Button';
 
 const DataRow = styled.div`
   display: flex;
@@ -201,7 +200,7 @@ function PermissionTable() {
 
   return (
     <Menus>
-      <Table columns="3.5fr 2.5fr 1fr">
+      <Table columns="3.5fr 3fr 1fr 0.01px">
         <Table.Header>
           <div>Permission Name</div>
           <div>Assigned to</div>
