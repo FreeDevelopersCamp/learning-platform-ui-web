@@ -10,13 +10,12 @@ import AuthPage from './pages/Auth/AuthPage';
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
 import HomePage from './pages/Home/HomePage';
+import InstructorPage from './pages/Instructor/InstructorPage';
 
+// import { DarkModeProvider } from './context/DarkModeContext';
 
-import { DarkModeProvider } from "./context/DarkModeContext";
-import Instructor from "./pages/Instructor/InstructorPage";
-
+import HomeLayout from './ui/HomeLayout';
 import AppLayout from './ui/AppLayout';
-import Instructor from './pages/Instructor/Instructor';
 import ProtectedRoute from './ui/ProtectedRoute';
 
 const queryClient = new QueryClient({
@@ -34,11 +33,12 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route element={<HomeLayout />}>
             <Route index element={<Navigate replace to="home" />} />
             <Route path="home" element={<HomePage />} />
-            <Route path="admin" element={<Navigate replace to="dashboard" />} />
+          </Route>
 
+          <Route element={<AppLayout />}>
             <Route
               path="admin/dashboard"
               element={
@@ -46,27 +46,25 @@ function App() {
                   <Dashboard />
                 </ProtectedRoute>
               }
-            >
-              <Route index element={<Navigate replace to="home" />} />
-              <Route path="home" element={<HomePage />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="users" element={<Users />} />
-            </Route>
+            />
 
-            {/* <Route path="login" element={<Login />} /> */}
-            <Route path="instructor" element={<Instructor />} />
-            <Route path="*" element={<PageNotFound />} />
-          
             <Route
               path="admin/users"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute role="0">
                   <Users />
                 </ProtectedRoute>
               }
             />
 
-            <Route path="instructor" element={<Instructor />} />
+            <Route
+              path="instructor/dashboard"
+              element={
+                // <ProtectedRoute role="5">
+                <InstructorPage />
+                // </ProtectedRoute>
+              }
+            />
           </Route>
 
           <Route path="auth" element={<AuthPage />} />

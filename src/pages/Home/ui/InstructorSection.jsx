@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 // Styled components
 const InstructorSectionContainer = styled.section`
@@ -72,7 +72,7 @@ const InstructorSection = () => {
           We provide the tools and skills to teach what you love.
         </Description>
         <CtaButton>
-          <Link to="/instructor">Start teaching today</Link>
+          <Link to="instructor/dashboard">Start teaching today</Link>
         </CtaButton>
       </Content>
     </InstructorSectionContainer>
