@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { FaBars, FaBell, FaSun } from "react-icons/fa";
-import { MdMenuOpen } from "react-icons/md";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { LuSun } from 'react-icons/lu';
+import { IoIosNotificationsOutline } from 'react-icons/io';
+import { MdOutlineMenu, MdMenuOpen } from 'react-icons/md';
+import styled from 'styled-components';
 
-import SearchBar from "./SearchBar";
+import SearchBar from './SearchBar';
+import Profile from './Profile';
 
 const HeaderContainer = styled.div`
   background-color: var(--color-grey-100);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 15px 25px;
 
   .left-section {
     display: flex;
@@ -25,10 +27,11 @@ const HeaderContainer = styled.div`
       justify-content: center;
       align-items: center;
       border-radius: 50%;
-      transition: background-color 0.3s;
+      transition: background-color 0.5s;
 
       &:hover {
-        background-color: #d0eaff;
+        color: var(--color-brand-600);
+        background-color: var(--color-brand-200);
       }
 
       svg {
@@ -42,7 +45,7 @@ const HeaderContainer = styled.div`
       font-weight: bold;
       color: #2c3e50;
       letter-spacing: 1px;
-      margin-right: 100px;
+      margin-right: 65px;
     }
   }
 
@@ -52,31 +55,17 @@ const HeaderContainer = styled.div`
     gap: 20px;
 
     .icon-container {
-      cursor: pointer;
-      font-size: 1.5rem;
+      font-size: 2rem;
       color: #2c3e50;
-      transition: color 0.3s;
+      padding: 10px;
+      border-radius: 50%;
+      background: #e0f4ff;
+      transition: color 0.5s;
+      cursor: pointer;
 
       &:hover {
-        color: #3498db;
-      }
-    }
-
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-
-      img {
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-      }
-
-      span {
-        font-size: 14px;
-        color: #2c3e50;
-        font-weight: 500;
+        color: var(--color-brand-600);
+        background-color: var(--color-brand-200);
       }
     }
   }
@@ -92,31 +81,26 @@ const Header = ({ toggleSidebar }) => {
 
   return (
     <HeaderContainer>
-      {/* Left Section */}
       <div className="left-section">
         <div className="logo">FreeDevelopersCame</div>
         <div className="menu-icon" onClick={handleToggle}>
           {isSidebarOpen ? (
-            <FaBars />
+            <MdOutlineMenu style={{ fontSize: '2rem', zIndex: 1 }} />
           ) : (
-            <MdMenuOpen style={{ fontSize: "2rem" }} />
+            <MdMenuOpen style={{ fontSize: '2rem' }} />
           )}
         </div>
         <SearchBar />
       </div>
 
-      {/* Right Section */}
       <div className="right-section">
         <div className="icon-container">
-          <FaSun />
+          <LuSun />
         </div>
         <div className="icon-container">
-          <FaBell />
+          <IoIosNotificationsOutline />
         </div>
-        <div className="profile">
-          <span>Rinku Verma</span>
-          <img src="https://via.placeholder.com/40" alt="User Profile" />
-        </div>
+        <Profile />
       </div>
     </HeaderContainer>
   );

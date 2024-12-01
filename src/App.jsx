@@ -4,13 +4,15 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 
 import GlobalStyles from './styles/GlobalStyles';
+
+import HomePage from './pages/Home/HomePage';
+import AuthPage from './pages/Auth/AuthPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Users from './pages/admin/Users';
-import AuthPage from './pages/Auth/AuthPage';
+import Permissions from './pages/admin/Permissions';
+import InstructorPage from './pages/Instructor/InstructorPage';
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
-import HomePage from './pages/Home/HomePage';
-import InstructorPage from './pages/Instructor/InstructorPage';
 
 // import { DarkModeProvider } from './context/DarkModeContext';
 
@@ -53,6 +55,24 @@ function App() {
               element={
                 <ProtectedRoute role="0" tab="users">
                   <Users />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="admin/permissions"
+              element={
+                <ProtectedRoute role="0" tab="permissions">
+                  <Permissions />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="admin/permissions"
+              element={
+                <ProtectedRoute role="0" tab="permissions">
+                  <Permissions />
                 </ProtectedRoute>
               }
             />
