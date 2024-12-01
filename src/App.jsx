@@ -42,7 +42,7 @@ function App() {
             <Route
               path="admin/dashboard"
               element={
-                <ProtectedRoute role="0">
+                <ProtectedRoute role="0" tab="dashboard">
                   <Dashboard />
                 </ProtectedRoute>
               }
@@ -51,7 +51,7 @@ function App() {
             <Route
               path="admin/users"
               element={
-                <ProtectedRoute role="0">
+                <ProtectedRoute role="0" tab="users">
                   <Users />
                 </ProtectedRoute>
               }

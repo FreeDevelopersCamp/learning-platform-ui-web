@@ -1,8 +1,8 @@
-import Heading from "../ui/Heading";
-import Row from "../ui/Row";
-import UserTable from "../features/users/UserTable";
-import UserTableOperations from "../features/users/UserTableOperations";
-import { UserSelectionProvider } from "../context/UserSelectionContext";
+import Heading from '../ui/Heading';
+import Row from '../ui/Row';
+import UserTable from '../features/users/UserTable';
+import UserTableOperations from '../features/users/UserTableOperations';
+import { UserSelectionProvider } from '../context/UserSelectionContext';
 
 function Users() {
   return (

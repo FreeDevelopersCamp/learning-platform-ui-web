@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import Sidebar from "../../ui/Dashboard/Sidebar";
-import Header from "../../ui/Dashboard/Header";
-import Dashboard from "../../ui/Dashboard/Dashboard";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import Sidebar from '../../ui/Dashboard/Sidebar-v1';
+import Header from '../../ui/Dashboard/Header';
+import Dashboard from '../../ui/Dashboard/Dashboard';
+import styled from 'styled-components';
 
 const InstructorPageContainer = styled.div`
   display: flex;
@@ -22,11 +22,7 @@ const InstructorPage = () => {
 
   return (
     <InstructorPageContainer>
-      <Header toggleSidebar={toggleSidebar} />
-      <MainContent>
-        <Sidebar isOpen={isSidebarOpen} />
-        <Dashboard />
-      </MainContent>
+      <Dashboard />
     </InstructorPageContainer>
   );
 };
