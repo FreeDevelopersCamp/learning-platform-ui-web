@@ -1,94 +1,34 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import {
-  FaTachometerAlt,
-  FaProductHunt,
-  FaShoppingCart,
-  FaSignOutAlt,
-} from "react-icons/fa";
+import styled from 'styled-components';
+import MainNav from '../MainNav';
 
-import DashboardIcon from "../../assets/Icons/dashboard.svg";
-import MessagesIcon from "../../assets/Icons/messages.svg";
-import NotificationsIcon from "../../assets/Icons/notifications.svg";
-import SettingsIcon from "../../assets/Icons/settings.svg";
-
-// Styled components
-const SidebarContainer = styled.div`
-  width: ${(props) => (props.isOpen ? "20%" : "0px")};
-  overflow: hidden;
+const StyledSidebar = styled.aside`
+  width: ${(props) => (props.isOpen ? '20%' : '0px')};
   background-color: var(--color-grey-100);
+  padding: ${(props) => (props.isOpen ? '0 0 3.2rem 0' : '0px')};
+  transition: all 0.3s;
 
   display: flex;
   flex-direction: column;
-  padding: ${(props) => (props.isOpen ? "20px" : "0px")};
-  transition: all 0.3s ease;
+  gap: 3.2rem;
 
-  ul {
-    list-style: none;
-    padding: 0;
-    opacity: ${(props) => (props.isOpen ? "1" : "0")};
-    transition: opacity 0.3s ease;
+  &:hover,
+  &:active,
+  &.active {
+    border-right: 3px solid var(--color-brand-600);
+    transition: all 0.1s;
   }
 `;
 
-const ListItem = styled.li`
-  display: flex;
-  align-items: center;
-  margin: 5px 0;
-  padding: 15px 15px 15px 10px;
-  font-weight: 500;
-  border-radius: 10px;
-  cursor: pointer;
-  color: var(--color-grey-500);
-  transition: background-color 0.3s, transform 0.2s;
-
-  &:hover {
-    background-color: var(--color-grey-200);
-    transform: translateX(5px);
-  }
-
-  a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: inherit;
-    gap: 1rem;
-
-    &:hover {
-      color: inherit; /* Ensure link inherits the hover color */
-    }
-  }
-
-  img {
-    width: 25px;
-    height: 25px;
-  }
-`;
-
-// Sidebar component
-const Sidebar = ({ isOpen }) => {
-  const sidebarItems = [
-    { link: "/dashboard", icon: DashboardIcon, label: "Dashboard" },
-    { link: "/messages", icon: MessagesIcon, label: "Messages" },
-    { link: "/notifications", icon: NotificationsIcon, label: "Notifications" },
-    { link: "/settings", icon: SettingsIcon, label: "Settings" },
-  ];
-
+function Sidebar({ isOpen, activeMenu, onMenuSelect }) {
   return (
-    <SidebarContainer isOpen={isOpen}>
-      <ul>
-        {sidebarItems.map((item, index) => (
-          <ListItem key={index}>
-            <Link to={item.link}>
-              <img src={item.icon} alt={`${item.label} Icon`} />
-              <span>{item.label}</span>
-            </Link>
-          </ListItem>
-        ))}
-      </ul>
-    </SidebarContainer>
+    <StyledSidebar isOpen={isOpen}>
+      <MainNav
+        isOpen={isOpen}
+        activeMenu={activeMenu}
+        onMenuSelect={onMenuSelect}
+      />
+    </StyledSidebar>
   );
-};
+}
 
 export default Sidebar;

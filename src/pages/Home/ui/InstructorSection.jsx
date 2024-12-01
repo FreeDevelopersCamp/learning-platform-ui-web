@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import styled from 'styled-components';
 
 // Styled components
@@ -57,6 +58,8 @@ const CtaButton = styled.button`
 `;
 
 const InstructorSection = () => {
+  const navigate = useNavigate();
+
   return (
     <InstructorSectionContainer>
       <ImageContainer>
@@ -71,8 +74,8 @@ const InstructorSection = () => {
           Instructors from around the world teach millions of learners on FDC.
           We provide the tools and skills to teach what you love.
         </Description>
-        <CtaButton>
-          <Link to="instructor/dashboard">Start teaching today</Link>
+        <CtaButton onClick={() => navigate('/instructor/dashboard')}>
+          Start teaching today
         </CtaButton>
       </Content>
     </InstructorSectionContainer>

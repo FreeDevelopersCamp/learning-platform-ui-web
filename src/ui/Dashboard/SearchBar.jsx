@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 // Styled Components
 const SearchBarContainer = styled.div`
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   background-color: #f5f7fa;
@@ -14,12 +14,12 @@ const SearchBarContainer = styled.div`
   transition: box-shadow 0.2s, border-color 0.3s ease;
 
   &:hover {
-    border-color: #6bb9f0;
+    border-color: var(--color-brand-600);
   }
 
   &:focus-within {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    border-color: #6bb9f0; /* Highlights border when input is focused */
+    border-color: var(--color-brand-600);
   }
 `;
 
@@ -50,7 +50,7 @@ const SearchInput = styled.input`
 `;
 
 const SearchBar = () => {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
 
   const handleInputChange = (e) => {
     setSearchText(e.target.value);
