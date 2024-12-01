@@ -1,15 +1,15 @@
-import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-import { useUserSelection } from "../../context/UserSelectionContext";
-import { useUsers } from "../../hooks/users/useUsers";
+import { useUserSelection } from '../../../../contexts/admin/users/UserSelectionContext';
+import { useUsers } from '../../../../hooks/users/useUsers';
 
-import UserRow from "./UserRow";
-import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
-import Empty from "../../ui/Empty";
-import Spinner from "../../ui/Spinner";
-import Pagination from "../../ui/Pagination";
-import { ColorCheckbox } from "../../ui/LabelledCheckbox";
+import UserRow from './UserRow';
+import Table from '../../../../ui/Table';
+import Menus from '../../../../ui/Menus';
+import Empty from '../../../../ui/Empty';
+import Spinner from '../../../../ui/Spinner';
+import Pagination from '../../../../ui/Pagination';
+import { ColorCheckbox } from '../../../../ui/LabelledCheckbox';
 
 function UserTable() {
   const { users, isLoading, count } = useUsers();
@@ -20,7 +20,7 @@ function UserTable() {
   if (!users?.length) return <Empty resourceName="users" />;
 
   const isAllSelected = users.every((user) =>
-    selectedUsers.includes(user.roleId)
+    selectedUsers.includes(user.roleId),
   );
   const isIndeterminate =
     selectedUsers.length > 0 && selectedUsers.length < users.length;

@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   HiEnvelope,
   HiHashtag,
@@ -8,10 +8,10 @@ import {
   HiOutlineHome,
   HiOutlineUsers,
   HiPresentationChartLine,
-} from "react-icons/hi2";
-import { RiDragDropLine } from "react-icons/ri";
-import { HiChatBubbleLeftRight } from "react-icons/hi2";
-import { BsShieldLock } from "react-icons/bs";
+} from 'react-icons/hi2';
+import { RiDragDropLine } from 'react-icons/ri';
+import { HiChatBubbleLeftRight } from 'react-icons/hi2';
+import { BsShieldLock } from 'react-icons/bs';
 
 const NavList = styled.ul`
   display: flex;
@@ -63,19 +63,19 @@ function MainNav() {
     <nav>
       <NavList>
         <li>
-          <StyledNavLink to="/dashboard">
+          <StyledNavLink to="/admin/dashboard">
             <HiOutlineHome />
             <span>Dashboard</span>
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink to="/users">
+          <StyledNavLink to="/admin/users">
             <HiOutlineUsers />
             <span>Users</span>
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink to="/permissions">
+          <StyledNavLink to="/admin/permissions">
             <BsShieldLock />
             <span>Permissions</span>
           </StyledNavLink>

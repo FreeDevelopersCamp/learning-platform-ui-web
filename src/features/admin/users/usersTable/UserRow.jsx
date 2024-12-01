@@ -1,38 +1,38 @@
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { HiEye, HiTrash } from "react-icons/hi2";
-import PersonOffTwoToneIcon from "@mui/icons-material/PersonOffTwoTone";
-import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { HiEye, HiTrash } from 'react-icons/hi2';
+import PersonOffTwoToneIcon from '@mui/icons-material/PersonOffTwoTone';
+import PersonAddAltTwoToneIcon from '@mui/icons-material/PersonAddAltTwoTone';
 
-import { useApproveUser } from "./useApproveUser";
-import { useRejectUser } from "./useRejectUser";
-import { useDeleteUser } from "./useDeleteUser";
-import { useDeactivateUser } from "./useDeactivateUser";
-import { useUserSelection } from "../../context/UserSelectionContext";
+import { useApproveUser } from '../useApproveUser';
+import { useRejectUser } from '../useRejectUser';
+import { useDeleteUser } from '../useDeleteUser';
+import { useDeactivateUser } from '../useDeactivateUser';
+import { useUserSelection } from '../../../../contexts/admin/users/UserSelectionContext';
 
-import ConfirmApprove from "../../ui/ConfirmApprove";
-import ConfirmReject from "../../ui/ConfirmReject";
-import ConfirmDeactivate from "../../ui/ConfirmDeactivate";
-import ConfirmDelete from "../../ui/ConfirmDelete";
-import Tag from "../../ui/Tag";
-import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
-import Modal from "../../ui/Modal";
-import UserAvatar from "../authentication/UserAvatar";
-import { useEffect, useState } from "react";
+import ConfirmApprove from '../../../../ui/ConfirmApprove';
+import ConfirmReject from '../../../../ui/ConfirmReject';
+import ConfirmDeactivate from '../../../../ui/ConfirmDeactivate';
+import ConfirmDelete from '../../../../ui/ConfirmDelete';
+import Tag from '../../../../ui/Tag';
+import Table from '../../../../ui/Table';
+import Menus from '../../../../ui/Menus';
+import Modal from '../../../../ui/Modal';
+import UserAvatar from '../../../authentication/UserAvatar';
 
 const Email = styled.div`
   font-size: 1.6rem;
   font-weight: 500;
   color: var(--color-grey-600);
-  font-family: "Sono";
+  font-family: 'Sono';
 `;
 
 const User = styled.div`
   font-size: 1.6rem;
   font-weight: 500;
   color: var(--color-grey-600);
-  font-family: "Sono";
+  font-family: 'Sono';
 `;
 
 const Stacked = styled.div`
@@ -41,35 +41,35 @@ const Stacked = styled.div`
 `;
 
 const statusToTagName = {
-  1: "blue",
-  2: "green",
-  3: "silver",
+  1: 'blue',
+  2: 'green',
+  3: 'silver',
 };
 
 const statusToTagText = {
-  1: "Pending",
-  2: "Activated",
-  3: "Deactivated",
+  1: 'Pending',
+  2: 'Activated',
+  3: 'Deactivated',
 };
 
 const getRoleCode = (role) => {
   switch (role) {
-    case "0":
-      return "Admin";
-    case "1":
-      return "Owner";
-    case "2":
-      return "Manager";
-    case "3":
-      return "Account Manager";
-    case "4":
-      return "Content Manager";
-    case "5":
-      return "Instructor";
-    case "6":
-      return "Learner";
+    case '0':
+      return 'Admin';
+    case '1':
+      return 'Owner';
+    case '2':
+      return 'Manager';
+    case '3':
+      return 'Account Manager';
+    case '4':
+      return 'Content Manager';
+    case '5':
+      return 'Instructor';
+    case '6':
+      return 'Learner';
     default:
-      return "Unknown";
+      return 'Unknown';
   }
 };
 
@@ -93,7 +93,7 @@ function UserRow({ user, children }) {
   const { selectedUsers, handleSelectUser, handleUserAction } =
     useUserSelection();
 
-  if (!image) image = "../../../public/default-user.png";
+  if (!image) image = '../../../public/default-user.png';
 
   let roleCode = getRoleCode(role);
   const [pendingAction, setPendingAction] = useState(null); // Tracks the current action
@@ -141,22 +141,22 @@ function UserRow({ user, children }) {
               See details
             </Menus.Button>
 
-            {(statusToTagText[status] === "Pending" ||
-              statusToTagText[status] === "Deactivated") && (
+            {(statusToTagText[status] === 'Pending' ||
+              statusToTagText[status] === 'Deactivated') && (
               <Modal.Open opens={`approve-${user.roleId}`}>
                 <Menus.Button
                   key={`${user.roleId}`}
                   icon={<PersonAddAltTwoToneIcon />}
                 >
-                  {statusToTagText[status] === "Deactivated"
-                    ? "Activate "
-                    : "Approve "}
+                  {statusToTagText[status] === 'Deactivated'
+                    ? 'Activate '
+                    : 'Approve '}
                   user
                 </Menus.Button>
               </Modal.Open>
             )}
 
-            {statusToTagText[status] === "Pending" && (
+            {statusToTagText[status] === 'Pending' && (
               <Modal.Open opens={`reject-${user.roleId}`}>
                 <Menus.Button icon={<PersonOffTwoToneIcon />}>
                   Reject user
@@ -164,13 +164,13 @@ function UserRow({ user, children }) {
               </Modal.Open>
             )}
 
-            {statusToTagText[status] === "Deactivated" && (
+            {statusToTagText[status] === 'Deactivated' && (
               <Modal.Open opens={`delete-${user.roleId}`}>
                 <Menus.Button icon={<HiTrash />}>Delete user</Menus.Button>
               </Modal.Open>
             )}
 
-            {statusToTagText[status] === "Activated" && (
+            {statusToTagText[status] === 'Activated' && (
               <Modal.Open opens={`deactivate-${user.roleId}`}>
                 <Menus.Button icon={<PersonOffTwoToneIcon />}>
                   Deactivated user
@@ -180,45 +180,45 @@ function UserRow({ user, children }) {
           </Menus.List>
         </Menus.Menu>
 
-        {(statusToTagText[status] === "Pending" ||
-          statusToTagText[status] === "Deactivated") && (
+        {(statusToTagText[status] === 'Pending' ||
+          statusToTagText[status] === 'Deactivated') && (
           <Modal.Window name={`approve-${user.roleId}`}>
             <ConfirmApprove
               resourceName="user"
               disabled={
                 isApproving || isRejecting || isDeleting || isDeactivating
               }
-              onConfirm={() => handleUserActionWrapper(user.roleId, "approve")}
+              onConfirm={() => handleUserActionWrapper(user.roleId, 'approve')}
               key={user.roleId}
             />
           </Modal.Window>
         )}
 
-        {statusToTagText[status] === "Pending" && (
+        {statusToTagText[status] === 'Pending' && (
           <Modal.Window name={`reject-${user.roleId}`} key={user.roleId}>
             <ConfirmReject
               resourceName="user"
               disabled={
                 isApproving || isRejecting || isDeleting || isDeactivating
               }
-              onConfirm={() => handleUserActionWrapper(user.roleId, "reject")}
+              onConfirm={() => handleUserActionWrapper(user.roleId, 'reject')}
             />
           </Modal.Window>
         )}
 
-        {statusToTagText[status] === "Deactivated" && (
+        {statusToTagText[status] === 'Deactivated' && (
           <Modal.Window name={`delete-${user.roleId}`} key={user.roleId}>
             <ConfirmDelete
               resourceName="user"
               disabled={
                 isApproving || isRejecting || isDeleting || isDeactivating
               }
-              onConfirm={() => handleUserActionWrapper(user.roleId, "delete")}
+              onConfirm={() => handleUserActionWrapper(user.roleId, 'delete')}
             />
           </Modal.Window>
         )}
 
-        {statusToTagText[status] === "Activated" && (
+        {statusToTagText[status] === 'Activated' && (
           <Modal.Window name={`deactivate-${user.roleId}`} key={user.roleId}>
             <ConfirmDeactivate
               resourceName="user"
@@ -227,7 +227,7 @@ function UserRow({ user, children }) {
                 isApproving || isRejecting || isDeleting || isDeactivating
               }
               onConfirm={() =>
-                handleUserActionWrapper(user.roleId, "deactivate")
+                handleUserActionWrapper(user.roleId, 'deactivate')
               }
             />
           </Modal.Window>

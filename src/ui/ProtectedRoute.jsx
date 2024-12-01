@@ -1,15 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ProtectedRoute = ({ role, children }) => {
+const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
+  const role = '0';
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log('Token:', token);
-
     const roles = localStorage.getItem('roles');
-    console.log('Roles:', roles);
 
     if (!token) {
       navigate('/auth');
@@ -23,7 +21,7 @@ const ProtectedRoute = ({ role, children }) => {
 
     switch (role) {
       case '0':
-        navigate('/admin/dashboard');
+        navigate('/admin/permissions');
         break;
       case '5':
         navigate('/instructor/dashboard');
