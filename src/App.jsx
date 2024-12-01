@@ -69,6 +69,15 @@ function App() {
             />
 
             <Route
+              path="admin/permissions"
+              element={
+                <ProtectedRoute role="0" tab="permissions">
+                  <Permissions />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
               path="instructor/dashboard"
               element={
                 <ProtectedRoute role="5" tab="dashboard">
