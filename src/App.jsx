@@ -5,7 +5,8 @@ import { Toaster } from 'react-hot-toast';
 
 import GlobalStyles from './styles/GlobalStyles';
 import Dashboard from './pages/Dashboard/Dashboard';
-import Users from './pages/Users';
+import Users from './pages/admin/Users';
+import Permissions from './pages/admin/Permissions';
 import AuthPage from './pages/Auth/AuthPage';
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
@@ -53,6 +54,15 @@ function App() {
               element={
                 <ProtectedRoute role="0" tab="users">
                   <Users />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="admin/permissions"
+              element={
+                <ProtectedRoute role="0" tab="permissions">
+                  <Permissions />
                 </ProtectedRoute>
               }
             />

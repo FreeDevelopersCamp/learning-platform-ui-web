@@ -7,8 +7,6 @@ import {
   HiOutlineHome,
   HiOutlineUsers,
   HiPresentationChartLine,
-  HiBell, // Notification Icon
-  HiLogout, // Logout Icon
 } from 'react-icons/hi2';
 import { RiDragDropLine } from 'react-icons/ri';
 import { HiChatBubbleLeftRight } from 'react-icons/hi2';
