@@ -46,17 +46,17 @@ export function useLogin() {
           // Redirect based on the user role (e.g., admin)
           if (userRoles.includes('0')) {
             navigate('/admin/dashboard');
-          } else {
-            navigate('/admin/dashboard'); // Navigate to user dashboard if not admin
+          } else if (userRoles.includes('5')) {
+            navigate('/instructor/dashboard'); // Navigate to user dashboard if not admin
           }
         } catch (error) {
           toast.error('Failed to fetch user roles');
-          navigate('/login'); // Redirect to login if fetching user roles fails
+          navigate('/auth'); // Redirect to login if fetching user roles fails
         }
       },
       onError: () => {
         toast.error('Failed to login');
-        navigate('/login'); // Redirect to login if login fails
+        navigate('/auth'); // Redirect to login if login fails
       },
     },
   );

@@ -60,9 +60,9 @@ function App() {
             <Route
               path="instructor/dashboard"
               element={
-                // <ProtectedRoute role="5">
-                <InstructorPage />
-                // </ProtectedRoute>
+                <ProtectedRoute role="5">
+                  <InstructorPage />
+                </ProtectedRoute>
               }
             />
           </Route>
