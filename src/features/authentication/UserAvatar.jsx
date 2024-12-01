@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ function UserAvatar({ user }) {
   return (
     <StyledUserAvatar>
       <Avatar
-        src={image || "default-user.png"}
+        src={image || '../../../public/default-user.png'}
         alt={`${personalInformation?.name?.first
           .at(0)
           .toUpperCase()}${personalInformation?.name?.last
