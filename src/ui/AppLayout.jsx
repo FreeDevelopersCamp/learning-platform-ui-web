@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
@@ -23,11 +23,11 @@ const Container = styled.div`
   flex-grow: 1;
   margin: 2.6rem 3rem;
   gap: 3.2rem;
+  width: 80%;
 `;
 
 function AppLayout() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState('dashboard');
