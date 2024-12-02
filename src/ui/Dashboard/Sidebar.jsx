@@ -19,12 +19,13 @@ const StyledSidebar = styled.aside`
   }
 `;
 
-function Sidebar({ isOpen, activeMenu, onMenuSelect }) {
+function Sidebar({ isOpen, activeMenu, role, onMenuSelect }) {
   return (
     <StyledSidebar isOpen={isOpen}>
       <MainNav
         isOpen={isOpen}
         activeMenu={activeMenu}
+        role={role}
         onMenuSelect={onMenuSelect}
       />
     </StyledSidebar>

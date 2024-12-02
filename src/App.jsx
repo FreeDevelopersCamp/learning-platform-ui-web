@@ -7,10 +7,15 @@ import GlobalStyles from './styles/GlobalStyles';
 
 import HomePage from './pages/Home/HomePage';
 import AuthPage from './pages/Auth/AuthPage';
+
 import Dashboard from './pages/Dashboard/Dashboard';
 import Users from './pages/admin/Users';
 import Permissions from './pages/admin/Permissions';
-import InstructorPage from './pages/Instructor/InstructorPage';
+
+import InstructorDashboard from './pages/Instructor/Dashboard';
+import InstructorLearner from './pages/Instructor/Learner';
+import InstructorRoadmaps from './pages/Instructor/Roadmaps';
+
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
 
@@ -49,7 +54,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
             <Route
               path="admin/users"
               element={
@@ -58,16 +62,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            <Route
-              path="admin/permissions"
-              element={
-                <ProtectedRoute role="0" tab="permissions">
-                  <Permissions />
-                </ProtectedRoute>
-              }
-            />
-
             <Route
               path="admin/permissions"
               element={
@@ -81,7 +75,23 @@ function App() {
               path="instructor/dashboard"
               element={
                 <ProtectedRoute role="5" tab="dashboard">
-                  <InstructorPage />
+                  <InstructorDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="instructor/learner"
+              element={
+                <ProtectedRoute role="5" tab="learner">
+                  <InstructorLearner />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="instructor/roadmaps"
+              element={
+                <ProtectedRoute role="5" tab="roadmaps">
+                  <InstructorRoadmaps />
                 </ProtectedRoute>
               }
             />
