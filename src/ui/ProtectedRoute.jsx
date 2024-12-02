@@ -1,41 +1,25 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// components/ProtectedRoute.jsx
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../contexts/auth/AuthContext';
+import Spinner from './Spinner';
 
-const ProtectedRoute = ({ role, tab, children }) => {
-  const navigate = useNavigate();
+const ProtectedRoute = ({ children, role }) => {
+  const { auth, isLoading } = useAuth();
 
-  useEffect(() => {
-    if (role === 'none') navigate('/home');
+  if (isLoading) return <Spinner>Loading session...</Spinner>;
 
-    const token = localStorage.getItem('token');
-    const roles = localStorage.getItem('roles');
+  // If not authenticated, redirect to login
+  if (!auth.isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
-    if (!token) {
-      navigate('/auth');
-      return;
-    }
+  // If role doesn't match, redirect to not-authorized page
+  if (role && auth.role !== role) {
+    return <Navigate to="/not-authorized" replace />;
+  }
 
-    if (role === 'all') navigate('/profile');
-
-    if (!roles || !roles.includes(role)) {
-      navigate('/not-authorized');
-      return;
-    }
-
-    switch (role) {
-      case '0':
-        navigate(`/admin/${tab}`);
-        break;
-      case '5':
-        navigate(`/instructor/${tab}`);
-        break;
-      default:
-        navigate('/not-authorized');
-        break;
-    }
-  }, [navigate, role, tab]);
-
-  return children; // Return children elements if all checks pass
+  return children;
 };
 
 export default ProtectedRoute;

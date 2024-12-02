@@ -8,7 +8,6 @@ import AuthPrimaryButton from './AuthPrimaryButton';
 import AuthLinks from './AuthLinks';
 import AuthTitle from './AuthTitle';
 import SeparatorLine from './SeparatorLine';
-import ErrorMessage from './ErrorMessage';
 import ValidationErrorMessage from './ValidationErrorMessage';
 import AuthRoleSelector from './AuthRoleSelector';
 import Spinner from '../../../ui/Spinner';
@@ -16,7 +15,7 @@ import Spinner from '../../../ui/Spinner';
 const AuthForm = ({ isSignUp }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedRole, setSelectedRole] = useState('user');
+  const [role, setRole] = useState('0');
   const [error, setError] = useState('');
 
   const { loginFunc, loginLoading } = useLogin();
@@ -25,12 +24,11 @@ const AuthForm = ({ isSignUp }) => {
     e.preventDefault();
 
     if (!username || !password) {
-      setError('Must specify a username, password and role');
+      setError('Must specify a username and password');
       return;
     }
-    console.log({ username, password, role: selectedRole });
 
-    loginFunc({ username, password, role: selectedRole });
+    loginFunc({ username, password, role });
   };
 
   if (loginLoading) return <Spinner />;
@@ -63,8 +61,8 @@ const AuthForm = ({ isSignUp }) => {
       <AuthRoleSelector
         type="text"
         placeholder="Your Role"
-        selectedRole={selectedRole}
-        setSelectedRole={setSelectedRole}
+        selectedRole={role}
+        setSelectedRole={setRole}
       />
 
       <ValidationErrorMessage error={error} />
