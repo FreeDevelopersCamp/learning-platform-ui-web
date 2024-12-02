@@ -24,6 +24,7 @@ import PageNotAuthorized from './pages/PageNotAuthorized';
 import HomeLayout from './ui/HomeLayout';
 import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
+import ProfilePage from './pages/Profile/ProfilePage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,9 +41,24 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
-          <Route element={<HomeLayout />}>
+          <Route
+            element={
+              <ProtectedRoute role="none">
+                <HomeLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Navigate replace to="home" />} />
             <Route path="home" element={<HomePage />} />
+
+            <Route
+              path="profile"
+              element={
+                <ProtectedRoute role="all">
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
           </Route>
 
           <Route element={<AppLayout />}>

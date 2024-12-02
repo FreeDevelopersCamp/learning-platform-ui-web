@@ -31,28 +31,7 @@ export function useLogin() {
         }
 
         toast.success('Login successful!');
-        localStorage.setItem('token', token);
-
-        const user = new User();
-
-        try {
-          // Fetch user data by username to get roles
-          const userResponse = await user.getByUserName(username);
-          const userRoles = userResponse.roles;
-
-          // Save roles in localStorage
-          localStorage.setItem('roles', JSON.stringify(userRoles)); // Ensure roles are stored as a string
-
-          // Redirect based on the user role (e.g., admin)
-          if (userRoles.includes('0')) {
-            navigate('/admin/dashboard');
-          } else if (userRoles.includes('5')) {
-            navigate('/instructor/dashboard'); // Navigate to user dashboard if not admin
-          }
-        } catch (error) {
-          toast.error('Failed to fetch user roles');
-          navigate('/auth'); // Redirect to login if fetching user roles fails
-        }
+        navigate('/home');
       },
       onError: () => {
         toast.error('Failed to login');
