@@ -1,9 +1,9 @@
-import { useQuery, useQueryClient, useQueries } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
-import toast from "react-hot-toast";
-import { PAGE_SIZE } from "../../utils/constants";
-import { User } from "../../services/users/user";
-import { getServiceInstanceByRole } from "./useRoleData"; // Import role-to-service mapping
+import { useQuery, useQueryClient, useQueries } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { PAGE_SIZE } from '../../utils/constants';
+import { User } from '../../services/users/user';
+import { getServiceInstanceByRole } from './useRoleData'; // Import role-to-service mapping
 
 export function useUsers() {
   const queryClient = useQueryClient();
@@ -15,10 +15,10 @@ export function useUsers() {
     data: usersData,
     error: usersError,
   } = useQuery({
-    queryKey: ["users"],
+    queryKey: ['users'],
     queryFn: () => new User().list(),
     keepPreviousData: true,
-    onError: () => toast.error("Failed to fetch users"),
+    onError: () => toast.error('Failed to fetch users'),
   });
 
   const users = usersData?.items || [];
@@ -30,7 +30,7 @@ export function useUsers() {
       role,
       roleId: `${user._id}-${role}`,
       roles: undefined,
-    }))
+    })),
   );
 
   // Use `useQueries` for role-specific data fetching
@@ -43,7 +43,7 @@ export function useUsers() {
       }
 
       return {
-        queryKey: ["role", user.role, user.roleId],
+        queryKey: ['role', user.role, user.roleId],
         queryFn: () => serviceInstance?.getByUserId(user._id),
         enabled: !!serviceInstance, // Only fetch if serviceInstance is valid
         onError: () =>
@@ -58,22 +58,22 @@ export function useUsers() {
     return {
       ...user,
       roleId: query?.data?._id,
-      status: query?.data?.status || "-1", // Default to "Unknown" if data isn't available
+      status: query?.data?.status || '-1', // Default to "Unknown" if data isn't available
     };
   });
 
   // Role filtering logic
-  const roleFilter = searchParams.get("role");
+  const roleFilter = searchParams.get('role');
   let filteredUsers = usersWithStatus.filter((user) => {
-    if (roleFilter && roleFilter !== "all") {
+    if (roleFilter && roleFilter !== 'all') {
       const roleMap = {
-        admin: "0",
-        owner: "1",
-        manager: "2",
-        "account-manager": "3",
-        "content-manager": "4",
-        instructor: "5",
-        learner: "6",
+        admin: '0',
+        owner: '1',
+        manager: '2',
+        'account-manager': '3',
+        'content-manager': '4',
+        instructor: '5',
+        learner: '6',
       };
       return user.role === roleMap[roleFilter];
     }
@@ -81,13 +81,13 @@ export function useUsers() {
   });
 
   // Status filtering
-  const statusFilter = searchParams.get("status");
+  const statusFilter = searchParams.get('status');
   const filteredUsers2 = filteredUsers.filter((user) => {
-    if (statusFilter && statusFilter !== "all") {
+    if (statusFilter && statusFilter !== 'all') {
       const statusMap = {
-        pending: "1",
-        activated: "2",
-        deactivated: "3",
+        pending: '1',
+        activated: '2',
+        deactivated: '3',
       };
       return user.status === statusMap[statusFilter];
     }
@@ -95,46 +95,46 @@ export function useUsers() {
   });
 
   // Sorting logic
-  const sortBy = searchParams.get("sortBy") || "name-desc";
-  const [field, direction] = sortBy.split("-");
+  const sortBy = searchParams.get('sortBy') || 'name-desc';
+  const [field, direction] = sortBy.split('-');
   const sortedUsers = [...filteredUsers2].sort((a, b) => {
     const getValue = (user) => {
-      if (field === "name") {
+      if (field === 'name') {
         return `${user.personalInformation.name.first} ${user.personalInformation.name.last}`.toLowerCase();
       }
-      return user[field] || "";
+      return user[field] || '';
     };
 
     const valueA = getValue(a);
     const valueB = getValue(b);
 
-    if (field === "role") {
-      return direction === "asc" ? valueB - valueA : valueA - valueB;
+    if (field === 'role') {
+      return direction === 'asc' ? valueB - valueA : valueA - valueB;
     }
 
-    return direction === "asc"
+    return direction === 'asc'
       ? valueB.localeCompare(valueA)
       : valueA.localeCompare(valueB);
   });
 
   // Pagination logic
-  const currentPage = Number(searchParams.get("page")) || 1;
+  const currentPage = Number(searchParams.get('page')) || 1;
   const currentPageUsers = sortedUsers.slice(
     (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
+    currentPage * PAGE_SIZE,
   );
 
   const pageCount = Math.ceil(filteredUsers.length / PAGE_SIZE);
 
   // Prefetch adjacent pages
   if (currentPage < pageCount) {
-    queryClient.prefetchQuery(["users", currentPage + 1], () =>
-      new User().list()
+    queryClient.prefetchQuery(['users', currentPage + 1], () =>
+      new User().list(),
     );
   }
   if (currentPage > 1) {
-    queryClient.prefetchQuery(["users", currentPage - 1], () =>
-      new User().list()
+    queryClient.prefetchQuery(['users', currentPage - 1], () =>
+      new User().list(),
     );
   }
 

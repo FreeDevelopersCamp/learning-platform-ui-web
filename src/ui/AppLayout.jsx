@@ -25,6 +25,9 @@ const Container = styled.div`
   gap: 3.2rem;
   width: 80%;
 `;
+// admin = '0', owner = '1', manager = '2', accountManager = '3', contentManager = '4', instructor = '5', learner = '6',
+const roles = JSON.parse(localStorage.getItem('roles')) || [];
+const role = roles[0];
 
 function AppLayout() {
   const navigate = useNavigate();
@@ -36,10 +39,10 @@ function AppLayout() {
 
   const handleMenuSelect = (menu) => {
     setActiveMenu(menu);
-    // navigate(`/${role}/${menu}`);
     if (menu === 'logout') return navigate('/home');
 
-    navigate(`/admin/${menu}`);
+    if (role === '0') navigate(`/admin/${menu}`);
+    if (role === '5') navigate(`/instructor/${menu}`);
   };
 
   return (
@@ -49,6 +52,7 @@ function AppLayout() {
         <Sidebar
           isOpen={isSidebarOpen}
           activeMenu={activeMenu}
+          role={role}
           onMenuSelect={handleMenuSelect}
         />
         <Container>

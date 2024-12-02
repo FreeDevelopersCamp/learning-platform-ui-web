@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLogin } from '../../../../hooks/auth/useLogin';
+import { useLogin } from '../../../hooks/auth/useLogin';
 
 import AuthButtonGroup from './AuthButtonGroup';
 import AuthInput from './AuthInput';
@@ -7,26 +7,30 @@ import AuthTermsText from './AuthTermsText';
 import AuthPrimaryButton from './AuthPrimaryButton';
 import AuthLinks from './AuthLinks';
 import AuthTitle from './AuthTitle';
+import SeparatorLine from './SeparatorLine';
 import ErrorMessage from './ErrorMessage';
 import ValidationErrorMessage from './ValidationErrorMessage';
-import Spinner from './../../../../ui/Spinner';
+import AuthRoleSelector from './AuthRoleSelector';
+import Spinner from '../../../ui/Spinner';
 
 const AuthForm = ({ isSignUp }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [selectedRole, setSelectedRole] = useState('user');
   const [error, setError] = useState('');
+
   const { loginFunc, loginLoading } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
-      setError('Must specify a username and password');
+      setError('Must specify a username, password and role');
       return;
     }
-    console.log(username, password);
-    // Call the login function from the hook
-    loginFunc({ username, password });
+    console.log({ username, password, role: selectedRole });
+
+    loginFunc({ username, password, role: selectedRole });
   };
 
   if (loginLoading) return <Spinner />;
@@ -34,24 +38,38 @@ const AuthForm = ({ isSignUp }) => {
   return (
     <form className="auth-card" onSubmit={handleSubmit}>
       <AuthTitle isSignUp={isSignUp} />
-      <ErrorMessage isSignUp={isSignUp} error={error} />
+      {/* <ErrorMessage error={error} /> */}
       <AuthButtonGroup isSignUp={isSignUp} />
+      <SeparatorLine text={'or'} />
+
+      {/* Username Input */}
       <AuthInput
         type="text"
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
-      {!isSignUp && (
-        <AuthInput
-          type="password"
-          placeholder="Password"
-          isPassword={true}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      )}
-      {isSignUp && <ValidationErrorMessage isSignUp={isSignUp} error={error} />}
+
+      {/* Password Input */}
+      <AuthInput
+        type="password"
+        placeholder="Password"
+        isPassword={true}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      {/* Role Dropdown */}
+      <AuthRoleSelector
+        type="text"
+        placeholder="Your Role"
+        selectedRole={selectedRole}
+        setSelectedRole={setSelectedRole}
+      />
+
+      <ValidationErrorMessage error={error} />
+
+      {/* Additional Elements */}
       <div
         style={{
           display: 'flex',
@@ -63,6 +81,8 @@ const AuthForm = ({ isSignUp }) => {
         <AuthTermsText isSignUp={isSignUp} />
         <AuthPrimaryButton isSignUp={isSignUp} />
       </div>
+
+      {/* Sign-In Links */}
       {!isSignUp && <AuthLinks />}
     </form>
   );
