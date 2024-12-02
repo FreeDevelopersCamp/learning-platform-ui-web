@@ -5,16 +5,17 @@ const ProtectedRoute = ({ role, tab, children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log('Token:', token);
+    if (role === 'none') navigate('/home');
 
+    const token = localStorage.getItem('token');
     const roles = localStorage.getItem('roles');
-    console.log('Roles:', roles);
 
     if (!token) {
       navigate('/auth');
       return;
     }
+
+    if (role === 'all') navigate('/profile');
 
     if (!roles || !roles.includes(role)) {
       navigate('/not-authorized');

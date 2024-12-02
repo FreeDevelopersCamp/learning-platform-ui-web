@@ -1,23 +1,13 @@
-import React from "react";
-import { useUser } from "../../hooks/useUser";
-import Header from "../../components/Header/Header";
-import Footer from "../../common/Footer/Footer";
-import SideBar from "./components/SideBar";
-import ProfileContent from "./components/ProfileContent";
-import "./profilePage.css";
+// MainPortfolioComponent.js
+import ProfileHeader from './ui/ProfileHeader';
 
 const ProfilePage = () => {
-  const { token } = useUser();
-
   return (
-    <>
-      <Header />
-      <div className="profilePage-container">
-        <SideBar />
-        <ProfileContent />
-      </div>
-      <Footer />
-    </>
+    <div>
+      <ProfileHeader />
+      {/* {userData && <ProfileCard user={userData} />} */}
+      {/* Render other components here */}
+    </div>
   );
 };
 
