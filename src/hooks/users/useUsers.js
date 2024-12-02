@@ -3,11 +3,19 @@ import { useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { PAGE_SIZE } from '../../utils/constants';
 import { User } from '../../services/users/user';
-import { getServiceInstanceByRole } from './useRoleData'; // Import role-to-service mapping
+import { getServiceInstanceByRole } from './useRoleData';
+import { useAuth } from '../../contexts/auth/AuthContext';
 
 export function useUsers() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
+  const { auth } = useAuth();
+  const token = localStorage.getItem('token'); // Or get from `auth` if available
+
+  const defaultHeaders = {
+    Authorization: `Bearer ${token}`,
+    'x-tenant-id': process.env.REACT_APP_X_TENANT_ID || '',
+  };
 
   // Fetch users only once
   const {
@@ -16,7 +24,10 @@ export function useUsers() {
     error: usersError,
   } = useQuery({
     queryKey: ['users'],
-    queryFn: () => new User().list(),
+    queryFn: () =>
+      new User().list({
+        headers: defaultHeaders,
+      }),
     keepPreviousData: true,
     onError: () => toast.error('Failed to fetch users'),
   });
@@ -44,7 +55,10 @@ export function useUsers() {
 
       return {
         queryKey: ['role', user.role, user.roleId],
-        queryFn: () => serviceInstance?.getByUserId(user._id),
+        queryFn: () =>
+          serviceInstance?.getByUserId(user._id, {
+            headers: defaultHeaders,
+          }),
         enabled: !!serviceInstance, // Only fetch if serviceInstance is valid
         onError: () =>
           toast.error(`Failed to fetch data for user ID: ${user._id}`),
@@ -129,12 +143,16 @@ export function useUsers() {
   // Prefetch adjacent pages
   if (currentPage < pageCount) {
     queryClient.prefetchQuery(['users', currentPage + 1], () =>
-      new User().list(),
+      new User().list({
+        headers: defaultHeaders,
+      }),
     );
   }
   if (currentPage > 1) {
     queryClient.prefetchQuery(['users', currentPage - 1], () =>
-      new User().list(),
+      new User().list({
+        headers: defaultHeaders,
+      }),
     );
   }
 

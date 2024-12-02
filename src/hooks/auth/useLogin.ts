@@ -39,6 +39,7 @@ export function useLogin() {
         }
 
         toast.success('Login successful!');
+        localStorage.setItem('token', token);
         navigate('/home');
       },
       onError: () => {
