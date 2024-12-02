@@ -9,13 +9,14 @@ import AuthLinks from './AuthLinks';
 import AuthTitle from './AuthTitle';
 import SeparatorLine from './SeparatorLine';
 import ErrorMessage from './ErrorMessage';
+import ValidationErrorMessage from './ValidationErrorMessage';
 import AuthRoleSelector from './AuthRoleSelector';
 import Spinner from '../../../ui/Spinner';
 
 const AuthForm = ({ isSignUp }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedRole, setSelectedRole] = useState('user'); // Role state
+  const [selectedRole, setSelectedRole] = useState('user');
   const [error, setError] = useState('');
 
   const { loginFunc, loginLoading } = useLogin();
@@ -24,7 +25,7 @@ const AuthForm = ({ isSignUp }) => {
     e.preventDefault();
 
     if (!username || !password) {
-      setError('Must specify a username and password');
+      setError('Must specify a username, password and role');
       return;
     }
     console.log({ username, password, role: selectedRole });
@@ -37,7 +38,7 @@ const AuthForm = ({ isSignUp }) => {
   return (
     <form className="auth-card" onSubmit={handleSubmit}>
       <AuthTitle isSignUp={isSignUp} />
-      <ErrorMessage error={error} />
+      {/* <ErrorMessage error={error} /> */}
       <AuthButtonGroup isSignUp={isSignUp} />
       <SeparatorLine text={'or'} />
 
@@ -65,6 +66,8 @@ const AuthForm = ({ isSignUp }) => {
         selectedRole={selectedRole}
         setSelectedRole={setSelectedRole}
       />
+
+      <ValidationErrorMessage error={error} />
 
       {/* Additional Elements */}
       <div
