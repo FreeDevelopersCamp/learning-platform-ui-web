@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../ui/Header/Header';
-import AuthTabs from './ui/AuthTabs/AuthTabs';
-import AuthForm from './ui/AuthForm/AuthForm';
-import { useParams } from 'react-router-dom';
+import AuthTabs from './ui/AuthTabs';
+import AuthForm from './ui/AuthForm';
 import './auth.css';
 
 const AuthPage = () => {
-  const { mode } = useParams();
-  const isSignUp = mode === 'signup';
+  const [isSignUp, setIsSignUp] = useState(false); // Default to 'Sign In'
+
+  const toggleForm = (mode) => {
+    setIsSignUp(mode === 'signup');
+  };
 
   return (
     <>
       <div style={{ boxShadow: '0 1px 5px rgba(0, 0, 0, 0.3)' }}>
-        {' '}
         <Header isAuth={true} />
       </div>
       <div className="auth-container">
-        <AuthTabs />
+        <AuthTabs isSignUp={isSignUp} toggleForm={toggleForm} />
         <AuthForm isSignUp={isSignUp} />
       </div>
     </>

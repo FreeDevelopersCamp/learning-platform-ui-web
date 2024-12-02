@@ -4,10 +4,10 @@ import './authButtons.css';
 
 const AuthButtons = () => (
   <div className="auth-buttons">
-    <Link to="auth">
+    <Link to="login">
       <button className="login-button-homePage">Log In</button>
     </Link>
-    <Link to="auth">
+    <Link to="signup">
       <button className="signup-button-homePage">Sign up</button>
     </Link>
   </div>
