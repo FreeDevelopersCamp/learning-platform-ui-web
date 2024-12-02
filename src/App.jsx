@@ -43,9 +43,9 @@ function App() {
         <Routes>
           <Route
             element={
-              <ProtectedRoute role="none">
-                <HomeLayout />
-              </ProtectedRoute>
+              // <ProtectedRoute role="none">
+              <HomeLayout />
+              // </ProtectedRoute>
             }
           >
             <Route index element={<Navigate replace to="home" />} />
@@ -113,7 +113,8 @@ function App() {
             />
           </Route>
 
-          <Route path="auth" element={<AuthPage />} />
+          <Route path="login" element={<AuthPage />} />
+          <Route path="signup" element={<AuthPage />} />
           <Route path="not-authorized" element={<PageNotAuthorized />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
