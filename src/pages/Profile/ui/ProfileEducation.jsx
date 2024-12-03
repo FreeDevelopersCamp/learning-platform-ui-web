@@ -13,13 +13,13 @@ const Title = styled.h1`
   font-weight: 600;
 `;
 
-function ProfileWorkExperience() {
+function ProfileEducation() {
   return (
     <StyledContainer>
-      <Title>My Work Experience</Title>
-      <p>Where I've interned and worked during my career.</p>
+      <Title>My Education</Title>
+      <p>Take a look at my formal education</p>
     </StyledContainer>
   );
 }
 
-export default ProfileWorkExperience;
+export default ProfileEducation;

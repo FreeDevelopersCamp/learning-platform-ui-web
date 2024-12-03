@@ -6,8 +6,10 @@ import Spinner from '../../../ui/Spinner';
 
 const HeaderCover = styled.div`
   display: flex;
-  flex-direction: row;
-  margin: 4rem auto;
+  flex-direction: column;
+  margin-top: 4rem;
+  margin-left: auto;
+  margin-right: auto;
   padding-left: 2rem;
   padding-right: 2rem;
   height: 40rem;
@@ -15,6 +17,31 @@ const HeaderCover = styled.div`
   background: linear-gradient(to bottom, #4a90e2, #003a70);
   border-radius: 1rem;
   width: 60%; /* Centers the container with respect to the viewport */
+`;
+
+const VSection = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 40rem;
+  color: white;
+  border-radius: 1rem;
+  width: 100%; /* Centers the container with respect to the viewport */
+`;
+
+const HSection = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  text-align: left;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 4rem;
+`;
+
+const HeadlineText = styled.h1`
+  font-size: 3rem;
+  font-weight: 800;
+  color: white; /* Custom color for the headline */
 `;
 
 const HeaderTitle = styled.h1`
@@ -50,13 +77,6 @@ const TechSection = styled.div`
   padding-top: 5rem;
 `;
 
-const HeadlineText = styled.h1`
-  font-size: 2.4rem;
-  line-height: 1.6;
-  font-weight: bold;
-  color: #4a90e2; /* Custom color for the headline */
-`;
-
 function ProfileHeader() {
   const [searchParams] = useSearchParams();
   const username = searchParams.get('username');
@@ -68,22 +88,26 @@ function ProfileHeader() {
 
   return (
     <HeaderCover>
-      <ImageSection>
-        <UserAvatar user={user} size="11rem" />
-        <HeaderTitle>{`${user.personalInformation?.name?.first} ${user.personalInformation?.name?.last}`}</HeaderTitle>
-        <HeaderSubtitle>Admin</HeaderSubtitle>
-        <HeaderSubtitle>
-          An-Najah National University | Palestine
-        </HeaderSubtitle>
-      </ImageSection>
-
-      <TechSection>
-        <HeaderTitle>Accounts</HeaderTitle>
-        <HeaderSubtitle>Facebook</HeaderSubtitle>
-        <HeaderSubtitle>Instagram</HeaderSubtitle>
-        <HeaderSubtitle>Linkedin</HeaderSubtitle>
-        <HeaderSubtitle>GitHub</HeaderSubtitle>
-      </TechSection>
+      <VSection>
+        <ImageSection>
+          <UserAvatar user={user} size="11rem" />
+          <HeaderTitle>{`${user.personalInformation?.name?.first} ${user.personalInformation?.name?.last}`}</HeaderTitle>
+          <HeaderSubtitle>Admin</HeaderSubtitle>
+          <HeaderSubtitle>
+            An-Najah National University | Palestine
+          </HeaderSubtitle>
+        </ImageSection>
+        <TechSection>
+          <HeaderTitle>Accounts</HeaderTitle>
+          <HeaderSubtitle>Facebook</HeaderSubtitle>
+          <HeaderSubtitle>Instagram</HeaderSubtitle>
+          <HeaderSubtitle>Linkedin</HeaderSubtitle>
+          <HeaderSubtitle>GitHub</HeaderSubtitle>
+        </TechSection>
+      </VSection>
+      <HSection>
+        <HeadlineText>{text}</HeadlineText>
+      </HSection>
     </HeaderCover>
   );
 }
