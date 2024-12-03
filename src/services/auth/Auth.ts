@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { ChangePassword, CreateUserDto, Login, Token } from './types';
+import { ChangePassword, CreateUserDto, Login, Session, Token } from './types';
 import { ContentType, HttpClient, RequestParams } from '../http-client';
 
 export class Auth<
@@ -33,6 +33,7 @@ export class Auth<
       type: ContentType.Json,
       ...params,
     });
+
   /**
    * No description
    *
@@ -51,6 +52,7 @@ export class Auth<
       type: ContentType.Json,
       ...params,
     });
+
   /**
    * No description
    *
@@ -69,6 +71,7 @@ export class Auth<
       type: ContentType.Json,
       ...params,
     });
+
   /**
    * No description
    *
@@ -82,6 +85,23 @@ export class Auth<
     this.request<any, boolean>({
       path: `/Auth/logout`,
       method: 'POST',
+      secure: true,
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Authentication
+   * @name getSession
+   * @request POST:/Auth/session
+   * @secure
+   * @response `default` `` getSession
+   */
+  getSession = (params: RequestParams = {}) =>
+    this.request<any, Session>({
+      path: `/Auth/session`,
+      method: 'GET',
       secure: true,
       ...params,
     });

@@ -25,6 +25,7 @@ import HomeLayout from './ui/HomeLayout';
 import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
 import ProfilePage from './pages/Profile/ProfilePage';
+import { AuthProvider } from './contexts/auth/AuthContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,84 +41,86 @@ function App() {
       <ReactQueryDevtools initialIsOpen={false} />
       <GlobalStyles />
       <BrowserRouter>
-        <Routes>
-          <Route
-            element={
-              // <ProtectedRoute role="none">
-              <HomeLayout />
-              // </ProtectedRoute>
-            }
-          >
-            <Route index element={<Navigate replace to="home" />} />
-            <Route path="home" element={<HomePage />} />
+        <AuthProvider>
+          <Routes>
+            <Route
+              element={
+                // <ProtectedRoute role="none">
+                <HomeLayout />
+                // </ProtectedRoute>
+              }
+            >
+              <Route index element={<Navigate replace to="home" />} />
+              <Route path="home" element={<HomePage />} />
 
-            <Route
-              path="profile"
-              element={
-                <ProtectedRoute role="all">
-                  <ProfilePage />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+              <Route
+                path="profile"
+                element={
+                  <ProtectedRoute role="all">
+                    <ProfilePage />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
 
-          <Route element={<AppLayout />}>
-            <Route
-              path="admin/dashboard"
-              element={
-                <ProtectedRoute role="0" tab="dashboard">
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="admin/users"
-              element={
-                <ProtectedRoute role="0" tab="users">
-                  <Users />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="admin/permissions"
-              element={
-                <ProtectedRoute role="0" tab="permissions">
-                  <Permissions />
-                </ProtectedRoute>
-              }
-            />
+            <Route element={<AppLayout />}>
+              <Route
+                path="admin/dashboard"
+                element={
+                  <ProtectedRoute role="0">
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admin/users"
+                element={
+                  <ProtectedRoute role="0">
+                    <Users />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admin/permissions"
+                element={
+                  <ProtectedRoute role="0">
+                    <Permissions />
+                  </ProtectedRoute>
+                }
+              />
 
-            <Route
-              path="instructor/dashboard"
-              element={
-                <ProtectedRoute role="5" tab="dashboard">
-                  <InstructorDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="instructor/learner"
-              element={
-                <ProtectedRoute role="5" tab="learner">
-                  <InstructorLearner />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="instructor/roadmaps"
-              element={
-                <ProtectedRoute role="5" tab="roadmaps">
-                  <InstructorRoadmaps />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+              <Route
+                path="instructor/dashboard"
+                element={
+                  <ProtectedRoute role="5" tab="dashboard">
+                    <InstructorDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="instructor/learner"
+                element={
+                  <ProtectedRoute role="5" tab="learner">
+                    <InstructorLearner />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="instructor/roadmaps"
+                element={
+                  <ProtectedRoute role="5" tab="roadmaps">
+                    <InstructorRoadmaps />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
 
-          <Route path="login" element={<AuthPage />} />
-          <Route path="signup" element={<AuthPage />} />
-          <Route path="not-authorized" element={<PageNotAuthorized />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+            <Route path="login" element={<AuthPage />} />
+            <Route path="signup" element={<AuthPage />} />
+            <Route path="not-authorized" element={<PageNotAuthorized />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
 
       <Toaster

@@ -4,6 +4,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
 import styled from 'styled-components';
+import { useAuth } from '../contexts/auth/AuthContext';
+import Spinner from './Spinner';
 
 const StyledAppLayout = styled.div`
   display: flex;
@@ -26,14 +28,17 @@ const Container = styled.div`
   width: 80%;
 `;
 // admin = '0', owner = '1', manager = '2', accountManager = '3', contentManager = '4', instructor = '5', learner = '6',
-const roles = JSON.parse(localStorage.getItem('roles')) || [];
-const role = roles[0];
 
 function AppLayout() {
   const navigate = useNavigate();
+  const { auth, isLoading } = useAuth();
 
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState('dashboard');
+
+  if (isLoading) return <Spinner>Loading session...</Spinner>;
+
+  const role = auth.role;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 

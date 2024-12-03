@@ -9,7 +9,6 @@ import AuthPrimaryButton from './AuthPrimaryButton';
 import AuthLinks from './AuthLinks';
 import AuthTitle from './AuthTitle';
 import SeparatorLine from './SeparatorLine';
-import ErrorMessage from './ErrorMessage';
 import ValidationErrorMessage from './ValidationErrorMessage';
 import AuthRoleSelector from './AuthRoleSelector';
 
@@ -19,7 +18,7 @@ const AuthForm = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedRole, setSelectedRole] = useState('user');
+  const [role, setRole] = useState('0');
   const [error, setError] = useState('');
 
   const { loginFunc, loginLoading } = useLogin();
@@ -28,12 +27,11 @@ const AuthForm = () => {
     e.preventDefault();
 
     if (!username || !password) {
-      setError('Must specify a username, password and role');
+      setError('Must specify a username and password');
       return;
     }
-    console.log({ username, password, role: selectedRole });
 
-    loginFunc({ username, password, role: selectedRole });
+    loginFunc({ username, password, role });
   };
 
   const toggleForm = (mode) => {
@@ -94,7 +92,7 @@ const AuthForm = () => {
         {/* Sign-In Links */}
         {!isSignUp && <AuthLinks />}
       </form>
-    </div>
+    </div>    
   );
 };
 
