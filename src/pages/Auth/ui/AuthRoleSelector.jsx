@@ -57,13 +57,15 @@ const AuthRoleSelector = ({ selectedRole, setSelectedRole }) => {
         value={selectedRole}
         onChange={(e) => setSelectedRole(e.target.value)}
       >
-        <RoleOption value="admin">Admin</RoleOption>
-        <RoleOption value="owner">Owner</RoleOption>
-        <RoleOption value="manager">Manager</RoleOption>
-        <RoleOption value="accountManager">Account Manager</RoleOption>
-        <RoleOption value="contentManager">Content Manager</RoleOption>
-        <RoleOption value="instructor">Instructor</RoleOption>
-        <RoleOption value="learner">Learner</RoleOption>
+        <RoleOption defaultValue value="0">
+          Admin
+        </RoleOption>
+        <RoleOption value="1">Owner</RoleOption>
+        <RoleOption value="2">Manager</RoleOption>
+        <RoleOption value="3">Account Manager</RoleOption>
+        <RoleOption value="4">Content Manager</RoleOption>
+        <RoleOption value="5">Instructor</RoleOption>
+        <RoleOption value="6">Learner</RoleOption>
       </RoleDropdown>
     </RoleSelectorContainer>
   );

@@ -1,19 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import './authButtonGroup.css';
 import GoogleIcon from '../../../assets/icons/google.svg';
 import FacebookIcon from '../../../assets/icons/facebook.svg';
 
-const AuthButtonGroup = ({ isSignUp, onGoogleLogin }) => {
-  const [isFailParams] = useSearchParams();
-  const [isFail, setIsFail] = useState(null);
-
-  useEffect(() => {
-    const failStatus = isFailParams.get('isFail');
-    setIsFail(failStatus);
-    console.log('isFail: ', isFail);
-  }, []);
-
+const AuthButtonGroup = ({ isSignUp }) => {
   return (
     <div className="auth-button-group">
       <button className="auth-button google">

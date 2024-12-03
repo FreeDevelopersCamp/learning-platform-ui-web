@@ -34,7 +34,22 @@ export interface CreateUserDto {
 
 export interface Token {
   /** @default "" */
+  token?: string;
+}
+
+export interface Session {
+  /** @default "" */
   token: string;
+
+  username: string;
+
+  role?: string;
+
+  attempts: number;
+
+  status: string;
+
+  active: boolean;
 }
 
 export interface Login {
@@ -48,6 +63,8 @@ export interface Login {
    * @default ""
    */
   password: string;
+
+  role: string;
 }
 
 export interface ChangePassword {
