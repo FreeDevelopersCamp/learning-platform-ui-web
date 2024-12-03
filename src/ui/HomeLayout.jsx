@@ -16,17 +16,16 @@ const Main = styled.main`
   width: 100%; /* Equivalent to w-full */
   margin: 0 auto; /* Equivalent to mx-auto */
   background-color: var(--color-grey-100);
-  /* overflow: scroll; */
 `;
 
 function HomeLayout() {
-  const { auth, isLoading } = useAuth();
+  const { isLoading } = useAuth();
 
   if (isLoading) return <Spinner>Loading session...</Spinner>;
 
   return (
     <StyledAppLayout>
-      <Header auth={auth} />
+      <Header />
       <Main>
         <Outlet />
       </Main>

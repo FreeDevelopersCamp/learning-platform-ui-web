@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAuth } from '../../contexts/auth/AuthContext';
 
 import { CgProfile } from 'react-icons/cg';
 import { ImProfile } from 'react-icons/im';
@@ -112,6 +113,7 @@ const Profile = ({ userName, name, size }) => {
   const navigate = useNavigate();
   const [ripples, setRipples] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { logout } = useAuth();
 
   const handleAccount = () => {
     navigate(`/instructor/account`);
@@ -125,12 +127,7 @@ const Profile = ({ userName, name, size }) => {
 
   const handleLogout = () => {
     setIsDropdownOpen(false);
-    // logout();
-
-    localStorage.removeItem('authToken');
-    sessionStorage.removeItem('userInfo');
-
-    navigate(`/home`);
+    logout();
   };
 
   const handleClick = (e) => {
