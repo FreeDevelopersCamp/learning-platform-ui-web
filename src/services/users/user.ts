@@ -61,7 +61,7 @@ export class User extends HttpClient {
    */
   getByUserName(userName: string, params = {}) {
     return this.request({
-      path: `/user/userId/${userName}`,
+      path: `/user/getByUserName/${userName}`,
       method: 'GET',
       secure: true,
       ...params,
