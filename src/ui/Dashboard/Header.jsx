@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import styled from 'styled-components';
+import { useAuth } from '../contexts/auth/AuthContext';
+
 import { LuSun } from 'react-icons/lu';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { MdOutlineMenu, MdMenuOpen } from 'react-icons/md';
-import styled from 'styled-components';
 
 import SearchBar from './SearchBar';
 import Profile from '../Profile/Profile';
@@ -71,8 +73,9 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const Header = ({ auth, toggleSidebar }) => {
+const Header = ({ toggleSidebar }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { auth } = useAuth();
 
   const userName = auth.username;
   const name = 'Yazan Al-Sedih';
