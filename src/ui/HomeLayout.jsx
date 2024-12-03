@@ -1,8 +1,10 @@
-import { Outlet } from "react-router-dom";
-import styled from "styled-components";
+import { Outlet } from 'react-router-dom';
+import { useAuth } from '../contexts/auth/AuthContext';
+import styled from 'styled-components';
 
-import Header from "./Header/Header";
-import Footer from "./Footer/Footer";
+import Header from './Header/Header';
+import Footer from './Footer/Footer';
+import Spinner from './Spinner';
 
 const StyledAppLayout = styled.div`
   flex: 1;
@@ -17,10 +19,14 @@ const Main = styled.main`
   /* overflow: scroll; */
 `;
 
-function AppLayout() {
+function HomeLayout() {
+  const { auth, isLoading } = useAuth();
+
+  if (isLoading) return <Spinner>Loading session...</Spinner>;
+
   return (
     <StyledAppLayout>
-      <Header />
+      <Header auth={auth} />
       <Main>
         <Outlet />
       </Main>
@@ -29,4 +35,4 @@ function AppLayout() {
   );
 }
 
-export default AppLayout;
+export default HomeLayout;

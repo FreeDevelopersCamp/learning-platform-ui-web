@@ -9,9 +9,9 @@ function Dashboard() {
     <>
       <Row type="horizontal">
         <Heading as="h1">Dashboard</Heading>
-        <DashboardFilter />
+        {/* <DashboardFilter /> */}
       </Row>
-      <DashboardLayout />
+      {/* <DashboardLayout /> */}
     </>
   );
 }

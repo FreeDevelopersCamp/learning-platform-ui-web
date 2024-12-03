@@ -5,7 +5,7 @@ import { MdOutlineMenu, MdMenuOpen } from 'react-icons/md';
 import styled from 'styled-components';
 
 import SearchBar from './SearchBar';
-import Profile from './Profile';
+import Profile from '../Profile/Profile';
 
 const HeaderContainer = styled.div`
   background-color: var(--color-grey-100);
@@ -22,7 +22,7 @@ const HeaderContainer = styled.div`
     .menu-icon {
       cursor: pointer;
       background: #e0f4ff;
-      padding: 10px;
+      padding: 13px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -57,7 +57,7 @@ const HeaderContainer = styled.div`
     .icon-container {
       font-size: 2rem;
       color: #2c3e50;
-      padding: 10px;
+      padding: 13px;
       border-radius: 50%;
       background: #e0f4ff;
       transition: color 0.5s;
@@ -71,8 +71,11 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const Header = ({ toggleSidebar }) => {
+const Header = ({ auth, toggleSidebar }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const userName = auth.username;
+  const name = 'Yazan Al-Sedih';
 
   const handleToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -100,7 +103,7 @@ const Header = ({ toggleSidebar }) => {
         <div className="icon-container">
           <IoIosNotificationsOutline />
         </div>
-        <Profile />
+        <Profile userName={userName} name={name} size="45" />
       </div>
     </HeaderContainer>
   );
