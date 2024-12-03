@@ -1,31 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import React from 'react';
+import { useAuth } from '../../contexts/auth/AuthContext';
 
-import BootcampSection from "./ui/BootcampSection";
-import IntroductionSection from "./ui/IntroductionSection";
-import EducationStats from "./ui/EducationStats";
-import InstructorSection from "./ui/InstructorSection";
+import BootcampSection from './ui/BootcampSection';
+import IntroductionSection from './ui/IntroductionSection';
+import EducationStats from './ui/EducationStats';
+import InstructorSection from './ui/InstructorSection';
+
+import Spinner from '../../ui/Spinner';
 
 const HomePage = () => {
-  // const [isLoginParams] = useSearchParams();
-  // const [isLogin, setIsLogin] = useState(null);
-  // const [user, setUser] = useState(null);
+  const { auth, isLoading } = useAuth();
 
-  // useEffect(() => {
-  //   const loginStatus = isLoginParams.get("isLogin");
-  //   setIsLogin(loginStatus);
-  // }, []);
-
-  // useEffect(() => {
-  //   const userParam = isLoginParams.get("user");
-
-  //   try {
-  //     setUser(userParam ? JSON.parse(decodeURIComponent(userParam)) : null);
-  //   } catch (error) {
-  //     console.error("Failed to parse user data:", error);
-  //     setUser(null);
-  //   }
-  // }, [isLoginParams]);
+  if (isLoading) return <Spinner>Loading session...</Spinner>;
 
   return (
     <>
