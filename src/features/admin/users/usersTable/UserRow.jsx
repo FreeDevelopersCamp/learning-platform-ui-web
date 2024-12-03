@@ -136,7 +136,7 @@ function UserRow({ user, children }) {
           <Menus.List id={user.roleId}>
             <Menus.Button
               icon={<HiEye />}
-              onClick={() => navigate(`/users/${userId}`)}
+              onClick={() => navigate(`/profile?username=${user.userName}`)}
             >
               See details
             </Menus.Button>
