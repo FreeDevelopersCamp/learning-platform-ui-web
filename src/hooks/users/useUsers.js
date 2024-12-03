@@ -4,12 +4,10 @@ import toast from 'react-hot-toast';
 import { PAGE_SIZE } from '../../utils/constants';
 import { User } from '../../services/users/user';
 import { getServiceInstanceByRole } from './useRoleData';
-import { useAuth } from '../../contexts/auth/AuthContext';
 
 export function useUsers() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
-  const { auth } = useAuth();
   const token = localStorage.getItem('token'); // Or get from `auth` if available
 
   const defaultHeaders = {
@@ -25,7 +23,10 @@ export function useUsers() {
   } = useQuery({
     queryKey: ['users'],
     queryFn: () =>
-      new User().list({
+      new User().request({
+        path: `/user`,
+        method: 'GET',
+        secure: true,
         headers: defaultHeaders,
       }),
     keepPreviousData: true,
@@ -143,14 +144,20 @@ export function useUsers() {
   // Prefetch adjacent pages
   if (currentPage < pageCount) {
     queryClient.prefetchQuery(['users', currentPage + 1], () =>
-      new User().list({
+      new User().request({
+        path: `/user`,
+        method: 'GET',
+        secure: true,
         headers: defaultHeaders,
       }),
     );
   }
   if (currentPage > 1) {
     queryClient.prefetchQuery(['users', currentPage - 1], () =>
-      new User().list({
+      new User().request({
+        path: `/user`,
+        method: 'GET',
+        secure: true,
         headers: defaultHeaders,
       }),
     );

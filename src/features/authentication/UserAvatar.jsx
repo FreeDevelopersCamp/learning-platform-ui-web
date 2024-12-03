@@ -11,8 +11,7 @@ const StyledUserAvatar = styled.div`
 
 const Avatar = styled.img`
   display: block;
-  width: 4rem;
-  width: 3.6rem;
+  width: ${(props) => props.size || '4rem'};
   aspect-ratio: 1;
   object-fit: cover;
   object-position: center;
@@ -20,7 +19,7 @@ const Avatar = styled.img`
   outline: 2px solid var(--color-grey-100);
 `;
 
-function UserAvatar({ user }) {
+function UserAvatar({ user, size }) {
   const { personalInformation, image } = user;
 
   return (
@@ -28,10 +27,11 @@ function UserAvatar({ user }) {
       <Avatar
         src={image || '../../../public/default-user.png'}
         alt={`${personalInformation?.name?.first
-          .at(0)
-          .toUpperCase()}${personalInformation?.name?.last
-          .at(0)
-          .toUpperCase()}`}
+          ?.at(0)
+          ?.toUpperCase()}${personalInformation?.name?.last
+          ?.at(0)
+          ?.toUpperCase()}`}
+        size={size}
       />
     </StyledUserAvatar>
   );
