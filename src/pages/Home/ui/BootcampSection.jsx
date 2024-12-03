@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 // Styled Components
 const BootcampSectionWrapper = styled.section`
@@ -84,13 +84,13 @@ const BootcampSection = () => {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const jobCards = [
-    { title: "Data Science", icon: "🔍" },
-    { title: "Programming & Development", icon: "💻" },
-    { title: "Artificial Intelligence", icon: "🤖" },
-    { title: "Business", icon: "📈" },
-    { title: "Autonomous Systems", icon: "🚗" },
-    { title: "Product Management", icon: "📋" },
-    { title: "Cloud Computing", icon: "☁️" },
+    { title: 'Data Science', icon: '🔍' },
+    { title: 'Programming & Development', icon: '💻' },
+    { title: 'Artificial Intelligence', icon: '🤖' },
+    { title: 'Business', icon: '📈' },
+    { title: 'Autonomous Systems', icon: '🚗' },
+    { title: 'Product Management', icon: '📋' },
+    { title: 'Cloud Computing', icon: '☁️' },
   ];
 
   return (
@@ -102,7 +102,7 @@ const BootcampSection = () => {
         {jobCards.map((job, index) => (
           <JobCard
             key={index}
-            className={index === activeIndex ? "active" : ""}
+            className={index === activeIndex ? 'active' : ''}
             onClick={() => setActiveIndex(index)}
           >
             <JobIcon>{job.icon}</JobIcon>

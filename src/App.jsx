@@ -88,11 +88,26 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-
+              <Route
+                path="instructor/account"
+                element={
+                  <ProtectedRoute role="5">
+                    <InstructorDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="instructor/profile"
+                element={
+                  <ProtectedRoute role="5">
+                    <div>instructor/profile</div>
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="instructor/dashboard"
                 element={
-                  <ProtectedRoute role="5" tab="dashboard">
+                  <ProtectedRoute role="5">
                     <InstructorDashboard />
                   </ProtectedRoute>
                 }
@@ -100,7 +115,7 @@ function App() {
               <Route
                 path="instructor/learner"
                 element={
-                  <ProtectedRoute role="5" tab="learner">
+                  <ProtectedRoute role="5">
                     <InstructorLearner />
                   </ProtectedRoute>
                 }
@@ -108,7 +123,7 @@ function App() {
               <Route
                 path="instructor/roadmaps"
                 element={
-                  <ProtectedRoute role="5" tab="roadmaps">
+                  <ProtectedRoute role="5">
                     <InstructorRoadmaps />
                   </ProtectedRoute>
                 }

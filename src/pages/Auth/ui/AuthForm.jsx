@@ -70,8 +70,8 @@ const AuthForm = () => {
         <AuthRoleSelector
           type="text"
           placeholder="Your Role"
-          selectedRole={selectedRole}
-          setSelectedRole={setSelectedRole}
+          selectedRole={role}
+          setSelectedRole={setRole}
         />
 
         <ValidationErrorMessage error={error} />
@@ -92,7 +92,7 @@ const AuthForm = () => {
         {/* Sign-In Links */}
         {!isSignUp && <AuthLinks />}
       </form>
-    </div>    
+    </div>
   );
 };
 

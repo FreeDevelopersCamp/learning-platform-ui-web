@@ -40,8 +40,13 @@ const MenuItem = styled.li`
   font-size: 1.6rem;
   font-weight: 500;
   padding: 1.4rem 2.4rem;
+  border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s;
+
+  &:hover {
+    background-color: var(--color-grey-300);
+  }
 
   & svg {
     width: 2.4rem;
@@ -106,6 +111,9 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
         label: 'Logout',
       },
     ];
+
+    console.log('Role:', role);
+    console.log('Type of role:', typeof role);
 
     if (role === '0') {
       setMenuItems(adminMenu);
