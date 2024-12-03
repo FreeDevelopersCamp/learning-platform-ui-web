@@ -52,7 +52,7 @@ function AppLayout() {
 
   return (
     <StyledAppLayout>
-      <Header toggleSidebar={toggleSidebar} />
+      <Header auth={auth} toggleSidebar={toggleSidebar} />
       <Main>
         <Sidebar
           isOpen={isSidebarOpen}
