@@ -7,13 +7,16 @@ import { MdOutlineMenu, MdMenuOpen } from 'react-icons/md';
 
 import SearchBar from './SearchBar';
 import Profile from '../Profile/Profile';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.div`
-  background-color: var(--color-grey-100);
+  background-color: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 5px 25px;
+  border-bottom: 1px solid var(--color-grey-300);
+  height: 6rem;
 
   .left-section {
     display: flex;
@@ -31,7 +34,7 @@ const HeaderContainer = styled.div`
       transition: background-color 0.5s;
 
       &:hover {
-        color: var(--color-brand-600);
+        color: var(--color-brand-100);
         background-color: var(--color-brand-200);
       }
 
@@ -43,10 +46,11 @@ const HeaderContainer = styled.div`
 
     .logo {
       font-size: 20px;
-      font-weight: bold;
+      font-weight: 600;
       color: #2c3e50;
       letter-spacing: 1px;
       /* margin-right: 65px; */
+      cursor: pointer;
     }
   }
 
@@ -74,6 +78,7 @@ const HeaderContainer = styled.div`
 
 const Header = ({ username, name, toggleSidebar }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -83,7 +88,9 @@ const Header = ({ username, name, toggleSidebar }) => {
   return (
     <HeaderContainer>
       <div className="left-section">
-        <div className="logo">FreeDevelopersCame</div>
+        <div className="logo" onClick={() => navigate('/')}>
+          FreeDevCamp
+        </div>
         <div className="menu-icon" onClick={handleToggle}>
           {isSidebarOpen ? (
             <MdOutlineMenu style={{ fontSize: '2rem', zIndex: 1 }} />

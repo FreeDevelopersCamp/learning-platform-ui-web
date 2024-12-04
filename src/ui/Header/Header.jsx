@@ -10,7 +10,6 @@ const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--color-grey-100);
   color: var(--color-grey-800);
   padding: 0px 20px;
 `;

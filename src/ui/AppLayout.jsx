@@ -13,12 +13,13 @@ const StyledAppLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  background-color: #f7f7fc;
 `;
 
 const Main = styled.main`
   display: flex;
   flex-grow: 1;
-  background-color: var(--color-grey-300);
+  background-color: #f7f7fc;
 `;
 
 const Container = styled.div`

@@ -33,35 +33,37 @@ const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  padding: 2rem 1.2rem 0;
+  padding: 1rem 1.2rem 0;
+  color: white;
 `;
 
 const MenuItem = styled.li`
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: 0.5rem;
 
-  color: ${(props) =>
-    props.isActive ? 'var(--color-grey-800)' : 'var(--color-grey-600)'};
-  background-color: ${(props) =>
-    props.isActive ? 'var(--color-grey-300)' : 'transparent'};
+  color: ${(props) => (props.isActive ? 'white' : 'var(--color-grey-300)')};
+  background-color: 'transparent';
   border-radius: ${(props) =>
     props.isActive ? 'var(--border-radius-sm)' : '0'};
 
-  font-size: 1.6rem;
-  font-weight: 500;
-  padding: 1.4rem 2.4rem;
+  font-size: 16px;
+  font-weight: 400;
+  min-height: 36px;
+  padding-bottom: 8px;
+  /* padding-top: 8px; */
+
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s;
 
   &:hover {
-    background-color: var(--color-grey-300);
+    background-color: #030b35;
   }
 
   & svg {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 24px;
+    height: 24px;
     color: ${(props) =>
       props.isActive ? 'var(--color-brand-600)' : 'var(--color-grey-400)'};
     transition: all 0.3s;
@@ -92,12 +94,6 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
       },
       { id: 'calendar', icon: <HiOutlineCalendarDays />, label: 'Calendar' },
       { id: 'tasks', icon: <RiDragDropLine />, label: 'Task Board' },
-      { id: 'settings', icon: <HiOutlineCog6Tooth />, label: 'Settings' },
-      {
-        id: 'logout',
-        icon: <LuLogOut style={{ fontSize: '2rem' }} />,
-        label: 'Logout',
-      },
     ];
 
     const instructorMenu = [
@@ -116,12 +112,6 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
         label: 'Notifications',
       },
       { id: 'calendar', icon: <HiOutlineCalendarDays />, label: 'Calendar' },
-      { id: 'settings', icon: <HiOutlineCog6Tooth />, label: 'Settings' },
-      {
-        id: 'logout',
-        icon: <LuLogOut style={{ fontSize: '2rem' }} />,
-        label: 'Logout',
-      },
     ];
 
     const learnerMenu = [
@@ -155,12 +145,6 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
         label: 'Notifications',
       },
       { id: 'calendar', icon: <HiOutlineCalendarDays />, label: 'Calendar' },
-      { id: 'settings', icon: <HiOutlineCog6Tooth />, label: 'Settings' },
-      {
-        id: 'logout',
-        icon: <LuLogOut style={{ fontSize: '2rem' }} />,
-        label: 'Logout',
-      },
     ];
 
     if (role === '0') {

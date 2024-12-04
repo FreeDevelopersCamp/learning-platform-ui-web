@@ -3,18 +3,16 @@ import styled from 'styled-components';
 import { BsFillLightningFill } from 'react-icons/bs';
 
 import UserAvatar from '../../../features/authentication/UserAvatar';
-import { useUser } from '../../../hooks/users/useUser';
-import { useAuth } from '../../../contexts/auth/AuthContext';
-import Spinner from '../../../ui/Spinner';
 
 const StyledProgressSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fff;
+  align-self: right;
+  background-color: white;
   border-radius: 8px;
+  border: 1px solid #e5e7eb;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
 `;
@@ -32,25 +30,23 @@ const ProfileSection = styled.div`
     color: #1f2937;
   }
 
-  span {
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: #6b7280;
-  }
-`;
+  button {
+    font-size: 1.5rem; /* Tailwind: text-lg */
+    font-weight: 500; /* Tailwind: font-medium */
+    color: #6b7280; /* Tailwind: text-gray-500 */
+    background: none; /* Remove default button styles */
+    border: none; /* Remove default border */
+    outline: none; /* Remove focus outline */
+    cursor: pointer; /* Change to pointer on hover */
+    transition: color 0.3s ease; /* Smooth transition for color */
 
-const ProgressBar = styled.div`
-  width: 100%;
-  background-color: #e5e7eb;
-  border-radius: 999px;
-  overflow: hidden;
-  margin-bottom: 2rem;
+    &:hover {
+      color: #4b5563; /* Tailwind: text-gray-600 */
+    }
 
-  div {
-    width: 70%; /* Example progress percentage */
-    height: 8px;
-    background-color: #3b82f6;
-    transition: width 0.3s ease;
+    &:active {
+      color: #1f2937; /* Tailwind: text-gray-800 */
+    }
   }
 `;
 
@@ -71,13 +67,13 @@ const StatsRow = styled.div`
 
     p {
       font-size: 3rem;
-      font-weight: 600;
+      font-weight: 500;
       color: #1f2937;
     }
 
     span {
       font-size: 1.5rem;
-      font-weight: 600;
+      font-weight: 500;
     }
 
     &:not(:last-child) {
@@ -151,7 +147,7 @@ const CompletionStats = styled.div`
 
     p {
       font-size: 2.5rem;
-      font-weight: 600;
+      font-weight: 500;
       color: #1f2937;
     }
 
@@ -166,87 +162,106 @@ const CompletionStats = styled.div`
   }
 `;
 
-function ProgressSection() {
+const TotalHours = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    font-size: 1.6rem;
+    font-weight: 450;
+    color: #1f2937;
+  }
+
+  span {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1f2937; /* Gray for the total hours label */
+  }
+`;
+
+function ProgressSection({ user }) {
   const navigate = useNavigate();
-  const { auth, isLoading } = useAuth();
-
-  const { user, isLoading: userLoading } = useUser(auth?.username, {
-    enabled: !!auth?.username && !isLoading, // Trigger only when username is available and auth is not loading
-  });
-
-  if (isLoading || userLoading) return <Spinner />;
 
   const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']; // Labels for days of the week
 
   function handleClick(e) {
     e.preventDefault();
-    navigate(`/profile?username=${auth.username}`);
+    console.log(user);
+    navigate(`/profile?username=${user.userName}`);
   }
 
   return (
-    auth.isAuthenticated && (
-      <StyledProgressSection>
-        <ProfileSection>
-          <UserAvatar user={user} size="6rem" />
-          <div>
-            <h2>Hey, {user.personalInformation.name.first}! &gt;</h2>
-            <span onClick={handleClick}>See Profile</span>
+    <StyledProgressSection>
+      <ProfileSection>
+        <UserAvatar user={user} size="6rem" />
+        <div>
+          <h2>Hey, {user.personalInformation.name.first}! &gt;</h2>
+          <button onClick={handleClick}>See Profile</button>
+        </div>
+      </ProfileSection>
+
+      <Divider />
+
+      <StatsRow>
+        <div>
+          <span>Daily XP</span>
+          <p>0/250</p>
+        </div>
+        <div>
+          <span>Total XP</span>
+          <p>175,959</p>
+        </div>
+      </StatsRow>
+
+      <Divider />
+
+      <TotalHours>
+        <p>Total Hours Spent: </p>
+        <span> 56h 14m</span>
+      </TotalHours>
+
+      <Divider />
+
+      <DailyStreak>
+        <div className="streak-header flex flex-col">
+          <span className="text-lg font-semibold">Daily Streak</span>
+          <div className="flex flex-row gap-1 items-center">
+            <span className="streak-icon">
+              <BsFillLightningFill />
+            </span>
+            <span>0 Days</span>
           </div>
-        </ProfileSection>
-
-        <Divider />
-
-        <StatsRow>
-          <div>
-            <span>Daily XP</span>
-            <p>0/250</p>
-          </div>
-          <div>
-            <span>Total XP</span>
-            <p>175,959</p>
-          </div>
-        </StatsRow>
-
-        <Divider />
-
-        <DailyStreak>
-          <div className="streak-header flex flex-col">
-            <span className="text-lg font-semibold">Daily Streak</span>
-            <div className="flex flex-row gap-1 items-center">
-              <span className="streak-icon">
-                <BsFillLightningFill />
-              </span>
-              <span>0 Days</span>
+        </div>
+        <div className="streak-wrapper">
+          {days.map((day, index) => (
+            <div className="day" key={index}>
+              <span className="label">{day}</span>
+              <div className={`circle ${index < 2 ? 'active' : ''}`} />
             </div>
-          </div>
-          <div className="streak-wrapper">
-            {days.map((day, index) => (
-              <div className="day" key={index}>
-                <span className="label">{day}</span>
-                <div className={`circle ${index < 2 ? 'active' : ''}`} />
-              </div>
-            ))}
-          </div>
-        </DailyStreak>
+          ))}
+        </div>
+      </DailyStreak>
 
-        <Divider />
+      <Divider />
 
-        <CompletionStats>
-          <div>
-            <p>31</p>
-            <span>Courses completed</span>
-          </div>
-          <div>
-            <p>3</p>
-            <span>Roadmaps completed</span>
-          </div>
-          <div>
-            <p>5</p>
-            <span>Projects completed</span>
-          </div>
-        </CompletionStats>
-      </StyledProgressSection>
-    )
+      <CompletionStats>
+        <div>
+          <p>31</p>
+          <span>Courses completed</span>
+        </div>
+        <div>
+          <p>3</p>
+          <span>Roadmaps completed</span>
+        </div>
+        <div>
+          <p>5</p>
+          <span>Projects completed</span>
+        </div>
+      </CompletionStats>
+    </StyledProgressSection>
   );
 }
 
