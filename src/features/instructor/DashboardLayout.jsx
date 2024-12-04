@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useUser } from '../../hooks/users/useUser';
 
-import Stats from '../dashboard/Stats';
+import Stats from './Stats';
 import Spinner from '../../ui/Spinner';
 
 const StyledDashboardLayout = styled.div`
