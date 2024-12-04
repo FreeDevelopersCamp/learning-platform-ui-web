@@ -147,14 +147,6 @@ function App() {
                 }
               />
               <Route
-                path="learner/learn"
-                element={
-                  <ProtectedRoute role="6">
-                    <LearnerPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
                 path="learner/jobs"
                 element={
                   <ProtectedRoute role="6">
