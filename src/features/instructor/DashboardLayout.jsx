@@ -1,16 +1,15 @@
 import styled from 'styled-components';
 import { useUser } from '../../hooks/users/useUser';
 
-import Stats from '../dashboard/Stats';
-import TodayActivity from '../check-in-out/TodayActivity';
+import Stats from './Stats';
 import Spinner from '../../ui/Spinner';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
   height: 100%;
-  gap: 2.4rem;
+  gap: 3rem;
 `;
 
 const StyledContainer = styled.div`
@@ -39,7 +38,6 @@ function DashboardLayout({ session }) {
     <StyledContainer>
       <StyledDashboardLayout>
         <Stats userId={userId} />
-        <TodayActivity userId={userId} />
       </StyledDashboardLayout>
     </StyledContainer>
   );

@@ -1,70 +1,62 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-
-import { useInstructor } from '../../hooks/instructor/useInstructor';
-import { useInstructorData } from '../../contexts/instructor/InstructorContext';
-
 import Stat from './Stat';
-import Spinner from '../../ui/Spinner';
 
-function Stats({ userId }) {
+function Stats({ users }) {
   const navigate = useNavigate();
 
-  const { instructorData, setInstructorData } = useInstructorData();
-
-  const { instructor, instructorLoading, instructorError } =
-    useInstructor(userId);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!instructor) {
-        setInstructorData(instructor);
-      }
-    };
-
-    fetchData();
-  }, [instructorData, setInstructorData]);
-
-  if (instructorLoading) {
-    return <Spinner>Loading Instructor Data...</Spinner>;
-  }
-
-  if (instructorError) {
-    console.warn('Using fallback data due to error:', instructorError);
-    return <p>Error loading instructor data.</p>;
-  }
-
-  // console.log('instructor: ', instructor);
-
-  // Destructure properties with fallback values
-  const {
-    coursesIds = [],
-    practicesIds = [],
-    projectsIds = [],
-    roadmapsIds = [],
-  } = instructor || {};
+  const totalAdmins = users.filter((user) => user?.role?.includes('0'));
+  const totalOwners = users.filter((user) => user?.role?.includes('1'));
+  const totalManagers = users.filter((user) => user?.role?.includes('2'));
+  const totalAccountManagers = users.filter((user) =>
+    user?.role?.includes('3'),
+  );
+  const totalContentManagers = users.filter((user) =>
+    user?.role?.includes('4'),
+  );
+  const Instructors = users.filter((user) => user?.role?.includes('5'));
+  const totalLearners = users.filter((user) => user?.role?.includes('6'));
 
   return (
     <>
       <Stat
-        title="Roadmaps"
-        data={roadmapsIds}
-        onClick={() => navigate('/instructor/roadmaps')}
+        title="Total Users"
+        data={users}
+        onClick={() => navigate('/users')}
       />
       <Stat
-        title="Projects"
-        data={coursesIds}
-        onClick={() => navigate('/instructor/projects')}
+        title="Admins"
+        data={totalAdmins}
+        onClick={() => navigate('/users?role=admin')}
       />
       <Stat
-        title="Courses"
-        data={projectsIds}
-        onClick={() => navigate('/instructor/courses')}
+        title="Owners"
+        data={totalOwners}
+        onClick={() => navigate('/users?role=owner')}
       />
       <Stat
-        title="Practices"
-        data={practicesIds}
-        onClick={() => navigate('/instructor/practices')}
+        title="Managers"
+        data={totalManagers}
+        onClick={() => navigate('/users?role=manager')}
+      />
+      <Stat
+        title="Account Managers"
+        data={totalAccountManagers}
+        onClick={() => navigate('/users?role=account-manager')}
+      />
+      <Stat
+        title="Content Managers"
+        data={totalContentManagers}
+        onClick={() => navigate('/users?role=content-manager')}
+      />
+      <Stat
+        title="Instructors"
+        data={Instructors}
+        onClick={() => navigate('/users?role=instructor')}
+      />
+      <Stat
+        title="Learners"
+        data={totalLearners}
+        onClick={() => navigate('/users?role=learner')}
       />
     </>
   );
