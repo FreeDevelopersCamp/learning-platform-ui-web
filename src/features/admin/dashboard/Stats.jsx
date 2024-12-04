@@ -21,42 +21,42 @@ function Stats({ users }) {
       <Stat
         title="Total Users"
         data={users}
-        onClick={() => navigate('/admin/users')}
+        onClick={() => navigate('/users')}
       />
       <Stat
         title="Admins"
         data={totalAdmins}
-        onClick={() => navigate('/admin/users?role=admin')}
+        onClick={() => navigate('/users?role=admin')}
       />
       <Stat
         title="Owners"
         data={totalOwners}
-        onClick={() => navigate('/admin/users?role=owner')}
+        onClick={() => navigate('/users?role=owner')}
       />
       <Stat
         title="Managers"
         data={totalManagers}
-        onClick={() => navigate('/admin/users?role=manager')}
+        onClick={() => navigate('/users?role=manager')}
       />
       <Stat
         title="Account Managers"
         data={totalAccountManagers}
-        onClick={() => navigate('/admin/users?role=account-manager')}
+        onClick={() => navigate('/users?role=account-manager')}
       />
       <Stat
         title="Content Managers"
         data={totalContentManagers}
-        onClick={() => navigate('/admin/users?role=content-manager')}
+        onClick={() => navigate('/users?role=content-manager')}
       />
       <Stat
         title="Instructors"
         data={Instructors}
-        onClick={() => navigate('/admin/users?role=instructor')}
+        onClick={() => navigate('/users?role=instructor')}
       />
       <Stat
         title="Learners"
         data={totalLearners}
-        onClick={() => navigate('/admin/users?role=learner')}
+        onClick={() => navigate('/users?role=learner')}
       />
     </>
   );
