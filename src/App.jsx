@@ -26,6 +26,7 @@ import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
 import ProfilePage from './pages/Profile/ProfilePage';
 import { AuthProvider } from './contexts/auth/AuthContext';
+import LearnerPage from './pages/Learner/LearnerPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -125,6 +126,95 @@ function App() {
                 element={
                   <ProtectedRoute role="5">
                     <InstructorRoadmaps />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="learner/home"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="learner/certification"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="learner/learn"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="learner/jobs"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="learner/library"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="learner/leaderboard"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="learner/roadmaps"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="learner/courses"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="learner/practices"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="learner/assessments"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="learner/tutorials"
+                element={
+                  <ProtectedRoute role="6">
+                    <LearnerPage />
                   </ProtectedRoute>
                 }
               />

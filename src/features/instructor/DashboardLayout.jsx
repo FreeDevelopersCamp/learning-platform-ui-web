@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 // import { useInstructor } from '../../hooks/instructor/useInstructor';
-import TodayActivity from '../check-in-out/TodayActivity';
 // import Stats from './Stats';
 
 // import Spinner from '../../ui/Spinner';
@@ -38,10 +37,7 @@ function DashboardLayout() {
   return (
     <StyledContainer>
       {/* <div><p className="text-gray-600 mb-8"></p></div> */}
-      <StyledDashboardLayout>
-        {/* <Stats /> */}
-        <TodayActivity />
-      </StyledDashboardLayout>
+      <StyledDashboardLayout>{/* <Stats /> */}</StyledDashboardLayout>
     </StyledContainer>
   );
 }

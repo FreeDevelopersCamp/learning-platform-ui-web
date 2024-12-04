@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useAuth } from '../contexts/auth/AuthContext';
+import { useAuth } from '../../contexts/auth/AuthContext';
 
 import Title from './Title';
 import NavBar from './NavBar';

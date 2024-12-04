@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useAuth } from '../contexts/auth/AuthContext';
+import { useAuth } from '../../contexts/auth/AuthContext';
 
 import { LuSun } from 'react-icons/lu';
 import { IoIosNotificationsOutline } from 'react-icons/io';
