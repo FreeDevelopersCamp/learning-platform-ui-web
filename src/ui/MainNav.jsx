@@ -19,6 +19,15 @@ import { LuLogOut } from 'react-icons/lu';
 import { FaTasks } from 'react-icons/fa';
 import { GoProjectRoadmap } from 'react-icons/go';
 import { BiTask } from 'react-icons/bi';
+import { MdLeaderboard } from 'react-icons/md';
+import { MdOutlineLibraryBooks } from 'react-icons/md';
+import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
+import InsightsIcon from '@mui/icons-material/Insights';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import { MdOutlineAssessment } from 'react-icons/md';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import CastForEducationIcon from '@mui/icons-material/CastForEducation';
 
 const NavList = styled.ul`
   display: flex;
@@ -115,10 +124,51 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
       },
     ];
 
+    const learnerMenu = [
+      { id: 'dashboard', icon: <HiOutlineHome />, label: 'Dashboard' },
+      { id: 'library', icon: <MdOutlineLibraryBooks />, label: 'My Library' },
+      {
+        id: 'leaderboard',
+        icon: <MdLeaderboard />,
+        label: 'Leaderboard',
+      },
+      { id: 'roadmaps', icon: <InsightsIcon />, label: 'Roadmaps' },
+      { id: 'courses', icon: <TipsAndUpdatesIcon />, label: 'Courses' },
+      { id: 'practices', icon: <FitnessCenterIcon />, label: 'Practices' },
+      {
+        id: 'assessments',
+        icon: <MdOutlineAssessment />,
+        label: 'Assessments',
+      },
+      { id: 'projects', icon: <AccountTreeIcon />, label: 'Projects' },
+      {
+        id: 'certifications',
+        icon: <WorkspacePremiumIcon />,
+        label: 'Certifications',
+      },
+      { id: 'tutorials', icon: <CastForEducationIcon />, label: 'Tutorials' },
+      { id: 'email', icon: <HiEnvelope />, label: 'Email' },
+      { id: 'chat', icon: <HiChatBubbleLeftRight />, label: 'Chat' },
+      {
+        id: 'notifications',
+        icon: <IoIosNotificationsOutline style={{ fontSize: '3rem' }} />,
+        label: 'Notifications',
+      },
+      { id: 'calendar', icon: <HiOutlineCalendarDays />, label: 'Calendar' },
+      { id: 'settings', icon: <HiOutlineCog6Tooth />, label: 'Settings' },
+      {
+        id: 'logout',
+        icon: <LuLogOut style={{ fontSize: '2rem' }} />,
+        label: 'Logout',
+      },
+    ];
+
     if (role === '0') {
       setMenuItems(adminMenu);
     } else if (role === '5') {
       setMenuItems(instructorMenu);
+    } else if (role === '6') {
+      setMenuItems(learnerMenu);
     } else {
       throw new Error('Invalid role!');
     }

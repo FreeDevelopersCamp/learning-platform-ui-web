@@ -1,7 +1,7 @@
 import Heading from '../../ui/Heading';
 import Row from '../../ui/Row';
-import PermissionTable from '../../features/admin/permissions/permissionsTable/PermissionTable';
-import PermissionTableOperations from '../../features/admin/permissions/permissionsTable/PermissionTableOperations';
+import PermissionTable from '../../features/Admin/permissions/permissionsTable/PermissionTable';
+import PermissionTableOperations from '../../features/Admin/permissions/permissionsTable/PermissionTableOperations';
 
 function Permissions() {
   return (

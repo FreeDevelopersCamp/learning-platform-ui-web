@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { useUser } from '../../hooks/users/useUser';
 
 import Stats from '../dashboard/Stats';
-import TodayActivity from '../check-in-out/TodayActivity';
 import Spinner from '../../ui/Spinner';
 
 const StyledDashboardLayout = styled.div`
@@ -39,7 +38,6 @@ function DashboardLayout({ session }) {
     <StyledContainer>
       <StyledDashboardLayout>
         <Stats userId={userId} />
-        <TodayActivity userId={userId} />
       </StyledDashboardLayout>
     </StyledContainer>
   );

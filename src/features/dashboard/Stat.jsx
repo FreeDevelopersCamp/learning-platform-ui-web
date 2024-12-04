@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import UserAvatar from '../../authentication/UserAvatar';
-import Button from '../../../ui/Button';
+import UserAvatar from '../authentication/UserAvatar';
+import Button from '../../ui/Button';
 
 const StyledStat = styled.div`
   /* Box */
@@ -184,4 +184,3 @@ function Stat({ title, data, onClick }) {
 }
 
 export default Stat;
- 
