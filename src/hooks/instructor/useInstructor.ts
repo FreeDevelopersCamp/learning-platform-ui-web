@@ -11,7 +11,7 @@ export function useInstructor(userId: string) {
 
   const {
     isLoading: instructorLoading,
-    data: instructorData,
+    data: instructor,
     error: instructorError,
   } = useQuery({
     queryKey: ['instructor', userId],
@@ -29,6 +29,6 @@ export function useInstructor(userId: string) {
   return {
     isLoading: instructorLoading,
     error: instructorError,
-    instructorData,
+    instructor,
   };
 }

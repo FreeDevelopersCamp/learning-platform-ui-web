@@ -13,7 +13,7 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 25px;
+  padding: 5px 25px;
 
   .left-section {
     display: flex;
@@ -46,7 +46,7 @@ const HeaderContainer = styled.div`
       font-weight: bold;
       color: #2c3e50;
       letter-spacing: 1px;
-      margin-right: 65px;
+      /* margin-right: 65px; */
     }
   }
 

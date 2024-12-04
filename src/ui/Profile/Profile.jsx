@@ -61,7 +61,7 @@ const ProfileAvatar = styled.img`
 const DropdownMenu = styled.div`
   max-width: 240px;
   position: absolute;
-  top: ${(props) => `${props.size === '45' ? '8.5%' : '8.5%'}`};
+  top: ${(props) => `${props.size === '45' ? '7.5%' : '8.5%'}`};
   right: ${(props) => `${props.size === '45' ? '1.3%' : '1.5%'}`};
   padding: 10px;
   background-color: var(--color-grey-100);
