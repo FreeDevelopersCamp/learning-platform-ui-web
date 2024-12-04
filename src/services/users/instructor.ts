@@ -1,4 +1,4 @@
-import { ContentType, HttpClient } from "../http-client";
+import { ContentType, HttpClient } from '../http-client';
 
 export default class Instructor extends HttpClient {
   private static instance: Instructor;
@@ -26,7 +26,7 @@ export default class Instructor extends HttpClient {
   list(params = {}) {
     return this.request({
       path: `/instructor`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -44,7 +44,7 @@ export default class Instructor extends HttpClient {
   update(data, params = {}) {
     return this.request({
       path: `/instructor`,
-      method: "PATCH",
+      method: 'PATCH',
       body: data,
       secure: true,
       type: ContentType.Json,
@@ -64,7 +64,7 @@ export default class Instructor extends HttpClient {
   getById(id, params = {}) {
     return this.request({
       path: `/instructor/${id}`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -82,7 +82,7 @@ export default class Instructor extends HttpClient {
   getByUserId(id, params = {}) {
     return this.request({
       path: `/instructor/user/${id}`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -100,7 +100,7 @@ export default class Instructor extends HttpClient {
   delete(id, params = {}) {
     return this.request({
       path: `/instructor/${id}`,
-      method: "DELETE",
+      method: 'DELETE',
       secure: true,
       ...params,
     });
@@ -118,7 +118,7 @@ export default class Instructor extends HttpClient {
   approve(id: string, params = {}) {
     return this.request({
       path: `/instructor/approve/${id}`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -136,7 +136,7 @@ export default class Instructor extends HttpClient {
   reject(id: string, params = {}) {
     return this.request({
       path: `/instructor/reject/${id}`,
-      method: "DELETE",
+      method: 'DELETE',
       secure: true,
       ...params,
     });
@@ -154,7 +154,7 @@ export default class Instructor extends HttpClient {
   deactivate(id: string, params = {}) {
     return this.request({
       path: `/instructor/deactivate/${id}`,
-      method: "DELETE",
+      method: 'DELETE',
       secure: true,
       ...params,
     });

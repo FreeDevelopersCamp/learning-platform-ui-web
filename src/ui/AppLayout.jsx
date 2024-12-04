@@ -4,8 +4,10 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
 import styled from 'styled-components';
-import { useAuth } from '../contexts/auth/AuthContext';
 import Spinner from './Spinner';
+
+import { useAuth } from '../contexts/auth/AuthContext';
+import { useUser } from '../hooks/users/useUser';
 
 const StyledAppLayout = styled.div`
   display: flex;
@@ -31,14 +33,19 @@ const Container = styled.div`
 
 function AppLayout() {
   const navigate = useNavigate();
-  const { auth, isLoading } = useAuth();
-
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState('dashboard');
 
-  if (isLoading) return <Spinner>Loading session...</Spinner>;
+  const {
+    auth: { isAuthenticated: isAuth, username, role },
+    isLoading,
+  } = useAuth();
 
-  const role = auth.role;
+  const { user, isLoading: userLoading } = useUser(username);
+
+  if (isLoading || userLoading) return <Spinner>Loading session...</Spinner>;
+
+  const name = `${user?.personalInformation?.name?.first} ${user?.personalInformation?.name?.last}`;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
@@ -52,7 +59,7 @@ function AppLayout() {
 
   return (
     <StyledAppLayout>
-      <Header auth={auth} toggleSidebar={toggleSidebar} />
+      <Header username={username} name={name} toggleSidebar={toggleSidebar} />
       <Main>
         <Sidebar
           isOpen={isSidebarOpen}

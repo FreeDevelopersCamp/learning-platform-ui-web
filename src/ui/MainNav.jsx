@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useAuth } from '../contexts/auth/AuthContext';
+
 import {
   HiEnvelope,
   HiHashtag,
@@ -71,6 +73,7 @@ const MenuItem = styled.li`
 `;
 
 function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
+  const { logout } = useAuth();
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
@@ -99,12 +102,12 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
 
     const instructorMenu = [
       { id: 'dashboard', icon: <HiOutlineHome />, label: 'Dashboard' },
-      { id: 'learner', icon: <HiOutlineUsers />, label: 'Learner' },
       { id: 'roadmaps', icon: <HiPresentationChartLine />, label: 'Roadmaps' },
       { id: 'courses', icon: <FaTasks />, label: 'Courses' },
       { id: 'projects', icon: <GoProjectRoadmap />, label: 'Projects' },
       { id: 'tasks', icon: <RiDragDropLine />, label: 'Tasks' },
       { id: 'quizes', icon: <BiTask />, label: 'Quizes' },
+      { id: 'learner', icon: <HiOutlineUsers />, label: 'Learner' },
       { id: 'email', icon: <HiEnvelope />, label: 'Email' },
       { id: 'chat', icon: <HiChatBubbleLeftRight />, label: 'Chat' },
       {
@@ -169,7 +172,11 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
     } else {
       throw new Error('Invalid role!');
     }
-  }, [role]);
+  }, [role, logout]);
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     isOpen && (
@@ -179,7 +186,11 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
             <MenuItem
               key={item.id}
               isActive={activeMenu === item.id}
-              onClick={() => onMenuSelect(item.id)}
+              onClick={
+                item.id === 'logout'
+                  ? handleLogout
+                  : () => onMenuSelect(item.id)
+              }
             >
               {item.icon}
               <span>{item.label}</span>
