@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { useUsers } from '../../../hooks/users/useUsers';
+import { useUsers } from '../../hooks/users/useUsers';
 
 import Stats from './Stats';
-import Spinner from '../../../ui/Spinner';
+import Spinner from '../../ui/Spinner';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
