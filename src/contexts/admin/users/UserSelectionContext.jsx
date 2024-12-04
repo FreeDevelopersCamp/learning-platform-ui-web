@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
 
 import { useUsers } from '../../../hooks/users/useUsers';
-import { useApproveUser } from '../../../features/admin/users/useApproveUser';
-import { useRejectUser } from '../../../features/admin/users/useRejectUser';
-import { useDeleteUser } from '../../../features/admin/users/useDeleteUser';
-import { useDeactivateUser } from '../../../features/admin/users/useDeactivateUser';
+import { useApproveUser } from '../../../features/Admin/users/useApproveUser';
+import { useRejectUser } from '../../../features/Admin/users/useRejectUser';
+import { useDeleteUser } from '../../../features/Admin/users/useDeleteUser';
+import { useDeactivateUser } from '../../../features/Admin/users/useDeactivateUser';
 
 import Spinner from '../../../ui/Spinner';
 const UserSelectionContext = createContext();
