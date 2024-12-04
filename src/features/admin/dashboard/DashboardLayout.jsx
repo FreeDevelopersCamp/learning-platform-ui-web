@@ -6,6 +6,7 @@ import TodayActivity from '../check-in-out/TodayActivity';
 import Stats from './Stats';
 import Spinner from '../../ui/Spinner';
 
+
 const StyledDashboardLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -47,7 +48,7 @@ function DashboardLayout() {
         <Stats users={totalUsers} count={count} />
 
         {/* <RolesList /> */}
-        <TodayActivity />
+
       </StyledDashboardLayout>
       {/* <DurationChart confirmedStays={confirmedStays} />
       <SalesChart bookings={bookings} numDays={numDays} /> */}
