@@ -11,7 +11,7 @@ import Spinner from '../../ui/Spinner';
 const HomePage = () => {
   const { auth, isLoading } = useAuth();
 
-  if (isLoading) return <Spinner>Loading session...</Spinner>;
+  if (isLoading) return <Spinner />;
 
   return (
     <>

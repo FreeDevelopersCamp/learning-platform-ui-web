@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import MainSection from './ui/MainSection';
 import ProgressSection from './ui/ProgressSection';
 import RoadmapAnnouncement from './ui/RoadmapAnnouncement';
+import Stats from './ui/Stats';
 
 const Container = styled.div`
   display: grid;
@@ -14,8 +15,11 @@ const Container = styled.div`
 function LearnerPage() {
   return (
     <Container>
-      <MainSection />
       <div>
+        <Stats />
+        <MainSection />
+      </div>
+      <div className="flex flex-col gap-4">
         <ProgressSection />
         <RoadmapAnnouncement />
       </div>

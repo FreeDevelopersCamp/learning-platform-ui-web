@@ -41,7 +41,7 @@ function AppLayout() {
 
   const { user, isLoading: userLoading } = useUser(username);
 
-  if (isLoading || userLoading) return <Spinner>Loading session...</Spinner>;
+  if (isLoading || userLoading) return <Spinner />;
 
   const name = `${user?.personalInformation?.name?.first} ${user?.personalInformation?.name?.last}`;
 

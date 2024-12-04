@@ -13,7 +13,7 @@ function Dashboard() {
     error: sessionError,
   } = useSession();
 
-  if (sessionLoading) return <Spinner>Loading...</Spinner>;
+  if (sessionLoading) return <Spinner />;
 
   return (
     <>
