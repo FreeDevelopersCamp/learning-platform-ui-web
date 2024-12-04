@@ -27,7 +27,7 @@ function Stats({ userId }) {
   }, [instructor, instructorLoading, setInstructorData]);
 
   if (instructorLoading || !instructor) {
-    return <Spinner>Loading Instructor Data...</Spinner>;
+    return <Spinner />;
   }
 
   if (instructorError) {

@@ -174,7 +174,7 @@ function ProgressSection() {
     enabled: !!auth?.username && !isLoading, // Trigger only when username is available and auth is not loading
   });
 
-  if (isLoading || userLoading) return <Spinner>Loading session...</Spinner>;
+  if (isLoading || userLoading) return <Spinner />;
 
   const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']; // Labels for days of the week
 

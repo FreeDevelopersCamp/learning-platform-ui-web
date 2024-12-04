@@ -46,8 +46,7 @@ function HomeLayout() {
   );
 
   // Show errors or loading spinner
-  if (sessionLoading || userLoading)
-    return <Spinner>Loading session...</Spinner>;
+  if (sessionLoading || userLoading) return <Spinner />;
   if (sessionError || userError)
     return (
       <div>

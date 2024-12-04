@@ -27,11 +27,11 @@ function DashboardLayout({ session }) {
     error: userError,
   } = useUser(session.username);
 
-  if (userLoading) return <Spinner>Loading...</Spinner>;
+  if (userLoading) return <Spinner />;
 
   const userId = user?._id;
   if (!userId) {
-    return <Spinner>Loading User Data...</Spinner>;
+    return <Spinner />;
   }
 
   return (
