@@ -2,19 +2,21 @@ import styled from 'styled-components';
 import MainNav from '../MainNav';
 
 const StyledSidebar = styled.aside`
-  width: ${(props) => (props.isOpen ? '15%' : '0px')};
-  background-color: var(--color-grey-100);
-  padding: ${(props) => (props.isOpen ? '0 0 3.2rem 0' : '0px')};
+  width: ${(props) => (props.isOpen ? '12%' : '0px')};
+  background-color: #000820;
+  color: white;
+  padding: ${(props) => (props.isOpen ? '8px 8px 0 0' : '0px')};
   transition: all 0.3s;
 
   display: flex;
   flex-direction: column;
-  gap: 3.2rem;
+  align-items: left;
+  /* gap: 1rem; */
 
   &:hover,
   &:active,
   &.active {
-    border-right: 3px solid var(--color-brand-600);
+    border-right: 3px solid var(--color-brand-100);
     transition: all 0.1s;
   }
 `;

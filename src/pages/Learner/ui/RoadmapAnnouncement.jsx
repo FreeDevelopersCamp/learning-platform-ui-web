@@ -2,28 +2,26 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const TrackCard = styled.div`
-  margin-top: 1rem;
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
+  margin-top: 2rem;
+  background-color: #f7f7fc;
+  border: 2px solid #e5e7eb;
   border-radius: 0.5rem;
-  background-color: var(--color-grey-300); /* Tailwind's bg-gray-100 */
-  border-color: var(--color-grey-400);
+
   padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Tailwind's shadow-sm */
+
   transition: all 0.3s ease; /* Smooth transitions for all properties */
   cursor: pointer;
   height: 12rem;
 
   &:hover {
-    background-color: #f3f4f6; /* Tailwind's bg-gray-100 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Tailwind's shadow-lg */
+    background-color: white; /* Tailwind's bg-gray-100 */
   }
 
   &:active {
-    background-color: #e5e7eb; /* Tailwind's bg-gray-200 */
+    background-color: #f7f7fc; /* Tailwind's bg-gray-200 */
   }
 `;
 
