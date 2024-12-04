@@ -1,10 +1,9 @@
 import styled from 'styled-components';
+import { useUser } from '../../hooks/users/useUser';
 
-// import { useInstructor } from '../../hooks/instructor/useInstructor';
+import Stats from '../dashboard/Stats';
 import TodayActivity from '../check-in-out/TodayActivity';
-// import Stats from './Stats';
-
-// import Spinner from '../../ui/Spinner';
+import Spinner from '../../ui/Spinner';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -18,29 +17,29 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-
   gap: 0.5rem;
   padding: 20px;
 `;
 
-const StyledHeading = styled.h5`
-  font-weight: 500;
-  font-size: 2.5rem;
-`;
+function DashboardLayout({ session }) {
+  const {
+    user,
+    isLoading: userLoading,
+    error: userError,
+  } = useUser(session.username);
 
-function DashboardLayout() {
-  // const { instructors, isLoading4, error } = useInstructor(token);
+  if (userLoading) return <Spinner>Loading...</Spinner>;
 
-  // console.log('Instructors: ', instructors);
-
-  // if (isLoading4) return <Spinner />;
+  const userId = user?._id;
+  if (!userId) {
+    return <Spinner>Loading User Data...</Spinner>;
+  }
 
   return (
     <StyledContainer>
-      {/* <div><p className="text-gray-600 mb-8"></p></div> */}
       <StyledDashboardLayout>
-        {/* <Stats /> */}
-        <TodayActivity />
+        <Stats userId={userId} />
+        <TodayActivity userId={userId} />
       </StyledDashboardLayout>
     </StyledContainer>
   );

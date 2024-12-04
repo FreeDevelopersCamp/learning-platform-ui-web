@@ -25,7 +25,9 @@ import HomeLayout from './ui/HomeLayout';
 import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
 import ProfilePage from './pages/Profile/ProfilePage';
+
 import { AuthProvider } from './contexts/auth/AuthContext';
+import { InstructorProvider } from './contexts/instructor/InstructorContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,99 +44,93 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            <Route
-              element={
-                // <ProtectedRoute role="none">
-                <HomeLayout />
-                // </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate replace to="home" />} />
-              <Route path="home" element={<HomePage />} />
+          <InstructorProvider>
+            <Routes>
+              <Route
+                element={
+                  // <ProtectedRoute role="none">
+                  <HomeLayout />
+                  // </ProtectedRoute>
+                }
+              >
+                <Route index element={<Navigate replace to="home" />} />
+                <Route path="home" element={<HomePage />} />
 
-              <Route
-                path="profile"
-                element={
-                  <ProtectedRoute role="all">
-                    <ProfilePage />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
+                <Route
+                  path="profile"
+                  element={
+                    <ProtectedRoute role="all">
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  }
+                />
+              </Route>
 
-            <Route element={<AppLayout />}>
-              <Route
-                path="admin/dashboard"
-                element={
-                  <ProtectedRoute role="0">
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="admin/users"
-                element={
-                  <ProtectedRoute role="0">
-                    <Users />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="admin/permissions"
-                element={
-                  <ProtectedRoute role="0">
-                    <Permissions />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="instructor/account"
-                element={
-                  <ProtectedRoute role="5">
-                    <InstructorDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="instructor/profile"
-                element={
-                  <ProtectedRoute role="5">
-                    <div>instructor/profile</div>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="instructor/dashboard"
-                element={
-                  <ProtectedRoute role="5">
-                    <InstructorDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="instructor/learner"
-                element={
-                  <ProtectedRoute role="5">
-                    <InstructorLearner />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="instructor/roadmaps"
-                element={
-                  <ProtectedRoute role="5">
-                    <InstructorRoadmaps />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
+              <Route element={<AppLayout />}>
+                <Route
+                  path="admin/dashboard"
+                  element={
+                    <ProtectedRoute role="0">
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="admin/users"
+                  element={
+                    <ProtectedRoute role="0">
+                      <Users />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="admin/permissions"
+                  element={
+                    <ProtectedRoute role="0">
+                      <Permissions />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="instructor/dashboard"
+                  element={
+                    <ProtectedRoute role="5">
+                      <InstructorDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="instructor/profile"
+                  element={
+                    <ProtectedRoute role="5">
+                      <div>instructor/profile</div>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="instructor/roadmaps"
+                  element={
+                    <ProtectedRoute role="5">
+                      <InstructorRoadmaps />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="instructor/learner"
+                  element={
+                    <ProtectedRoute role="5">
+                      <InstructorLearner />
+                    </ProtectedRoute>
+                  }
+                />
+              </Route>
 
-            <Route path="login" element={<AuthPage />} />
-            <Route path="signup" element={<AuthPage />} />
-            <Route path="not-authorized" element={<PageNotAuthorized />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
+              <Route path="login" element={<AuthPage />} />
+              <Route path="signup" element={<AuthPage />} />
+              <Route path="not-authorized" element={<PageNotAuthorized />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </InstructorProvider>
         </AuthProvider>
       </BrowserRouter>
 

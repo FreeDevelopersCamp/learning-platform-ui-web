@@ -54,10 +54,31 @@ export const AuthProvider = ({ children }) => {
     fetchSession();
   }, []);
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setAuth({ isAuthenticated: false, role: null, username: null });
-    navigate('/home');
+  const logout = async () => {
+    setIsLoading(true);
+    try {
+      const authService = new Auth();
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        await authService.request({
+          path: '/Auth/logout',
+          method: 'POST',
+          secure: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'x-tenant-id': process.env.REACT_APP_X_TENANT_ID || '',
+          },
+        });
+      }
+    } catch (err) {
+      console.error('Error during logout:', err);
+    } finally {
+      localStorage.removeItem('token');
+      setAuth({ isAuthenticated: false, role: null, username: null });
+      setIsLoading(false);
+      navigate('/home');
+    }
   };
 
   return (

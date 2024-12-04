@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useAuth } from '../contexts/auth/AuthContext';
 
 import { LuSun } from 'react-icons/lu';
 import { IoIosNotificationsOutline } from 'react-icons/io';
@@ -73,12 +72,8 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const Header = ({ toggleSidebar }) => {
+const Header = ({ username, name, toggleSidebar }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { auth } = useAuth();
-
-  const userName = auth.username;
-  const name = 'Yazan Al-Sedih';
 
   const handleToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -106,7 +101,7 @@ const Header = ({ toggleSidebar }) => {
         <div className="icon-container">
           <IoIosNotificationsOutline />
         </div>
-        <Profile userName={userName} name={name} size="45" />
+        <Profile username={username} name={name} size="45" />
       </div>
     </HeaderContainer>
   );

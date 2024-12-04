@@ -1,11 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+// import { useInstructor } from '../../hooks/instructor/useInstructor';
 
-import Heading from "../../ui/Heading";
-import Row from "../../ui/Row";
+import Heading from '../../ui/Heading';
+import Row from '../../ui/Row';
 
-import { useTodayActivity } from "./useTodayActivity";
-import Spinner from "../../ui/Spinner";
-import TodayItem from "./TodayItem";
+import { useTodayActivity } from './useTodayActivity';
+import Spinner from '../../ui/Spinner';
+import TodayItem from './TodayItem';
 
 const StyledToday = styled.div`
   /* Box */
@@ -40,8 +41,20 @@ const NoActivity = styled.p`
   margin-top: 0.8rem;
 `;
 
-function TodayActivity() {
+function TodayActivity({ userId }) {
   const { activities, isLoading } = useTodayActivity();
+
+  // const { instructorData, instructorLoading, instructorError } =
+  //   useInstructor(userId);
+
+  // if (instructorLoading) {
+  //   return <Spinner>Loading Instructor Data...</Spinner>;
+  // }
+
+  // if (instructorError) {
+  //   console.warn('Using fallback data due to error:', instructorError);
+  //   return { name: 'Fallback Instructor', activities: [] };
+  // }
 
   return (
     <StyledToday>

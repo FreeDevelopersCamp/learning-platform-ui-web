@@ -20,6 +20,7 @@ const ProfileContainer = styled.div`
   padding: 15px;
   overflow: hidden;
   cursor: pointer;
+  user-select: none;
 
   span {
     color: #2c3e50;
@@ -70,6 +71,7 @@ const DropdownMenu = styled.div`
   overflow: hidden;
   z-index: 10;
   transition: max-height 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
 
   &.open {
     max-height: 500px;
@@ -109,19 +111,22 @@ const Text = styled.p`
   padding-top: 5px;
 `;
 
-const Profile = ({ userName, name, size }) => {
+const Profile = ({ username, name, size }) => {
   const navigate = useNavigate();
   const [ripples, setRipples] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { logout } = useAuth();
 
   const handleAccount = () => {
-    navigate(`/instructor/account`);
+    setIsDropdownOpen(false);
+    navigate(`/instructor/dashboard`);
   };
   const handleProfile = () => {
+    setIsDropdownOpen(false);
     navigate(`/profile`);
   };
   const handleSetting = () => {
+    setIsDropdownOpen(false);
     navigate(`/settings`);
   };
 
@@ -163,7 +168,7 @@ const Profile = ({ userName, name, size }) => {
         <ProfileAvatar src={userImage} alt="User Profile" size={size} />
         <div className="flex flex-col items-start justify-center">
           <span style={{ fontWeight: 'bold', fontSize: '15px' }}>{name}</span>
-          <span style={{ paddingLeft: '3px' }}>{userName}</span>
+          <span style={{ paddingLeft: '3px' }}>{username}</span>
         </div>
       </ProfileContainer>
       <DropdownMenu className={isDropdownOpen ? 'open' : ''} size={size}>
