@@ -7,6 +7,7 @@ import ProgressSection from './ui/ProgressSection';
 import RoadmapAnnouncement from './ui/RoadmapAnnouncement';
 import Stats from './ui/Stats';
 import Welcome from './ui/Welcome';
+import CoursesSection from './ui/CoursesSection';
 import Spinner from '../../ui/Spinner';
 
 const Container = styled.div`
@@ -25,6 +26,12 @@ const StatsContainer = styled.div`
   margin-bottom: 5rem;
 `;
 
+const MainContainer = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-rows: 1fr;
+`;
+
 function LearnerPage() {
   const { auth, isLoading } = useAuth();
 
@@ -36,13 +43,14 @@ function LearnerPage() {
 
   return (
     <Container>
-      <div>
+      <MainContainer>
         <Welcome user={user} />
         <StatsContainer>
           <Stats />
         </StatsContainer>
         <MainSection />
-      </div>
+        <CoursesSection />
+      </MainContainer>
       <div className="flex flex-col gap-4">
         <ProgressSection user={user} />
         <RoadmapAnnouncement />
