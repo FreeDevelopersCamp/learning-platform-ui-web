@@ -1,13 +1,14 @@
-import { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { useSession } from '../hooks/auth/useSession';
+import { useAuth } from '../contexts/auth/AuthContext';
+import { useUser } from '../hooks/users/useUser';
 
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
-import styled from 'styled-components';
 import Spinner from './Spinner';
-
-import { useAuth } from '../contexts/auth/AuthContext';
-import { useUser } from '../hooks/users/useUser';
 
 const StyledAppLayout = styled.div`
   display: flex;
@@ -27,12 +28,18 @@ const Container = styled.div`
   width: 75%;
   margin: 30px auto;
 `;
-// admin = '0', owner = '1', manager = '2', accountManager = '3', contentManager = '4', instructor = '5', learner = '6',
 
 function AppLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [activeMenu, setActiveMenu] = useState('');
+
+  const {
+    isLoading: sessionLoading,
+    session,
+    error: sessionError,
+  } = useSession();
 
   const {
     auth: { isAuthenticated: isAuth, username, role },
@@ -41,7 +48,13 @@ function AppLayout() {
 
   const { user, isLoading: userLoading } = useUser(username);
 
-  if (isLoading || userLoading) return <Spinner>Loading session...</Spinner>;
+  useEffect(() => {
+    const path = location.pathname.split('/')[2];
+    setActiveMenu(path || 'dashboard');
+  }, [location]);
+
+  if (isLoading || userLoading || sessionLoading || sessionError)
+    return <Spinner />;
 
   const name = `${user?.personalInformation?.name?.first} ${user?.personalInformation?.name?.last}`;
 
@@ -66,7 +79,7 @@ function AppLayout() {
           onMenuSelect={handleMenuSelect}
         />
         <Container>
-          <Outlet />
+          <Outlet context={session} />
         </Container>
       </Main>
     </StyledAppLayout>

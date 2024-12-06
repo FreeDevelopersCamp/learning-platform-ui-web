@@ -3,6 +3,7 @@ import { useUser } from '../../hooks/users/useUser';
 
 import Stats from './Stats';
 import Spinner from '../../ui/Spinner';
+import { useState } from 'react';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -17,27 +18,27 @@ const StyledContainer = styled.div`
   flex-direction: column;
   height: 100%;
   gap: 0.5rem;
-  padding: 20px;
 `;
 
-function DashboardLayout({ session }) {
-  const {
-    user,
-    isLoading: userLoading,
-    error: userError,
-  } = useUser(session.username);
+function DashboardLayout({ session, filter, onFilterCount }) {
+  const [filterCount, setFilterCount] = useState(0);
+  const { user, isLoading: userLoading } = useUser(session?.username);
 
-  if (userLoading) return <Spinner>Loading...</Spinner>;
+  if (userLoading || !user?._id) return <Spinner />;
 
-  const userId = user?._id;
-  if (!userId) {
-    return <Spinner>Loading User Data...</Spinner>;
+  function handleFilterCount(value) {
+    setFilterCount(value);
+    onFilterCount(value);
   }
 
   return (
     <StyledContainer>
       <StyledDashboardLayout>
-        <Stats userId={userId} />
+        <Stats
+          userId={user._id}
+          filter={filter}
+          onFilterCount={handleFilterCount}
+        />
       </StyledDashboardLayout>
     </StyledContainer>
   );

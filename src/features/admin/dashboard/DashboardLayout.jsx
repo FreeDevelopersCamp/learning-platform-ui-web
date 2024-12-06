@@ -1,11 +1,8 @@
 import styled from 'styled-components';
 
-import { useUsers } from '../../hooks/users/useUsers';
-
-import TodayActivity from '../check-in-out/TodayActivity';
+import { useUsers } from '../../../hooks/users/useUsers';
 import Stats from './Stats';
-import Spinner from '../../ui/Spinner';
-
+import Spinner from '../../../ui/Spinner';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -48,7 +45,6 @@ function DashboardLayout() {
         <Stats users={totalUsers} count={count} />
 
         {/* <RolesList /> */}
-
       </StyledDashboardLayout>
       {/* <DurationChart confirmedStays={confirmedStays} />
       <SalesChart bookings={bookings} numDays={numDays} /> */}

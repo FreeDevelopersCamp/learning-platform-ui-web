@@ -29,7 +29,6 @@ const StyledStat = styled.div`
 const StyledButton = styled(Button)`
   height: 4rem;
   padding-top: 1rem;
-
   font-size: 1.5rem;
   border-radius: 6px;
 
@@ -99,12 +98,29 @@ const Value = styled.p`
 function Stat({ title, data, onClick }) {
   return (
     <StyledStat>
+      {/* Title Section */}
       <div className="flex flex-row justify-center">
         <div className="flex flex-col">
           <Title>{title}</Title>
-          <Value>{data?.length || 0}</Value>
+          {/* If data is an array, display the count or additional info */}
+          {Array.isArray(data) ? (
+            <>
+              <Value>{data.length || 0}</Value>
+              {/* Display first item's ID or property as an example */}
+              {data.length > 0 && (
+                <p style={{ fontSize: '1rem', color: 'var(--color-grey-400)' }}>
+                  Example ID: {data[0].id || data[0]}
+                </p>
+              )}
+            </>
+          ) : (
+            // Display if data is not an array
+            <Value>{data.count || 0}</Value>
+          )}
         </div>
       </div>
+
+      {/* Button Section */}
       <StyledButton onClick={onClick} size="medium" variation="secondary">
         Show All
       </StyledButton>

@@ -92,7 +92,6 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
       },
       { id: 'calendar', icon: <HiOutlineCalendarDays />, label: 'Calendar' },
       { id: 'tasks', icon: <RiDragDropLine />, label: 'Task Board' },
-      { id: 'settings', icon: <HiOutlineCog6Tooth />, label: 'Settings' },
       {
         id: 'logout',
         icon: <LuLogOut style={{ fontSize: '2rem' }} />,
@@ -105,8 +104,7 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
       { id: 'roadmaps', icon: <HiPresentationChartLine />, label: 'Roadmaps' },
       { id: 'courses', icon: <FaTasks />, label: 'Courses' },
       { id: 'projects', icon: <GoProjectRoadmap />, label: 'Projects' },
-      { id: 'tasks', icon: <RiDragDropLine />, label: 'Tasks' },
-      { id: 'quizes', icon: <BiTask />, label: 'Quizes' },
+      { id: 'practices', icon: <BiTask />, label: 'Practices' },
       { id: 'learner', icon: <HiOutlineUsers />, label: 'Learner' },
       { id: 'email', icon: <HiEnvelope />, label: 'Email' },
       { id: 'chat', icon: <HiChatBubbleLeftRight />, label: 'Chat' },
@@ -116,7 +114,6 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
         label: 'Notifications',
       },
       { id: 'calendar', icon: <HiOutlineCalendarDays />, label: 'Calendar' },
-      { id: 'settings', icon: <HiOutlineCog6Tooth />, label: 'Settings' },
       {
         id: 'logout',
         icon: <LuLogOut style={{ fontSize: '2rem' }} />,
