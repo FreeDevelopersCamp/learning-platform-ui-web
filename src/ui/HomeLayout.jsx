@@ -7,12 +7,12 @@ import Footer from './Footer/Footer';
 const StyledAppLayout = styled.div`
   flex: 1;
   display: grid;
-  padding: 0 1rem;
 `;
 
 const Main = styled.main`
-  width: 100%; /* Equivalent to w-full */
-  margin: 0 auto; /* Equivalent to mx-auto */
+  width: 100%;
+  margin: 0 auto;
+  padding-top: var(--header-height);
   background-color: var(--color-grey-100);
 `;
 

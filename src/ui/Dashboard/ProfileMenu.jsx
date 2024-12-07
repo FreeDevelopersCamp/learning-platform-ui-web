@@ -47,49 +47,56 @@ const StyledList = styled.ul`
   overflow: hidden;
 
   & li {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-
-  & li:last-child {
-    border-bottom: none;
+    font-size: 2rem;
   }
 `;
 
 const StyledButton = styled.button`
   width: 100%;
   text-align: left;
-  background: none;
-  border: none;
-  padding: 1.2rem 2.4rem;
-  font-size: 14px;
+  margin-left: 8px;
+  margin-right: 8px;
+  outline: 0px;
+  padding: 8px 12px;
+  position: relative;
+
+  transition: background-color 125ms ease-out;
+  width: calc(100% - 16px);
+  background: transparent;
+  min-height: 36px;
+
+  font-size: 1.5rem;
   font-weight: 500; /* Slightly bolder text */
-  color: var(--color-grey-800);
-  transition: all 0.2s;
+  font-family: 'Poppins', sans-serif;
+  text-align: left;
+  color: var(--color-grey-600);
+
+  border-radius: 5px;
+  /* transition: all 0.2s; */
 
   display: flex;
   align-items: center;
-  gap: 1.6rem;
+  gap: 1.4rem;
 
   overflow: hidden;
-  text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
-  line-height: 1.25;
+  line-height: 1rem;
 
   &:hover {
-    background-color: var(--color-grey-50); /* Lighter background */
-    color: var(--color-brand-600); /* Brand color for hover */
+    background-color: var(--color-grey-100); /* Lighter background */
+    color: var(--color-grey-700); /* Darker text color */
   }
 
   & svg {
-    width: 1.6rem;
-    height: 1.6rem;
-    color: var(--color-grey-700); /* Softer icon color */
+    width: 1.8rem;
+    height: 2rem;
+    color: var(--color-grey-600); /* Softer icon color */
     transition: color 0.3s;
   }
 
   &:hover svg {
-    color: var(--color-brand-600); /* Change icon color on hover */
+    color: var(--color-grey-700); /* Change icon color on hover */
   }
 `;
 
@@ -119,8 +126,8 @@ function Toggle({ id, user }) {
 
     const rect = e.target.closest('button').getBoundingClientRect();
     setPosition({
-      x: window.innerWidth - rect.width - rect.x,
-      y: rect.y + rect.height + 8,
+      x: window.innerWidth - rect.width - rect.x - 34,
+      y: rect.y + rect.height,
     });
 
     openId === id ? close() : open(id);

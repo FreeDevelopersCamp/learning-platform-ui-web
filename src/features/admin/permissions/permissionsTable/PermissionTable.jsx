@@ -8,6 +8,7 @@ import Pagination from '../../../../ui/Pagination';
 import Table from '../../../../ui/Table';
 import Menus from '../../../../ui/Menus';
 import Modal from '../../../../ui/Modal';
+import { getRoleCode } from '../../../../utils/helpers';
 
 const DataRow = styled.div`
   display: flex;
@@ -51,27 +52,6 @@ const roleToTagName = {
   4: 'green',
   5: 'cyan',
   6: 'blue',
-};
-
-const getRoleCode = (role) => {
-  switch (role) {
-    case '0':
-      return 'Admin';
-    case '1':
-      return 'Owner';
-    case '2':
-      return 'Manager';
-    case '3':
-      return 'Account Manager';
-    case '4':
-      return 'Content Manager';
-    case '5':
-      return 'Instructor';
-    case '6':
-      return 'Learner';
-    default:
-      return 'Unknown';
-  }
 };
 
 const data = [

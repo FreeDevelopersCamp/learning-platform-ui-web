@@ -58,9 +58,9 @@ const StyledButton = styled.button`
   }
 
   & svg {
-    width: 1.6rem;
-    height: 1.6rem;
-    color: var(--color-grey-400);
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-grey-500);
     transition: all 0.3s;
   }
 `;
