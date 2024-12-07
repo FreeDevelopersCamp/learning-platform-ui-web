@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+
 import { Auth } from '../../services/auth/Auth';
 
 const AuthContext = createContext();
@@ -32,7 +35,7 @@ export const AuthProvider = ({ children }) => {
           secure: true,
           headers: {
             Authorization: `Bearer ${token}`,
-            'x-tenant-id': process.env.REACT_APP_X_TENANT_ID || '',
+            'x-tenant-id': process.env.REACT_APP_X_TENANT_ID || 'b_1',
           },
         });
 
@@ -55,7 +58,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = async () => {
-    setIsLoading(true);
     try {
       const authService = new Auth();
       const token = localStorage.getItem('token');
@@ -71,14 +73,14 @@ export const AuthProvider = ({ children }) => {
           },
         });
       }
-    } catch (err) {
-      console.error('Error during logout:', err);
-    } finally {
+
       localStorage.removeItem('token');
       localStorage.removeItem('instructorData');
       setAuth({ isAuthenticated: false, role: null, username: null });
       setIsLoading(false);
       navigate('/home');
+    } catch (err) {
+      console.error('Error during logout:', err);
     }
   };
 
@@ -89,4 +91,41 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Custom hook to handle logout logic
+export const useLogout = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    try {
+      const authService = new Auth();
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        await authService.request({
+          path: '/Auth/logout',
+          method: 'POST',
+          secure: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'x-tenant-id': process.env.REACT_APP_X_TENANT_ID || '',
+          },
+        });
+      }
+
+      // Clear cache, local storage, and show a success message
+      queryClient.clear();
+      localStorage.removeItem('token');
+      toast.success('You have successfully logged out.');
+      navigate('/home');
+    } catch (err) {
+      console.error('Error during logout:', err);
+      toast.error('Logout failed. Please try again.');
+    }
+  };
+
+  return { logout };
+};
+
+// Hook to access authentication context
 export const useAuth = () => useContext(AuthContext);

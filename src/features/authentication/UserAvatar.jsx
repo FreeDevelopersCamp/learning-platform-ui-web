@@ -20,15 +20,13 @@ const Avatar = styled.img`
 `;
 
 function UserAvatar({ user, size }) {
-  const { personalInformation, image } = user;
-
   return (
     <StyledUserAvatar>
       <Avatar
-        src={image || '../../../public/default-user.png'}
-        alt={`${personalInformation?.name?.first
+        src={user?.image || '../../../public/default-user.png'}
+        alt={`${user?.personalInformation?.name?.first
           ?.at(0)
-          ?.toUpperCase()}${personalInformation?.name?.last
+          ?.toUpperCase()}${user?.personalInformation?.name?.last
           ?.at(0)
           ?.toUpperCase()}`}
         size={size}
