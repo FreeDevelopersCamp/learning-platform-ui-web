@@ -9,8 +9,7 @@ const SearchBarContainer = styled.div`
   border-radius: 5px;
   padding: 10px;
   background-color: #f5f7fa;
-  width: 100%;
-  max-width: 300px;
+  width: 245px;
   transition: box-shadow 0.2s, border-color 0.3s ease;
 
   &:hover {
@@ -45,7 +44,7 @@ const SearchInput = styled.input`
   }
 
   &:focus {
-    outline: none; /* Removes the browser's default focus outline */
+    outline: none;
   }
 `;
 

@@ -28,6 +28,14 @@ export function useUser(username: string) {
     onError: () => toast.error('Failed to fetch user'),
   });
 
+  if (!username) {
+    return {
+      isLoading: false,
+      user: null,
+      error: null,
+    };
+  }
+
   return {
     isLoading: userLoading,
     error: userError,

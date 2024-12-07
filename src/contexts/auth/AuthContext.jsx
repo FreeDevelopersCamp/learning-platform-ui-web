@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Error during logout:', err);
     } finally {
       localStorage.removeItem('token');
+      localStorage.removeItem('instructorData');
       setAuth({ isAuthenticated: false, role: null, username: null });
       setIsLoading(false);
       navigate('/home');

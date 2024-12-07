@@ -22,10 +22,7 @@ const Main = styled.main`
 `;
 
 function HomeLayout() {
-  const {
-    auth: { isAuthenticated: isAuth, username, role },
-    isLoading,
-  } = useAuth();
+  const { auth, isLoading } = useAuth();
 
   const {
     isLoading: sessionLoading,
@@ -33,20 +30,16 @@ function HomeLayout() {
     error: sessionError,
   } = useSession();
 
-  // Fetch user data only after session is available
   const {
     user,
     isLoading: userLoading,
     error: userError,
-  } = useUser(
-    session?.username, // Pass the username if available
-    {
-      enabled: !!session?.username, // Ensure the query runs only if session.username exists
-    },
-  );
+  } = useUser(session?.username, {
+    enabled: !!session?.username,
+  });
 
-  // Show errors or loading spinner
-  if (sessionLoading || userLoading) return <Spinner />;
+  if (isLoading || sessionLoading || userLoading) return <Spinner />;
+
   if (sessionError || userError)
     return (
       <div>
@@ -54,7 +47,6 @@ function HomeLayout() {
       </div>
     );
 
-  // Construct the user's name
   const name = user
     ? `${user?.personalInformation?.name?.first || ''} ${
         user?.personalInformation?.name?.last || ''
@@ -63,7 +55,7 @@ function HomeLayout() {
 
   return (
     <StyledAppLayout>
-      <Header isAuth={isAuth} username={session.username} name={name} />
+      <Header username={session?.username} name={name} />
       <Main>
         <Outlet />
       </Main>

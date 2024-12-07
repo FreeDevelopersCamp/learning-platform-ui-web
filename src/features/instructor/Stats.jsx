@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useInstructor } from '../../hooks/instructor/useInstructor';
 import { useInstructorData } from '../../contexts/instructor/InstructorContext';
@@ -7,63 +7,68 @@ import { useInstructorData } from '../../contexts/instructor/InstructorContext';
 import Stat from './Stat';
 import Spinner from '../../ui/Spinner';
 
-function Stats({ userId }) {
+function Stats({ userId, filter, onFilterCount }) {
   const navigate = useNavigate();
+  const [filteredStats, setFilteredStats] = useState([]);
+  const [typeCounts, setTypeCounts] = useState({});
 
   const { instructor, instructorLoading, instructorError } =
     useInstructor(userId);
-
-  const { instructorData, setInstructorData } = useInstructorData();
-  console.log('instructorData', instructorData);
+  const { setInstructorData } = useInstructorData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (instructor) {
-        setInstructorData(instructor);
+    if (instructor) {
+      setInstructorData(instructor);
+
+      let filteredData;
+      const counts = {};
+
+      if (filter === 'all') {
+        filteredData = Object.entries(instructor)
+          .filter(([key, value]) => Array.isArray(value))
+          .flatMap(([key, value]) => {
+            counts[key] = value.length;
+            return value.map((id) => ({ id, type: key }));
+          });
+
+        setTypeCounts(counts);
+      } else {
+        filteredData = (instructor[`${filter}Ids`] || []).map((id) => ({
+          id,
+          type: filter,
+        }));
       }
-    };
 
-    fetchData();
-  }, [instructor, instructorLoading, setInstructorData]);
+      setFilteredStats(filteredData);
+      onFilterCount(filteredData.length);
+    }
+  }, [instructor, filter, onFilterCount, setInstructorData]);
 
-  if (instructorLoading || !instructor) {
-    return <Spinner />;
-  }
-
+  if (instructorLoading || !instructor) return <Spinner />;
   if (instructorError) {
-    console.warn('Using fallback data due to error:', instructorError);
+    console.warn('Error or missing data:', instructorError);
     return <p>Error loading instructor data.</p>;
   }
 
-  const {
-    coursesIds = [],
-    practicesIds = [],
-    projectsIds = [],
-    roadmapsIds = [],
-  } = instructor || {};
-
   return (
     <>
-      <Stat
-        title="Roadmaps"
-        data={roadmapsIds}
-        onClick={() => navigate('/instructor/roadmaps')}
-      />
-      <Stat
-        title="Projects"
-        data={coursesIds}
-        onClick={() => navigate('/instructor/projects')}
-      />
-      <Stat
-        title="Courses"
-        data={projectsIds}
-        onClick={() => navigate('/instructor/courses')}
-      />
-      <Stat
-        title="Practices"
-        data={practicesIds}
-        onClick={() => navigate('/instructor/practices')}
-      />
+      {filter === 'all' ? (
+        Object.keys(typeCounts).map((type) => (
+          <Stat
+            key={type}
+            title={type.charAt(0).toUpperCase() + type.slice(1)}
+            data={{ count: typeCounts[type] }}
+            onClick={() => navigate(`/instructor/${type}`)}
+          />
+        ))
+      ) : (
+        <Stat
+          key={filter}
+          title={`${filter.charAt(0).toUpperCase() + filter.slice(1)}`}
+          data={{ count: filteredStats.length }}
+          onClick={() => navigate(`/instructor/${filter}`)}
+        />
+      )}
     </>
   );
 }
