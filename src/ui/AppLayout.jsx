@@ -1,25 +1,24 @@
-import { useState, useEffect } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
+import { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 
-import { useSession } from '../hooks/auth/useSession';
 import { useAuth } from '../contexts/auth/AuthContext';
-import { useUser } from '../hooks/users/useUser';
 
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
+import styled from 'styled-components';
 import Spinner from './Spinner';
 
 const StyledAppLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  background-color: #f7f7fc;
 `;
 
 const Main = styled.main`
   display: flex;
   flex-grow: 1;
-  background-color: var(--color-grey-300);
+  background-color: #f7f7fc;
 `;
 
 const Container = styled.div`
@@ -31,32 +30,12 @@ const Container = styled.div`
 
 function AppLayout() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [activeMenu, setActiveMenu] = useState('');
+  const [activeMenu, setActiveMenu] = useState('dashboard');
 
-  const {
-    isLoading: sessionLoading,
-    session,
-    error: sessionError,
-  } = useSession();
+  const { auth, isLoading } = useAuth();
 
-  const {
-    auth: { isAuthenticated: isAuth, username, role },
-    isLoading,
-  } = useAuth();
-
-  const { user, isLoading: userLoading } = useUser(username);
-
-  useEffect(() => {
-    const path = location.pathname.split('/')[2];
-    setActiveMenu(path || 'dashboard');
-  }, [location]);
-
-  if (isLoading || userLoading || sessionLoading || sessionError)
-    return <Spinner />;
-
-  const name = `${user?.personalInformation?.name?.first} ${user?.personalInformation?.name?.last}`;
+  if (isLoading) return <Spinner />;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
@@ -64,22 +43,23 @@ function AppLayout() {
     setActiveMenu(menu);
     if (menu === 'logout') return navigate('/home');
 
-    if (role === '0') navigate(`/admin/${menu}`);
-    if (role === '5') navigate(`/instructor/${menu}`);
+    if (auth.role === '0') navigate(`/admin/${menu}`);
+    if (auth.role === '5') navigate(`/instructor/${menu}`);
+    if (auth.role === '6') navigate(`/learner/${menu}`);
   };
 
   return (
     <StyledAppLayout>
-      <Header username={username} name={name} toggleSidebar={toggleSidebar} />
+      <Header toggleSidebar={toggleSidebar} />
       <Main>
         <Sidebar
           isOpen={isSidebarOpen}
           activeMenu={activeMenu}
-          role={role}
+          role={auth.role}
           onMenuSelect={handleMenuSelect}
         />
         <Container>
-          <Outlet context={session} />
+          <Outlet />
         </Container>
       </Main>
     </StyledAppLayout>
