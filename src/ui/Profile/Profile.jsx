@@ -61,7 +61,7 @@ const ProfileAvatar = styled.img`
 const DropdownMenu = styled.div`
   max-width: 240px;
   position: absolute;
-  top: ${(props) => `${props.size === '45' ? '7.5%' : '8.5%'}`};
+  top: ${(props) => `${props.size === '45' ? '59px' : '8.5%'}`};
   right: ${(props) => `${props.size === '45' ? '1.3%' : '1.5%'}`};
   padding: 10px;
   background-color: var(--color-grey-100);
@@ -70,14 +70,14 @@ const DropdownMenu = styled.div`
   opacity: 0;
   overflow: hidden;
   z-index: 10;
-  transition: max-height 0.3s ease, opacity 0.3s ease;
+  transition: max-height 0.3s ease, opacity 0.1s ease;
   pointer-events: none;
 
   &.open {
     max-height: 500px;
     opacity: 1;
     overflow: visible;
-    pointer-events: auto; /* Enable when open */
+    pointer-events: auto;
   }
 `;
 

@@ -2,7 +2,11 @@ import styled from 'styled-components';
 import MainNav from '../MainNav';
 
 const StyledSidebar = styled.aside`
-  width: ${(props) => (props.isOpen ? '12%' : '0px')};
+  position: fixed;
+  top: 6rem;
+  left: 0;
+  height: 100%;
+  width: ${(props) => (props.isOpen ? '12%' : '0')};
   background-color: #000820;
   color: white;
   padding: ${(props) => (props.isOpen ? '8px 8px 0 0' : '0px')};
@@ -11,7 +15,6 @@ const StyledSidebar = styled.aside`
   display: flex;
   flex-direction: column;
   align-items: left;
-  /* gap: 1rem; */
 
   &:hover,
   &:active,

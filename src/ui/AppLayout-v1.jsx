@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -8,26 +8,23 @@ import { useUser } from '../hooks/users/useUser';
 
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
-import Filterbar from '../features/instructor/Filterbar';
-
 import Spinner from './Spinner';
 
 const StyledAppLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden;
+  overflow: hidden; /* Prevent page scroll */
 `;
 
 const Main = styled.main`
   display: flex;
   align-items: flex-start;
   flex-grow: 1;
-  background-color: var(--color-grey-200);
+  background-color: var(--color-grey-300);
   margin-left: ${(props) => (props.sidebarOpen ? '12%' : '0')};
   transition: margin-left 0.3s;
   overflow-y: auto;
-  height: 100%;
   padding-top: 6rem;
 `;
 
@@ -65,8 +62,8 @@ const FixedSidebar = styled.aside`
 function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeMenu, setActiveMenu] = useState('');
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [activeMenu, setActiveMenu] = useState('');
 
   const {
     isLoading: sessionLoading,
@@ -80,8 +77,6 @@ function AppLayout() {
   } = useAuth();
 
   const { user, isLoading: userLoading } = useUser(username);
-
-  const mainRef = useRef(null);
 
   useEffect(() => {
     const path = location.pathname.split('/')[2];
@@ -106,7 +101,7 @@ function AppLayout() {
   return (
     <StyledAppLayout>
       <Header username={username} name={name} toggleSidebar={toggleSidebar} />
-      <Main ref={mainRef} sidebarOpen={isSidebarOpen}>
+      <Main sidebarOpen={isSidebarOpen}>
         <FixedSidebar isOpen={isSidebarOpen}>
           <Sidebar
             isOpen={isSidebarOpen}
@@ -116,7 +111,7 @@ function AppLayout() {
           />
         </FixedSidebar>
         <Container>
-          <Outlet context={{ session, mainRef }} />
+          <Outlet context={session} />
         </Container>
       </Main>
     </StyledAppLayout>

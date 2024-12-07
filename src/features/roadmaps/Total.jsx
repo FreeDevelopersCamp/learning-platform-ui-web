@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const TotalStyle = styled.div`
-  padding: 10px 0 20px 0;
+  padding: 0 0 5px 0;
 `;
 
 function Total({ filter, count }) {
@@ -9,7 +9,7 @@ function Total({ filter, count }) {
 
   return (
     <TotalStyle>
-      {count} {filter === 'all' ? 'Items' : capitalizedFilter}
+      {count || '0'} {filter === 'all' ? 'Items' : capitalizedFilter}
     </TotalStyle>
   );
 }

@@ -27,15 +27,23 @@ function Stats({ userId, filter, onFilterCount }) {
         filteredData = Object.entries(instructor)
           .filter(([key, value]) => Array.isArray(value))
           .flatMap(([key, value]) => {
-            counts[key] = value.length;
-            return value.map((id) => ({ id, type: key }));
+            const cleanKey = key.replace(/Ids$/, '');
+            counts[cleanKey] = value.length;
+            return value.map((id) => ({ id, type: cleanKey }));
           });
 
-        setTypeCounts(counts);
+        const orderedCounts = {
+          roadmaps: counts.roadmaps || 0,
+          courses: counts.courses || 0,
+          practices: counts.practices || 0,
+          projects: counts.projects || 0,
+        };
+        setTypeCounts(orderedCounts);
       } else {
+        const cleanFilter = filter.replace(/Ids$/, '');
         filteredData = (instructor[`${filter}Ids`] || []).map((id) => ({
           id,
-          type: filter,
+          type: cleanFilter,
         }));
       }
 

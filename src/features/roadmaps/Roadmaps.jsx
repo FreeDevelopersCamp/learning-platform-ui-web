@@ -1,52 +1,105 @@
+import { useEffect, useState } from 'react';
+import { useInstructorData } from '../../contexts/instructor/InstructorContext';
 import styled from 'styled-components';
 
-import { useInstructorData } from '../../contexts/instructor/InstructorContext';
-
-import RoadmapCard from './RoadmapCard';
+import Row from './Row';
 import Heading from './Heading';
+import Filterbar from '../instructor/Filterbar';
+import DashboardLayout from '../instructor/DashboardLayout';
+import RoadmapCard from './RoadmapCard';
 
-import Row from '../../ui/Row';
 import Spinner from '../../ui/Spinner';
 
-const RoadmapContainer = styled.div`
+const StyledDashboardLayout = styled.div`
   display: grid;
-  grid-template-rows: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 35px;
-  padding: 20px;
-  height: 80vh;
-  overflow-y: auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(auto-fit, minmax(250, 1fr));
+  gap: 3rem;
+  overflow: auto;
 
-  &::-webkit-scrollbar {
-    width: 8px;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 10px;
-    border: 2px solid transparent;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 `;
 
 function Roadmaps() {
   const { instructorData } = useInstructorData();
+  const [filter, setFilter] = useState('all');
+  const [filteredRoadmaps, setFilteredRoadmaps] = useState([]);
+  const [filterCount, setFilterCount] = useState(0);
 
   const { roadmapsIds = [] } = instructorData || {};
 
+  useEffect(() => {
+    if (!roadmapsIds) return;
+
+    const filtered = Object.values(roadmapsIds).filter((roadmap) => {
+      return (
+        filter === 'all' ||
+        (roadmap.topic &&
+          roadmap.topic.toLowerCase().replace(/\s+/g, '-') === filter)
+      );
+    });
+
+    setFilteredRoadmaps(filtered);
+    setFilterCount(filtered.length);
+  }, [filter, roadmapsIds]);
+
   if (!instructorData) return <Spinner />;
 
+  const title = 'Roadmaps';
+  const description =
+    'Our career tracks are hand-picked by industry experts. You will learn all you need to start a new career in the data science field.';
+
+  const filterOptions = [
+    { value: 'all', label: 'All' },
+    { value: 'data-analyst', label: 'Data Analyst' },
+    { value: 'data-engineer', label: 'Data Engineer' },
+    { value: 'data-scientist', label: 'Data Scientist' },
+    { value: 'ml-scientist', label: 'ML Scientist' },
+    { value: 'ml-engineer', label: 'ML Engineer' },
+    { value: 'ai-engineer', label: 'AI Engineer' },
+    { value: 'web-developer', label: 'Web Developer' },
+    { value: 'statistician', label: 'Statistician' },
+  ];
+
+  function handleFilterChange(selectedFilter) {
+    setFilter(selectedFilter);
+  }
+
   return (
-    <>
-      <Row type="vertical">
-        <RoadmapContainer>
-          <Heading>Roadmaps</Heading>
-          {roadmapsIds.map((roadmapId) => (
-            <RoadmapCard key={roadmapId} roadmapId={roadmapId} />
-          ))}
-        </RoadmapContainer>
-      </Row>
-    </>
+    <Row>
+      <Heading title={title} description={description} />
+      <Filterbar
+        filterOptions={filterOptions}
+        onFilterChange={handleFilterChange}
+        filter={filter}
+        count={filterCount}
+      />
+      <DashboardLayout>
+        <StyledDashboardLayout>
+          {filter === 'all' ? (
+            roadmapsIds.map((roadmapId) => (
+              <RoadmapCard key={roadmapId} roadmapId={roadmapId} />
+            ))
+          ) : filteredRoadmaps.length > 0 ? (
+            filteredRoadmaps.map((roadmap) => (
+              <RoadmapCard key={roadmap.id} roadmapId={roadmap.id} />
+            ))
+          ) : (
+            <div
+              style={{ width: '100%', height: '15vh', padding: '20px' }}
+            ></div>
+          )}
+        </StyledDashboardLayout>
+      </DashboardLayout>
+    </Row>
   );
 }
 

@@ -3,81 +3,74 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRoadmap } from '../../hooks/roadmaps/useRoadmap';
 
-import { FaFreeCodeCamp } from 'react-icons/fa';
-import { LuClock3 } from 'react-icons/lu';
-import { FaBolt } from 'react-icons/fa';
-import { PiTarget } from 'react-icons/pi';
-import { CiViewList } from 'react-icons/ci';
-import { RiTeamLine } from 'react-icons/ri';
-
-import Spinner from '../../ui/Spinner';
-
 const Card = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #001b38;
-  color: #ffffff;
-  padding: 25px 35px 0;
-  gap: 10px;
+  background-color: #f9f9f9;
+  color: #003366;
   border-radius: 5px;
-  width: 80%;
-  max-width: 1200px;
-  height: 250px;
-  margin: 0 auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+  &:hover {
+    box-shadow: 0px 2px 10px 0 rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+`;
+
+const Type = styled.p`
+  color: var(--color-grey-500);
+  font-size: 1.1rem;
+  text-transform: capitalize;
+  letter-spacing: 0.2rem;
+  padding-bottom: 0.4rem;
 `;
 
 const Topic = styled.div`
-  color: var(--color-grey-0);
-  font-size: 2.5rem;
-  font-weight: bold;
-`;
-
-const Button = styled.button`
-  width: 135px;
-  height: 40px;
-  padding: 8px;
-  margin-top: 3px;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 1.5rem;
-  border: none;
   color: #001b38;
-  background-color: #03ef62;
-
-  &:hover {
-    background-color: #22bd60;
-  }
-
-  &:focus {
-    outline: 2px solid #22bd60;
-    outline-offset: 2px;
-  }
+  font-size: 2rem;
+  font-weight: bold;
 `;
 
 const Description = styled.p`
-  font-size: 1.3rem;
-  color: var(--color-grey-100);
-  line-height: 1.5;
+  color: #001b38;
   padding-top: 1rem;
-`;
-
-const Stats = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100px;
-  color: var(--color-grey-200);
   font-size: 1.5rem;
-  gap: 30px;
-  padding: 1.5rem 0 0;
+  color: var(--color-grey-500);
+  line-height: 1.5;
+  margin-bottom: 10px;
 `;
 
-const Span = styled.span`
+const Details = styled.div`
   display: flex;
-  gap: 7px;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin-top: 0 auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-grey-300);
+  z-index: 1;
+`;
+
+const Button = styled.button`
+  width: 110px;
+  height: 40px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: #001b38;
+  background-color: #f9f9f9;
+  border: 2px solid #003366;
+
+  &:hover {
+    background-color: var(--color-grey-300);
+  }
 `;
 
 function RoadmapCard({ roadmapId }) {
@@ -110,50 +103,13 @@ function RoadmapCard({ roadmapId }) {
   };
 
   return (
-    <Card>
-      <Topic>{name || 'Roadmap Title'}</Topic>
-      <Button onClick={() => handleViewDetails(roadmapId)}>View Details</Button>
-
+    <Card onClick={() => handleViewDetails(roadmapId)}>
+      <Type>ROADMAP</Type>
+      <Topic>{topic || 'Roadmap Topic'}</Topic>
       <Description>{description || 'No description available.'}</Description>
-
-      <Stats>
-        <Span>
-          <FaFreeCodeCamp style={{ fontSize: '2.2rem' }} />
-          <span>{topic || ''}</span>
-        </Span>
-        <Span>
-          <LuClock3 style={{ fontSize: '1.8rem' }} />
-          <span>{duration || 0}</span> hours
-        </Span>
-        <Span>
-          <FaBolt style={{ fontSize: '1.7rem' }} />
-          <span>{coursesIds.length}</span> courses
-        </Span>
-        <Span>
-          <PiTarget
-            style={{
-              fontSize: '1.8rem',
-              transform: 'rotate(-45deg)',
-            }}
-          />
-          <span>{0}</span> assessments
-        </Span>
-        <Span>
-          <CiViewList style={{ fontSize: '1.8rem' }} />
-          <span>{projectsIds.length}</span> projects
-        </Span>
-        <Span>
-          <RiTeamLine style={{ fontSize: '1.8rem' }} />
-          <span>{practicesIds.length}</span> practices
-        </Span>
-        <Span>
-          <RiTeamLine style={{ fontSize: '1.8rem' }} />
-          <span>{participants}</span> participants
-        </Span>
-      </Stats>
-
-      {/* for learner */}
-      {/* <ProgressBar /> */}
+      <Details>
+        <Button onClick={() => handleViewDetails}>View Details</Button>
+      </Details>
     </Card>
   );
 }

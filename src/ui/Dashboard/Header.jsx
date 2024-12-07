@@ -10,13 +10,19 @@ import Profile from '../Profile/Profile';
 import { useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   background-color: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 5px 25px;
   border-bottom: 1px solid var(--color-grey-300);
+  box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.4);
   height: 6rem;
+  z-index: 1000;
 
   .left-section {
     display: flex;
@@ -49,7 +55,6 @@ const HeaderContainer = styled.div`
       font-weight: 600;
       color: #2c3e50;
       letter-spacing: 1px;
-      /* margin-right: 65px; */
       cursor: pointer;
     }
   }
