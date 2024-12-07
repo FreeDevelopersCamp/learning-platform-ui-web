@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       localStorage.removeItem('token');
+      localStorage.removeItem('instructorData');
       setAuth({ isAuthenticated: false, role: null, username: null });
       setIsLoading(false);
       navigate('/home');

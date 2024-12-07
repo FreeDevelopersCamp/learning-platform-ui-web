@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Auth } from '../../services/auth/Auth'; // Adjust the import path if necessary
+import { Auth } from '../../services/auth/Auth';
 
 export function useSession() {
-  const token = localStorage.getItem('token'); // Get the token from localStorage (or other secure storage)
+  const token = localStorage.getItem('token');
 
   const defaultHeaders = {
     Authorization: `Bearer ${token}`,
@@ -25,6 +25,14 @@ export function useSession() {
     enabled: !!token, // Only fetch session if a token exists
     onError: () => toast.error('Failed to fetch session'),
   });
+
+  if (!token) {
+    return {
+      isLoading: false,
+      session: null,
+      error: null,
+    };
+  }
 
   return {
     isLoading: sessionLoading,

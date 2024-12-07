@@ -26,5 +26,10 @@ export const getToday = function (options = {}) {
 
 export const formatCurrency = (value) =>
   new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(
-    value
+    value,
   );
+
+export const convertDurationMinutesToHours = (minutes) => {
+  const hours = Math.floor(minutes / 60);
+  return `${hours} hour${hours !== 1 ? 's' : ''}`;
+};

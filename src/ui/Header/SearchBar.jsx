@@ -5,27 +5,29 @@ import styled from 'styled-components';
 const SearchBarContainer = styled.div`
   display: flex;
   align-items: center;
-  border: 2px solid ${({ isActive }) => (isActive ? '#0000ff' : '#bebebe')};
-  border-radius: 25px;
-  padding: 13px 15px;
+  border: 2px solid #ccc;
+  border-radius: 50px;
+  padding: 10px;
   background-color: #f5f7fa;
   width: 100%;
-  max-width: 310px;
-  margin: 15px 15px 15px 0;
-  transition: all 0.3s ease;
+  max-width: 500px;
+  min-width: 300px;
+  margin-left: 30px;
+  transition: box-shadow 0.2s, border-color 0.3s ease;
 
   &:hover {
-    border-color: #0000ff;
+    border-color: var(--color-brand-600);
   }
 
   &:focus-within {
-    border-color: #0000ff; /* Highlights parent border when child input is focused */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border-color: var(--color-brand-600);
   }
 `;
 
 const SearchIcon = styled.span`
   margin-right: 10px;
-  font-size: 20px;
+  font-size: 16px;
   color: #333;
   display: flex;
   align-items: center;
@@ -35,18 +37,17 @@ const SearchIcon = styled.span`
 const SearchInput = styled.input`
   border: none;
   outline: none;
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
   width: 100%;
   background-color: transparent;
 
   &::placeholder {
-    color: #333;
+    color: #aaa;
   }
 
   &:focus {
     outline: none; /* Removes the browser's default focus outline */
-    border: none; /* Ensures no border appears on focus */
   }
 `;
 
@@ -58,7 +59,7 @@ const SearchBar = () => {
   };
 
   return (
-    <SearchBarContainer isActive={searchText.length > 0}>
+    <SearchBarContainer>
       <SearchIcon>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +77,7 @@ const SearchBar = () => {
       </SearchIcon>
       <SearchInput
         type="text"
-        placeholder="What do you want to learn?"
+        placeholder="Search"
         value={searchText}
         onChange={handleInputChange}
       />
