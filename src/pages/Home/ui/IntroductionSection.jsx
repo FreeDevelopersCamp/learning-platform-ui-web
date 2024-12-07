@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-import PythonLogo from "../../../assets/Icons/python.svg";
-import GitLogo from "../../../assets/Icons/git.svg";
-import ReactLogo from "../../../assets/Icons/react.svg";
-import NodejsLogo from "../../../assets/Icons/node-js.svg";
-import programmingTeamImage from "../../../assets/Images/programming-team.jpg";
-import JavascriptIcon from "../../../assets/Icons/javascript.svg";
+import PythonLogo from '../../../assets/Icons/python.svg';
+import GitLogo from '../../../assets/Icons/git.svg';
+import ReactLogo from '../../../assets/Icons/react.svg';
+import NodejsLogo from '../../../assets/Icons/node-js.svg';
+import programmingTeamImage from '../../../assets/Images/programming-team.jpg';
+import JavascriptIcon from '../../../assets/Icons/javascript.svg';
 
 // Styled Components
 const IntroductionSectionWrapper = styled.section`
@@ -143,7 +143,7 @@ const IntroductionSection = () => {
   }, [logos.length]);
 
   return (
-    <IntroductionSectionWrapper>
+    <IntroductionSectionWrapper id="courses">
       <IntroductionContent>
         <IntroductionImageWrapper>
           {/* Display the programming team image */}
@@ -155,7 +155,7 @@ const IntroductionSection = () => {
             {/* Display the rotating SVG logos */}
             <IconOverlay
               className={`w-20 h-20 transition-opacity duration-500 ${
-                fade ? "opacity-100" : "opacity-0"
+                fade ? 'opacity-100' : 'opacity-0'
               }`}
             >
               <IconImage src={logos[currentLogoIndex]} alt="Rotating Logo" />
@@ -170,10 +170,10 @@ const IntroductionSection = () => {
           <Buttons>
             <BrowseCoursesButton>Browse Courses</BrowseCoursesButton>
             <StartLearningLink href="#start-learning">
-              Start learning for free{" "}
+              Start learning for free{' '}
               <FontAwesomeIcon
                 icon={faArrowRight}
-                style={{ marginLeft: "8px" }}
+                style={{ marginLeft: '8px' }}
               />
             </StartLearningLink>
           </Buttons>

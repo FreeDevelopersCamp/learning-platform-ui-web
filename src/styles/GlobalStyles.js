@@ -42,6 +42,10 @@ const GlobalStyles = createGlobalStyle`
   }
 }
 
+:root {
+    --header-height: 6rem;
+  }
+
 *,
 *::before,
 *::after {

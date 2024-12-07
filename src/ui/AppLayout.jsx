@@ -16,6 +16,8 @@ const StyledAppLayout = styled.div`
 `;
 
 const Main = styled.main`
+  padding-top: var(--header-height);
+  position: relative;
   display: flex;
   flex-grow: 1;
   background-color: #f7f7fc;
