@@ -33,6 +33,7 @@ const NavList = styled.ul`
   gap: 0.8rem;
   padding: 1rem 1.2rem 0;
   color: white;
+  position: fixed;
 `;
 
 const MenuItem = styled.li`
