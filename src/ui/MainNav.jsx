@@ -6,7 +6,6 @@ import {
   HiEnvelope,
   HiHashtag,
   HiOutlineCalendarDays,
-  HiOutlineCog6Tooth,
   HiOutlineHome,
   HiOutlineUsers,
   HiPresentationChartLine,
@@ -15,7 +14,6 @@ import { RiDragDropLine } from 'react-icons/ri';
 import { HiChatBubbleLeftRight } from 'react-icons/hi2';
 import { BsShieldLock } from 'react-icons/bs';
 import { IoIosNotificationsOutline } from 'react-icons/io';
-import { LuLogOut } from 'react-icons/lu';
 import { FaTasks } from 'react-icons/fa';
 import { GoProjectRoadmap } from 'react-icons/go';
 import { BiTask } from 'react-icons/bi';
@@ -35,6 +33,7 @@ const NavList = styled.ul`
   gap: 0.8rem;
   padding: 1rem 1.2rem 0;
   color: white;
+  position: fixed;
 `;
 
 const MenuItem = styled.li`
@@ -136,14 +135,6 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
         label: 'Certifications',
       },
       { id: 'tutorials', icon: <CastForEducationIcon />, label: 'Tutorials' },
-      { id: 'email', icon: <HiEnvelope />, label: 'Email' },
-      { id: 'chat', icon: <HiChatBubbleLeftRight />, label: 'Chat' },
-      {
-        id: 'notifications',
-        icon: <IoIosNotificationsOutline style={{ fontSize: '3rem' }} />,
-        label: 'Notifications',
-      },
-      { id: 'calendar', icon: <HiOutlineCalendarDays />, label: 'Calendar' },
     ];
 
     if (role === '0') {

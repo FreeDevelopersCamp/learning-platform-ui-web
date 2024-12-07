@@ -22,8 +22,6 @@ import InstructorPractices from './features/roadmaps/InstructorPractices';
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
 
-// import { DarkModeProvider } from './context/DarkModeContext';
-
 import HomeLayout from './ui/HomeLayout';
 import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
@@ -49,13 +47,7 @@ function App() {
         <AuthProvider>
           <InstructorProvider>
             <Routes>
-              <Route
-                element={
-                  // <ProtectedRoute role="none">
-                  <HomeLayout />
-                  // </ProtectedRoute>
-                }
-              >
+              <Route element={<HomeLayout />}>
                 <Route index element={<Navigate replace to="home" />} />
                 <Route path="home" element={<HomePage />} />
 
@@ -67,9 +59,34 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route
+                  path="calendar"
+                  element={
+                    <ProtectedRoute role="all">
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="taskboard"
+                  element={
+                    <ProtectedRoute role="all">
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="community"
+                  element={
+                    <ProtectedRoute role="all">
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  }
+                />
               </Route>
 
               <Route element={<AppLayout />}>
+                <Route path="admin" element={<Navigate to="dashboard" />} />
                 <Route
                   path="admin/dashboard"
                   element={
@@ -109,6 +126,10 @@ function App() {
                       <div>instructor/profile</div>
                     </ProtectedRoute>
                   }
+                />
+                <Route
+                  path="instructor"
+                  element={<Navigate to="dashboard" />}
                 />
                 <Route
                   path="instructor/dashboard"
@@ -159,8 +180,9 @@ function App() {
                   }
                 />
 
+                <Route path="learner" element={<Navigate to="dashboard" />} />
                 <Route
-                  path="learner/home"
+                  path="learner/dashboard"
                   element={
                     <ProtectedRoute role="6">
                       <LearnerPage />

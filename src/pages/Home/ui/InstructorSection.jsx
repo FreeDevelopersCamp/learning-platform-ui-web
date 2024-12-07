@@ -61,7 +61,7 @@ const InstructorSection = () => {
   const navigate = useNavigate();
 
   return (
-    <InstructorSectionContainer>
+    <InstructorSectionContainer id="instructor">
       <ImageContainer>
         <InstructorImage
           src="https://s.udemycdn.com/home/non-student-cta/instructor-1x-v3.jpg"

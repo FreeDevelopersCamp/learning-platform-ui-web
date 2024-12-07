@@ -1,10 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-
-import { useSession } from '../hooks/auth/useSession';
 import { useAuth } from '../contexts/auth/AuthContext';
-import { useUser } from '../hooks/users/useUser';
+import styled from 'styled-components';
 
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
@@ -17,18 +14,21 @@ const StyledAppLayout = styled.div`
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
+  background-color: #f7f7fc;
 `;
 
 const Main = styled.main`
+  padding-top: var(--header-height);
+  position: relative;
   display: flex;
   align-items: flex-start;
   flex-grow: 1;
-  background-color: var(--color-grey-200);
   margin-left: ${(props) => (props.sidebarOpen ? '12%' : '0')};
   transition: margin-left 0.3s;
   overflow-y: auto;
   height: 100%;
   padding-top: 6rem;
+  background-color: #f7f7fc;
 `;
 
 const Container = styled.div`
@@ -65,7 +65,7 @@ const FixedSidebar = styled.aside`
 function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeMenu, setActiveMenu] = useState('');
+  const [activeMenu, setActiveMenu] = useState('dashboard');
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   const {
@@ -88,10 +88,10 @@ function AppLayout() {
     setActiveMenu(path || 'dashboard');
   }, [location]);
 
-  if (isLoading || userLoading || sessionLoading || sessionError)
-    return <Spinner />;
 
-  const name = `${user?.personalInformation?.name?.first} ${user?.personalInformation?.name?.last}`;
+  const { auth, isLoading } = useAuth();
+
+  if (isLoading) return <Spinner />;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
@@ -99,8 +99,9 @@ function AppLayout() {
     setActiveMenu(menu);
     if (menu === 'logout') return navigate('/home');
 
-    if (role === '0') navigate(`/admin/${menu}`);
-    if (role === '5') navigate(`/instructor/${menu}`);
+    if (auth.role === '0') navigate(`/admin/${menu}`);
+    if (auth.role === '5') navigate(`/instructor/${menu}`);
+    if (auth.role === '6') navigate(`/learner/${menu}`);
   };
 
   return (
@@ -117,6 +118,7 @@ function AppLayout() {
         </FixedSidebar>
         <Container>
           <Outlet context={{ session, mainRef }} />
+
         </Container>
       </Main>
     </StyledAppLayout>

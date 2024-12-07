@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import CapIcon from "../../../assets/Icons/cap.svg";
-import BookIcon from "../../../assets/Icons/book.svg";
-import BuildIcon from "../../../assets/Icons/build.svg";
+import CapIcon from '../../../assets/Icons/cap.svg';
+import BookIcon from '../../../assets/Icons/book.svg';
+import BuildIcon from '../../../assets/Icons/build.svg';
 
 // Styled Components with increased card sizes
 const EducationStatsContainer = styled.div`
@@ -70,7 +70,7 @@ const CardParagraph = styled.p`
 
 const EducationStats = () => {
   return (
-    <EducationStatsContainer>
+    <EducationStatsContainer id="about">
       <Heading>
         More than a platform. <strong>Free Developers Camp</strong> is a
         commitment to bringing tech and open source collaboration to students

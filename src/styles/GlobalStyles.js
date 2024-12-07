@@ -43,6 +43,10 @@ const GlobalStyles = createGlobalStyle`
   }
 }
 
+:root {
+    --header-height: 6rem;
+  }
+
 *,
 *::before,
 *::after {
@@ -67,6 +71,12 @@ body {
   min-height: 100vh;
   line-height: 1.5;
   font-size: 1.6rem;
+}
+
+.architects-daughter-regular {
+  font-family: "Architects Daughter", cursive;
+  font-weight: 400;
+  font-style: normal;
 }
 
 input,

@@ -6,14 +6,14 @@
 
 .auth-buttons .login-button-homePage,
 .auth-buttons .signup-button-homePage {
-  padding: 13px 25px;
+  padding: 5px 15px;
   border-radius: 5px;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 16px;
   cursor: pointer;
   text-decoration: none;
   transition: all 0.2s ease;
-  box-sizing: border-box; /* Include border in total width and height */
+  box-sizing: border-box;
 }
 
 .auth-buttons .login-button-homePage {

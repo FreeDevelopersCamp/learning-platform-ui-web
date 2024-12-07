@@ -1,8 +1,10 @@
 import { createContext, useContext, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { HiEllipsisVertical } from 'react-icons/hi2';
+import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 import styled from 'styled-components';
-import { useOutsideClick } from '../hooks/useOutsideClick';
+
+import { useOutsideClick } from '../../hooks/useOutsideClick';
+import UserAvatar from '../../features/authentication/UserAvatar';
 
 const Menu = styled.div`
   display: flex;
@@ -11,10 +13,13 @@ const Menu = styled.div`
 `;
 
 const StyledToggle = styled.button`
+  display: flex;
+  align-items: center;
   background: none;
   border: none;
-  padding: 0.4rem;
-  border-radius: var(--border-radius-sm);
+  border-radius: 3rem;
+  font-size: 1rem;
+  font-weight: 500;
   transform: translateX(0.8rem);
   transition: all 0.2s;
 
@@ -23,45 +28,75 @@ const StyledToggle = styled.button`
   }
 
   & svg {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2rem;
+    height: 2rem;
     color: var(--color-grey-700);
   }
 `;
 
 const StyledList = styled.ul`
   position: fixed;
-
-  background-color: var(--color-grey-0);
-  box-shadow: var(--shadow-sm);
-  border-radius: var(--border-radius-md);
-
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2), 0px 2px 4px rgba(0, 0, 0, 0.06); /* Updated shadow */
+  border-radius: var(--border-radius-lg); /* Smooth corners */
   right: ${(props) => props.position.x}px;
   top: ${(props) => props.position.y}px;
+  min-width: 250px; /* Increased width */
+  z-index: 1000;
+  padding: 0.5rem 0;
+  overflow: hidden;
+
+  & li {
+    font-size: 2rem;
+  }
 `;
 
 const StyledButton = styled.button`
   width: 100%;
   text-align: left;
-  background: none;
-  border: none;
-  padding: 1.2rem 2.4rem;
-  font-size: 1.4rem;
-  transition: all 0.2s;
+  margin-left: 8px;
+  margin-right: 8px;
+  outline: 0px;
+  padding: 8px 12px;
+  position: relative;
+
+  transition: background-color 125ms ease-out;
+  width: calc(100% - 16px);
+  background: transparent;
+  min-height: 36px;
+
+  font-size: 1.5rem;
+  font-weight: 500; /* Slightly bolder text */
+  font-family: 'Poppins', sans-serif;
+  text-align: left;
+  color: var(--color-grey-600);
+
+  border-radius: 5px;
+  /* transition: all 0.2s; */
 
   display: flex;
   align-items: center;
-  gap: 1.6rem;
+  gap: 1.4rem;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1rem;
 
   &:hover {
-    background-color: var(--color-grey-50);
+    background-color: var(--color-grey-100); /* Lighter background */
+    color: var(--color-grey-700); /* Darker text color */
   }
 
   & svg {
-    width: 2rem;
+    width: 1.8rem;
     height: 2rem;
-    color: var(--color-grey-500);
-    transition: all 0.3s;
+    color: var(--color-grey-600); /* Softer icon color */
+    transition: color 0.3s;
+  }
+
+  &:hover svg {
+    color: var(--color-grey-700); /* Change icon color on hover */
   }
 `;
 
@@ -83,7 +118,7 @@ function Menus({ children }) {
   );
 }
 
-function Toggle({ id }) {
+function Toggle({ id, user }) {
   const { openId, close, open, setPosition } = useContext(MenusContext);
 
   function handleClick(e) {
@@ -91,16 +126,21 @@ function Toggle({ id }) {
 
     const rect = e.target.closest('button').getBoundingClientRect();
     setPosition({
-      x: window.innerWidth - rect.width - rect.x,
-      y: rect.y + rect.height + 8,
+      x: window.innerWidth - rect.width - rect.x - 34,
+      y: rect.y + rect.height,
     });
 
-    openId === '' || openId !== id ? open(id) : close();
+    openId === id ? close() : open(id);
   }
 
   return (
     <StyledToggle onClick={handleClick}>
-      <HiEllipsisVertical />
+      <UserAvatar user={user} />
+      {openId === id ? (
+        <HiChevronUp style={{ marginLeft: '8px', fontSize: '0.5rem' }} />
+      ) : (
+        <HiChevronDown style={{ marginLeft: '8px', fontSize: '0.5rem' }} />
+      )}
     </StyledToggle>
   );
 }

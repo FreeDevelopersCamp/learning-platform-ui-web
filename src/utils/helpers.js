@@ -33,3 +33,24 @@ export const convertDurationMinutesToHours = (minutes) => {
   const hours = Math.floor(minutes / 60);
   return `${hours} hour${hours !== 1 ? 's' : ''}`;
 };
+
+export const getRoleCode = (role) => {
+  switch (role) {
+    case '0':
+      return 'Admin';
+    case '1':
+      return 'Owner';
+    case '2':
+      return 'Manager';
+    case '3':
+      return 'Account Manager';
+    case '4':
+      return 'Content Manager';
+    case '5':
+      return 'Instructor';
+    case '6':
+      return 'Learner';
+    default:
+      return 'Unknown';
+  }
+};
