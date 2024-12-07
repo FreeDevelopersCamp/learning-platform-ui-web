@@ -7,14 +7,13 @@ const Container = styled.div`
   align-items: flex-start;
   width: 100%;
   max-width: 1100px;
-  height: 225px;
+  height: 175px;
   font-family: Arial, Helvetica, sans-serif;
   background-color: #01162e;
   color: #ffffff;
 
-  padding: 30px 25px;
+  padding: 0px 25px;
   border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const Title = styled.h1`
