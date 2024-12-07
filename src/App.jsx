@@ -19,8 +19,6 @@ import InstructorRoadmaps from './pages/Instructor/Roadmaps';
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
 
-// import { DarkModeProvider } from './context/DarkModeContext';
-
 import HomeLayout from './ui/HomeLayout';
 import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
@@ -44,14 +42,8 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route
-              element={
-                // <ProtectedRoute role="none">
-                <HomeLayout />
-                // </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate replace to="home" />} />
+            <Route element={<HomeLayout />}>
+              <Route index path="/" element={<Navigate replace to="home" />} />
               <Route path="home" element={<HomePage />} />
 
               <Route

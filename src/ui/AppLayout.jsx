@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../contexts/auth/AuthContext';
+
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
 import styled from 'styled-components';
 import Spinner from './Spinner';
-
-import { useAuth } from '../contexts/auth/AuthContext';
-import { useUser } from '../hooks/users/useUser';
 
 const StyledAppLayout = styled.div`
   display: flex;
@@ -28,23 +27,15 @@ const Container = styled.div`
   width: 75%;
   margin: 30px auto;
 `;
-// admin = '0', owner = '1', manager = '2', accountManager = '3', contentManager = '4', instructor = '5', learner = '6',
 
 function AppLayout() {
   const navigate = useNavigate();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState('dashboard');
 
-  const {
-    auth: { isAuthenticated: isAuth, username, role },
-    isLoading,
-  } = useAuth();
+  const { auth, isLoading } = useAuth();
 
-  const { user, isLoading: userLoading } = useUser(username);
-
-  if (isLoading || userLoading) return <Spinner />;
-
-  const name = `${user?.personalInformation?.name?.first} ${user?.personalInformation?.name?.last}`;
+  if (isLoading) return <Spinner />;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
@@ -52,18 +43,19 @@ function AppLayout() {
     setActiveMenu(menu);
     if (menu === 'logout') return navigate('/home');
 
-    if (role === '0') navigate(`/admin/${menu}`);
-    if (role === '5') navigate(`/instructor/${menu}`);
+    if (auth.role === '0') navigate(`/admin/${menu}`);
+    if (auth.role === '5') navigate(`/instructor/${menu}`);
+    if (auth.role === '6') navigate(`/learner/${menu}`);
   };
 
   return (
     <StyledAppLayout>
-      <Header username={username} name={name} toggleSidebar={toggleSidebar} />
+      <Header toggleSidebar={toggleSidebar} />
       <Main>
         <Sidebar
           isOpen={isSidebarOpen}
           activeMenu={activeMenu}
-          role={role}
+          role={auth.role}
           onMenuSelect={handleMenuSelect}
         />
         <Container>

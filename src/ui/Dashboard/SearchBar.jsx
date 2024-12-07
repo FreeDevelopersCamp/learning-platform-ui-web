@@ -6,11 +6,13 @@ const SearchBarContainer = styled.div`
   display: flex;
   align-items: center;
   border: 2px solid #ccc;
-  border-radius: 5px;
+  border-radius: 50px;
   padding: 10px;
   background-color: #f5f7fa;
   width: 100%;
-  max-width: 300px;
+  max-width: 500px;
+  min-width: 300px;
+  margin-left: 30px;
   transition: box-shadow 0.2s, border-color 0.3s ease;
 
   &:hover {
@@ -75,7 +77,7 @@ const SearchBar = () => {
       </SearchIcon>
       <SearchInput
         type="text"
-        placeholder="What do you want to learn?"
+        placeholder="Search"
         value={searchText}
         onChange={handleInputChange}
       />

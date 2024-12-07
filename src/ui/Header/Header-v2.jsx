@@ -14,18 +14,13 @@ const HeaderContainer = styled.header`
   padding: 0px 20px;
 `;
 
-// Component
-const Header = ({ isAuth, username, name }) => {
+const Header = ({ isAuth, user }) => {
   return (
     <HeaderContainer>
       <Title />
       <NavBar />
       <SearchBar />
-      {!isAuth ? (
-        <AuthButtons />
-      ) : (
-        <Profile username={username} name={name} size="55" />
-      )}
+      {!isAuth ? <AuthButtons /> : <Profile user={user} size="55" />}
     </HeaderContainer>
   );
 };

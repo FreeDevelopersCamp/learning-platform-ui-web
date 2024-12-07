@@ -68,6 +68,12 @@ body {
   font-size: 1.6rem;
 }
 
+.architects-daughter-regular {
+  font-family: "Architects Daughter", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
 input,
 button,
 textarea,

@@ -1,11 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-// Styled Components
 const NavContainer = styled.nav`
   flex: 1;
   margin: 0 0 5px 2.5%;
+  display: ${(props) => (props.hidden ? 'none' : 'block')};
 `;
 
 const NavList = styled.ul`
@@ -22,29 +21,19 @@ const NavItem = styled.li`
 const StyledLink = styled(Link)`
   color: var(--color-grey-800);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 18px;
+
+  font-family: 'Poppins', sans-serif;
 
   &:hover {
     color: var(--color-grey-500);
   }
 `;
 
-// If you have external links, you can define a separate styled component
-const ExternalLink = styled.a`
-  color: #333;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 18px;
-
-  &:hover {
-    color: #555; /* Optional: Add a hover effect */
-  }
-`;
-
-const NavBar = () => {
+const NavBar = ({ hidden = false }) => {
   return (
-    <NavContainer>
+    <NavContainer hidden={hidden}>
       <NavList>
         <NavItem>
           <StyledLink to="/">Home</StyledLink>
@@ -58,12 +47,6 @@ const NavBar = () => {
         <NavItem>
           <StyledLink to="/contact">Contact</StyledLink>
         </NavItem>
-        {/* Example of an external link */}
-        {/* <NavItem>
-          <ExternalLink href="https://www.freeDeveloperCamp.com" target="_blank" rel="noopener noreferrer">
-            Free Developer Camp
-          </ExternalLink>
-        </NavItem> */}
       </NavList>
     </NavContainer>
   );
