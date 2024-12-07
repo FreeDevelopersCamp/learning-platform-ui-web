@@ -1,13 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Header from './Header/Header';
+import Header from './Dashboard/Header';
 import Footer from './Footer/Footer';
-import Spinner from './Spinner';
-
-import { useAuth } from '../contexts/auth/AuthContext';
-import { useUser } from '../hooks/users/useUser';
-import { useSession } from '../hooks/auth/useSession';
 
 const StyledAppLayout = styled.div`
   flex: 1;
@@ -22,40 +17,9 @@ const Main = styled.main`
 `;
 
 function HomeLayout() {
-  const { auth, isLoading } = useAuth();
-
-  const {
-    isLoading: sessionLoading,
-    session,
-    error: sessionError,
-  } = useSession();
-
-  const {
-    user,
-    isLoading: userLoading,
-    error: userError,
-  } = useUser(session?.username, {
-    enabled: !!session?.username,
-  });
-
-  if (isLoading || sessionLoading || userLoading) return <Spinner />;
-
-  if (sessionError || userError)
-    return (
-      <div>
-        Error loading data: {sessionError?.message || userError?.message}
-      </div>
-    );
-
-  const name = user
-    ? `${user?.personalInformation?.name?.first || ''} ${
-        user?.personalInformation?.name?.last || ''
-      }`
-    : '';
-
   return (
     <StyledAppLayout>
-      <Header username={session?.username} name={name} />
+      <Header atHome={true} toggleSidebar={false} />
       <Main>
         <Outlet />
       </Main>
