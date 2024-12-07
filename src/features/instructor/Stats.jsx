@@ -10,7 +10,7 @@ import Spinner from '../../ui/Spinner';
 function Stats({ userId, filter, onFilterCount }) {
   const navigate = useNavigate();
   const [filteredStats, setFilteredStats] = useState([]);
-  const [typeCounts, setTypeCounts] = useState({}); // Store counts for each type
+  const [typeCounts, setTypeCounts] = useState({});
 
   const { instructor, instructorLoading, instructorError } =
     useInstructor(userId);
@@ -18,32 +18,29 @@ function Stats({ userId, filter, onFilterCount }) {
 
   useEffect(() => {
     if (instructor) {
-      // Set the instructor data in the context
       setInstructorData(instructor);
 
       let filteredData;
-      const counts = {}; // To calculate individual type counts
+      const counts = {};
 
       if (filter === 'all') {
-        // Combine all IDs from different types
         filteredData = Object.entries(instructor)
-          .filter(([key, value]) => Array.isArray(value)) // Only process arrays
+          .filter(([key, value]) => Array.isArray(value))
           .flatMap(([key, value]) => {
-            counts[key] = value.length; // Store count for each type
-            return value.map((id) => ({ id, type: key })); // Include type for rendering
+            counts[key] = value.length;
+            return value.map((id) => ({ id, type: key }));
           });
 
-        setTypeCounts(counts); // Save individual counts for rendering
+        setTypeCounts(counts);
       } else {
-        // Filter specific data based on filter
         filteredData = (instructor[`${filter}Ids`] || []).map((id) => ({
           id,
           type: filter,
         }));
       }
 
-      setFilteredStats(filteredData); // Update state with filtered stats
-      onFilterCount(filteredData.length); // Pass count to parent
+      setFilteredStats(filteredData);
+      onFilterCount(filteredData.length);
     }
   }, [instructor, filter, onFilterCount, setInstructorData]);
 
@@ -56,22 +53,20 @@ function Stats({ userId, filter, onFilterCount }) {
   return (
     <>
       {filter === 'all' ? (
-        // Render 4 distinct cards for each type with its count
         Object.keys(typeCounts).map((type) => (
           <Stat
             key={type}
-            title={type.charAt(0).toUpperCase() + type.slice(1)} // Capitalize type
-            data={{ count: typeCounts[type] }} // Pass the count for this type
-            onClick={() => navigate(`/instructor/${type}`)} // Navigate to type page
+            title={type.charAt(0).toUpperCase() + type.slice(1)}
+            data={{ count: typeCounts[type] }}
+            onClick={() => navigate(`/instructor/${type}`)}
           />
         ))
       ) : (
-        // Render a single card with the count when filter !== "all"
         <Stat
           key={filter}
-          title={`${filter.charAt(0).toUpperCase() + filter.slice(1)}`} // Title for the card
-          data={{ count: filteredStats.length }} // Pass count as data
-          onClick={() => navigate(`/instructor/${filter}`)} // Navigate to the filter page
+          title={`${filter.charAt(0).toUpperCase() + filter.slice(1)}`}
+          data={{ count: filteredStats.length }}
+          onClick={() => navigate(`/instructor/${filter}`)}
         />
       )}
     </>
