@@ -8,7 +8,7 @@ const StyledMainSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  background-color: #f9fafb;
+  background-color: var(--color-theme-100);
   border-radius: 10px; /* Tailwind's rounded-lg */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 `;
@@ -29,20 +29,20 @@ const TrackInfo = styled.div`
       text-decoration: underline; /* Add underline on hover */
     }
   }
+`;
 
-  button {
-    background-color: #03ef62; /* Tailwind's bg-green-500 */
-    color: black; /* Tailwind's text-white */
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
+const StyledButton = styled.button`
+  background-color: var(--color-light-green-500);
+  color: black; /* Tailwind's text-white */
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 
-    &:hover {
-      background-color: #0bcc11; /* Tailwind's bg-green-600 */
-    }
+  &:hover {
+    background-color: var(--color-light-green-600);
   }
 `;
 
@@ -75,13 +75,7 @@ function MainSection() {
             Working with Dates and Times in Python
           </CourseName>
           <ProgressSection>
-            <Progress
-              progress={50}
-              bgColor="#E0E1E9"
-              fillColor="#03EF62"
-              labelColor="#000"
-              width="50%"
-            />
+            <Progress progress={50} width="50%" />
             <div className="flex flex-row items-center gap-2">
               <QueryBuilderIcon />
               {`2 hours to go`}
@@ -89,7 +83,7 @@ function MainSection() {
           </ProgressSection>
         </div>
         <div>
-          <button>Keep Making Progress</button>
+          <StyledButton>Keep Making Progress</StyledButton>
         </div>
       </TrackInfo>
 

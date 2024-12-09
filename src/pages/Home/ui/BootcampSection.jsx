@@ -4,33 +4,34 @@ import styled from 'styled-components';
 // Styled Components
 const BootcampSectionWrapper = styled.section`
   position: relative;
-  background-color: #0c1a3d;
-  color: #fff;
+  background-color: var(--color-mutedblue-900);
+  color: var(--color-grey-0);
   text-align: center;
   padding: 40px 20px;
-  font-family: Arial, sans-serif;
   overflow: hidden;
 `;
 
 const BootcampTitle = styled.h1`
-  font-size: 40px;
+  font-size: 38px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #d1d5db;
+
 `;
 
 const Highlight = styled.span`
-  color: #baff0f;
+  color: var(--color-yellow-green-500);
 `;
 
 const SectionTitle = styled.p`
-  font-size: 20px;
-  color: #eeeeee;
+  font-size: 18px;
+  color: #d1d5db;
   position: absolute;
   display: inline-block;
   padding: 0 20px;
   margin: -35px;
   width: 320px;
-  background-color: #152244;
+  background-color: var(--color-mutedblue-900);
 `;
 
 const JobCardsContainer = styled.div`
@@ -40,7 +41,7 @@ const JobCardsContainer = styled.div`
   position: relative;
   padding: 20px 0;
   margin: 40px 15%;
-  border: 0.5px solid #696969;
+  border: 0.5px solid var(--color-grey-50);
   border-radius: 5px;
 `;
 
@@ -49,8 +50,8 @@ const JobCard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
-  color: #333;
+  background-color: var(--color-grey-0);
+  color: var(--color-grey-700);
   border-radius: 5px;
   padding: 10px;
   width: 150px;
@@ -63,9 +64,9 @@ const JobCard = styled.div`
 
   &:hover,
   &.active {
-    border-color: #0000ff;
+    border-color: var(--color-midnightblue-100);
     transform: translateY(-3px);
-    border: 2px solid #0000ff;
+    border: 2px solid var(--color-midnightblue-100);
   }
 `;
 

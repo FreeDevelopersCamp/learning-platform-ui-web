@@ -12,7 +12,6 @@ const StyledAppLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #f7f7fc;
 `;
 
 const Main = styled.main`
@@ -20,7 +19,8 @@ const Main = styled.main`
   position: relative;
   display: flex;
   flex-grow: 1;
-  background-color: #f7f7fc;
+  height: 100vh - var(--header-height);
+  background-color: var(--color-grey-0);
 `;
 
 const Container = styled.div`
@@ -28,6 +28,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 75%;
   margin: 30px auto;
+  height: 100vh - var(--header-height);
 `;
 
 function AppLayout() {
@@ -37,7 +38,7 @@ function AppLayout() {
 
   const { auth, isLoading } = useAuth();
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || !auth) return <Spinner />;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 

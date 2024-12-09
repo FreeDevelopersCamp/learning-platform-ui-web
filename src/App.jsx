@@ -29,6 +29,7 @@ import ProfilePage from './pages/Profile/ProfilePage';
 import { AuthProvider } from './contexts/auth/AuthContext';
 import { InstructorProvider } from './contexts/instructor/InstructorContext';
 import LearnerPage from './pages/Learner/LearnerPage';
+import { DarkModeProvider } from "./contexts/DarkModeContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,10 +41,12 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
+    <DarkModeProvider>
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <GlobalStyles />
       <BrowserRouter>
+
         <AuthProvider>
           <InstructorProvider>
             <Routes>
@@ -293,6 +296,7 @@ function App() {
         }}
       />
     </QueryClientProvider>
+  </DarkModeProvider>
   );
 }
 

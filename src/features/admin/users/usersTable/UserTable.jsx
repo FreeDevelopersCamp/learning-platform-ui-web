@@ -16,7 +16,7 @@ function UserTable() {
   const { selectedUsers, handleSelectUser, handleSelectAllUsers } =
     useUserSelection();
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || !users) return <Spinner />;
   if (!users?.length) return <Empty resourceName="users" />;
 
   const isAllSelected = users.every((user) =>

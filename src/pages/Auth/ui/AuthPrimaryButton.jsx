@@ -1,5 +1,3 @@
-import React from 'react';
-
 const AuthPrimaryButton = ({ isSignUp, onClick }) => (
   <button className="auth-button primary" onClick={onClick}>
     {isSignUp ? 'Sign up' : 'Sign in'}{' '}

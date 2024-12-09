@@ -13,7 +13,7 @@ const ProgressWrapper = styled.div`
 const ProgressContainer = styled.div`
   flex: 1; /* Allows the bar to stretch */
   height: 1rem;
-  background-color: ${({ bgColor }) => bgColor || '#e5e7eb'};
+  background-color: var(--color-light-200);
   border-radius: 4rem;
   overflow: hidden;
   position: relative;
@@ -23,7 +23,7 @@ const ProgressContainer = styled.div`
 const ProgressFill = styled.div`
   width: ${({ progress }) => progress || 0}%;
   height: 100%;
-  background-color: ${({ fillColor }) => fillColor || '#4f46e5'};
+  background-color: var(--color-light-green-500);
   transition: width 0.3s ease-in-out;
 `;
 
@@ -31,14 +31,14 @@ const ProgressFill = styled.div`
 const ProgressLabel = styled.span`
   font-size: 1.4rem;
   font-weight: 500;
-  color: ${({ labelColor }) => labelColor || '#374151'};
+  color: var(--color-grey-700);
 `;
 
-function Progress({ progress = 0, bgColor, fillColor, labelColor, width }) {
+function Progress({ progress = 0, labelColor, width }) {
   return (
     <ProgressWrapper width={width}>
-      <ProgressContainer bgColor={bgColor}>
-        <ProgressFill progress={progress} fillColor={fillColor} />
+      <ProgressContainer>
+        <ProgressFill progress={progress} />
       </ProgressContainer>
       <ProgressLabel labelColor={labelColor}>{progress}%</ProgressLabel>
     </ProgressWrapper>

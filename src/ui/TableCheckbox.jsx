@@ -1,18 +1,20 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledCheckbox = styled.div`
   display: flex;
   gap: 1.6rem;
   background-color: red;
 
-  & input[type="checkbox"] {
+  & input[type='checkbox'] {
     height: 1rem;
     width: 1rem;
     border-radius: 50%;
     outline-offset: 2px;
     transform-origin: 0;
-    accent-color: var(--color-brand-600);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    accent-color: var(--color-mutedblue-600);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
 
     &:hover {
       transform: scale(1.1);
@@ -24,8 +26,8 @@ const StyledCheckbox = styled.div`
     }
   }
 
-  & input[type="checkbox"]:disabled {
-    accent-color: var(--color-brand-400);
+  & input[type='checkbox']:disabled {
+    accent-color: var(--color-mutedblue-400);
     cursor: not-allowed;
   }
 
@@ -48,7 +50,7 @@ function TableCheckbox({ checked, onChange, disabled = false, id, children }) {
         onChange={onChange}
         disabled={disabled}
       />
-      <label htmlFor={!disabled ? id : ""}>{children}</label>
+      <label htmlFor={!disabled ? id : ''}>{children}</label>
     </StyledCheckbox>
   );
 }

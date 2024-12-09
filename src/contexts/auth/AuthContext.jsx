@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -57,35 +56,8 @@ export const AuthProvider = ({ children }) => {
     fetchSession();
   }, []);
 
-  const logout = async () => {
-    try {
-      const authService = new Auth();
-      const token = localStorage.getItem('token');
-
-      if (token) {
-        await authService.request({
-          path: '/Auth/logout',
-          method: 'POST',
-          secure: true,
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'x-tenant-id': process.env.REACT_APP_X_TENANT_ID || '',
-          },
-        });
-      }
-
-      localStorage.removeItem('token');
-      localStorage.removeItem('instructorData');
-      setAuth({ isAuthenticated: false, role: null, username: null });
-      setIsLoading(false);
-      navigate('/home');
-    } catch (err) {
-      console.error('Error during logout:', err);
-    }
-  };
-
   return (
-    <AuthContext.Provider value={{ auth, setAuth, logout, isLoading, error }}>
+    <AuthContext.Provider value={{ auth, setAuth, isLoading, error }}>
       {children}
     </AuthContext.Provider>
   );

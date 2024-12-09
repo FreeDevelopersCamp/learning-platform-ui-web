@@ -14,7 +14,7 @@ const StyledWelcome = styled.div`
   p {
     font-size: 1.6rem;
     font-weight: 600;
-    color: #6b7280;
+    color: var(--color-grey-700);
   }
 `;
 

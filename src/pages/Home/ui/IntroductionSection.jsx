@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -13,11 +12,11 @@ import JavascriptIcon from '../../../assets/Icons/javascript.svg';
 
 // Styled Components
 const IntroductionSectionWrapper = styled.section`
-  background-color: #ffffff;
   padding: 2rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
 `;
 
 const IntroductionContent = styled.div`
@@ -26,6 +25,7 @@ const IntroductionContent = styled.div`
   max-width: 1200px;
   padding: 2rem;
   gap: 5rem;
+  border: none;
 `;
 
 const IntroductionImageWrapper = styled.div`
@@ -43,6 +43,7 @@ const IntroductionImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border: none;
 `;
 
 const IconBackground = styled.div`
@@ -52,15 +53,17 @@ const IconBackground = styled.div`
   transform: translateX(-50%);
   width: 150px;
   height: 150px;
-  background-color: #ffffff;
+  background-color: var(--color-grey-0);
   border-radius: 50%;
   padding: 20px;
+
 `;
 
 const IconOverlay = styled.div`
   width: 80px;
   height: 80px;
   transition: opacity 0.5s ease-in-out;
+  
 `;
 
 const IconImage = styled.img`
@@ -78,12 +81,12 @@ const IntroductionText = styled.div`
 const IntroductionTitle = styled.h1`
   font-size: 2.8rem;
   font-weight: 700;
-  color: #000000;
+  color: var(--color-grey-900);
   line-height: 1.2;
 `;
 
 const Highlight = styled.span`
-  color: #0000ff;
+  color: var(--color-darkmidnightblue-600);
 `;
 
 const Buttons = styled.div`
@@ -95,8 +98,8 @@ const Buttons = styled.div`
 
 const BrowseCoursesButton = styled.button`
   height: 55px;
-  background-color: #0000ff;
-  color: #ffffff;
+  background-color: var(--color-darkmidnightblue-600);
+  color: var(--color-grey-0);
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 5px;
@@ -106,19 +109,19 @@ const BrowseCoursesButton = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #000099;
+    background-color: var(--color-darkmidnightblue-700);
   }
 `;
 
 const StartLearningLink = styled.a`
-  color: #333333;
+  color: var(--color-grey-700);
   font-size: 1.6rem;
   font-weight: 500;
   text-decoration: none;
   transition: color 0.3s;
 
   &:hover {
-    color: #0000ff;
+    color: var(--color-darkmidnightblue-700);
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 `;

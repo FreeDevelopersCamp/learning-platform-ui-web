@@ -9,15 +9,17 @@ const StyledContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 3.5rem;
-  font-weight: 600;
+  font-size: 3rem;
+  font-weight: 500;
+  color: #374151;
+  font-family: 'Poppins', sans-serif;
 `;
 
-function ProfileCertifications() {
+function ProfileCertifications({ certifications }) {
   return (
     <StyledContainer>
       <Title>My Certifications</Title>
-      <p>These are the industry credentials that I’ve earned.</p>
+      <p>{certifications.subtitle}</p>
     </StyledContainer>
   );
 }

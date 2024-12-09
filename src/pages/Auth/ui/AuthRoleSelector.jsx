@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 // Styled Components
@@ -13,7 +12,7 @@ const RoleLabel = styled.label`
   font-size: 1.5rem;
   font-weight: bold;
   padding-left: 6px;
-  color: #555;
+  color: var(--color-grey-800);
 `;
 
 const RoleDropdown = styled.select`
@@ -21,10 +20,10 @@ const RoleDropdown = styled.select`
   padding: 15px;
   margin: 15px 0 0 5.5px;
   font-size: 1.4rem;
-  border: 2px solid #ddd;
+  border: 2px solid var(--color-grey-50);
   border-radius: 5px;
-  background-color: #f9f9f9;
-  color: #555;
+  background-color: var(--color-grey-0);
+  color: var(--color-grey-800);
   -webkit-appearance: none; /* Remove default browser styling */
   -moz-appearance: none;
   appearance: none;
@@ -38,13 +37,14 @@ const RoleDropdown = styled.select`
 
   &:focus {
     outline: none;
-    border-color: #0000ff;
+    border-color: var(--color-mutedblue-300);
   }
 `;
 
 const RoleOption = styled.option`
   font-size: 1.4rem;
-  color: #555;
+  color: var(--color-grey-800);
+  background-color: var(--color-grey-0);
 `;
 
 // Component Definition

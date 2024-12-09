@@ -5,7 +5,6 @@ const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
 
   font-size: 1.4rem;
-  background-color: var(--color-grey-0);
   border-radius: 7px;
   overflow: hidden;
 `;
@@ -22,7 +21,7 @@ const StyledHeader = styled(CommonRow)`
   padding: 1.6rem 2.4rem;
 
   background-color: var(--color-grey-50);
-  border-bottom: 1px solid var(--color-grey-100);
+  border-bottom: 1px solid var(--color-grey-50);
   text-transform: uppercase;
   letter-spacing: 0.4px;
   font-weight: 600;
