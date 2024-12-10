@@ -11,10 +11,9 @@ const StyledFilterbar = styled.div`
   width: 110rem;
   max-width: 100%;
   z-index: 999;
-  margin-top: 5px;
-  background-color: #f7f7fc;
   transition: top 0.3s;
-  padding: 0.5rem;
+  padding: 0;
+  border: none;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;

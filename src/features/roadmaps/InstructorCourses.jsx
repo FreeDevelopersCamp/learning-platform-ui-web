@@ -17,10 +17,10 @@ const StyledDashboardLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: repeat(auto-fit, minmax(300, 1fr));
-  gap: 3rem;
+  gap: 10rem; 
   overflow: auto;
   flex-grow: 1;
-  transform: translatex(13px);
+  padding: 0.5rem 0;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;

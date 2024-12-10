@@ -89,14 +89,10 @@ function Roadmaps() {
             roadmapsIds.map((roadmapId) => (
               <RoadmapCard key={roadmapId} roadmapId={roadmapId} />
             ))
-          ) : filteredRoadmaps.length > 0 ? (
+          ) : filteredRoadmaps.length > 0 && (
             filteredRoadmaps.map((roadmap) => (
               <RoadmapCard key={roadmap.id} roadmapId={roadmap.id} />
             ))
-          ) : (
-            <div
-              style={{ width: '100%', height: '15vh', padding: '20px' }}
-            ></div>
           )}
         </StyledDashboardLayout>
       </DashboardLayout>

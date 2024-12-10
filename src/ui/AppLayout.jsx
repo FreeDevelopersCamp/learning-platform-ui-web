@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useSession } from '../hooks/auth/useSession';
 import { useAuth } from '../contexts/auth/AuthContext';
-import { useUser } from '../hooks/users/useUser';
 
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
@@ -15,6 +14,7 @@ const StyledAppLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  
 `;
 
 const Main = styled.main`
@@ -27,8 +27,9 @@ const Main = styled.main`
 `;
 
 const Container = styled.div`
-  display: flex;
+  display: flex;  
   flex-direction: column;
+  align-items: flex-start;  
   width: 75%;
   margin: 30px auto;
   height: 100vh - var(--header-height);
@@ -45,23 +46,11 @@ function AppLayout() {
     error: sessionError,
   } = useSession();
 
-  const {
-    auth: { isAuthenticated: isAuth, username, role },
-    isLoading,
-  } = useAuth();
-
-  const { user, isLoading: userLoading } = useUser(username);
+  const { auth, isLoading } = useAuth();
 
   const mainRef = useRef(null);
 
-  useEffect(() => {
-    const path = location.pathname.split('/')[2];
-    setActiveMenu(path || 'dashboard');
-  }, [location]);
-
-  if (isLoading || !auth || userLoading || sessionLoading) return <Spinner />;
-
-  const name = `${user?.personalInformation?.name?.first} ${user?.personalInformation?.name?.last}`;
+  if (isLoading || !auth || sessionLoading) return <Spinner />;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
@@ -69,8 +58,9 @@ function AppLayout() {
     setActiveMenu(menu);
     if (menu === 'logout') return navigate('/home');
 
-    if (role === '0') navigate(`/admin/${menu}`);
-    if (role === '5') navigate(`/instructor/${menu}`);
+    if (auth.role === '0') navigate(`/admin/${menu}`);
+    if (auth.role === '5') navigate(`/instructor/${menu}`);
+    if (auth.role === '6') navigate(`/learner/${menu}`);
   };
 
   return (
