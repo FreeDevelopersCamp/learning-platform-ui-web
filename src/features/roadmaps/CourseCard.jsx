@@ -4,18 +4,24 @@ import styled from 'styled-components';
 
 import { convertDurationMinutesToHours } from '../../utils/helpers';
 import { useCourse } from '../../hooks/courses/useCourse';
-import Spinner from '../../ui/Spinner';
 
 const Card = styled.div`
   width: 300px;
-  background: #fff;
+  background-color: #f9f9f9;
   border: 1px solid #eaeaea;
-  border-radius: 7px;
-  padding: 30px 20px;
+  border-radius: 3px;
+  padding: 30px 20px 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+  &:hover {
+    box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
 `;
 
 const Content = styled.div`
@@ -91,22 +97,17 @@ const Duration = styled.span`
 
 const Button = styled.button`
   padding: 8px 16px;
-  background-color: #28a745;
-  color: white;
   border: none;
   border-radius: 4px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  /* background-color: #03ef62; */
+  color: #001b38;
+  background-color: #f9f9f9;
+  border: 2px solid #003366;
 
   &:hover {
-    background-color: #218838;
-  }
-
-  &:focus {
-    outline: 2px solid #218838;
-    outline-offset: 2px;
+    background-color: var(--color-grey-300);
   }
 `;
 
@@ -137,7 +138,7 @@ function CourseCard({ courseId }) {
   };
 
   return (
-    <Card>
+    <Card onClick={() => handleViewDetails(courseId)}>
       <Content>
         <Header>
           <Subtitle style={{ textTransform: 'uppercase' }}>course</Subtitle>
@@ -164,9 +165,7 @@ function CourseCard({ courseId }) {
       </Instructor>
       <Details>
         <Duration>{convertDurationMinutesToHours(duration)} </Duration>
-        <Button onClick={() => handleViewDetails(courseId)}>
-          View Details
-        </Button>
+        <Button>View Details</Button>
       </Details>
     </Card>
   );
