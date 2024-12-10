@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
+import { useSession } from '../hooks/auth/useSession';
 import { useAuth } from '../contexts/auth/AuthContext';
 
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
-import styled from 'styled-components';
+
 import Spinner from './Spinner';
 
 const StyledAppLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  
 `;
 
 const Main = styled.main`
@@ -24,8 +27,9 @@ const Main = styled.main`
 `;
 
 const Container = styled.div`
-  display: flex;
+  display: flex;  
   flex-direction: column;
+  align-items: flex-start;  
   width: 75%;
   margin: 30px auto;
   height: 100vh - var(--header-height);
@@ -36,9 +40,17 @@ function AppLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState('dashboard');
 
+  const {
+    isLoading: sessionLoading,
+    session,
+    error: sessionError,
+  } = useSession();
+
   const { auth, isLoading } = useAuth();
 
-  if (isLoading || !auth) return <Spinner />;
+  const mainRef = useRef(null);
+
+  if (isLoading || !auth || sessionLoading) return <Spinner />;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
@@ -62,7 +74,7 @@ function AppLayout() {
           onMenuSelect={handleMenuSelect}
         />
         <Container>
-          <Outlet />
+          <Outlet context={{ session, mainRef }} />
         </Container>
       </Main>
     </StyledAppLayout>

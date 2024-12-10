@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { convertDurationMinutesToHours } from '../../utils/helpers';
+import { useCount } from '../../contexts/courses/CoursesContext';
 import { useCourse } from '../../hooks/courses/useCourse';
+
+import { convertDurationMinutesToHours } from '../../utils/helpers';
+import Spinner from '../../ui/Spinner';
 
 const Card = styled.div`
   width: 300px;
-  background-color: #f9f9f9;
+  background-color: white;
   border: 1px solid #eaeaea;
   border-radius: 3px;
   padding: 30px 20px 20px;
@@ -111,63 +114,72 @@ const Button = styled.button`
   }
 `;
 
-function CourseCard({ courseId }) {
+function CourseCard({ courseId, filter }) {
   const navigate = useNavigate();
   const { course, courseLoading, courseError } = useCourse(courseId);
-
-  const [localCourse, setLocalCourse] = useState(null);
+  const { incrementCount, decrementCount } = useCount();
 
   useEffect(() => {
-    if (course) {
-      setLocalCourse(course);
+    if (
+      course &&
+      (filter === 'all' || course.name.toLowerCase() === filter.toLowerCase())
+    ) {
+      incrementCount();
     }
-  }, [course]);
 
-  if (courseLoading || !localCourse || courseError) return;
+    return () => {
+      if (
+        course &&
+        (filter === 'all' || course.name.toLowerCase() === filter.toLowerCase())
+      ) {
+        decrementCount();
+      }
+    };
+  }, [course, filter, incrementCount, decrementCount]);
+
+  if (courseLoading || !course || courseError) return <Spinner />;
 
   const {
     name,
     description,
     duration,
-    instructor: { coursesIds = [], projectsIds = [], practicesIds = [], user },
+    instructor: { user },
     topic,
+    rating,
   } = course;
 
-  const handleViewDetails = (courseId) => {
+  const handleViewDetails = () => {
     navigate(`/course/${courseId}`);
   };
 
   return (
-    <Card onClick={() => handleViewDetails(courseId)}>
-      <Content>
-        <Header>
-          <Subtitle style={{ textTransform: 'uppercase' }}>course</Subtitle>
-          <Title>{name}</Title>
-          <Topic>{topic}</Topic>
-        </Header>
-        <Description>{description}</Description>
-      </Content>
-      <Instructor>
-        {user?.image ? (
+    (filter === 'all' ||
+      course?.name?.toLowerCase().replace(/\s+/g, '-') ===
+        filter?.toLowerCase()) && (
+      <Card onClick={handleViewDetails}>
+        <Content>
+          <Header>
+            <Subtitle style={{ textTransform: 'uppercase' }}>Course</Subtitle>
+            <Title>{name}</Title>
+            <Topic>{topic}</Topic>
+          </Header>
+          <Description>{description}</Description>
+        </Content>
+        <Instructor>
           <InstructorImage
-            src={user.image}
-            alt={`${user.userName}'s profile`}
+            src={user?.image || 'https://via.placeholder.com/40'}
+            alt={`${user?.userName || 'Unknown Instructor'}'s profile`}
           />
-        ) : (
-          <InstructorImage
-            src="https://via.placeholder.com/40"
-            alt="Default profile"
-          />
-        )}
-        <InstructorName>
-          {user?.userName || 'Unknown Instructor'}
-        </InstructorName>
-      </Instructor>
-      <Details>
-        <Duration>{convertDurationMinutesToHours(duration)} </Duration>
-        <Button>View Details</Button>
-      </Details>
-    </Card>
+          <InstructorName>
+            {user?.userName || 'Unknown Instructor'}
+          </InstructorName>
+        </Instructor>
+        <Details>
+          <Duration>{convertDurationMinutesToHours(duration)}</Duration>
+          <Button>View Details</Button>
+        </Details>
+      </Card>
+    )
   );
 }
 

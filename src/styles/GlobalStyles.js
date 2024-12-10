@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
-  
 :root {
       /* Borders */
       --color-border-light: rgba(255, 255, 255, 0.1);

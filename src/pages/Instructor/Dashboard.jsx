@@ -5,6 +5,7 @@ import { useUser } from '../../hooks/users/useUser';
 
 import DashboardLayout from '../../features/instructor/DashboardLayout';
 import Filterbar from '../../features/instructor/Filterbar';
+import Total from '../../features/roadmaps/Total';
 import Stats from '../../features/instructor/Stats';
 
 import Row from '../../features/roadmaps/Row';
@@ -48,12 +49,9 @@ function Dashboard() {
   return (
     <Row>
       <Heading title={title} description={description} />
-      <Filterbar
-        filterOptions={filterOptions}
-        onFilterChange={setFilter}
-        filter={filter}
-        count={filterCount}
-      />
+      <Filterbar filterOptions={filterOptions} onFilterChange={setFilter}>
+        <Total filter={filter} count={filterCount} />
+      </Filterbar>
       <DashboardLayout>
         <StyledDashboardLayout>
           <Stats

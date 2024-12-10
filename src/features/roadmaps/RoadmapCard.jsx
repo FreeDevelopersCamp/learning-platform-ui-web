@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRoadmap } from '../../hooks/roadmaps/useRoadmap';
 
+import Spinner from '../../ui/Spinner';
+
 const Card = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,7 +87,7 @@ function RoadmapCard({ roadmapId }) {
     }
   }, [roadmap]);
 
-  if (roadmapLoading || !localRoadmap || roadmapError) return;
+  if (roadmapLoading || !localRoadmap) return <Spinner />;
 
   const {
     name,
@@ -96,6 +98,7 @@ function RoadmapCard({ roadmapId }) {
     practicesIds = [],
     participants = 0,
     topic,
+    rating,
   } = roadmap;
 
   const handleViewDetails = (roadmapId) => {

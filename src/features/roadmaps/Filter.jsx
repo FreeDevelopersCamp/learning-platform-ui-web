@@ -6,30 +6,29 @@ const StyledFilter = styled.div`
   flex-wrap: wrap;
   padding: 1.4rem 0;
   gap: 0.8rem;
-  box-shadow: var(--shadow-sm);
-  border-radius: var(--border-radius-sm);
-  max-width: 100%;
+  width: 100%;
+  border: none;
 `;
 
 const FilterButton = styled.button`
-  background-color: var(--color-grey-0);
+  background-color: var(--color-grey-100);
   border: none;
   border-radius: 3px;
   font-weight: 500;
   font-size: 1.4rem;
   padding: 0.8rem 1rem;
-  transition: all 0.4s;
+  transition: all 0.1s;
   cursor: pointer;
 
   ${(props) =>
     props.active &&
     css`
-      background-color: #2c3e50;
-      color: white;
+       background-color: var(--color-mutedblue-900);
+       color: white;
     `}
 
   &:disabled {
-    background-color: #2c3e50;
+    background-color: var(--color-mutedblue-900);
     cursor: not-allowed;
   }
 `;

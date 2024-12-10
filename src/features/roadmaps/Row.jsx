@@ -5,7 +5,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 1100px;
-  margin: auto;
+  margin: 0 auto;
 `;
 
 function Row({ children }) {

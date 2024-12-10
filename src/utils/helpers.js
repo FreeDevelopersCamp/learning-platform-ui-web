@@ -31,7 +31,7 @@ export const formatCurrency = (value) =>
 
 export const convertDurationMinutesToHours = (minutes) => {
   const hours = Math.floor(minutes / 60);
-  return `${hours} hour${hours !== 1 ? 's' : ''}`;
+  return `${hours} Hour${hours !== 1 ? 's' : ''}`;
 };
 
 export const getRoleCode = (role) => {
