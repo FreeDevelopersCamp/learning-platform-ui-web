@@ -1,11 +1,14 @@
-import { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
+import { useSession } from '../hooks/auth/useSession';
 import { useAuth } from '../contexts/auth/AuthContext';
+import { useUser } from '../hooks/users/useUser';
 
 import Header from './Dashboard/Header';
 import Sidebar from './Dashboard/Sidebar';
-import styled from 'styled-components';
+
 import Spinner from './Spinner';
 
 const StyledAppLayout = styled.div`
@@ -36,9 +39,29 @@ function AppLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState('dashboard');
 
-  const { auth, isLoading } = useAuth();
+  const {
+    isLoading: sessionLoading,
+    session,
+    error: sessionError,
+  } = useSession();
 
-  if (isLoading || !auth) return <Spinner />;
+  const {
+    auth: { isAuthenticated: isAuth, username, role },
+    isLoading,
+  } = useAuth();
+
+  const { user, isLoading: userLoading } = useUser(username);
+
+  const mainRef = useRef(null);
+
+  useEffect(() => {
+    const path = location.pathname.split('/')[2];
+    setActiveMenu(path || 'dashboard');
+  }, [location]);
+
+  if (isLoading || !auth || userLoading || sessionLoading) return <Spinner />;
+
+  const name = `${user?.personalInformation?.name?.first} ${user?.personalInformation?.name?.last}`;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
@@ -46,9 +69,8 @@ function AppLayout() {
     setActiveMenu(menu);
     if (menu === 'logout') return navigate('/home');
 
-    if (auth.role === '0') navigate(`/admin/${menu}`);
-    if (auth.role === '5') navigate(`/instructor/${menu}`);
-    if (auth.role === '6') navigate(`/learner/${menu}`);
+    if (role === '0') navigate(`/admin/${menu}`);
+    if (role === '5') navigate(`/instructor/${menu}`);
   };
 
   return (
@@ -62,7 +84,7 @@ function AppLayout() {
           onMenuSelect={handleMenuSelect}
         />
         <Container>
-          <Outlet />
+          <Outlet context={{ session, mainRef }} />
         </Container>
       </Main>
     </StyledAppLayout>

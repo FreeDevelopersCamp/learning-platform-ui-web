@@ -16,6 +16,7 @@ import InstructorDashboard from './pages/Instructor/Dashboard';
 import InstructorRoadmaps from './features/roadmaps/Roadmaps';
 import ViewRoadmapDetails from './features/roadmaps/ViewRoadmapDetails';
 import InstructorCourses from './features/roadmaps/InstructorCourses';
+import ViewCourseDetails from './features/roadmaps/ViewCourseDetails';
 import InstructorProjects from './features/roadmaps/InstructorProjects';
 import InstructorPractices from './features/roadmaps/InstructorPractices';
 
@@ -28,6 +29,10 @@ import ProtectedRoute from './ui/ProtectedRoute';
 import ProfilePage from './pages/Profile/ProfilePage';
 import { AuthProvider } from './contexts/auth/AuthContext';
 import { InstructorProvider } from './contexts/instructor/InstructorContext';
+import { CoursesProvider } from './contexts/courses/CoursesContext';
+import { PracticesProvider } from './contexts/practices/PracticesContext';
+import { ProjectsProvider } from './contexts/projects/ProjectsContext';
+
 import LearnerPage from './pages/Learner/LearnerPage';
 import { DarkModeProvider } from './contexts/DarkModeContext';
 
@@ -41,14 +46,16 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <DarkModeProvider>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <GlobalStyles />
-        <BrowserRouter>
-          <AuthProvider>
-            <InstructorProvider>
-              <Routes>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <GlobalStyles />
+      <BrowserRouter>
+        <AuthProvider>
+          <InstructorProvider>
+            <CoursesProvider>
+              <ProjectsProvider>
+                <PracticesProvider>
+                 <Routes>
                 <Route element={<HomeLayout />}>
                   <Route index element={<Navigate replace to="home" />} />
                   <Route path="home" element={<HomePage />} />
@@ -270,9 +277,13 @@ function App() {
                 <Route path="not-authorized" element={<PageNotAuthorized />} />
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
-            </InstructorProvider>
-          </AuthProvider>
-        </BrowserRouter>
+                </PracticesProvider>
+              </ProjectsProvider>
+            </CoursesProvider>
+          </InstructorProvider>
+        </AuthProvider>
+      </BrowserRouter>
+
 
         <Toaster
           position="top-center"

@@ -1,20 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useCount } from '../../contexts/projects/ProjectsContext';
 import { useProject } from '../../hooks/projects/useProject';
+
+import { FaCheck } from 'react-icons/fa';
 import Spinner from '../../ui/Spinner';
 
 const Card = styled.div`
   width: 300px;
-  background: #fff;
+  background-color: white;
   border: 1px solid #eaeaea;
-  border-radius: 7px;
-  padding: 30px 20px;
+  border-radius: 3px;
+  padding: 30px 20px 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+  &:hover {
+    box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
 `;
 
 const Content = styled.div`
@@ -27,14 +37,16 @@ const Header = styled.div`
 
 const Title = styled.h3`
   margin-top: 5px;
-  font-size: 18px;
+  font-size: 2rem;
   font-weight: bold;
   color: #000;
 `;
 
 const Subtitle = styled.h4`
-  font-size: 14px;
+  font-size: 1.3rem;
   color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 `;
 
 const Category = styled.h4`
@@ -87,37 +99,47 @@ const Participants = styled.div`
 
 const Button = styled.button`
   padding: 8px 16px;
-  background-color: #28a745;
-  color: white;
   border: none;
   border-radius: 4px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
+  color: #001b38;
+  background-color: #f9f9f9;
+  border: 2px solid #003366;
 
   &:hover {
-    background-color: #218838;
-  }
-
-  &:focus {
-    outline: 2px solid #218838;
-    outline-offset: 2px;
+    background-color: var(--color-grey-300);
   }
 `;
 
-function ProjectCard({ projectId }) {
+function ProjectCard({ projectId, filter }) {
   const navigate = useNavigate();
-  const { projectLoading, projectError, project } = useProject(projectId);
-
-  const [localProject, setLocalProject] = useState(null);
+  const { project, projectLoading, projectError } = useProject(projectId);
+  const { incrementCount, decrementCount } = useCount();
 
   useEffect(() => {
-    if (project) {
-      setLocalProject(project);
+    if (
+      project &&
+      (filter === 'all' ||
+        project?.topic?.toLowerCase()?.replace(/\s+/g, '-') ===
+          filter?.toLowerCase())
+    ) {
+      incrementCount();
     }
-  }, [project]);
+    return () => {
+      if (
+        project &&
+        (filter === 'all' ||
+          project?.topic?.toLowerCase()?.replace(/\s+/g, '-') ===
+            filter?.toLowerCase())
+      ) {
+        decrementCount();
+      }
+    };
+  }, [project, filter, incrementCount, decrementCount]);
 
-  if (projectLoading || !localProject || projectError) return;
+  if (projectLoading || !project || projectError) return <Spinner />;
 
   const {
     name,
@@ -129,37 +151,50 @@ function ProjectCard({ projectId }) {
     topic,
     xp,
     participants,
-  } = localProject;
+  } = project;
 
   const handleViewDetails = (projectId) => {
     navigate(`/project/${projectId}`);
   };
 
   return (
-    <Card>
-      <Content>
-        <Header>
-          <Subtitle>project</Subtitle>
-          <Title>{title}</Title>
-          <Category>{topic}</Category>
-        </Header>
-        <Description>{description}</Description>
-        <Prerequisites>
-          <strong>Prerequisites:</strong> {prerequisites?.join(', ') || 'None'}
-        </Prerequisites>
-        <Participants>
-          <strong>Participants:</strong> {participants || 0}
-        </Participants>
-      </Content>
-      <Details>
-        <XP>
-          <strong>XP:</strong> {xp}
-        </XP>
-        <Button onClick={() => handleViewDetails(projectId)}>
-          View Details
-        </Button>
-      </Details>
-    </Card>
+    (filter === 'all' ||
+      project?.topic?.toLowerCase().replace(/\s+/g, '-') ===
+        filter?.toLowerCase()) && (
+      <Card>
+        <Content>
+          <Header>
+            <Subtitle>Project</Subtitle>
+            <Title>{name}</Title>
+            <Category>{topic}</Category>
+          </Header>
+          <Description>{description}</Description>
+          <Prerequisites>
+            <strong>Prerequisites:</strong>{' '}
+            {prerequisites?.join(', ') || 'None'}
+          </Prerequisites>
+          <Participants>
+            <strong>Participants:</strong> {participants || 0}
+          </Participants>
+        </Content>
+        <Details>
+          <div style={{ display: 'flex' }}>
+            <XP>
+              <strong>XP:</strong> {xp}
+            </XP>
+            <FaCheck
+              style={{
+                color: '#0fd15d',
+                marginLeft: '5px',
+              }}
+            />
+          </div>
+          <Button onClick={() => handleViewDetails(projectId)}>
+            View Details
+          </Button>
+        </Details>
+      </Card>
+    )
   );
 }
 

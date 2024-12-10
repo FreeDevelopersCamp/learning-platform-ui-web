@@ -35,8 +35,8 @@ function Stats({ userId, filter, onFilterCount }) {
         const orderedCounts = {
           roadmaps: counts.roadmaps || 0,
           courses: counts.courses || 0,
-          practices: counts.practices || 0,
           projects: counts.projects || 0,
+          practices: counts.practices || 0,
         };
         setTypeCounts(orderedCounts);
       } else {

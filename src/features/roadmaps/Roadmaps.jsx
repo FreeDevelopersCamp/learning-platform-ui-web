@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Row from './Row';
 import Heading from './Heading';
 import Filterbar from '../instructor/Filterbar';
+import Total from '../roadmaps/Total';
 import DashboardLayout from '../instructor/DashboardLayout';
 import RoadmapCard from './RoadmapCard';
 
@@ -79,9 +80,9 @@ function Roadmaps() {
       <Filterbar
         filterOptions={filterOptions}
         onFilterChange={handleFilterChange}
-        filter={filter}
-        count={filterCount}
-      />
+      >
+        <Total filter={filter} count={filterCount} />
+      </Filterbar>
       <DashboardLayout>
         <StyledDashboardLayout>
           {filter === 'all' ? (
