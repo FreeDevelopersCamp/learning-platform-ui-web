@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const NavContainer = styled.nav`
@@ -24,10 +23,9 @@ const StyledLink = styled.a`
   font-weight: 500;
   font-size: 18px;
 
-  font-family: 'Poppins', sans-serif;
 
   &:hover {
-    color: var(--color-grey-500);
+    color: var(--color-grey-600);
   }
 `;
 

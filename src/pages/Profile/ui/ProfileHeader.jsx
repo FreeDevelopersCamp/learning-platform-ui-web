@@ -1,8 +1,7 @@
 import styled from 'styled-components';
+
 import UserAvatar from './../../../features/authentication/UserAvatar';
-import { useSearchParams } from 'react-router-dom';
-import { useUser } from '../../../hooks/users/useUser';
-import Spinner from '../../../ui/Spinner';
+import { getRoleCode } from '../../../utils/helpers';
 
 const HeaderCover = styled.div`
   display: flex;
@@ -40,8 +39,9 @@ const HSection = styled.div`
 
 const HeadlineText = styled.h1`
   font-size: 3rem;
-  font-weight: 800;
+  font-weight: 600;
   color: white; /* Custom color for the headline */
+  font-family: 'Poppins', sans-serif;
 `;
 
 const HeaderTitle = styled.h1`
@@ -49,9 +49,26 @@ const HeaderTitle = styled.h1`
   margin-top: 1.5rem;
 `;
 
+const AccountItem = styled.a`
+  font-size: 1.8rem;
+  margin-top: 0.6rem;
+  color: var(--color-grey-300);
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const HeaderSubtitle = styled.h2`
-  font-size: 1.6rem;
-  margin-top: 0.5rem;
+  font-size: 1.8rem;
+  margin-top: 0.2rem;
+  font-weight: 400;
+  color: var(--color-grey-100);
+`;
+
+const UserRoles = styled.h2`
+  font-size: 1.8rem;
+  margin-top: 0.2rem;
   color: var(--color-grey-300);
 `;
 
@@ -77,36 +94,31 @@ const TechSection = styled.div`
   padding-top: 5rem;
 `;
 
-function ProfileHeader() {
-  const [searchParams] = useSearchParams();
-  const username = searchParams.get('username');
-  const { user, isLoading: userLoading } = useUser(username);
-
-  const text = 'Keep coding until the impossible becomes possible.';
-
-  if (userLoading) return <Spinner />;
-
+function ProfileHeader({ user, accounts, headline, state, position }) {
   return (
     <HeaderCover>
       <VSection>
         <ImageSection>
           <UserAvatar user={user} size="11rem" />
           <HeaderTitle>{`${user.personalInformation?.name?.first} ${user.personalInformation?.name?.last}`}</HeaderTitle>
-          <HeaderSubtitle>Admin</HeaderSubtitle>
+          <UserRoles>
+            {user.roles.map((role) => getRoleCode(role)).join(', ')}
+          </UserRoles>
           <HeaderSubtitle>
-            An-Najah National University | Palestine
+            {position} | {state}
           </HeaderSubtitle>
         </ImageSection>
         <TechSection>
           <HeaderTitle>Accounts</HeaderTitle>
-          <HeaderSubtitle>Facebook</HeaderSubtitle>
-          <HeaderSubtitle>Instagram</HeaderSubtitle>
-          <HeaderSubtitle>Linkedin</HeaderSubtitle>
-          <HeaderSubtitle>GitHub</HeaderSubtitle>
+          {accounts.map((account) => (
+            <AccountItem key={account.name} href={`${account.url}`}>
+              {account.name}
+            </AccountItem>
+          ))}
         </TechSection>
       </VSection>
       <HSection>
-        <HeadlineText>{text}</HeadlineText>
+        <HeadlineText>{headline}</HeadlineText>
       </HSection>
     </HeaderCover>
   );

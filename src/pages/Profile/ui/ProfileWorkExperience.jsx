@@ -9,8 +9,10 @@ const StyledContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 3.5rem;
-  font-weight: 600;
+  font-size: 3rem;
+  font-weight: 500;
+  color: #374151;
+  font-family: 'Poppins', sans-serif;
 `;
 
 function ProfileWorkExperience() {

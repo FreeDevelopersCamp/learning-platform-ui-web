@@ -16,14 +16,13 @@ const DataRow = styled.div`
   gap: 1.6rem;
   font-size: 1.5rem;
   font-weight: 500;
-  color: var(--color-grey-600);
-  font-family: 'Sono';
+  color: var(--color-grey-800);
 `;
 
 const Tag = styled.span`
   width: fit-content;
   text-transform: uppercase;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 500;
   padding: 0.4rem 1.2rem;
   border-radius: 100px;
@@ -32,25 +31,26 @@ const Tag = styled.span`
   justify-content: center;
 
   /* Make these dynamic, based on the received prop */
-  color: var(--color-${(props) => props.type}-700);
+  color: var(--color-${(props) => props.type}-900);
   background-color: var(--color-${(props) => props.type}-100);
 `;
 
 const PermissionRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.8rem;
+  gap: 1rem;
+  /* margin-bottom: 0.8rem; */
+  padding: 0.5rem;
   flex-wrap: wrap;
 `;
 
 const roleToTagName = {
   0: 'rose',
   1: 'purple',
-  2: 'lime',
+  2: 'warm',
   3: 'teal',
-  4: 'green',
-  5: 'cyan',
+  4: 'cyan',
+  5: 'dark-blue',
   6: 'blue',
 };
 
@@ -88,7 +88,7 @@ const data = [
     permissionRole: ['0', '4', '5'],
   },
   {
-    permissionName: 'Add tags to Roadmap ( Official, ... )',
+    permissionName: 'Add tags to Roadmap ( Official or AI Generated )',
     permissionRole: ['0', '4'],
   },
   {

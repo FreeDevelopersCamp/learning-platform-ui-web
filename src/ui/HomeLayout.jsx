@@ -6,14 +6,16 @@ import Footer from './Footer/Footer';
 
 const StyledAppLayout = styled.div`
   flex: 1;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 `;
 
 const Main = styled.main`
   width: 100%;
   margin: 0 auto;
+  flex: 1; /* Takes all remaining space between header and footer */
   padding-top: var(--header-height);
-  background-color: var(--color-grey-100);
 `;
 
 function HomeLayout() {

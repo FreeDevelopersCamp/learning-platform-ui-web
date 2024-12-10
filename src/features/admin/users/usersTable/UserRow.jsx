@@ -10,6 +10,7 @@ import { useRejectUser } from '../useRejectUser';
 import { useDeleteUser } from '../useDeleteUser';
 import { useDeactivateUser } from '../useDeactivateUser';
 import { useUserSelection } from '../../../../contexts/admin/users/UserSelectionContext';
+import { getRoleCode } from '../../../../utils/helpers';
 
 import ConfirmApprove from '../../../../ui/ConfirmApprove';
 import ConfirmReject from '../../../../ui/ConfirmReject';
@@ -25,14 +26,12 @@ const Email = styled.div`
   font-size: 1.6rem;
   font-weight: 500;
   color: var(--color-grey-600);
-  font-family: 'Sono';
 `;
 
 const User = styled.div`
   font-size: 1.6rem;
   font-weight: 500;
   color: var(--color-grey-600);
-  font-family: 'Sono';
 `;
 
 const Stacked = styled.div`
@@ -42,8 +41,8 @@ const Stacked = styled.div`
 
 const statusToTagName = {
   1: 'blue',
-  2: 'green',
-  3: 'silver',
+  2: 'lime',
+  3: 'rose',
 };
 
 const statusToTagText = {
@@ -52,37 +51,8 @@ const statusToTagText = {
   3: 'Deactivated',
 };
 
-const getRoleCode = (role) => {
-  switch (role) {
-    case '0':
-      return 'Admin';
-    case '1':
-      return 'Owner';
-    case '2':
-      return 'Manager';
-    case '3':
-      return 'Account Manager';
-    case '4':
-      return 'Content Manager';
-    case '5':
-      return 'Instructor';
-    case '6':
-      return 'Learner';
-    default:
-      return 'Unknown';
-  }
-};
-
 function UserRow({ user, children }) {
-  let {
-    _id: userId,
-    userName,
-    image,
-    role,
-    personalInformation,
-    contacts,
-    status,
-  } = user;
+  let { userName, image, role, personalInformation, contacts, status } = user;
 
   const navigate = useNavigate();
   const { isApproving } = useApproveUser();

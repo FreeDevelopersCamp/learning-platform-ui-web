@@ -8,8 +8,9 @@ const SectionWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between; /* Distribute space between cards */
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--color-light-200);
   background-color: transparent;
+  color: var(--color-grey-800);
   width: 100%;
   height: 10rem;
 `;
@@ -27,13 +28,13 @@ const Card = styled.div`
   gap: 1rem;
 
   border-radius: var(--border-radius-md);
-  background-color: #fff;
+  background-color: var(--color-theme-100);
   box-shadow: var(--shadow-sm);
   transition: background-color 0.3s ease;
   flex: 1; // Equal space for each card
 
   &:hover {
-    background-color: #e3e4ed; /* Hover background color */
+    background-color: var(--color-theme-200); /* Hover background color */
   }
 `;
 
@@ -47,7 +48,7 @@ const Badge = styled.span`
   font-size: 1.4rem;
   font-weight: bold;
   color: #000;
-  background-color: #ff931e; /* Orange */
+  background-color: var(--color-orange-500); /* Orange */
   border-radius: 10%;
   /* border: 1px solid black; */
 `;
@@ -68,8 +69,8 @@ const Label = styled.span`
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border: 1px solid #e5e7eb;
-  background-color: #f9fafb;
+  border: 1px solid var(--color-grey-200);
+  background-color: var(--color-theme-100);
   padding: 2px;
   border-radius: 5px;
 `;
@@ -78,14 +79,14 @@ const Label = styled.span`
 const Description = styled.p`
   font-size: 1.4rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-grey-700);
 `;
 
 // Vertical Divider Style
 const Divider = styled.div`
   width: 2px;
   height: 80%;
-  color: #e5e7eb;
+  color: var(--color-grey-200);
   font-weight: bold;
   font-size: 1.5rem;
 `;

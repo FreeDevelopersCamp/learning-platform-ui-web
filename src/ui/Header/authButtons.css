@@ -17,22 +17,22 @@
 }
 
 .auth-buttons .login-button-homePage {
-  border: 2px solid #0000ff;
-  color: #0000ff;
+  border: 2px solid var(--color-blue-600);
+  color: var(--color-blue-600);
   background-color: transparent;
 }
 
 .auth-buttons .signup-button-homePage {
-  background-color: #0000ff;
+  background-color: var(--color-blue-600);
   color: #fff;
-  border: 2px solid #0000ff;
+  border: 2px solid var(--color-blue-600);
 }
 
 .auth-buttons .login-button-homePage:hover {
   color: #fff;
-  background-color: #000099;
+  background-color: var(--color-blue-600);
 }
 
 .auth-buttons .signup-button-homePage:hover {
-  background-color: #000099;
+  background-color: var(--color-blue-600);
 }

@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "noUnusedLocals": false, // Disable unused variable checks
-    "noUnusedParameters": false // Disable unused parameter checks
+    "noUnusedParameters": false, // Disable unused parameter checks
+    "jsx": "react",
+    "esModuleInterop": true
   }
 }

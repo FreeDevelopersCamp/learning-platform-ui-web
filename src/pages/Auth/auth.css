@@ -1,13 +1,14 @@
 :root {
-  --background-color: #f7f7f7;
-  --primary-color: #0000ff;
-  --secondary-color: #555;
-  --text-color: #777;
-  --border-color: #ddd;
+  --background-color: var(--color-grey-0);
+  --primary-color: var(--color-mutedblue-400);
+  --secondary-color: var(--color-grey-800);
+  --text-color: var(--color-grey-800);
+  --border-color: var(--color-grey-300);
 }
 
 body {
-  background-color: var(--background-color);
+  background-color: var(--color-grey-50);
+  color: var(--color-grey-800);
 }
 
 .auth-container {
@@ -33,12 +34,12 @@ body {
   padding: 15px 20px;
   cursor: pointer;
   color: var(--secondary-color);
-  background-color: var(--background-color);
+  background-color: var(--color-grey-0);
 }
 
 .auth-tab.active {
-  color: #000;
-  background: #fff;
+  color: var(--color-grey-900);
+  background: var(--color-coolgray-50);
   box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -51,7 +52,7 @@ body {
   width: 100%;
   padding: 30px;
   text-align: center;
-  background-color: #fff;
+  background-color: var(--color-coolgray-50);
   box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1);
 }
 
@@ -70,7 +71,7 @@ body {
 
 .auth-subtitle {
   margin: 10px 50px 20px 50px;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   color: var(--secondary-color);
 }
 
@@ -86,33 +87,36 @@ body {
   align-items: center;
   justify-content: center;
   padding: 10px 15px;
-  border: 2px solid var(--border-color);
-  background-color: #f9f9f9;
+  border: 1px solid var(--border-color);
+  background-color: var(--color-grey-0);
   font-size: 1.5rem;
-  color: #000;
+  color: var(--color-grey-900);
   cursor: pointer;
   width: 100%;
   border-radius: 5px;
 }
 
 .auth-button-group button:hover {
-  background-color: #e6e6e6;
+  background-color: var(--color-grey-50);
 }
 
 .auth-separator {
   display: flex;
   align-items: center;
-  color: #aaa;
+  color: var(--color-grey-50);
   font-size: 1.2rem;
   margin: 30px 0 10px 0;
+  color: var(--color-grey-800);
 }
 
 .auth-separator:before {
   margin-right: 10px;
+  color: var(--color-grey-800);
 }
 
 .auth-separator:after {
   margin-left: 10px;
+  color: var(--color-grey-800);
 }
 
 .auth-separator:before,
@@ -120,7 +124,7 @@ body {
   content: '';
   flex: 1;
   height: 1px;
-  background: #ddd;
+  background: var(--color-grey-800);
 }
 
 .auth-input {
@@ -130,15 +134,18 @@ body {
   margin: 15px 0 15px 5px;
   border: 2px solid var(--border-color);
   border-radius: 5px;
+  color: var(--color-grey-900);
+  background-color: var(--color-grey-0);
 }
 .auth-input:focus {
-  border: 2px solid #0000ff;
+  border: 2px solid var(--border-color);
   outline: none;
 }
 
 .password-container {
   position: relative;
   width: 100%;
+  color: var(--color-grey-800);
 }
 
 .show-password {
@@ -149,7 +156,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  color: #aaa;
+  color: var(--color-grey-50);
   outline: none;
 }
 
@@ -165,7 +172,7 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  color: #000;
+  color: var(--color-grey-400);
 }
 
 .auth-button.google {
@@ -179,7 +186,7 @@ body {
 .auth-button.primary {
   width: 300px;
   background-color: var(--primary-color);
-  color: white;
+  color: var(--color-grey-0);
   font-weight: bold;
   font-size: 1.5rem;
   margin-top: 20px;
@@ -187,7 +194,7 @@ body {
 }
 
 .auth-button.primary:hover {
-  background-color: #0000cc;
+  background-color: var(--color-mutedblue-500);
 }
 
 .auth-terms-text {
@@ -205,12 +212,12 @@ body {
 }
 
 .auth-link:hover {
-  color: #0000cc;
+  color: var(--color-mutedblue-500);
 }
 
 .auth-error {
-  background-color: #d62c26; /* Red background color for error */
-  color: white;
+  background-color: var(--color-red-40); /* Red background color for error */
+  color: var(--color-grey-50);
   padding: 20px 45px;
   border-radius: 5px;
   font-size: 1.5rem;
@@ -221,9 +228,9 @@ body {
 .auth-validation-error {
   display: flex;
   align-items: center;
-  background-color: #f8d7da;
-  color: #000;
-  border: 1px solid #f5c2c7;
+  background-color: var(--color-red-200);
+  color: var(--color-grey-900);
+  border: 1px solid var(--border-color);
   padding: 15px;
   border-radius: 5px;
   font-size: 1.5rem;
@@ -233,7 +240,7 @@ body {
 .auth-validation-error .error-icon {
   margin: 0 8px 3px 0;
   font-size: 22px;
-  color: #d62c26;
+  color: var(--color-red-400);
 }
 
 /* Responsive adjustments */

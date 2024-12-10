@@ -10,7 +10,6 @@ const InstructorSectionContainer = styled.section`
   justify-content: center;
   padding: 40px;
   gap: 40px;
-  background-color: #fff;
 `;
 
 const ImageContainer = styled.div`
@@ -39,21 +38,20 @@ const Title = styled.h2`
 
 const Description = styled.p`
   font-size: 1.5rem;
-  color: #555;
   margin-bottom: 20px;
 `;
 
 const CtaButton = styled.button`
   padding: 10px 20px;
   font-size: 1.5rem;
-  background-color: #333;
-  color: #fff;
+  background-color: var(--color-grey-600);
+  color: var(--color-grey-50);
   border: none;
   border-radius: 5px;
   cursor: pointer;
 
   &:hover {
-    background-color: #000;
+    background-color: var(--color-grey-500);
   }
 `;
 

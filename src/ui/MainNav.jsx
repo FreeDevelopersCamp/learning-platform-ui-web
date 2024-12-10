@@ -83,16 +83,6 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
       { id: 'users', icon: <HiOutlineUsers />, label: 'Users' },
       { id: 'permissions', icon: <BsShieldLock />, label: 'Permissions' },
       { id: 'roadmaps', icon: <HiPresentationChartLine />, label: 'Roadmaps' },
-      { id: 'blogs', icon: <HiHashtag />, label: 'Blogs' },
-      { id: 'email', icon: <HiEnvelope />, label: 'Email' },
-      { id: 'chat', icon: <HiChatBubbleLeftRight />, label: 'Chat' },
-      {
-        id: 'notifications',
-        icon: <IoIosNotificationsOutline style={{ fontSize: '3rem' }} />,
-        label: 'Notifications',
-      },
-      { id: 'calendar', icon: <HiOutlineCalendarDays />, label: 'Calendar' },
-      { id: 'tasks', icon: <RiDragDropLine />, label: 'Task Board' },
     ];
 
     const instructorMenu = [
