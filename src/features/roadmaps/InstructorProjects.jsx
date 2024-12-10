@@ -1,54 +1,91 @@
+import { useState } from 'react';
 import styled from 'styled-components';
+import { useCount } from '../../contexts/projects/ProjectsContext';
 import { useInstructorData } from '../../contexts/instructor/InstructorContext';
 
-import Heading from '../../ui/Heading';
-import Row from '../../ui/Row';
+import Row from './Row';
+import Heading from './Heading';
+import Filterbar from '../instructor/Filterbar';
+import Total from '../roadmaps/Total';
+import DashboardLayout from '../instructor/DashboardLayout';
+import ProjectCard from './ProjectCard';
+
 import Spinner from '../../ui/Spinner';
 
-import ProjectsCard from './ProjectCard';
-import ProjectsFilter from './ProjectsFilter';
-
-const ProjectsContainer = styled.div`
+const StyledDashboardLayout = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, minmax(250px, 1fr));
-  gap: 40px;
-  padding: 20px 20px 0 20px;
-  height: 80vh;
-  overflow-y: auto;
-  margin: 0 auto;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(auto-fit, minmax(300, 1fr));
+  gap: 3rem;
+  overflow: auto;
+  flex-grow: 1;
+  transform: translatex(13px);
+  padding-top: ${(props) => (props.isFilterbarFixed ? '5.5rem' : '0')};
 
-  &::-webkit-scrollbar {
-    width: 8px;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 10px;
-    border: 2px solid transparent;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 `;
 
 function InstructorProjects() {
+  const [filter, setFilter] = useState('all');
+  const { count } = useCount();
   const { instructorData } = useInstructorData();
 
   const { projectsIds = [] } = instructorData || {};
 
   if (!instructorData) return <Spinner />;
 
+  function handleFilterChange(selectedFilter) {
+    setFilter(selectedFilter);
+  }
+
+  const title = 'Projects';
+  const description =
+    'Transform your knowledge into real-world solutions by working on hands-on projects that challenge and inspire you!';
+
+  const filterOptions = [
+    { value: 'all', label: 'All' },
+    { value: 'web-development', label: 'Web Development' },
+    { value: 'version-control', label: 'Version Control' },
+    { value: 'c++', label: 'C++' },
+    { value: 'sql', label: 'SQL' },
+    { value: 'excel', label: 'Excel' },
+    { value: 'html', label: 'Html' },
+    { value: 'css', label: 'Css' },
+    { value: 'tailwind-css', label: 'Tailwind CSS' },
+    { value: 'javascript', label: 'JavaScript' },
+    { value: 'git', label: 'Git' },
+    { value: 'docker', label: 'Docker' },
+  ];
+
   return (
-    <>
-      <Row type="vertical">
-        <Heading as="h1">Projects</Heading>
-        <ProjectsFilter />
-      </Row>
-      <ProjectsContainer>
-        {projectsIds.map((projectId) => (
-          <ProjectsCard key={projectId} projectId={projectId} />
-        ))}
-      </ProjectsContainer>
-    </>
+    <Row>
+      <Heading title={title} description={description} />
+      <Filterbar
+        filterOptions={filterOptions}
+        onFilterChange={handleFilterChange}
+      >
+        <Total filter={filter} count={count} />
+      </Filterbar>
+      <DashboardLayout>
+        <StyledDashboardLayout>
+          {projectsIds.map((projectId) => (
+            <ProjectCard
+              key={projectId}
+              projectId={projectId}
+              filter={filter}
+            />
+          ))}
+        </StyledDashboardLayout>
+      </DashboardLayout>
+    </Row>
   );
 }
 

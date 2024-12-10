@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
+
+import { useCount } from '../../contexts/courses/CoursesContext';
 import { useInstructorData } from '../../contexts/instructor/InstructorContext';
 
 import Row from './Row';
 import Heading from './Heading';
 import Filterbar from '../instructor/Filterbar';
+import Total from '../roadmaps/Total';
 import DashboardLayout from '../instructor/DashboardLayout';
 import CourseCard from './CourseCard';
 
@@ -31,33 +34,21 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function InstructorCourses() {
-  const { instructorData } = useInstructorData();
   const [filter, setFilter] = useState('all');
-  const [filteredCourses, setFilteredCourses] = useState([]);
-  const [filterCount, setFilterCount] = useState(0);
+  const { count } = useCount();
+  const { instructorData } = useInstructorData();
 
   const { coursesIds = [] } = instructorData || {};
 
-  useEffect(() => {
-    if (!coursesIds) return;
-
-    const filtered = Object.values(coursesIds).filter((courses) => {
-      return (
-        filter === 'all' ||
-        (courses.topic &&
-          courses.topic.toLowerCase().replace(/\s+/g, '-') === filter)
-      );
-    });
-
-    setFilteredCourses(filtered);
-    setFilterCount(filtered.length);
-  }, [filter, coursesIds]);
-
   if (!instructorData) return <Spinner />;
+
+  function handleFilterChange(selectedFilter) {
+    setFilter(selectedFilter);
+  }
 
   const title = 'Courses';
   const description =
-    'It’s time to roll up your sleeves—we learn best by doing. All of our courses are interactive, combining short videos with hands-on exercises.';
+    'Its time to roll up your sleeves—we learn best by doing. All of our courses are interactive, combining short videos with hands-on exercises.';
 
   const filterOptions = [
     { value: 'all', label: 'All' },
@@ -69,12 +60,15 @@ function InstructorCourses() {
     { value: 'google-sheets', label: 'Google Sheets' },
     { value: 'html', label: 'Html' },
     { value: 'css', label: 'Css' },
+    { value: 'tailwind-css', label: 'Tailwind CSS' },
     { value: 'javascript', label: 'JavaScript' },
     { value: 'git', label: 'Git' },
     { value: 'docker', label: 'Docker' },
     { value: 'shell', label: 'Shell' },
     { value: 'spark', label: 'Spark' },
     { value: 'chatgpt', label: 'ChatGPT' },
+    { value: 'npm', label: 'Npm' },
+    { value: 'vitest', label: 'Vitest' },
     { value: 'react', label: 'React' },
     { value: 'nodejs', label: 'NodeJS' },
     { value: 'pytorch', label: 'PyTorch' },
@@ -83,34 +77,20 @@ function InstructorCourses() {
     { value: 'others', label: '+Others' },
   ];
 
-  function handleFilterChange(selectedFilter) {
-    setFilter(selectedFilter);
-  }
-
   return (
     <Row>
       <Heading title={title} description={description} />
       <Filterbar
         filterOptions={filterOptions}
         onFilterChange={handleFilterChange}
-        filter={filter}
-        count={filterCount}
-      />
+      >
+        <Total filter={filter} count={count} />
+      </Filterbar>
       <DashboardLayout>
         <StyledDashboardLayout>
-          {filter === 'all' ? (
-            coursesIds.map((courseId) => (
-              <CourseCard key={courseId} courseId={courseId} />
-            ))
-          ) : filteredCourses.length > 0 ? (
-            filteredCourses.map((course) => (
-              <CourseCard key={course.id} courseId={course.id} />
-            ))
-          ) : (
-            <div
-              style={{ width: '100%', height: '15vh', padding: '20px' }}
-            ></div>
-          )}
+          {coursesIds.map((courseId) => (
+            <CourseCard key={courseId} courseId={courseId} filter={filter} />
+          ))}
         </StyledDashboardLayout>
       </DashboardLayout>
     </Row>

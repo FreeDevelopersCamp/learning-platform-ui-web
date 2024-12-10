@@ -3,7 +3,6 @@ import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Filter from '../roadmaps/Filter';
-import Total from '../roadmaps/Total';
 
 const StyledFilterbar = styled.div`
   position: ${(props) => (props.isFixed ? 'fixed' : 'relative')};
@@ -13,7 +12,7 @@ const StyledFilterbar = styled.div`
   max-width: 100%;
   z-index: 999;
   margin-top: 5px;
-  background-color: var(--color-grey-200);
+  background-color: #f7f7fc;
   transition: top 0.3s;
   padding: 0.5rem;
   display: flex;
@@ -37,7 +36,7 @@ const Line = styled.div`
   transition: all 0.1s ease-in-out;
 `;
 
-function Filterbar({ filterOptions, onFilterChange, filter, count }) {
+function Filterbar({ filterOptions, onFilterChange, children }) {
   const { mainRef: scrollContainer } = useOutletContext();
   const [isFixed, setIsFilterbarFixed] = useState(false);
 
@@ -46,7 +45,6 @@ function Filterbar({ filterOptions, onFilterChange, filter, count }) {
 
     const handleScroll = () => {
       const scrollTop = scrollContainer.current.scrollTop;
-      console.log('isFixed: ' + isFixed);
       setIsFilterbarFixed(scrollTop > 220);
     };
 
@@ -67,9 +65,7 @@ function Filterbar({ filterOptions, onFilterChange, filter, count }) {
         filterField="topics"
         onFilterChange={handleFilterChange}
       />
-      <TotalWrapper>
-        <Total filter={filter} count={count} />
-      </TotalWrapper>
+      <TotalWrapper>{children}</TotalWrapper>
       <Line isFixed={isFixed} />
     </StyledFilterbar>
   );

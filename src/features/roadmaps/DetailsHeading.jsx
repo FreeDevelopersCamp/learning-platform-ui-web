@@ -1,7 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRoadmap } from '../../hooks/roadmaps/useRoadmap';
 
 import { FaFreeCodeCamp } from 'react-icons/fa';
 import { LuClock3 } from 'react-icons/lu';
@@ -18,8 +15,8 @@ const Container = styled.div`
   font-family: Arial, Helvetica, sans-serif;
   background-color: #001b38;
   color: #ffffff;
-  padding: 25px 35px 0;
-  gap: 10px;
+  padding: 0 30px;
+  gap: 15px;
   border-radius: 5px;
   width: 100%;
   max-width: 1200px;
@@ -35,38 +32,28 @@ const Topic = styled.div`
 `;
 
 const Button = styled.button`
-  width: 135px;
-  height: 40px;
-  padding: 8px;
+  padding: 10px;
   margin-top: 3px;
   border-radius: 5px;
   font-weight: bold;
   font-size: 1.5rem;
   border: none;
-  color: #001b38;
-  background-color: #03ef62;
+  color: #000820;
+  background-color: #ffffff;
 
   &:hover {
-    background-color: #22bd60;
+    background-color: #ffffffd1;
   }
 
   &:focus {
-    outline: 2px solid #22bd60;
+    background-color: #ffffffd1;
     outline-offset: 2px;
   }
 `;
 
-const Description = styled.p`
-  font-size: 1.3rem;
-  color: var(--color-grey-100);
-  line-height: 1.5;
-  padding-top: 1rem;
-`;
-
 const Stats = styled.div`
   display: flex;
-  width: 100%;
-  height: 100px;
+
   color: var(--color-grey-200);
   font-size: 1.5rem;
   gap: 30px;
@@ -78,20 +65,7 @@ const Span = styled.span`
   gap: 7px;
 `;
 
-function DetailsHeading({ roadmapId }) {
-  const navigate = useNavigate();
-  const { roadmap, roadmapLoading, roadmapError } = useRoadmap(roadmapId);
-
-  const [localRoadmap, setLocalRoadmap] = useState(null);
-
-  useEffect(() => {
-    if (roadmap) {
-      setLocalRoadmap(roadmap);
-    }
-  }, [roadmap]);
-
-  if (roadmapLoading || !localRoadmap || roadmapError) return;
-
+function DetailsHeading({ roadmap, type }) {
   const {
     name,
     description,
@@ -103,17 +77,16 @@ function DetailsHeading({ roadmapId }) {
     topic,
   } = roadmap;
 
-  const handleViewDetails = (roadmapId) => {
-    navigate(`/roadmap/${roadmapId}`);
+  // course: name, duration, chapters, exercise, participants , xp
+
+  const handleUpdateRoadmap = () => {
+    // navigate(/roadmap/${roadmapId});
   };
 
   return (
     <Container>
       <Topic>{name || 'Roadmap Title'}</Topic>
-      <Button onClick={() => handleViewDetails(roadmapId)}>View Details</Button>
-
-      <Description>{description || 'No description available.'}</Description>
-
+      <Button onClick={() => handleUpdateRoadmap()}>Update Roadmap</Button>
       <Stats>
         <Span>
           <FaFreeCodeCamp style={{ fontSize: '2.2rem' }} />
@@ -121,7 +94,7 @@ function DetailsHeading({ roadmapId }) {
         </Span>
         <Span>
           <LuClock3 style={{ fontSize: '1.8rem' }} />
-          <span>{duration || 0}</span> hours
+          <span>{duration || 90}</span> hours
         </Span>
         <Span>
           <FaBolt style={{ fontSize: '1.7rem' }} />
