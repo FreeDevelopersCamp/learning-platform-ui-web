@@ -8,8 +8,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PeopleIcon from '@mui/icons-material/People';
 import { MdOutlineMenu, MdMenuOpen } from 'react-icons/md';
-import { LuSun } from 'react-icons/lu';
-import { HiUser } from 'react-icons/hi2';
+import { HiOutlineMoon, HiOutlineSun, HiUser } from 'react-icons/hi2';
 import { HiChatBubbleLeftRight } from 'react-icons/hi2';
 import { BsFire } from 'react-icons/bs';
 import { RiStarSmileLine } from 'react-icons/ri';
@@ -28,15 +27,12 @@ import AuthButtons from '../Header/AuthButtons';
 import ShortcutsMenus from './ShortcutsMenu';
 import SearchBar from './SearchBar';
 import Menus from './ProfileMenu';
-import Spinner from '../Spinner';
+import SpinnerMini from '../SpinnerMini';
 import NavBar from '../Header/NavBar';
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 const HeaderContainer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #ffffff;
+  background-color: var(--color-grey-0);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -56,7 +52,7 @@ const HeaderContainer = styled.div`
 
     .menu-icon {
       cursor: pointer;
-      background: #e0f4ff;
+      color: var(--color-grey-900);
       padding: 13px;
       display: flex;
       justify-content: center;
@@ -65,21 +61,25 @@ const HeaderContainer = styled.div`
       transition: background-color 0.5s;
 
       &:hover {
-        color: var(--color-brand-100);
-        background-color: var(--color-brand-200);
+        color: var(--color-grey-800);
+        background-color: var(--color-grey-100);
       }
 
-      svg {
-        color: #2c3e50;
-        font-size: 1.5rem;
+      font-size: 2.4rem;
+      font-weight: 700;
+
+      button:focus,
+      button:active {
+        outline: none;
+        border: none;
       }
     }
 
     .logo {
       font-size: 20px;
       font-weight: 700;
-      color: #2c3e50;
-      /* letter-spacing: 1px; */
+      color: var(--color-grey-900);
+      letter-spacing: 1px;
       cursor: pointer;
       display: flex;
       min-width: 240px;
@@ -107,14 +107,29 @@ const HeaderContainer = styled.div`
       cursor: pointer;
 
       &:hover {
-        color: var(--color-grey-600);
+        color: var(--color-grey-700);
         background-color: var(--color-grey-100);
       }
+
+      button:focus,
+      button:active {
+        outline: none;
+        border: none;
+      }
+
+
     }
+
+    *:focus,
+    *:active {
+      outline: none;
+    }
+
   }
 `;
 
 const Header = ({ toggleSidebar, atHome = false }) => {
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const { logout } = useLogout();
@@ -125,7 +140,8 @@ const Header = ({ toggleSidebar, atHome = false }) => {
     enabled: !!session?.username,
   });
 
-  if ((sessionLoading || userLoading) && !atHome) return <Spinner />;
+  if ((sessionLoading || userLoading || !session || !user) && !atHome)
+    return <SpinnerMini />;
 
   const handleToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -150,9 +166,9 @@ const Header = ({ toggleSidebar, atHome = false }) => {
         </div>
         <div className="menu-icon" style={toggleStyles} onClick={handleToggle}>
           {isSidebarOpen ? (
-            <MdOutlineMenu style={{ fontSize: '2rem', zIndex: 1 }} />
+            <MdOutlineMenu style={{ fontSize: '2.4rem', zIndex: 1 }} />
           ) : (
-            <MdMenuOpen style={{ fontSize: '2rem' }} />
+            <MdMenuOpen style={{ fontSize: '2.4rem' }} />
           )}
         </div>
         <NavBar hidden={!atHome} />
@@ -167,8 +183,8 @@ const Header = ({ toggleSidebar, atHome = false }) => {
             </button>
           </div>
           <div className="icon-container">
-            <button className="flex items-center">
-              <LuSun />
+            <button onClick={toggleDarkMode} className="flex items-center">
+              {isDarkMode ? <HiOutlineSun /> : <HiOutlineMoon />}
             </button>
           </div>
           <div className="icon-container">
