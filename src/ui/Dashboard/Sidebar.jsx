@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import MainNav from '../MainNav';
 
 const StyledSidebar = styled.aside`
-  width: ${(props) => (props.isOpen ? '12%' : '0px')};
+  width: ${(props) => (props.isOpen ? '12.5%' : '0px')};
   background-color: var(--color-mutedblue-900);
   color: white;
   padding: ${(props) => (props.isOpen ? '8px 8px 0 0' : '0px')};
@@ -15,8 +15,7 @@ const StyledSidebar = styled.aside`
   &:hover,
   &:active,
   &.active {
-    border-right: 3px solid var(--color-brand-100);
-    transition: all 0.1s;
+    transition: all 0.3s;
   }
 `;
 
