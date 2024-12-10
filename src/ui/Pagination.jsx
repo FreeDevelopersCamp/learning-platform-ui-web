@@ -1,7 +1,7 @@
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
-import { useSearchParams } from "react-router-dom";
-import styled from "styled-components";
-import { PAGE_SIZE } from "../utils/constants";
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { PAGE_SIZE } from '../utils/constants';
 
 const StyledPagination = styled.div`
   width: 100%;
@@ -26,8 +26,9 @@ const Buttons = styled.div`
 
 const PaginationButton = styled.button`
   background-color: ${(props) =>
-    props.active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
-  color: ${(props) => (props.active ? " var(--color-brand-50)" : "inherit")};
+    props.active ? ' var(--color-mutedblue-600)' : 'var(--color-grey-50)'};
+  color: ${(props) =>
+    props.active ? ' var(--color-mutedblue-50)' : 'inherit'};
   border: none;
   border-radius: var(--border-radius-sm);
   font-weight: 500;
@@ -54,30 +55,30 @@ const PaginationButton = styled.button`
   }
 
   &:hover:not(:disabled) {
-    background-color: var(--color-brand-600);
-    color: var(--color-brand-50);
+    background-color: var(--color-mutedblue-600);
+    color: var(--color-mutedblue-50);
   }
 `;
 
 function Pagination({ count, children }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = !searchParams.get("page")
+  const currentPage = !searchParams.get('page')
     ? 1
-    : Number(searchParams.get("page"));
+    : Number(searchParams.get('page'));
 
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
   function nextPage() {
     const next = currentPage === pageCount ? currentPage : currentPage + 1;
 
-    searchParams.set("page", next);
+    searchParams.set('page', next);
     setSearchParams(searchParams);
   }
 
   function prevPage() {
     const prev = currentPage === 1 ? currentPage : currentPage - 1;
 
-    searchParams.set("page", prev);
+    searchParams.set('page', prev);
     setSearchParams(searchParams);
   }
 
@@ -86,10 +87,10 @@ function Pagination({ count, children }) {
   return (
     <StyledPagination>
       <P>
-        Showing <span>{(currentPage - 1) * PAGE_SIZE + 1}</span> to{" "}
+        Showing <span>{(currentPage - 1) * PAGE_SIZE + 1}</span> to{' '}
         <span>
           {currentPage === pageCount ? count : currentPage * PAGE_SIZE}
-        </span>{" "}
+        </span>{' '}
         of <span>{count}</span> results
       </P>
 

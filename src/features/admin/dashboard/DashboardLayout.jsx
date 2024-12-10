@@ -27,9 +27,9 @@ const StyledHeading = styled.h5`
 `;
 
 function DashboardLayout() {
-  const { totalUsers, isLoading: isLoading4, count } = useUsers();
+  const { totalUsers, isLoading, count } = useUsers();
 
-  if (isLoading4) return <Spinner />;
+  if (isLoading || !totalUsers) return <Spinner />;
 
   return (
     <StyledContainer>
@@ -43,11 +43,7 @@ function DashboardLayout() {
       </div>
       <StyledDashboardLayout>
         <Stats users={totalUsers} count={count} />
-
-        {/* <RolesList /> */}
       </StyledDashboardLayout>
-      {/* <DurationChart confirmedStays={confirmedStays} />
-      <SalesChart bookings={bookings} numDays={numDays} /> */}
     </StyledContainer>
   );
 }

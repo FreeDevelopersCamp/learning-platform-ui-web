@@ -1,4 +1,3 @@
-import React from 'react';
 import { FiAlertTriangle } from 'react-icons/fi'; // Import alert icon
 
 const ValidationErrorMessage = ({ error }) => {

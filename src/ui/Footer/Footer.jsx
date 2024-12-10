@@ -1,14 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import fb from "../../assets/Images/facebook.png";
-import twitter from "../../assets/Images/twitter.png";
-import LinkedIn from "../../assets/Images/linkedin.png";
-import inst from "../../assets/Images/instagram.png";
+import React from 'react';
+import styled from 'styled-components';
+import fb from '../../assets/Images/facebook.png';
+import twitter from '../../assets/Images/twitter.png';
+import LinkedIn from '../../assets/Images/linkedin.png';
+import inst from '../../assets/Images/instagram.png';
 
 // Styled Components
-const FooterContainer = styled.div`
-  background-color: var(--color-grey-800);
+const FooterContainer = styled.footer`
+  background-color: #18212f;
   padding: 2rem;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.25); /* Adjust values as needed */
 `;
 
 const FooterLinks = styled.div`
@@ -144,7 +145,7 @@ const Footer = () => {
       <FooterHr />
 
       <FooterCopyright>
-        <p>@{new Date().getFullYear()} FreeDevloperCamp, Inc.</p>
+        <p>@{new Date().getFullYear()} FreeDevelopersCamp, Inc.</p>
       </FooterCopyright>
     </FooterContainer>
   );

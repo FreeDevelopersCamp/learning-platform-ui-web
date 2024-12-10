@@ -17,7 +17,7 @@ const EducationStatsContainer = styled.div`
 const Heading = styled.h2`
   font-size: 2.5rem; /* Increased font size */
   font-weight: 500;
-  color: #333333;
+  color: var(--color-grey-700);
   margin-bottom: 3rem; /* Increased margin */
   line-height: 1.4;
   text-align: left;
@@ -63,7 +63,7 @@ const CardHeading = styled.h3`
 `;
 
 const CardParagraph = styled.p`
-  font-size: 1.1rem; /* Increased font size */
+  font-size: 1.4rem; /* Increased font size */
   color: #6b7280;
   margin: 0;
 `;
