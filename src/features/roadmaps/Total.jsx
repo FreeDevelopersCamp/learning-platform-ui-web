@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const TotalStyle = styled.div`
-  padding: 0 0 5px 0;
+  padding: 0 0 50px;
 `;
 
 function Total({ filter, count }) {

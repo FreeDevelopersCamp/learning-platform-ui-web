@@ -9,8 +9,8 @@ const Container = styled.div`
   max-width: 1100px;
   height: 175px;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #01162e;
-  color: #ffffff;
+  background-color: var(--color-mutedblue-900);
+  color: white;
 
   padding: 0px 25px;
   border-radius: 5px;

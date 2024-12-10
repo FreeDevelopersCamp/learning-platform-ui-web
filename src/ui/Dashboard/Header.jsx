@@ -175,7 +175,7 @@ const Header = ({ toggleSidebar, atHome = false }) => {
         <SearchBar />
       </div>
 
-      {session?.active ? (
+      {session && session?.active ? (
         <div className="right-section">
           <div className="icon-container">
             <button className="flex items-center">
