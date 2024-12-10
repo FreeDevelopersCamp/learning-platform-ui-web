@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLogin } from '../../../hooks/auth/useLogin';
 
 import AuthTabs from './AuthTabs';
@@ -16,22 +16,15 @@ import AuthRoleSelector from './AuthRoleSelector';
 import Spinner from '../../../ui/Spinner';
 
 const AuthForm = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const [isSignUp, setIsSignUp] = useState(
-    location.pathname.includes('signup'),
-  );
+  const [isSignUp, setIsSignUp] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('0');
   const [error, setError] = useState('');
 
-  const { loginFunc, loginLoading } = useLogin();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    setIsSignUp(location.pathname.includes('signup'));
-  }, [location.pathname]);
+  const { loginFunc, loginLoading } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +35,10 @@ const AuthForm = () => {
     }
 
     loginFunc({ username, password, role });
+  };
+
+  const toggleForm = (mode) => {
+    setIsSignUp(mode === 'signup');
   };
 
   if (loginLoading) return <Spinner />;
@@ -56,19 +53,18 @@ const AuthForm = () => {
           cursor: 'pointer',
         }}
       >
-        <span onClick={() => navigate('/home')}>&larr; Back</span>
+        <span onClick={() => navigate(-1)}>&larr; Back</span>
       </div>
 
       <div className="auth-container">
-        <AuthTabs
-          isSignUp={isSignUp}
-          toggleForm={(mode) => setIsSignUp(mode === 'signup')}
-        />
+        <AuthTabs isSignUp={isSignUp} toggleForm={toggleForm} />
         <form className="auth-card" onSubmit={handleSubmit}>
           <AuthTitle isSignUp={isSignUp} />
+          {/* <ErrorMessage error={error} /> */}
           <AuthButtonGroup isSignUp={isSignUp} />
           <SeparatorLine text={'or'} />
 
+          {/* Username Input */}
           <AuthInput
             type="text"
             placeholder="Username"
@@ -76,6 +72,7 @@ const AuthForm = () => {
             onChange={(e) => setUsername(e.target.value)}
           />
 
+          {/* Password Input */}
           <AuthInput
             type="password"
             placeholder="Password"
@@ -84,6 +81,7 @@ const AuthForm = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
+          {/* Role Dropdown */}
           <AuthRoleSelector
             type="text"
             placeholder="Your Role"
@@ -93,6 +91,7 @@ const AuthForm = () => {
 
           <ValidationErrorMessage error={error} />
 
+          {/* Additional Elements */}
           <div
             style={{
               display: 'flex',
@@ -105,6 +104,7 @@ const AuthForm = () => {
             <AuthPrimaryButton isSignUp={isSignUp} />
           </div>
 
+          {/* Sign-In Links */}
           {!isSignUp && <AuthLinks />}
         </form>
       </div>
