@@ -28,11 +28,11 @@ const Main = styled.main`
 
 const Container = styled.div`
   display: flex;  
-  flex-direction: column;
-  align-items: flex-start;  
+  align-items: flex-start;
   width: 75%;
   margin: 30px auto;
   height: 100vh - var(--header-height);
+  
 `;
 
 function AppLayout() {

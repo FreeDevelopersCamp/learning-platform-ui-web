@@ -44,7 +44,7 @@ function Dashboard() {
     { value: 'courses', label: 'Courses' },
     { value: 'projects', label: 'Projects' },
     { value: 'practices', label: 'Practices' },
-  ];
+  ];  
 
   return (
     <Row>
