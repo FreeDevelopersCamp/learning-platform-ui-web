@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { useCount } from '../../contexts/courses/CoursesContext';
 import { useInstructorData } from '../../contexts/instructor/InstructorContext';
 
-import Row from './Row';
-import Heading from './Heading';
+import Row from '../roadmaps/Row';
+import Heading from '../roadmaps/Heading';
 import Filterbar from '../instructor/Filterbar';
 import Total from '../roadmaps/Total';
 import DashboardLayout from '../instructor/DashboardLayout';
@@ -17,7 +17,7 @@ const StyledDashboardLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: repeat(auto-fit, minmax(300, 1fr));
-  gap: 10rem; 
+  gap: 10rem;
   overflow: auto;
   flex-grow: 1;
   padding: 0.5rem 0;
@@ -34,9 +34,9 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function InstructorCourses() {
+  const { instructorData } = useInstructorData();
   const [filter, setFilter] = useState('all');
   const { count } = useCount();
-  const { instructorData } = useInstructorData();
 
   const { coursesIds = [] } = instructorData || {};
 
