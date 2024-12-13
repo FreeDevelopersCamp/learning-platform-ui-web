@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import UserAvatar from './../../../features/authentication/UserAvatar';
-import { getRoleCode } from '../../../utils/helpers';
+import UserAvatar from '@/features/authentication/UserAvatar';
+import { getRoleCode } from '@/utils/helpers.js';
 
 const HeaderCover = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ const VSection = styled.div`
 const HSection = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: left;
+  align-items: start;
   text-align: left;
   justify-content: center;
   width: 100%;
@@ -52,7 +52,7 @@ const HeaderTitle = styled.h1`
 const AccountItem = styled.a`
   font-size: 1.8rem;
   margin-top: 0.6rem;
-  color: var(--color-grey-300);
+  color: white;
 
   &:hover {
     text-decoration: underline;
@@ -63,19 +63,19 @@ const HeaderSubtitle = styled.h2`
   font-size: 1.8rem;
   margin-top: 0.2rem;
   font-weight: 400;
-  color: var(--color-grey-100);
+  color: #f3f4f6; // var(--color-grey-100);
 `;
 
 const UserRoles = styled.h2`
   font-size: 1.8rem;
   margin-top: 0.2rem;
-  color: var(--color-grey-300);
+  color: #d1d5db; // var(--color-grey-300);
 `;
 
 const ImageSection = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: start;
   text-align: left;
   justify-content: start;
   width: 100%;
@@ -86,7 +86,7 @@ const ImageSection = styled.div`
 const TechSection = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: right;
+  align-items: end;
   text-align: right;
   justify-content: start;
   width: 100%;
@@ -95,6 +95,11 @@ const TechSection = styled.div`
 `;
 
 function ProfileHeader({ user, accounts, headline, state, position }) {
+  let subtitle = '';
+  if (position && state) subtitle = position + ' | ' + state;
+  else if (position) subtitle = position;
+  else if (state) subtitle = state;
+
   return (
     <HeaderCover>
       <VSection>
@@ -104,9 +109,7 @@ function ProfileHeader({ user, accounts, headline, state, position }) {
           <UserRoles>
             {user.roles.map((role) => getRoleCode(role)).join(', ')}
           </UserRoles>
-          <HeaderSubtitle>
-            {position} | {state}
-          </HeaderSubtitle>
+          <HeaderSubtitle>{subtitle}</HeaderSubtitle>
         </ImageSection>
         <TechSection>
           <HeaderTitle>Accounts</HeaderTitle>

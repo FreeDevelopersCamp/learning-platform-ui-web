@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Header from './Dashboard/Header';
+import Header from './Dashboard/Header.jsx';
 import Footer from './Footer/Footer';
 
 const StyledAppLayout = styled.div`
