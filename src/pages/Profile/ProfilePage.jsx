@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useProfile } from '../../hooks/users/useProfile';
+import { useProfile } from '@/hooks/users/useProfile';
 
 import ProfileHeader from './ui/ProfileHeader';
 import ProfileWork from './ui/ProfileWork';

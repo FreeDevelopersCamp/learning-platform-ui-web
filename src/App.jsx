@@ -16,7 +16,6 @@ import InstructorDashboard from './pages/Instructor/Dashboard';
 import InstructorRoadmaps from './features/roadmaps/Roadmaps';
 import ViewRoadmapDetails from './features/roadmaps/ViewRoadmapDetails';
 import InstructorCourses from './features/roadmaps/InstructorCourses';
-import ViewCourseDetails from './features/roadmaps/ViewCourseDetails';
 import InstructorProjects from './features/roadmaps/InstructorProjects';
 import InstructorPractices from './features/roadmaps/InstructorPractices';
 
@@ -27,6 +26,7 @@ import HomeLayout from './ui/HomeLayout';
 import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
 import ProfilePage from './pages/Profile/ProfilePage';
+import SettingsPage from './pages/Settings/SettingsPage';
 import { AuthProvider } from './contexts/auth/AuthContext';
 import { InstructorProvider } from './contexts/instructor/InstructorContext';
 import { CoursesProvider } from './contexts/courses/CoursesContext';
@@ -47,8 +47,8 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <DarkModeProvider>
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <GlobalStyles />
         <BrowserRouter>
           <AuthProvider>
@@ -56,228 +56,245 @@ function App() {
               <CoursesProvider>
                 <ProjectsProvider>
                   <PracticesProvider>
-                  <Routes>
-                  <Route element={<HomeLayout />}>
-                    <Route index element={<Navigate replace to="home" />} />
-                    <Route path="home" element={<HomePage />} />
+                    <Routes>
+                      <Route element={<HomeLayout />}>
+                        <Route index element={<Navigate replace to="home" />} />
+                        <Route path="home" element={<HomePage />} />
 
-                    <Route
-                      path="profile"
-                      element={
-                        <ProtectedRoute role="all">
-                          <ProfilePage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="calendar"
-                      element={
-                        <ProtectedRoute role="all">
-                          <ProfilePage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="taskboard"
-                      element={
-                        <ProtectedRoute role="all">
-                          <ProfilePage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="community"
-                      element={
-                        <ProtectedRoute role="all">
-                          <ProfilePage />
-                        </ProtectedRoute>
-                      }
-                    />
-                  </Route>
+                        <Route
+                          path="profile"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ProfilePage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="settings"
+                          element={
+                            <ProtectedRoute role="all">
+                              <SettingsPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="calendar"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ProfilePage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="taskboard"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ProfilePage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="community"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ProfilePage />
+                            </ProtectedRoute>
+                          }
+                        />
+                      </Route>
 
-                  <Route element={<AppLayout />}>
-                    <Route path="admin" element={<Navigate to="dashboard" />} />
-                    <Route
-                      path="admin/dashboard"
-                      element={
-                        <ProtectedRoute role="0">
-                          <Dashboard />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="admin/users"
-                      element={
-                        <ProtectedRoute role="0">
-                          <Users />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="admin/permissions"
-                      element={
-                        <ProtectedRoute role="0">
-                          <Permissions />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="instructor/account"
-                      element={
-                        <ProtectedRoute role="5">
-                          <InstructorDashboard />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="instructor/profile"
-                      element={
-                        <ProtectedRoute role="5">
-                          <div>instructor/profile</div>
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="instructor"
-                      element={<Navigate to="dashboard" />}
-                    />
-                    <Route
-                      path="instructor/dashboard"
-                      element={
-                        <ProtectedRoute role="5">
-                          <InstructorDashboard />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="instructor/roadmaps"
-                      element={
-                        <ProtectedRoute role="5">
-                          <InstructorRoadmaps />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/roadmap/:id"
-                      element={
-                        <ProtectedRoute role="all">
-                          <ViewRoadmapDetails />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="instructor/courses"
-                      element={
-                        <ProtectedRoute role="5">
-                          <InstructorCourses />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="instructor/projects"
-                      element={
-                        <ProtectedRoute role="5">
-                          <InstructorProjects />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="instructor/practices"
-                      element={
-                        <ProtectedRoute role="5">
-                          <InstructorPractices />
-                        </ProtectedRoute>
-                      }
-                    />
+                      <Route element={<AppLayout />}>
+                        <Route
+                          path="admin"
+                          element={<Navigate to="dashboard" />}
+                        />
+                        <Route
+                          path="admin/dashboard"
+                          element={
+                            <ProtectedRoute role="0">
+                              <Dashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="admin/users"
+                          element={
+                            <ProtectedRoute role="0">
+                              <Users />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="admin/permissions"
+                          element={
+                            <ProtectedRoute role="0">
+                              <Permissions />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/account"
+                          element={
+                            <ProtectedRoute role="5">
+                              <InstructorDashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/profile"
+                          element={
+                            <ProtectedRoute role="5">
+                              <div>instructor/profile</div>
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor"
+                          element={<Navigate to="dashboard" />}
+                        />
+                        <Route
+                          path="instructor/dashboard"
+                          element={
+                            <ProtectedRoute role="5">
+                              <InstructorDashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/roadmaps"
+                          element={
+                            <ProtectedRoute role="5">
+                              <InstructorRoadmaps />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/roadmap/:id"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ViewRoadmapDetails />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/courses"
+                          element={
+                            <ProtectedRoute role="5">
+                              <InstructorCourses />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/projects"
+                          element={
+                            <ProtectedRoute role="5">
+                              <InstructorProjects />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/practices"
+                          element={
+                            <ProtectedRoute role="5">
+                              <InstructorPractices />
+                            </ProtectedRoute>
+                          }
+                        />
 
-                    <Route path="learner" element={<Navigate to="dashboard" />} />
-                    <Route
-                      path="learner/dashboard"
-                      element={
-                        <ProtectedRoute role="6">
-                          <LearnerPage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="learner/certification"
-                      element={
-                        <ProtectedRoute role="6">
-                          <LearnerPage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="learner/jobs"
-                      element={
-                        <ProtectedRoute role="6">
-                          <LearnerPage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="learner/library"
-                      element={
-                        <ProtectedRoute role="6">
-                          <LearnerPage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="learner/leaderboard"
-                      element={
-                        <ProtectedRoute role="6">
-                          <LearnerPage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="learner/roadmaps"
-                      element={
-                        <ProtectedRoute role="6">
-                          <LearnerPage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="learner/courses"
-                      element={
-                        <ProtectedRoute role="6">
-                          <LearnerPage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="learner/practices"
-                      element={
-                        <ProtectedRoute role="6">
-                          <LearnerPage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="learner/assessments"
-                      element={
-                        <ProtectedRoute role="6">
-                          <LearnerPage />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="learner/tutorials"
-                      element={
-                        <ProtectedRoute role="6">
-                          <LearnerPage />
-                        </ProtectedRoute>
-                      }
-                    />
-                  </Route>
+                        <Route
+                          path="learner"
+                          element={<Navigate to="dashboard" />}
+                        />
+                        <Route
+                          path="learner/dashboard"
+                          element={
+                            <ProtectedRoute role="6">
+                              <LearnerPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="learner/certification"
+                          element={
+                            <ProtectedRoute role="6">
+                              <LearnerPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="learner/jobs"
+                          element={
+                            <ProtectedRoute role="6">
+                              <LearnerPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="learner/library"
+                          element={
+                            <ProtectedRoute role="6">
+                              <LearnerPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="learner/leaderboard"
+                          element={
+                            <ProtectedRoute role="6">
+                              <LearnerPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="learner/roadmaps"
+                          element={
+                            <ProtectedRoute role="6">
+                              <LearnerPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="learner/courses"
+                          element={
+                            <ProtectedRoute role="6">
+                              <LearnerPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="learner/practices"
+                          element={
+                            <ProtectedRoute role="6">
+                              <LearnerPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="learner/assessments"
+                          element={
+                            <ProtectedRoute role="6">
+                              <LearnerPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="learner/tutorials"
+                          element={
+                            <ProtectedRoute role="6">
+                              <LearnerPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                      </Route>
 
-                  <Route path="login" element={<AuthPage />} />
-                  <Route path="signup" element={<AuthPage />} />
-                  <Route path="not-authorized" element={<PageNotAuthorized />} />
-                  <Route path="*" element={<PageNotFound />} />
-                </Routes>
+                      <Route path="login" element={<AuthPage />} />
+                      <Route path="signup" element={<AuthPage />} />
+                      <Route
+                        path="not-authorized"
+                        element={<PageNotAuthorized />}
+                      />
+                      <Route path="*" element={<PageNotFound />} />
+                    </Routes>
                   </PracticesProvider>
                 </ProjectsProvider>
               </CoursesProvider>
@@ -305,7 +322,6 @@ function App() {
             },
           }}
         />
-
       </QueryClientProvider>
     </DarkModeProvider>
   );

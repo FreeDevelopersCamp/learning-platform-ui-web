@@ -11,15 +11,16 @@ const StyledContainer = styled.div`
 const Title = styled.h1`
   font-size: 3rem;
   font-weight: 500;
-  color: #374151;
-  font-family: 'Poppins', sans-serif;
+  color: var(--color-grey-700);
 `;
 
 function ProfileCourses({ completedContent }) {
   return (
     <StyledContainer>
       <Title>FreeDevelopersCamp Course Completion</Title>
-      <p>{completedContent.subtitle}</p>
+      <p>
+        {completedContent.subtitle || 'You have not completed any content yet.'}
+      </p>
     </StyledContainer>
   );
 }

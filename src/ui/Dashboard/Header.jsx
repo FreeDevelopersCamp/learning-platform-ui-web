@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,21 +7,26 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import EmailIcon from '@mui/icons-material/Email';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PeopleIcon from '@mui/icons-material/People';
-import { MdOutlineMenu, MdMenuOpen } from 'react-icons/md';
-import { HiOutlineMoon, HiOutlineSun, HiUser } from 'react-icons/hi2';
-import { HiChatBubbleLeftRight } from 'react-icons/hi2';
+import { MdMenuOpen, MdOutlineMenu, MdTranslate } from 'react-icons/md';
+import {
+  HiChatBubbleLeftRight,
+  HiOutlineMoon,
+  HiOutlineSun,
+  HiUser,
+} from 'react-icons/hi2';
 import { BsFire } from 'react-icons/bs';
-import { RiStarSmileLine } from 'react-icons/ri';
-import { RiNotificationLine } from 'react-icons/ri';
-import { MdTranslate } from 'react-icons/md';
+import {
+  RiDragDropLine,
+  RiNotificationLine,
+  RiStarSmileLine,
+} from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
 import { FiCalendar } from 'react-icons/fi';
-import { RiDragDropLine } from 'react-icons/ri';
 
-import { useLogout } from '../../contexts/auth/AuthContext';
-import { useSession } from '../../hooks/auth/useSession';
-import { useUser } from '../../hooks/users/useUser';
-import { getRoleCode } from '../../utils/helpers';
+import { useLogout } from '@/contexts/auth/AuthContext';
+import { useSession } from '@/hooks/auth/useSession';
+import { useUser } from '@/hooks/users/useUser.ts';
+import { getRoleCode } from '@/utils/helpers.js';
 
 import AuthButtons from '../Header/AuthButtons';
 import ShortcutsMenus from './ShortcutsMenu';
@@ -29,7 +34,7 @@ import SearchBar from './SearchBar';
 import Menus from './ProfileMenu';
 import SpinnerMini from '../SpinnerMini';
 import NavBar from '../Header/NavBar';
-import { useDarkMode } from '../../contexts/DarkModeContext';
+import { useDarkMode } from '@/contexts/DarkModeContext';
 
 const HeaderContainer = styled.div`
   background-color: var(--color-grey-0);
@@ -116,15 +121,12 @@ const HeaderContainer = styled.div`
         outline: none;
         border: none;
       }
-
-
     }
 
     *:focus,
     *:active {
       outline: none;
     }
-
   }
 `;
 
@@ -263,7 +265,7 @@ const Header = ({ toggleSidebar, atHome = false }) => {
 
                 <Menus.Button
                   icon={<SettingsIcon />}
-                  onClick={() => console.log('Logout clicked')}
+                  onClick={() => navigate(`/settings`)}
                 >
                   Account Settings
                 </Menus.Button>

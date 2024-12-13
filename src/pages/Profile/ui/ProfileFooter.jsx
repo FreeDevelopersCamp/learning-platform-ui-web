@@ -14,8 +14,7 @@ const StyledContainer = styled.div`
   .logo {
     font-size: 20px;
     font-weight: 700;
-    color: #2c3e50;
-    /* letter-spacing: 1px; */
+    color: var(--color-grey-900);
     cursor: pointer;
     display: flex;
     min-width: 240px;

@@ -11,15 +11,16 @@ const StyledContainer = styled.div`
 const Title = styled.h1`
   font-size: 3rem;
   font-weight: 500;
-  color: #374151;
-  font-family: 'Poppins', sans-serif;
+  color: var(--color-grey-700);
 `;
 
 function ProfileCertifications({ certifications }) {
   return (
     <StyledContainer>
       <Title>My Certifications</Title>
-      <p>{certifications.subtitle}</p>
+      <p>
+        {certifications.subtitle || 'You have not added certifications yet.'}
+      </p>
     </StyledContainer>
   );
 }

@@ -1,11 +1,11 @@
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useSession } from '../hooks/auth/useSession';
 import { useAuth } from '../contexts/auth/AuthContext';
 
-import Header from './Dashboard/Header';
+import Header from './Dashboard/Header.jsx';
 import Sidebar from './Dashboard/Sidebar';
 
 import Spinner from './Spinner';
@@ -14,7 +14,6 @@ const StyledAppLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  
 `;
 
 const Main = styled.main`
@@ -22,17 +21,16 @@ const Main = styled.main`
   position: relative;
   display: flex;
   flex-grow: 1;
-  height: 100vh - var(--header-height);
+  height: 100vh -var(--header-height);
   background-color: var(--color-grey-0);
 `;
 
 const Container = styled.div`
-  display: flex;  
+  display: flex;
   flex-direction: column;
-  align-items: flex-start;  
   width: 75%;
   margin: 30px auto;
-  height: 100vh - var(--header-height);
+  height: 100vh -var(--header-height);
 `;
 
 function AppLayout() {
