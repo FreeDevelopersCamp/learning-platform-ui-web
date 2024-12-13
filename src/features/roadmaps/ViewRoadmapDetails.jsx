@@ -30,7 +30,7 @@ const Title = styled.div`
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
 `;
 
 const Description = styled.div`
@@ -73,6 +73,11 @@ function ViewRoadmapDetails() {
   const orderCards = [];
 
   order.forEach((item) => {
+    if (!item || !item._id) {
+      console.warn('Skipping invalid item:', item);
+      return;
+    }
+
     if (coursesIds.includes(item._id)) {
       orderCards.push({
         id: item._id,
@@ -114,10 +119,10 @@ function ViewRoadmapDetails() {
 
   return (
     <Row>
-      <DetailsHeading roadmap={roadmap} type="roadmap" />
+      <DetailsHeading roadmap={roadmap} />
       <Container>
         <OrderCardsContainer>
-          <Title>Roadmap Description</Title>
+          <Title>Description</Title>
           <Description>{description}</Description>
           {orderCards.map((card, index) => (
             <OrderCards

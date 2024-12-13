@@ -26,9 +26,9 @@ const AuthInput = ({
           type="button"
         >
           {showPassword ? (
-            <FiEyeOff style={{ fontSize: '20px', marginRight: '15px' }} />
+            <FiEyeOff style={{ fontSize: '20px', marginRight: '15px', color: 'var(--color-grey-300)' }} />
           ) : (
-            <FiEye style={{ fontSize: '20px', marginRight: '15px' }} />
+            <FiEye style={{ fontSize: '20px', marginRight: '15px', color: 'var(--color-grey-300)' }} />
           )}
         </button>
       )}

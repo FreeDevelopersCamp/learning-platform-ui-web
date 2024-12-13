@@ -701,9 +701,10 @@ const GlobalStyles = createGlobalStyle`
         transition: background-color 0.3s, border 0.3s;
     }
 
-    html {
-        font-size: 62.5%;
-    }
+html {
+  font-size: 62.5%;
+  overflow-y: scroll;
+}
 
     body {
         font-family: var(--font-family-primary);

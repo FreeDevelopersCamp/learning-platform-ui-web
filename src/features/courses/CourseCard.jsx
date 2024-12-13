@@ -19,7 +19,9 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
 
   &:hover {
     box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.2);
@@ -143,9 +145,17 @@ function CourseCard({ courseId, filter }) {
     name,
     description,
     duration,
+    exercises = [],
+    level,
+    resources = [],
+    reviews = [],
     instructor: { user },
+    subCourses = [],
+    tips = [],
     topic,
+    xp,
     rating,
+    status, // 1: short ,,, 0: resourses
   } = course;
 
   const handleViewDetails = () => {

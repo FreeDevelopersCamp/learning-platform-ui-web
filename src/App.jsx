@@ -15,7 +15,8 @@ import Permissions from './pages/admin/Permissions';
 import InstructorDashboard from './pages/Instructor/Dashboard';
 import InstructorRoadmaps from './features/roadmaps/Roadmaps';
 import ViewRoadmapDetails from './features/roadmaps/ViewRoadmapDetails';
-import InstructorCourses from './features/roadmaps/InstructorCourses';
+import InstructorCourses from './features/courses/InstructorCourses';
+import ViewCourseDetails from './features/courses/ViewCourseDetails';
 import InstructorProjects from './features/roadmaps/InstructorProjects';
 import InstructorPractices from './features/roadmaps/InstructorPractices';
 
@@ -47,8 +48,8 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <DarkModeProvider>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
         <GlobalStyles />
         <BrowserRouter>
           <AuthProvider>
@@ -181,6 +182,14 @@ function App() {
                           element={
                             <ProtectedRoute role="5">
                               <InstructorCourses />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/course/:id"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ViewCourseDetails />
                             </ProtectedRoute>
                           }
                         />
@@ -322,6 +331,7 @@ function App() {
             },
           }}
         />
+
       </QueryClientProvider>
     </DarkModeProvider>
   );

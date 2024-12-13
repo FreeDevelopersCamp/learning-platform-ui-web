@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { FaFreeCodeCamp } from 'react-icons/fa';
@@ -20,7 +21,7 @@ const Container = styled.div`
   border-radius: 5px;
   width: 100%;
   max-width: 1200px;
-  height: 250px;
+  height: 225px;
   margin: 0 auto;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
@@ -65,7 +66,9 @@ const Span = styled.span`
   gap: 7px;
 `;
 
-function DetailsHeading({ roadmap, type }) {
+function DetailsHeading({ roadmap }) {
+  const navigate = useNavigate();
+
   const {
     name,
     description,
@@ -77,16 +80,17 @@ function DetailsHeading({ roadmap, type }) {
     topic,
   } = roadmap;
 
-  // course: name, duration, chapters, exercise, participants , xp
-
-  const handleUpdateRoadmap = () => {
-    // navigate(/roadmap/${roadmapId});
+  const handleUpdateRoadmap = (roadmapId) => {
+    navigate(`/roadmap/${roadmapId}`);
   };
 
   return (
     <Container>
       <Topic>{name || 'Roadmap Title'}</Topic>
-      <Button onClick={() => handleUpdateRoadmap()}>Update Roadmap</Button>
+      <Button onClick={() => handleUpdateRoadmap(roadmap.id)}>
+        Update Roadmap
+      </Button>
+      {/* pass the correct roadmapId */}
       <Stats>
         <Span>
           <FaFreeCodeCamp style={{ fontSize: '2.2rem' }} />
@@ -122,7 +126,6 @@ function DetailsHeading({ roadmap, type }) {
           <span>{participants}</span> participants
         </Span>
       </Stats>
-
       {/* for learner */}
       {/* <ProgressBar /> */}
     </Container>

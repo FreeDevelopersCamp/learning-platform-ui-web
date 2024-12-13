@@ -31,16 +31,17 @@ const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  padding: 1rem 1.2rem 0;
+  padding: 1rem;
   color: white;
   position: fixed;
+  width: 12.5%;
 `;
 
 const MenuItem = styled.li`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-
+  gap: 1rem;
+  width: 100%;
   color: ${(props) => (props.isActive ? 'white' : 'var(--color-grey-300)')};
   background-color: 'transparent';
   border-radius: ${(props) =>
@@ -49,15 +50,15 @@ const MenuItem = styled.li`
   font-size: 16px;
   font-weight: 400;
   min-height: 36px;
-  padding-bottom: 8px;
-  /* padding-top: 8px; */
+  padding: 10px 10px 12px;
 
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s;
 
   &:hover {
-    background-color: #030b35;
+    background-color: var(--color-grey-600)
+    
   }
 
   & svg {
@@ -69,7 +70,7 @@ const MenuItem = styled.li`
   }
 
   &:hover svg {
-    color: var(--color-brand-600);
+    color: var(--color-brand-500);
   }
 `;
 
@@ -157,7 +158,7 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
               }
             >
               {item.icon}
-              <span>{item.label}</span>
+              <span style={{  transform: 'translateY(2.5px)' }} >{item.label}</span>
             </MenuItem>
           ))}
         </NavList>

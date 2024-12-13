@@ -7,12 +7,12 @@ const Container = styled.div`
   align-items: flex-start;
   width: 100%;
   max-width: 1100px;
-  height: 175px;
+  height: 150px;
   font-family: Arial, Helvetica, sans-serif;
   background-color: var(--color-mutedblue-900);
   color: white;
 
-  padding: 0px 25px;
+  padding: 0 25px;
   border-radius: 5px;
 `;
 
@@ -23,7 +23,7 @@ const Title = styled.h1`
 
 const Description = styled.p`
   font-size: 16px;
-  margin-top: 10px;
+  margin-top: 8px;
 `;
 
 function Heading({ title, description }) {

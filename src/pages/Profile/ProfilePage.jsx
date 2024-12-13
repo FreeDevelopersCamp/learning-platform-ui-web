@@ -22,13 +22,13 @@ const ProfilePageContainer = styled.div`
 
 const ProfilePage = () => {
   const [searchParams] = useSearchParams();
-
   const username = searchParams.get('username') || '';
-
+  
   const { profile, profileLoading } = useProfile(username);
-
+  
   if (profileLoading || !profile) return <Spinner />;
-
+  
+  console.log("profile: ", profile);
   return (
     <ProfilePageContainer>
       <ProfileHeader

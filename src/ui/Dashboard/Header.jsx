@@ -58,7 +58,8 @@ const HeaderContainer = styled.div`
     .menu-icon {
       cursor: pointer;
       color: var(--color-grey-900);
-      padding: 13px;
+      padding: 12px;
+      margin-left: 1rem;
       display: flex;
       justify-content: center;
       align-items: center;

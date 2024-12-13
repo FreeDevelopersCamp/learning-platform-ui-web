@@ -12,7 +12,6 @@ const SearchBarContainer = styled.div`
   width: 100%;
   max-width: 500px;
   min-width: 300px;
-  margin-left: 30px;
   transition: box-shadow 0.2s, border-color 0.3s ease;
 
   &:hover {
@@ -26,12 +25,13 @@ const SearchBarContainer = styled.div`
 `;
 
 const SearchIcon = styled.span`
-  margin-right: 10px;
+  margin: 0 8px 0 3px;
   font-size: 16px;
   color: var(--color-coolgray-500);
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: translateY(-3px);
 `;
 
 const SearchInput = styled.input`
