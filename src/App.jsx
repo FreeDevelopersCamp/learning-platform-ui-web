@@ -27,6 +27,7 @@ import HomeLayout from './ui/HomeLayout';
 import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
 import ProfilePage from './pages/Profile/ProfilePage';
+import SettingsPage from './pages/Settings/SettingsPage';
 import { AuthProvider } from './contexts/auth/AuthContext';
 import { InstructorProvider } from './contexts/instructor/InstructorContext';
 import { CoursesProvider } from './contexts/courses/CoursesContext';
@@ -47,8 +48,8 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <DarkModeProvider>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
         <GlobalStyles />
         <BrowserRouter>
           <AuthProvider>
@@ -66,6 +67,14 @@ function App() {
                           element={
                             <ProtectedRoute role="all">
                               <ProfilePage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="settings"
+                          element={
+                            <ProtectedRoute role="all">
+                              <SettingsPage />
                             </ProtectedRoute>
                           }
                         />
@@ -322,6 +331,7 @@ function App() {
             },
           }}
         />
+
       </QueryClientProvider>
     </DarkModeProvider>
   );

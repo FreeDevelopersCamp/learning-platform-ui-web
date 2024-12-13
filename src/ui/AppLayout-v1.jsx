@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useSession } from '../hooks/auth/useSession';
 import { useAuth } from '../contexts/auth/AuthContext';
 import { useUser } from '../hooks/users/useUser';
 
-import Header from './Dashboard/Header';
+import Header from './Dashboard/Header.jsx';
 import Sidebar from './Dashboard/Sidebar';
 import Spinner from './Spinner';
 

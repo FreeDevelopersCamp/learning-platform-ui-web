@@ -11,8 +11,7 @@ const StyledContainer = styled.div`
 const Title = styled.h1`
   font-size: 3rem;
   font-weight: 500;
-  color: #374151;
-  font-family: 'Poppins', sans-serif;
+  color: var(--color-grey-700);
 `;
 
 const Paragraph = styled.p`
@@ -23,7 +22,7 @@ function ProfileAbout({ about }) {
   return (
     <StyledContainer>
       <Title>About Me</Title>
-      <Paragraph>{about}</Paragraph>
+      <Paragraph>{about || 'You have not added about section yet.'}</Paragraph>
     </StyledContainer>
   );
 }
