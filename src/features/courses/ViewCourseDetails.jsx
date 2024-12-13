@@ -2,10 +2,10 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCourse } from '../../hooks/courses/useCourse';
 
-import Row from './Row';
+import Row from '../roadmaps/Row';
 import DetailsHeading from './DetailsHeading';
-import InstructorsSet from './InstructorsSet';
-import OrderCards from './OrderCards';
+import OrderCard from './OrderCard';
+// import InstructorsSet from '../roadmaps/InstructorsSet';
 
 import Spinner from '../../ui/Spinner';
 
@@ -22,7 +22,7 @@ const OrderCardsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 8px;
+  gap: 2rem;
 `;
 
 const Title = styled.div`
@@ -30,7 +30,7 @@ const Title = styled.div`
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
 `;
 
 const Description = styled.div`
@@ -44,13 +44,12 @@ const InstructorsSetContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 16px;
-  background-color: white;
+  background-color: var(--color-grey-0);
   border: 1px solid #ddd;
   border-radius: 5px;
   height: 200px;
   box-sizing: border-box;
 `;
-
 function ViewRoadmapDetails() {
   const { id } = useParams();
   const { course, courseLoading, courseError } = useCourse(id);
@@ -66,30 +65,35 @@ function ViewRoadmapDetails() {
     status,
     duration,
     instructorId,
-    resources = [], // Default to an empty array if not provided
-    tips = [], // Default to an empty array if not provided
-    subCoursesIds = [], // Default to an empty array if not provided
+    resources = [],
+    tips = [],
+    subCourses = [],
     xp,
     created,
     updated,
-    raters = [], // Default to an empty array if not provided
+    raters = [],
     rating,
   } = course;
 
-  const orderCards = [];
+  return (
+    <Row>
+      <DetailsHeading course={course} />
+      <Container>
+        <OrderCardsContainer>
+          <Title>Description</Title>
+          <Description>{description}</Description>
+          {subCourses.map((course, index) => (
+            <OrderCard key={index} index={index + 1} course={course} />
+          ))}
+        </OrderCardsContainer>
 
-  // order.forEach((item) => {
-  //   if (coursesIds.includes(item._id)) {
-  //     orderCards.push({
-  //       id: item._id,
-  //       type: 'course',
-  //       name: item.name,
-  //       description: item.description,
-  //       duration: item.duration,
-  //       xp: item.xp,
-  //     });
-
-  return <Row>ViewRoadmapDetails</Row>;
+        <InstructorsSetContainer>
+          {/* <InstructorsSet instructor={instructor} /> */}
+          resourses
+        </InstructorsSetContainer>
+      </Container>
+    </Row>
+  );
 }
 
 export default ViewRoadmapDetails;

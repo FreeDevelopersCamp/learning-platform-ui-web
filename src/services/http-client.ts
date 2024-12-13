@@ -175,6 +175,7 @@ export class HttpClient<SecurityDataType = unknown> {
       typeof body !== "string"
     ) {
       body = JSON.stringify(body);
+      console.log("body: ", body)
     }
 
     return this.instance
@@ -186,6 +187,7 @@ export class HttpClient<SecurityDataType = unknown> {
             ? { "Content-Type": type }
             : {}),
         },
+        
         params: query,
         responseType: responseFormat,
         data: body,
