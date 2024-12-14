@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { FaFreeCodeCamp } from 'react-icons/fa';
@@ -9,52 +10,59 @@ import { CiViewList } from 'react-icons/ci';
 import { RiTeamLine } from 'react-icons/ri';
 
 const Container = styled.div`
+  background-color: var(--color-mutedblue-900);
+  color: var(--color-grey-100);
+  border-radius: 5px;
+  width: 100%;
+  max-width: 1200px;
+  box-shadow: 0 4px 6px var(--color-grey-50);
+`;
+
+const DetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #001b38;
-  color: #ffffff;
-  padding: 0 30px;
-  gap: 15px;
-  border-radius: 5px;
+
+  padding: 30px 30px 20px;
+  gap: 10px;
   width: 100%;
-  max-width: 1200px;
-  height: 225px;
   margin: 0 auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+const ProgressBarContainer = styled.div`
+  width: calc(100%);
 `;
 
 const Topic = styled.div`
-  color: var(--color-grey-0);
+  color: var(--color-grey-100);
   font-size: 2.5rem;
   font-weight: bold;
 `;
 
 const Button = styled.button`
-  padding: 10px;
+  padding: 8px 15px;
   margin-top: 3px;
   border-radius: 5px;
   font-weight: bold;
   font-size: 1.5rem;
   border: none;
-  color: #000820;
-  background-color: #ffffff;
+  color: var(--color-mutedblue-900);
+  background-color: #03ef62;
 
   &:hover {
-    background-color: #ffffffd1;
+    background-color: #23aa59;
   }
 
   &:focus {
-    background-color: #ffffffd1;
+    background-color: #23aa59;
     outline-offset: 2px;
   }
 `;
 
 const Stats = styled.div`
   display: flex;
-
   color: var(--color-grey-200);
   font-size: 1.5rem;
   gap: 30px;
@@ -66,8 +74,9 @@ const Span = styled.span`
   gap: 7px;
 `;
 
-function DetailsHeading({ roadmap }) {
+function DetailsHeading({ roadmap, children }) {
   const navigate = useNavigate();
+  const { session } = useOutletContext();
 
   const {
     name,
@@ -84,51 +93,65 @@ function DetailsHeading({ roadmap }) {
     navigate(`/roadmap/${roadmapId}`);
   };
 
+  const handleRoadmap = (roadmapId) => {
+    // navigate(`/roadmap/${roadmapId}`);
+  };
+
   return (
-    <Container>
-      <Topic>{name || 'Roadmap Title'}</Topic>
-      <Button onClick={() => handleUpdateRoadmap(roadmap.id)}>
-        Update Roadmap
-      </Button>
-      {/* pass the correct roadmapId */}
-      <Stats>
-        <Span>
-          <FaFreeCodeCamp style={{ fontSize: '2.2rem' }} />
-          <span>{topic || ''}</span>
-        </Span>
-        <Span>
-          <LuClock3 style={{ fontSize: '1.8rem' }} />
-          <span>{duration || 90}</span> hours
-        </Span>
-        <Span>
-          <FaBolt style={{ fontSize: '1.7rem' }} />
-          <span>{coursesIds.length}</span> courses
-        </Span>
-        <Span>
-          <PiTarget
-            style={{
-              fontSize: '1.8rem',
-              transform: 'rotate(-45deg)',
-            }}
-          />
-          <span>{0}</span> assessments
-        </Span>
-        <Span>
-          <CiViewList style={{ fontSize: '1.8rem' }} />
-          <span>{projectsIds.length}</span> projects
-        </Span>
-        <Span>
-          <RiTeamLine style={{ fontSize: '1.8rem' }} />
-          <span>{practicesIds.length}</span> practices
-        </Span>
-        <Span>
-          <RiTeamLine style={{ fontSize: '1.8rem' }} />
-          <span>{participants}</span> participants
-        </Span>
-      </Stats>
-      {/* for learner */}
-      {/* <ProgressBar /> */}
-    </Container>
+    <>
+      <Container>
+        <DetailsContainer>
+          <Topic>{name}</Topic>
+          {session.role === '5' ? (
+            <Button onClick={() => handleUpdateRoadmap(roadmap.id)}>
+              Update Roadmap
+            </Button>
+          ) : (
+            <Button onClick={() => handleUpdateRoadmap(roadmap.id)}>
+              Start Track
+            </Button>
+          )}
+          {/* <Button>Continue Track</Button> */}
+          <Stats>
+            <Span>
+              <FaFreeCodeCamp style={{ fontSize: '2.2rem' }} />
+              <span>{topic || ''}</span>
+            </Span>
+            <Span>
+              <LuClock3 style={{ fontSize: '1.8rem' }} />
+              <span>{duration || 90}</span> hours
+            </Span>
+            <Span>
+              <FaBolt style={{ fontSize: '1.7rem' }} />
+              <span>{coursesIds.length}</span> courses
+            </Span>
+            <Span>
+              <PiTarget
+                style={{
+                  fontSize: '1.8rem',
+                  transform: 'rotate(-45deg)',
+                }}
+              />
+              <span>{0}</span> assessments
+            </Span>
+            <Span>
+              <CiViewList style={{ fontSize: '1.8rem' }} />
+              <span>{projectsIds.length}</span> projects
+            </Span>
+            <Span>
+              <RiTeamLine style={{ fontSize: '1.8rem' }} />
+              <span>{practicesIds.length}</span> practices
+            </Span>
+            <Span>
+              <RiTeamLine style={{ fontSize: '1.8rem' }} />
+              <span>{participants}</span> participants
+            </Span>
+          </Stats>
+        </DetailsContainer>
+        {/* for learner */}
+        <ProgressBarContainer> {children}</ProgressBarContainer>
+      </Container>
+    </>
   );
 }
 

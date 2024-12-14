@@ -5,6 +5,7 @@ import Chapter from './Chapter';
 
 import { IoIosArrowDown } from 'react-icons/io';
 import { IoIosArrowUp } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled.div`
   width: 100%;
@@ -99,7 +100,25 @@ const Button = styled.button`
   }
 `;
 
-function OrderCard({ index, course }) {
+const Start = styled.button`
+  display: flex;
+  color: var(--color-mutedblue-800);
+  background-color: #03ef62;
+  padding: 0.6rem 1.8rem;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #19c25d;
+  }
+`;
+
+function OrderCard({ index, course, title }) {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const {
@@ -143,18 +162,31 @@ function OrderCard({ index, course }) {
         }}
       >
         <Button onClick={toggleCard}>
-          View Chapter Details{' '}
+          View Chapter Details
           <IconContainer>
             {!isOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
           </IconContainer>
         </Button>
 
-        <div>Start</div>
+        <Start
+          onClick={() =>
+            navigate(
+              `/course/${title.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, '-')}/?ex=1`,
+            )
+          }
+        >
+          Start
+        </Start>
       </div>
       {isOpen && (
         <Details>
           {subCourses.map((course, index) => (
-            <Chapter key={index} course={course} />
+            <Chapter
+              key={index}
+              index={index + 1}
+              course={course}
+              title={title}
+            />
           ))}
         </Details>
       )}

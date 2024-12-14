@@ -7,6 +7,7 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: flex-start;
   padding: 0;
   gap: 5px;
@@ -59,6 +60,7 @@ function InstructorsSet({ instructor }) {
   const handleButtonClick = () => {
     navigate(`/profile?username=${instructor?.user?.userName}`);
   };
+
   return (
     <Container>
       <div style={{ display: 'flex', fontSize: '1.6rem', fontWeight: 'bold' }}>
@@ -79,7 +81,7 @@ function InstructorsSet({ instructor }) {
         />
         <p>{instructor?.user?.userName}</p>
       </Instructor>
-      {/* <Button>See All Instructors</Button>   */}
+      <Button>See All Instructors</Button>
     </Container>
   );
 }

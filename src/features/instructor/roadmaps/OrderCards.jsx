@@ -7,23 +7,23 @@ import { IoIosArrowUp } from 'react-icons/io';
 import { LuClock3 } from 'react-icons/lu';
 import { FaCheck } from 'react-icons/fa';
 
-import { convertDurationMinutesToHours } from '../../utils/helpers';
+import { convertDurationMinutesToHours } from '../../../utils/helpers';
 
 const Card = styled.div`
   width: 100%;
-  background-color: var(--color-grey-0);
-  border: 1px solid var(--color-grey-200);
+  background-color: white;
+  border: 1px solid #ddd;
   border-radius: 5px;
   padding: 2rem 3rem;
   transition: all 0.3s ease;
 
   &:hover {
-    box-shadow: 0px 1px 3px 0 var(--color-grey-300);
+    box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.2);
     transform: translateY(-1px);
   }
 
   &:focus {
-    box-shadow: 0px 1px 5px 0 var(--color-grey-300);
+    box-shadow: 0px 1px 5px 0 rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -63,8 +63,8 @@ const Order = styled.div`
   font-size: 1.4rem;
   font-weight: bold;
   border-radius: 50%;
-  color: var(--color-grey-100);
-  background-color: var(--color-mutedblue-800);
+  color: white;
+  background-color: #001b38;
 `;
 
 const Status = styled.div`
@@ -76,20 +76,20 @@ const Status = styled.div`
   font-size: 1.4rem;
   font-weight: bold;
   border-radius: 50%;
-  color: var(--color-mutedblue-900);
+  color: #001b38;
   background-color: #03ef62;
 `;
 
 const Title = styled.h2`
   font-size: 2rem;
   font-weight: bold;
-  color: var(--color-grey-800);
+  color: black;
 `;
 
 const Details = styled.div`
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid var(--color-grey-300);
+  border-top: 1px solid #ddd;
   font-size: 1.4rem;
   color: var(--color-grey-700);
 `;
@@ -121,12 +121,12 @@ const Button = styled.button`
 
   &:hover {
     text-decoration: underline;
-    text-shadow: 0px 2px 4px var(--color-grey-300);
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   &:focus {
     outline: none;
-    text-shadow: 0px 2px 4px var(--color-grey-300);
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -160,7 +160,7 @@ function OrderCards({ index, orderId, type, name, description, duration, xp }) {
             <div style={{ display: 'flex' }}>
               <LuClock3
                 style={{
-                  color: 'var(--color-grey-800)',
+                  color: '#001b38',
                   transform: 'translateY(3px)',
                   marginRight: '5px',
                 }}

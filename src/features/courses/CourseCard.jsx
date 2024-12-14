@@ -124,7 +124,7 @@ function CourseCard({ courseId, filter }) {
   useEffect(() => {
     if (
       course &&
-      (filter === 'all' || course.name.toLowerCase() === filter.toLowerCase())
+      (filter === 'All' || course.name.toLowerCase() === filter.toLowerCase())
     ) {
       incrementCount();
     }
@@ -132,7 +132,7 @@ function CourseCard({ courseId, filter }) {
     return () => {
       if (
         course &&
-        (filter === 'all' || course.name.toLowerCase() === filter.toLowerCase())
+        (filter === 'All' || course.name.toLowerCase() === filter.toLowerCase())
       ) {
         decrementCount();
       }
@@ -163,7 +163,7 @@ function CourseCard({ courseId, filter }) {
   };
 
   return (
-    (filter === 'all' ||
+    (filter === 'All' ||
       course?.name?.toLowerCase().replace(/\s+/g, '-') ===
         filter?.toLowerCase()) && (
       <Card onClick={handleViewDetails}>

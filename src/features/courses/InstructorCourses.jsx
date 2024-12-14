@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { useCount } from '../../contexts/courses/CoursesContext';
 import { useInstructorData } from '../../contexts/instructor/InstructorContext';
 
-import Row from '../roadmaps/Row';
-import Heading from '../roadmaps/Heading';
+import Row from '../instructor/roadmaps/Row';
+import Heading from '../instructor/roadmaps/Heading';
 import Filterbar from '../instructor/Filterbar';
-import Total from '../roadmaps/Total';
+import Total from '../instructor/roadmaps/Total';
 import DashboardLayout from '../instructor/DashboardLayout';
 import CourseCard from './CourseCard';
 
@@ -35,7 +35,7 @@ const StyledDashboardLayout = styled.div`
 
 function InstructorCourses() {
   const { instructorData } = useInstructorData();
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('All');
   const { count } = useCount();
 
   const { coursesIds = [] } = instructorData || {};
