@@ -12,7 +12,6 @@ const ProtectedRoute = ({ children, role }) => {
   }
 
   if (role === 'all') return children;
-  console.log(role, auth);
   if (role && auth.role !== role) {
     return <Navigate to="/not-authorized" replace />;
   }

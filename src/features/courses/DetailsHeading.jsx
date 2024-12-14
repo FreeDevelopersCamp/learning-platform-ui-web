@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { convertDurationMinutesToHours } from '../../utils/helpers.js';
 
 import { FaFreeCodeCamp } from 'react-icons/fa';
 import { LuClock3 } from 'react-icons/lu';
 import { GoDotFill } from 'react-icons/go';
-
 import { FaRegBookmark } from 'react-icons/fa6';
+import { HiOutlineUsers } from 'react-icons/hi2';
 
 const Container = styled.div`
   display: flex;
@@ -26,7 +27,7 @@ const Container = styled.div`
 `;
 
 const Topic = styled.div`
-  font-size: 2.5rem;
+  font-size: 2.6rem;
   font-weight: bold;
   color: var(--color-grey-100);
 `;
@@ -39,22 +40,45 @@ const Buttons = styled.div`
 const Button = styled.button`
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 10px;
+  padding: 7px 14px;
   margin-top: 3px;
-  border-radius: 3px;
+  border-radius: 5px;
   font-weight: bold;
   font-size: 1.5rem;
-  border: none;
-  color: #000820;
-  background-color: var(--color-grey-100);
+  border: 1px solid #03ef62;
+  gap: 0.5rem;
+  color: var(--color-mutedblue-900);
+  background-color: #03ef62;
 
   &:hover {
-    background-color: var(--color-grey-200);
+    background-color: #23aa59;
+    border: 1px solid #23aa59;
   }
 
   &:focus {
-    background-color: var(--color-grey-200);
+    background-color: #23aa59;
+    outline-offset: 2px;
+  }
+`;
+
+const Bookmark = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  margin-top: 3px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  gap: 0.5rem;
+  color: var(--color-grey-100);
+  border: 1px solid var(--color-grey-100);
+
+  &:hover {
+    background-color: var(--color-grey-600);
+  }
+
+  &:focus {
+    background-color: var(--color-grey-600);
     outline-offset: 2px;
   }
 `;
@@ -72,7 +96,7 @@ const Span = styled.span`
   align-items: center;
   gap: 7px;
   padding: 4px;
-  background-color: var(--color-mutedblue-700);
+  background-color: var(--color-mutedblue-800);
   border-radius: 4px;
 `;
 
@@ -128,31 +152,31 @@ function DetailsHeading({ course }) {
       0: [
         <GoDotFill
           key={1}
-          style={{ fontSize: '1.3rem', marginTop: '6px', color: '#03ef62' }}
+          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
         />,
       ],
       1: [
         <GoDotFill
           key={1}
-          style={{ fontSize: '1.3rem', marginTop: '6px', color: '#03ef62' }}
+          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
         />,
         <GoDotFill
           key={2}
-          style={{ fontSize: '1.3rem', marginTop: '6px', color: '#03ef62' }}
+          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
         />,
       ],
       2: [
         <GoDotFill
           key={1}
-          style={{ fontSize: '1.3rem', marginTop: '6px', color: '#03ef62' }}
+          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
         />,
         <GoDotFill
           key={2}
-          style={{ fontSize: '1.3rem', marginTop: '6px', color: '#03ef62' }}
+          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
         />,
         <GoDotFill
           key={3}
-          style={{ fontSize: '1.3rem', marginTop: '6px', color: '#03ef62' }}
+          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
         />,
       ],
     };
@@ -162,16 +186,15 @@ function DetailsHeading({ course }) {
 
   return (
     <Container>
-      {/* <p>Interactive Course</p> */}
       <Topic>{name}</Topic>
       <Buttons>
         <Button onClick={() => handleUpdateRoadmap(course.id)}>
-          Update Course
+          Practice Now
         </Button>
-        <Button>
-          <FaRegBookmark />
+        <Bookmark>
+          <FaRegBookmark style={{ fontSize: '1.6rem', color: '#fcce0d' }} />
           Bookmark
-        </Button>
+        </Bookmark>
       </Buttons>
       <Stats>
         <Level>
@@ -186,18 +209,20 @@ function DetailsHeading({ course }) {
         </Level>
         <Span>
           <LuClock3 style={{ fontSize: '1.6rem', marginTop: '0px' }} />
-          <span>{duration || 90}</span> hours
+          <span>{convertDurationMinutesToHours(duration)}</span>
         </Span>
         <Span>
           {'< >'}
-          <span>{subCoursesIds.length}</span> exercises
+          <span>{subCoursesIds.length}</span> Exercises
+        </Span>
+        <Span>
+          <HiOutlineUsers style={{ fontSize: '1.8rem', marginTop: '0px' }} />
+          <span>123 Participants</span>
         </Span>
         <XP>
           <span>{xp}</span> XP
         </XP>
       </Stats>
-      {/* for learner */}
-      {/* <ProgressBar /> */}
     </Container>
   );
 }

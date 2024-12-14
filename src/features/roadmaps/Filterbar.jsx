@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Filter from './roadmaps/Filter';
+import Filter from './Filter';
 
 const StyledFilterbar = styled.div`
   position: ${(props) => (props.isFixed ? 'fixed' : 'relative')};
@@ -10,7 +10,7 @@ const StyledFilterbar = styled.div`
   left: ${(props) => (props.isFixed ? '51.7rem' : 'auto')};
   width: 110rem;
   max-width: 100%;
-  z-index: 1000;
+  z-index: 999;
   transition: top 0.3s;
   padding: 0;
   border: none;

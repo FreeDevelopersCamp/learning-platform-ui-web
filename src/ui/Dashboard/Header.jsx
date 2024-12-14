@@ -197,7 +197,9 @@ const Header = ({ toggleSidebar, atHome = false }) => {
                 <ShortcutsMenus.List>
                   <ShortcutsMenus.Button
                     icon={<RxDashboard />}
-                    onClick={() => navigate(`${getRoleCode(session.role)}`)}
+                    onClick={() =>
+                      navigate(`${getRoleCode(session.role).toLowerCase()}`)
+                    }
                   >
                     Dashboard
                   </ShortcutsMenus.Button>

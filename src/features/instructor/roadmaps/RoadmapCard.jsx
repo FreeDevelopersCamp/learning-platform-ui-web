@@ -1,5 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useRoadmap } from '../../../hooks/roadmaps/useRoadmap';
+
+import Spinner from '../../../ui/Spinner';
 
 const Card = styled.div`
   display: flex;
@@ -38,27 +42,23 @@ const Topic = styled.div`
 `;
 
 const Description = styled.p`
+  color: #001b38;
   padding-top: 1rem;
   font-size: 1.5rem;
-  color: var(--color-grey-600);
+  color: var(--color-grey-500);
   line-height: 1.5;
   margin-bottom: 10px;
 `;
 
 const Details = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
   margin-top: 0 auto;
   padding-top: 16px;
   border-top: 1px solid var(--color-grey-300);
   z-index: 1;
-`;
-
-const Count = styled.div`
-  color: var(--color-grey-600);
-  font-size: 1.5rem;
 `;
 
 const Button = styled.button`
@@ -77,11 +77,21 @@ const Button = styled.button`
   }
 `;
 
-function RoadmapCard({ roadmap }) {
+function RoadmapCard({ roadmapId }) {
   const navigate = useNavigate();
+  const { roadmap, roadmapLoading, roadmapError } = useRoadmap(roadmapId);
+
+  const [localRoadmap, setLocalRoadmap] = useState(null);
+
+  useEffect(() => {
+    if (roadmap) {
+      setLocalRoadmap(roadmap);
+    }
+  }, [roadmap]);
+
+  if (roadmapLoading || !localRoadmap) return <Spinner />;
 
   const {
-    _id,
     name,
     description,
     duration,
@@ -93,20 +103,17 @@ function RoadmapCard({ roadmap }) {
     rating,
   } = roadmap;
 
-  const handleViewDetails = () => {
-    navigate(`/roadmap/${_id}`);
+  const handleViewDetails = (roadmapId) => {
+    navigate(`/roadmap/${roadmapId}`);
   };
 
   return (
-    <Card onClick={() => handleViewDetails()}>
+    <Card onClick={() => handleViewDetails(roadmapId)}>
       <Type>ROADMAP</Type>
       <Topic>{topic || 'Roadmap Topic'}</Topic>
       <Description>{description || 'No description available.'}</Description>
       <Details>
-        <Count>
-          {coursesIds.length + projectsIds.length} Courses and Projects{' '}
-        </Count>
-        <Button onClick={() => handleViewDetails()}>View Details</Button>
+        <Button onClick={() => handleViewDetails}>View Details</Button>
       </Details>
     </Card>
   );

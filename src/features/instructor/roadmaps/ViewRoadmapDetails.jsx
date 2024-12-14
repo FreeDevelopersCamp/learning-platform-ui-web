@@ -1,14 +1,13 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRoadmap } from '../../hooks/roadmaps/useRoadmap';
+import { useRoadmap } from '../../../hooks/roadmaps/useRoadmap';
 
 import Row from './Row';
 import DetailsHeading from './DetailsHeading';
 import InstructorsSet from './InstructorsSet';
 import OrderCards from './OrderCards';
-import ProgressBar from './ProgressBar';
 
-import Spinner from '../../ui/Spinner';
+import Spinner from '../../../ui/Spinner';
 
 const Container = styled.div`
   display: grid;
@@ -45,8 +44,8 @@ const InstructorsSetContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 16px;
-  background-color: var(--color-grey-0);
-  border: 1px solid var(--color-grey-300);
+  background-color: white;
+  border: 1px solid #ddd;
   border-radius: 5px;
   height: 200px;
   box-sizing: border-box;
@@ -75,6 +74,7 @@ function ViewRoadmapDetails() {
 
   order.forEach((item) => {
     if (!item || !item._id) {
+      console.warn('Skipping invalid item:', item);
       return;
     }
 
@@ -119,9 +119,7 @@ function ViewRoadmapDetails() {
 
   return (
     <Row>
-      <DetailsHeading roadmap={roadmap}>
-        <ProgressBar percentage={37} />
-      </DetailsHeading>
+      <DetailsHeading roadmap={roadmap} />
       <Container>
         <OrderCardsContainer>
           <Title>Description</Title>
@@ -129,7 +127,7 @@ function ViewRoadmapDetails() {
           {orderCards.map((card, index) => (
             <OrderCards
               key={index}
-              index={index + 1}
+              index={index}
               orderId={card.id}
               type={card.type}
               name={card.name}
