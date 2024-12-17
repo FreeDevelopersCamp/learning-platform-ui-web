@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useRoadmaps } from '../../hooks/roadmaps/useRoadmaps';
+import { useInstructorData } from '../../../contexts/instructor/InstructorContext';
 import styled from 'styled-components';
 
 import Row from './Row';
 import Heading from './Heading';
-import Filterbar from './Filterbar';
+import Filterbar from '../Filterbar';
 import Total from './Total';
-import DashboardLayout from './DashboardLayout';
+import DashboardLayout from '../DashboardLayout';
 import RoadmapCard from './RoadmapCard';
 
-import Spinner from '../../ui/Spinner';
+import Spinner from '../../../ui/Spinner';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -29,29 +29,26 @@ const StyledDashboardLayout = styled.div`
   }
 `;
 
-function Roadmaps() {
-  const { allRoadmaps, isAllRoadmapsLoading, allRoadmapsError } = useRoadmaps();
-
+function InstructorRoadmaps() {
+  const { instructorData } = useInstructorData();
   const [filter, setFilter] = useState('all');
   const [filteredRoadmaps, setFilteredRoadmaps] = useState([]);
   const [filterCount, setFilterCount] = useState(0);
 
-  useEffect(() => {
-    if (!allRoadmaps?.items) return;
+  const { roadmapsIds = [] } = instructorData || {};
 
-    const filtered = Object.values(allRoadmaps.items).filter((roadmap) => {
-      return (
-        filter.toLowerCase() === 'all' ||
-        (roadmap.topic && roadmap.topic === filter)
-      );
+  useEffect(() => {
+    if (!roadmapsIds) return;
+
+    const filtered = Object.values(roadmapsIds).filter((roadmap) => {
+      return filter === 'all' || (roadmap.topic && roadmap.topic === filter);
     });
 
     setFilteredRoadmaps(filtered);
     setFilterCount(filtered.length);
-  }, [filter, allRoadmaps]);
+  }, [filter, roadmapsIds]);
 
-  if (isAllRoadmapsLoading || !allRoadmaps || allRoadmapsError)
-    return <Spinner />;
+  if (!instructorData) return <Spinner />;
 
   const title = 'Roadmaps';
   const description =
@@ -84,13 +81,13 @@ function Roadmaps() {
       </Filterbar>
       <DashboardLayout>
         <StyledDashboardLayout>
-          {filter === 'All'
-            ? allRoadmaps.items.map((roadmap) => (
-                <RoadmapCard key={roadmap.id} roadmap={roadmap} />
+          {filter === 'all'
+            ? roadmapsIds.map((roadmapId) => (
+                <RoadmapCard key={roadmapId} roadmapId={roadmapId} />
               ))
             : filteredRoadmaps.length > 0 &&
               filteredRoadmaps.map((roadmap) => (
-                <RoadmapCard key={roadmap.id} roadmap={roadmap} />
+                <RoadmapCard key={roadmap.id} roadmapId={roadmap.id} />
               ))}
         </StyledDashboardLayout>
       </DashboardLayout>
@@ -98,4 +95,4 @@ function Roadmaps() {
   );
 }
 
-export default Roadmaps;
+export default InstructorRoadmaps;

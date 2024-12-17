@@ -50,7 +50,7 @@ const XP = styled.span`
   color: #6c757d;
 `;
 
-function Chapter({ course }) {
+function Chapter({ course, title, index }) {
   const navigate = useNavigate();
 
   const {
@@ -73,7 +73,9 @@ function Chapter({ course }) {
   } = course;
 
   const handleButtonClick = () => {
-    navigate(`/course/${_id}`);
+    navigate(
+      `/course/${title.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, '-')}/?ex=${index}`,
+    );
   };
 
   return (

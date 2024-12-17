@@ -13,12 +13,18 @@ import Users from './pages/admin/Users';
 import Permissions from './pages/admin/Permissions';
 
 import InstructorDashboard from './pages/Instructor/Dashboard';
-import InstructorRoadmaps from './features/roadmaps/Roadmaps';
-import ViewRoadmapDetails from './features/roadmaps/ViewRoadmapDetails';
+import InstructorRoadmaps from './features/instructor/roadmaps/InstructorRoadmaps';
+import InstructorProjects from './features/instructor/roadmaps/InstructorProjects';
+import InstructorPractices from './features/instructor/roadmaps/InstructorPractices';
+
 import InstructorCourses from './features/courses/InstructorCourses';
 import ViewCourseDetails from './features/courses/ViewCourseDetails';
-import InstructorProjects from './features/roadmaps/InstructorProjects';
-import InstructorPractices from './features/roadmaps/InstructorPractices';
+
+import Roadmaps from './features/roadmaps/Roadmaps';
+import ViewRoadmapDetails from './features/roadmaps/ViewRoadmapDetails';
+import ViewCourseOutline from './features/roadmaps/ViewCourseOutline';
+
+import LearnerPage from './pages/Learner/LearnerPage';
 
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
@@ -34,7 +40,6 @@ import { CoursesProvider } from './contexts/courses/CoursesContext';
 import { PracticesProvider } from './contexts/practices/PracticesContext';
 import { ProjectsProvider } from './contexts/projects/ProjectsContext';
 
-import LearnerPage from './pages/Learner/LearnerPage';
 import { DarkModeProvider } from './contexts/DarkModeContext';
 
 const queryClient = new QueryClient({
@@ -48,8 +53,8 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <DarkModeProvider>
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <GlobalStyles />
         <BrowserRouter>
           <AuthProvider>
@@ -170,14 +175,6 @@ function App() {
                           }
                         />
                         <Route
-                          path="/roadmap/:id"
-                          element={
-                            <ProtectedRoute role="all">
-                              <ViewRoadmapDetails />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
                           path="instructor/courses"
                           element={
                             <ProtectedRoute role="5">
@@ -223,6 +220,30 @@ function App() {
                           }
                         />
                         <Route
+                          path="learner/roadmaps"
+                          element={
+                            <ProtectedRoute role="6">
+                              <Roadmaps />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/roadmap/:id"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ViewRoadmapDetails />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/course/:title/:chapter"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ViewCourseOutline />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
                           path="learner/certification"
                           element={
                             <ProtectedRoute role="6">
@@ -258,7 +279,7 @@ function App() {
                           path="learner/roadmaps"
                           element={
                             <ProtectedRoute role="6">
-                              <LearnerPage />
+                              <Roadmaps />
                             </ProtectedRoute>
                           }
                         />
@@ -331,7 +352,6 @@ function App() {
             },
           }}
         />
-
       </QueryClientProvider>
     </DarkModeProvider>
   );

@@ -34,6 +34,13 @@ export const convertDurationMinutesToHours = (minutes) => {
   return `${hours} Hour${hours !== 1 ? 's' : ''}`;
 };
 
+export const capitalizeWords = (text) => {
+  return text
+    .split('-') // Split the text by hyphens
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+    .join(' '); // Join the words with spaces
+};
+
 export const getRoleCode = (role) => {
   switch (role) {
     case '0':

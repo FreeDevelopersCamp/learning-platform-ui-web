@@ -26,20 +26,11 @@ const Main = styled.main`
 `;
 
 const Container = styled.div`
-<<<<<<< HEAD
   display: flex;
-  flex-direction: column;
-  width: 75%;
-  margin: 30px auto;
-  height: 100vh -var(--header-height);
-=======
-  display: flex;  
   align-items: flex-start;
   width: 75%;
   margin: 30px auto;
   height: 100vh - var(--header-height);
-  
->>>>>>> f21ee11b74b1f310cb02a48bb4200a8c107c6e10
 `;
 
 function AppLayout() {
@@ -57,7 +48,7 @@ function AppLayout() {
 
   const mainRef = useRef(null);
 
-  if (isLoading || !auth || sessionLoading) return <Spinner />;
+  if (isLoading || !auth.isAuthenticated || sessionLoading) return <Spinner />;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 

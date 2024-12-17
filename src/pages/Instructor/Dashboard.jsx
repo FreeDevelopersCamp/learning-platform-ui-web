@@ -5,11 +5,11 @@ import { useUser } from '../../hooks/users/useUser';
 
 import DashboardLayout from '../../features/instructor/DashboardLayout';
 import Filterbar from '../../features/instructor/Filterbar';
-import Total from '../../features/roadmaps/Total';
+import Total from '../../features/instructor/roadmaps/Total';
 import Stats from '../../features/instructor/Stats';
 
-import Row from '../../features/roadmaps/Row';
-import Heading from '../../features/roadmaps/Heading';
+import Row from '../../features/instructor/roadmaps/Row';
+import Heading from '../../features/instructor/roadmaps/Heading';
 
 import Spinner from '../../ui/Spinner';
 
@@ -44,8 +44,7 @@ function Dashboard() {
     { value: 'courses', label: 'Courses' },
     { value: 'projects', label: 'Projects' },
     { value: 'practices', label: 'Practices' },
-  ];  
-
+  ];
 
   return (
     <Row>
