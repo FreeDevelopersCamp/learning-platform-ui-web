@@ -2,12 +2,14 @@ import styled from 'styled-components';
 
 import { useAuth } from '../../contexts/auth/AuthContext';
 import { useUser } from '../../hooks/users/useUser';
+
 import MainSection from './ui/MainSection';
 import ProgressSection from './ui/ProgressSection';
 import RoadmapAnnouncement from './ui/RoadmapAnnouncement';
 import Stats from './ui/Stats';
 import Welcome from './ui/Welcome';
 import CoursesSection from './ui/CoursesSection';
+
 import Spinner from '../../ui/Spinner';
 
 const Container = styled.div`
@@ -40,7 +42,6 @@ function LearnerPage() {
   });
 
   if (isLoading || userLoading || !auth || !user) return <Spinner />;
-
   return (
     <Container>
       <MainContainer>

@@ -56,14 +56,12 @@ const IconBackground = styled.div`
   background-color: var(--color-grey-0);
   border-radius: 50%;
   padding: 20px;
-
 `;
 
 const IconOverlay = styled.div`
   width: 80px;
   height: 80px;
   transition: opacity 0.5s ease-in-out;
-  
 `;
 
 const IconImage = styled.img`
@@ -79,7 +77,7 @@ const IntroductionText = styled.div`
 `;
 
 const IntroductionTitle = styled.h1`
-  font-size: 2.8rem;
+  font-size: 3rem;
   font-weight: 700;
   color: var(--color-grey-900);
   line-height: 1.2;
@@ -98,9 +96,9 @@ const Buttons = styled.div`
 
 const BrowseCoursesButton = styled.button`
   height: 55px;
-  background-color: var(--color-darkmidnightblue-600);
+  background-color: var(--color-mutedblue-800);
   color: var(--color-grey-0);
-  padding: 0.75rem 1.5rem;
+  padding: 0.7rem 1.5rem;
   border: none;
   border-radius: 5px;
   font-weight: bold;
@@ -109,7 +107,7 @@ const BrowseCoursesButton = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: var(--color-darkmidnightblue-700);
+    background-color: var(--color-mutedblue-600);
   }
 `;
 

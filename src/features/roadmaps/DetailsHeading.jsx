@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { FaFreeCodeCamp } from 'react-icons/fa';
@@ -24,8 +23,7 @@ const DetailsContainer = styled.div`
   justify-content: center;
   align-items: flex-start;
   font-family: Arial, Helvetica, sans-serif;
-
-  padding: 30px 30px 20px;
+  padding: 30px 30px ${(props) => (props.role === '6' ? '20px' : '30px')};
   gap: 10px;
   width: 100%;
   margin: 0 auto;
@@ -49,14 +47,14 @@ const Button = styled.button`
   font-size: 1.5rem;
   border: none;
   color: var(--color-mutedblue-900);
-  background-color: #03ef62;
+  background-color: var(--color-light-green-500);
 
   &:hover {
-    background-color: #23aa59;
+    background-color: var(--color-light-green-600);
   }
 
   &:focus {
-    background-color: #23aa59;
+    background-color: var(--color-light-green-600);
     outline-offset: 2px;
   }
 `;
@@ -74,44 +72,87 @@ const Span = styled.span`
   gap: 7px;
 `;
 
-function DetailsHeading({ roadmap, children }) {
+function DetailsHeading({
+  roadmap,
+  updateRoadmap,
+  session,
+  userProgress,
+  updateProgress,
+  role,
+  children,
+}) {
   const navigate = useNavigate();
-  const { session } = useOutletContext();
 
   const {
+    _id,
     name,
     description,
     duration,
     coursesIds = [],
     projectsIds = [],
     practicesIds = [],
-    participants = 0,
+    participants,
     topic,
+    order,
   } = roadmap;
+
+  const {
+    currentRoadmapsIds = [],
+    completedRoadmapsIds = [],
+    completedCoursesIds = [],
+    completedProjectsIds = [],
+    completedPracticesIds = [],
+    xp,
+  } = userProgress || {};
+
+  const isCurrent = currentRoadmapsIds.includes(roadmap._id);
+  const isCompleted = completedRoadmapsIds.includes(roadmap._id);
 
   const handleUpdateRoadmap = (roadmapId) => {
     navigate(`/roadmap/${roadmapId}`);
   };
 
-  const handleRoadmap = (roadmapId) => {
-    // navigate(`/roadmap/${roadmapId}`);
+  const handleContinueTrack = (roadmapId) => {
+    const name = order[0].name;
+    navigate(
+      `/courses/${name.toLowerCase().replace(/\s+/g, '-')}/${roadmapId}/?ex=1`,
+    );
+  };
+
+  const handleRegisterRoadmap = (roadmapId) => {
+    const updatedProgress = {
+      ...userProgress,
+      currentRoadmapsIds: [...currentRoadmapsIds, roadmapId],
+    };
+    updateProgress(updatedProgress);
+
+    const ubdatedData = {
+      _id,
+      participants: (roadmap.participants || 0) + 1,
+    };
+    updateRoadmap(ubdatedData);
+
+    navigate(`/roadmap/${roadmapId}`);
   };
 
   return (
     <>
       <Container>
-        <DetailsContainer>
+        <DetailsContainer role={role}>
           <Topic>{name}</Topic>
           {session.role === '5' ? (
-            <Button onClick={() => handleUpdateRoadmap(roadmap.id)}>
+            <Button onClick={() => handleUpdateRoadmap(roadmap._id)}>
               Update Roadmap
             </Button>
+          ) : isCurrent ? (
+            <Button onClick={() => handleContinueTrack(roadmap._id)}>
+              Continue Track
+            </Button>
           ) : (
-            <Button onClick={() => handleUpdateRoadmap(roadmap.id)}>
+            <Button onClick={() => handleRegisterRoadmap(roadmap._id)}>
               Start Track
             </Button>
           )}
-          {/* <Button>Continue Track</Button> */}
           <Stats>
             <Span>
               <FaFreeCodeCamp style={{ fontSize: '2.2rem' }} />
@@ -149,7 +190,7 @@ function DetailsHeading({ roadmap, children }) {
           </Stats>
         </DetailsContainer>
         {/* for learner */}
-        <ProgressBarContainer> {children}</ProgressBarContainer>
+        <ProgressBarContainer>{children}</ProgressBarContainer>
       </Container>
     </>
   );
