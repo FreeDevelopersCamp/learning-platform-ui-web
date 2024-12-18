@@ -42,16 +42,16 @@ const Description = styled.p`
 `;
 
 const CtaButton = styled.button`
-  padding: 10px 20px;
+  padding: 12px 20px;
   font-size: 1.5rem;
-  background-color: var(--color-grey-600);
+  background-color: var(--color-mutedblue-800);
   color: var(--color-grey-50);
   border: none;
   border-radius: 5px;
   cursor: pointer;
 
   &:hover {
-    background-color: var(--color-grey-500);
+    background-color: var(--color-mutedblue-600);
   }
 `;
 
@@ -72,7 +72,7 @@ const InstructorSection = () => {
           Instructors from around the world teach millions of learners on FDC.
           We provide the tools and skills to teach what you love.
         </Description>
-        <CtaButton onClick={() => navigate('/instructor/dashboard')}>
+        <CtaButton onClick={() => navigate('/signup')}>
           Start teaching today
         </CtaButton>
       </Content>

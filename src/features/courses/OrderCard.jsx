@@ -103,7 +103,7 @@ const Button = styled.button`
 const Start = styled.button`
   display: flex;
   color: var(--color-mutedblue-800);
-  background-color: #03ef62;
+  background-color: var(--color-light-green-500);
   padding: 0.6rem 1.8rem;
   border-radius: 3px;
   border: none;
@@ -113,11 +113,11 @@ const Start = styled.button`
   transition: all 0.3s ease-in-out;
 
   &:hover {
-    background-color: #19c25d;
+    background-color: var(--color-light-green-600);
   }
 `;
 
-function OrderCard({ index, course, title }) {
+function OrderCard({ index, course, title, role }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -141,6 +141,12 @@ function OrderCard({ index, course, title }) {
   } = course;
 
   const toggleCard = () => setIsOpen(!isOpen);
+
+  const handleStartClick = () => {
+    navigate(
+      `/course/${title.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, '-')}/?ex=1`,
+    );
+  };
 
   return (
     <Card>
@@ -168,16 +174,9 @@ function OrderCard({ index, course, title }) {
           </IconContainer>
         </Button>
 
-        <Start
-          onClick={() =>
-            navigate(
-              `/course/${title.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, '-')}/?ex=1`,
-            )
-          }
-        >
-          Start
-        </Start>
+        {role === '6' && <Start onClick={handleStartClick}>Start</Start>}
       </div>
+
       {isOpen && (
         <Details>
           {subCourses.map((course, index) => (

@@ -1,5 +1,7 @@
 import { useParams } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { useCourse } from '../../hooks/courses/useCourse';
 
 import Row from '../instructor/roadmaps/Row';
@@ -9,7 +11,6 @@ import InstructorsSet from '../roadmaps/InstructorsSet';
 
 import { LuGraduationCap } from 'react-icons/lu';
 import { FaCheckCircle } from 'react-icons/fa';
-// import { HiMenuAlt1 } from 'react-icons/hi';
 
 import Spinner from '../../ui/Spinner';
 
@@ -81,6 +82,7 @@ const InstructorsSetContainer = styled(Section)`
 function ViewRoadmapDetails() {
   const { id } = useParams();
   const { course, courseLoading, courseError } = useCourse(id);
+  const { session, user, userProgress } = useOutletContext();
 
   if (courseLoading || !course || courseError) return <Spinner />;
 
@@ -88,7 +90,13 @@ function ViewRoadmapDetails() {
 
   return (
     <Row>
-      <DetailsHeading course={course} />
+      <DetailsHeading
+        course={course}
+        title={course.name}
+        session={session}
+        userProgress={userProgress}
+        role={session.role}
+      />
       <Container>
         <OrderCardsContainer>
           <Title>Description</Title>
@@ -99,6 +107,7 @@ function ViewRoadmapDetails() {
               index={index + 1}
               course={course1}
               title={course.name}
+              role={session.role}
             />
           ))}
         </OrderCardsContainer>
@@ -113,7 +122,7 @@ function ViewRoadmapDetails() {
                 style={{
                   fontSize: '2rem',
                   marginLeft: '2px',
-                  color: ' #03ef62',
+                  color: '  var(--color-light-green-500)',
                 }}
               />
               <p style={{ fontWeight: '400', fontSize: '1.3rem' }}>
