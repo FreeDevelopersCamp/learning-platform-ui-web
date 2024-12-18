@@ -34,7 +34,8 @@ const WorkItem = styled.div`
   text-align: left;
   background-color: var(--color-coolgray-100);
   border-radius: 10px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
 
   h1 {
     font-size: 2rem;

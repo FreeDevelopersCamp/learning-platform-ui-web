@@ -1,4 +1,4 @@
-import { ContentType, HttpClient } from "../http-client";
+import { ContentType, HttpClient } from '../http-client';
 
 export default class Learner extends HttpClient {
   private static instance: Learner;
@@ -26,7 +26,7 @@ export default class Learner extends HttpClient {
   list(params = {}) {
     return this.request({
       path: `/learner`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -44,7 +44,7 @@ export default class Learner extends HttpClient {
   update(data, params = {}) {
     return this.request({
       path: `/learner`,
-      method: "PATCH",
+      method: 'PATCH',
       body: data,
       secure: true,
       type: ContentType.Json,
@@ -64,7 +64,7 @@ export default class Learner extends HttpClient {
   getById(id, params = {}) {
     return this.request({
       path: `/learner/${id}`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -82,7 +82,7 @@ export default class Learner extends HttpClient {
   getByUserId(id, params = {}) {
     return this.request({
       path: `/learner/user/${id}`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -100,7 +100,7 @@ export default class Learner extends HttpClient {
   delete(id, params = {}) {
     return this.request({
       path: `/learner/${id}`,
-      method: "DELETE",
+      method: 'DELETE',
       secure: true,
       ...params,
     });
@@ -118,7 +118,7 @@ export default class Learner extends HttpClient {
   approve(id: string, params = {}) {
     return this.request({
       path: `/learner/approve/${id}`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -128,15 +128,15 @@ export default class Learner extends HttpClient {
    * No description
    *
    * @tags learner
-   * @name Reject
+   * @name deactivate
    * @request DELETE:/learner/reject/{id}
    * @secure
-   * @response `default` Reject result
+   * @response `default` deactivate result
    */
   deactivate(id: string, params = {}) {
     return this.request({
       path: `/learner/deactivate/${id}`,
-      method: "DELETE",
+      method: 'DELETE',
       secure: true,
       ...params,
     });

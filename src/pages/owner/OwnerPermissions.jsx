@@ -4,7 +4,7 @@ import PermissionTableOperations from '../../features/permissions/permissionsTab
 import Heading from '../../ui/Heading';
 import Row from '../../ui/Row';
 
-function Permissions() {
+function OwnerPermissions() {
   return (
     <>
       <Row type="horizontal">
@@ -16,4 +16,4 @@ function Permissions() {
   );
 }
 
-export default Permissions;
+export default OwnerPermissions;

@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import Stat from './Stat';
 
-function Stats({ users }) {
+import Stat from './Stat.jsx';
+
+function Stats({ users, role }) {
   const navigate = useNavigate();
 
   const totalAdmins = users.filter((user) => user?.role?.includes('0'));
@@ -21,42 +22,42 @@ function Stats({ users }) {
       <Stat
         title="Total Users"
         data={users}
-        onClick={() => navigate('/admin/users')}
+        onClick={() => navigate(`/${role}/users`)}
       />
       <Stat
         title="Admins"
         data={totalAdmins}
-        onClick={() => navigate('/admin/users?role=admin')}
+        onClick={() => navigate(`/${role}/users?role=admin`)}
       />
       <Stat
         title="Owners"
         data={totalOwners}
-        onClick={() => navigate('/admin/users?role=owner')}
+        onClick={() => navigate(`/${role}/users?role=owner`)}
       />
       <Stat
         title="Managers"
         data={totalManagers}
-        onClick={() => navigate('/admin/users?role=manager')}
+        onClick={() => navigate(`/${role}/users?role=manager`)}
       />
       <Stat
         title="Account Managers"
         data={totalAccountManagers}
-        onClick={() => navigate('/admin/users?role=account-manager')}
+        onClick={() => navigate(`/${role}/users?role=account-manager`)}
       />
       <Stat
         title="Content Managers"
         data={totalContentManagers}
-        onClick={() => navigate('/admin/users?role=content-manager')}
+        onClick={() => navigate(`/${role}/users?role=content-manager`)}
       />
       <Stat
         title="Instructors"
         data={Instructors}
-        onClick={() => navigate('/admin/users?role=instructor')}
+        onClick={() => navigate(`/${role}/users?role=instructor`)}
       />
       <Stat
         title="Learners"
         data={totalLearners}
-        onClick={() => navigate('/admin/users?role=learner')}
+        onClick={() => navigate(`/${role}/users?role=learner`)}
       />
     </>
   );

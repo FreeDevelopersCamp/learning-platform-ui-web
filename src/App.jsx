@@ -4,13 +4,21 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 
 import GlobalStyles from './styles/GlobalStyles';
+import { DarkModeProvider } from './contexts/DarkModeContext';
 
 import HomePage from './pages/Home/HomePage';
 import AuthPage from './pages/Auth/AuthPage';
 
+import ProfilePage from './pages/Profile/ProfilePage';
+import SettingsPage from './pages/Settings/SettingsPage';
+
 import Dashboard from './pages/admin/Dashboard';
 import Users from './pages/admin/Users';
 import Permissions from './pages/admin/Permissions';
+
+import OwnerUsers from '@/pages/owner/OwnerUsers.jsx';
+import OwnerDashboard from '@/pages/owner/OwnerDashboard.jsx';
+import OwnerPermissions from '@/pages/owner/OwnerPermissions.jsx';
 
 import InstructorDashboard from './pages/Instructor/Dashboard';
 import InstructorRoadmaps from './features/instructor/roadmaps/InstructorRoadmaps';
@@ -29,18 +37,15 @@ import LearnerPage from './pages/Learner/LearnerPage';
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
 
-import HomeLayout from './ui/HomeLayout';
-import AppLayout from './ui/AppLayout';
-import ProtectedRoute from './ui/ProtectedRoute';
-import ProfilePage from './pages/Profile/ProfilePage';
-import SettingsPage from './pages/Settings/SettingsPage';
 import { AuthProvider } from './contexts/auth/AuthContext';
 import { InstructorProvider } from './contexts/instructor/InstructorContext';
 import { CoursesProvider } from './contexts/courses/CoursesContext';
 import { PracticesProvider } from './contexts/practices/PracticesContext';
 import { ProjectsProvider } from './contexts/projects/ProjectsContext';
 
-import { DarkModeProvider } from './contexts/DarkModeContext';
+import HomeLayout from './ui/HomeLayout';
+import AppLayout from './ui/AppLayout';
+import ProtectedRoute from './ui/ProtectedRoute';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -135,6 +140,34 @@ function App() {
                           element={
                             <ProtectedRoute role="0">
                               <Permissions />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="owner"
+                          element={<Navigate to="dashboard" />}
+                        />
+                        <Route
+                          path="owner/dashboard"
+                          element={
+                            <ProtectedRoute role="1">
+                              <OwnerDashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="owner/users"
+                          element={
+                            <ProtectedRoute role="1">
+                              <OwnerUsers />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="owner/permissions"
+                          element={
+                            <ProtectedRoute role="1">
+                              <OwnerPermissions />
                             </ProtectedRoute>
                           }
                         />
