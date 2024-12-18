@@ -1,26 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { HiEye, HiTrash } from 'react-icons/hi2';
 import PersonOffTwoToneIcon from '@mui/icons-material/PersonOffTwoTone';
 import PersonAddAltTwoToneIcon from '@mui/icons-material/PersonAddAltTwoTone';
 
-import { useApproveUser } from '../useApproveUser';
-import { useRejectUser } from '../useRejectUser';
-import { useDeleteUser } from '../useDeleteUser';
-import { useDeactivateUser } from '../useDeactivateUser';
-import { useUserSelection } from '../../../../contexts/admin/users/UserSelectionContext';
-import { getRoleCode } from '../../../../utils/helpers';
+import { useApproveUser } from '../useApproveUser.js';
+import { useRejectUser } from '../useRejectUser.js';
+import { useDeleteUser } from '../useDeleteUser.js';
+import { useDeactivateUser } from '../useDeactivateUser.js';
+import { useUserSelection } from '@/contexts/users/UserSelectionContext.jsx';
+import { getRoleCode } from '@/utils/helpers.js';
 
-import ConfirmApprove from '../../../../ui/ConfirmApprove';
-import ConfirmReject from '../../../../ui/ConfirmReject';
-import ConfirmDeactivate from '../../../../ui/ConfirmDeactivate';
-import ConfirmDelete from '../../../../ui/ConfirmDelete';
-import Tag from '../../../../ui/Tag';
-import Table from '../../../../ui/Table';
-import Menus from '../../../../ui/Menus';
-import Modal from '../../../../ui/Modal';
-import UserAvatar from '../../../authentication/UserAvatar';
+import ConfirmApprove from '@/ui/ConfirmApprove.jsx';
+import ConfirmReject from '@/ui/ConfirmReject.jsx';
+import ConfirmDeactivate from '@/ui/ConfirmDeactivate.jsx';
+import ConfirmDelete from '@/ui/ConfirmDelete.jsx';
+import Table from '@/ui/Table.jsx';
+import Menus from '@/ui/Menus.jsx';
+import Modal from '@/ui/Modal.jsx';
+import UserAvatar from '../../authentication/UserAvatar.jsx';
+import Tag from '@/ui/Tag.jsx';
 
 const Email = styled.div`
   font-size: 1.6rem;
@@ -51,7 +52,7 @@ const statusToTagText = {
   3: 'Deactivated',
 };
 
-function UserRow({ user, children }) {
+function UserRow({ user, role: MainRole, children }) {
   let { userName, image, role, personalInformation, contacts, status } = user;
 
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ function UserRow({ user, children }) {
   const { selectedUsers, handleSelectUser, handleUserAction } =
     useUserSelection();
 
-  if (!image) image = '../../../public/default-user.png';
+  if (!image) image = '@/public/default-user.png';
 
   let roleCode = getRoleCode(role);
   const [pendingAction, setPendingAction] = useState(null); // Tracks the current action
@@ -134,11 +135,12 @@ function UserRow({ user, children }) {
               </Modal.Open>
             )}
 
-            {statusToTagText[status] === 'Deactivated' && (
-              <Modal.Open opens={`delete-${user.roleId}`}>
-                <Menus.Button icon={<HiTrash />}>Delete user</Menus.Button>
-              </Modal.Open>
-            )}
+            {statusToTagText[status] === 'Deactivated' &&
+              MainRole === 'admin' && (
+                <Modal.Open opens={`delete-${user.roleId}`}>
+                  <Menus.Button icon={<HiTrash />}>Delete user</Menus.Button>
+                </Modal.Open>
+              )}
 
             {statusToTagText[status] === 'Activated' && (
               <Modal.Open opens={`deactivate-${user.roleId}`}>

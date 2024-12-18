@@ -1,7 +1,7 @@
-import SortBy from '../../../../ui/SortBy.jsx';
-import Filter from '../../../../ui/Filter.jsx';
-import FilterList from '../../../../ui/FilterList.jsx';
-import TableOperations from '../../../../ui/TableOperations.jsx';
+import SortBy from '../../../ui/SortBy.jsx';
+import Filter from '../../../ui/Filter.jsx';
+import FilterList from '../../../ui/FilterList.jsx';
+import TableOperations from '../../../ui/TableOperations.jsx';
 
 function UserTableOperations() {
   return (

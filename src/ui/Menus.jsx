@@ -6,8 +6,10 @@ import { useOutsideClick } from '../hooks/useOutsideClick';
 
 const Menu = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  width: 100%;
 `;
 
 const StyledToggle = styled.button`
