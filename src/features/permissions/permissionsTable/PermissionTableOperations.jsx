@@ -1,6 +1,6 @@
-import SortBy from '../../../../ui/SortBy.jsx';
-import FilterList from '../../../../ui/FilterList.jsx';
-import TableOperations from '../../../../ui/TableOperations.jsx';
+import SortBy from '../../../ui/SortBy.jsx';
+import FilterList from '../../../ui/FilterList.jsx';
+import TableOperations from '../../../ui/TableOperations.jsx';
 
 function PermissionTableOperations() {
   return (

@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 const sizes = {
   small: css`
@@ -39,11 +39,11 @@ const variations = {
     }
   `,
   danger: css`
-    color: var(--color-red-100);
-    background-color: var(--color-red-700);
+    color: var(--color-grey-50);
+    background-color: var(--color-red-300);
 
     &:hover {
-      background-color: var(--color-red-800);
+      background-color: var(--color-red-600);
     }
   `,
 };
@@ -58,8 +58,8 @@ const Button = styled.button`
 `;
 
 Button.defaultProps = {
-  variation: "primary",
-  size: "medium",
+  variation: 'primary',
+  size: 'medium',
 };
 
 export default Button;

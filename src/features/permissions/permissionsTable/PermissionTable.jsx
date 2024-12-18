@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { useSearchParams } from 'react-router-dom';
 import { HiPencil, HiTrash } from 'react-icons/hi2';
 
-import { PAGE_SIZE } from '../../../../utils/constants';
-import Pagination from '../../../../ui/Pagination';
-import Table from '../../../../ui/Table';
-import Menus from '../../../../ui/Menus';
-import Modal from '../../../../ui/Modal';
-import { getRoleCode } from '../../../../utils/helpers';
+import { PAGE_SIZE } from '../../../utils/constants.js';
+import Pagination from '../../../ui/Pagination.jsx';
+import Table from '../../../ui/Table.jsx';
+import Menus from '../../../ui/Menus.jsx';
+import Modal from '../../../ui/Modal.jsx';
+import { getRoleCode } from '../../../utils/helpers.js';
 
 const DataRow = styled.div`
   display: flex;
@@ -182,7 +182,7 @@ function PermissionTable() {
     <Menus>
       <Table columns="3.5fr 3fr 1fr 0.01px">
         <Table.Header>
-          <div>Permission Name</div>
+          <div className="flex py-3">Permission Name</div>
           <div>Assigned to</div>
           <div>
             <button>Add Permission</button>

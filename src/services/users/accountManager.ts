@@ -1,4 +1,4 @@
-import { ContentType, HttpClient } from "../http-client";
+import { ContentType, HttpClient } from '../http-client';
 
 export default class AccountManager extends HttpClient {
   private static instance: AccountManager;
@@ -26,7 +26,7 @@ export default class AccountManager extends HttpClient {
   list(params = {}) {
     return this.request({
       path: `/AccountManager`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -44,7 +44,7 @@ export default class AccountManager extends HttpClient {
   update(data, params = {}) {
     return this.request({
       path: `/AccountManager`,
-      method: "PATCH",
+      method: 'PATCH',
       body: data,
       secure: true,
       type: ContentType.Json,
@@ -64,7 +64,7 @@ export default class AccountManager extends HttpClient {
   getById(id, params = {}) {
     return this.request({
       path: `/AccountManager/${id}`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -82,7 +82,7 @@ export default class AccountManager extends HttpClient {
   getByUserId(id, params = {}) {
     return this.request({
       path: `/AccountManager/user/${id}`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -100,7 +100,7 @@ export default class AccountManager extends HttpClient {
   delete(id, params = {}) {
     return this.request({
       path: `/AccountManager/${id}`,
-      method: "DELETE",
+      method: 'DELETE',
       secure: true,
       ...params,
     });
@@ -118,7 +118,7 @@ export default class AccountManager extends HttpClient {
   approve(id: string, params = {}) {
     return this.request({
       path: `/AccountManager/approve/${id}`,
-      method: "GET",
+      method: 'GET',
       secure: true,
       ...params,
     });
@@ -136,7 +136,7 @@ export default class AccountManager extends HttpClient {
   reject(id: string, params = {}) {
     return this.request({
       path: `/AccountManager/reject/${id}`,
-      method: "DELETE",
+      method: 'DELETE',
       secure: true,
       ...params,
     });
@@ -146,15 +146,15 @@ export default class AccountManager extends HttpClient {
    * No description
    *
    * @tags ContentManager
-   * @name Reject
+   * @name Deactivate
    * @request DELETE:/ContentManager/reject/{id}
    * @secure
-   * @response `default` Reject result
+   * @response `default` Deactivate result
    */
   deactivate(id: string, params = {}) {
     return this.request({
       path: `/ContentManager/deactivate/${id}`,
-      method: "DELETE",
+      method: 'DELETE',
       secure: true,
       ...params,
     });
