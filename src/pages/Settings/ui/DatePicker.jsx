@@ -1,7 +1,7 @@
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
-import { useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 
 // Styled wrapper for the DatePicker
 const StyledDatePickerWrapper = styled.div`
