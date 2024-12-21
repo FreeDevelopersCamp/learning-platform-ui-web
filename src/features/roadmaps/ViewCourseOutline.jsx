@@ -21,14 +21,16 @@ const Contant = styled.div`
 `;
 
 function ViewCourseOutline() {
-  const { title, chapter } = useParams();
+  const { title, roadmapId } = useParams();
   const [searchParams] = useSearchParams();
   const ex = searchParams.get('ex');
 
   return (
     <Container>
-      <Title>{capitalizeWords(chapter)}</Title>
+      <Title>{capitalizeWords(title)}</Title>
+      <Title>roadmapId: {roadmapId}</Title>
       <Contant>contant</Contant>
+      {ex}
     </Container>
   );
 }

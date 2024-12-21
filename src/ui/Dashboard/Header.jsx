@@ -58,8 +58,8 @@ const HeaderContainer = styled.div`
     .menu-icon {
       cursor: pointer;
       color: var(--color-grey-900);
-      padding: 12px;
-      margin-left: 1rem;
+      padding: 10px;
+      margin-left: 15px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -131,7 +131,7 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const Header = ({ toggleSidebar, atHome = false }) => {
+const Header = ({ page, toggleSidebar, atHome = false }) => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
@@ -167,13 +167,19 @@ const Header = ({ toggleSidebar, atHome = false }) => {
           </span>
           <span>)</span>
         </div>
-        <div className="menu-icon" style={toggleStyles} onClick={handleToggle}>
-          {isSidebarOpen ? (
-            <MdOutlineMenu style={{ fontSize: '2.4rem', zIndex: 1 }} />
-          ) : (
-            <MdMenuOpen style={{ fontSize: '2.4rem' }} />
-          )}
-        </div>
+        {page === 'course' && (
+          <div
+            className="menu-icon"
+            style={toggleStyles}
+            onClick={handleToggle}
+          >
+            {isSidebarOpen ? (
+              <MdOutlineMenu style={{ fontSize: '2.4rem', zIndex: 1 }} />
+            ) : (
+              <MdMenuOpen style={{ fontSize: '2.4rem' }} />
+            )}
+          </div>
+        )}
         <NavBar hidden={!atHome} />
         <SearchBar />
       </div>

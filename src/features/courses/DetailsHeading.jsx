@@ -42,22 +42,15 @@ const Button = styled.button`
   align-items: center;
   padding: 7px 14px;
   margin-top: 3px;
-  border-radius: 5px;
+  border-radius: 3px;
   font-weight: bold;
   font-size: 1.5rem;
-  border: 1px solid #03ef62;
   gap: 0.5rem;
   color: var(--color-mutedblue-900);
-  background-color: #03ef62;
+  background-color: var(--color-light-green-500);
 
   &:hover {
-    background-color: #23aa59;
-    border: 1px solid #23aa59;
-  }
-
-  &:focus {
-    background-color: #23aa59;
-    outline-offset: 2px;
+    background-color: var(--color-light-green-600);
   }
 `;
 
@@ -66,7 +59,7 @@ const Bookmark = styled.button`
   align-items: center;
   padding: 8px 15px;
   margin-top: 3px;
-  border-radius: 5px;
+  border-radius: 3px;
   font-weight: bold;
   font-size: 1.5rem;
   gap: 0.5rem;
@@ -120,7 +113,7 @@ const XP = styled.span`
   color: var(--color-mutedblue-900);
 `;
 
-function DetailsHeading({ course }) {
+function DetailsHeading({ course, title, session, userProgress, role }) {
   const navigate = useNavigate();
 
   const {
@@ -143,8 +136,31 @@ function DetailsHeading({ course }) {
     level,
   } = course;
 
-  const handleUpdateRoadmap = (courseId) => {
+  const {
+    currentRoadmapsIds = [],
+    completedRoadmapsIds = [],
+    currentCoursesIds = [],
+    completedCoursesIds = [],
+    completedProjectsIds = [],
+    completedPracticesIds = [],
+    xpp,
+  } = userProgress || {};
+
+  const isCurrent = currentCoursesIds.includes(_id);
+  const isCompleted = completedCoursesIds.includes(_id);
+
+  const handleUpdateCourse = (courseId) => {
     navigate(`/course/${courseId}`);
+  };
+
+  const handleContinueCourse = (courseId) => {
+    navigate(`/course/${courseId}`);
+  };
+
+  const handlePracticeCourse = () => {
+    navigate(
+      `/course/${title.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, '-')}/?ex=1`,
+    );
   };
 
   const renderLevelIcons = (level) => {
@@ -152,31 +168,55 @@ function DetailsHeading({ course }) {
       0: [
         <GoDotFill
           key={1}
-          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
+          style={{
+            fontSize: '1.3rem',
+            marginTop: '4px',
+            color: 'var(--color-light-green-500)',
+          }}
         />,
       ],
       1: [
         <GoDotFill
           key={1}
-          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
+          style={{
+            fontSize: '1.3rem',
+            marginTop: '4px',
+            color: 'var(--color-light-green-500)',
+          }}
         />,
         <GoDotFill
           key={2}
-          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
+          style={{
+            fontSize: '1.3rem',
+            marginTop: '4px',
+            color: 'var(--color-light-green-500)',
+          }}
         />,
       ],
       2: [
         <GoDotFill
           key={1}
-          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
+          style={{
+            fontSize: '1.3rem',
+            marginTop: '4px',
+            color: 'var(--color-light-green-500)',
+          }}
         />,
         <GoDotFill
           key={2}
-          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
+          style={{
+            fontSize: '1.3rem',
+            marginTop: '4px',
+            color: 'var(--color-light-green-500)',
+          }}
         />,
         <GoDotFill
           key={3}
-          style={{ fontSize: '1.3rem', marginTop: '4px', color: '#03ef62' }}
+          style={{
+            fontSize: '1.3rem',
+            marginTop: '4px',
+            color: 'var(--color-light-green-500)',
+          }}
         />,
       ],
     };
@@ -188,9 +228,13 @@ function DetailsHeading({ course }) {
     <Container>
       <Topic>{name}</Topic>
       <Buttons>
-        <Button onClick={() => handleUpdateRoadmap(course.id)}>
-          Practice Now
-        </Button>
+        {session.role === '5' ? (
+          <Button onClick={() => handleUpdateCourse(_id)}>Update Course</Button>
+        ) : isCurrent ? (
+          <Button onClick={() => handleContinueCourse(_id)}>Continue</Button>
+        ) : (
+          <Button onClick={() => handlePracticeCourse()}>Practice Now</Button>
+        )}
         <Bookmark>
           <FaRegBookmark style={{ fontSize: '1.6rem', color: '#fcce0d' }} />
           Bookmark

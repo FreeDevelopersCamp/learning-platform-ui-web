@@ -41,6 +41,15 @@ import LearnerPage from './pages/Learner/LearnerPage';
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
 
+import HomeLayout from './ui/HomeLayout';
+import AppLayout from './ui/AppLayout';
+import LearnerLayout from './ui/LearnerLayout';
+import CoursesLayout from './ui/CoursesLayout';
+
+import ProtectedRoute from './ui/ProtectedRoute';
+import ProfilePage from './pages/Profile/ProfilePage';
+import SettingsPage from './pages/Settings/SettingsPage';
+
 import { AuthProvider } from './contexts/auth/AuthContext';
 import { InstructorProvider } from './contexts/instructor/InstructorContext';
 import { CoursesProvider } from './contexts/courses/CoursesContext';
@@ -248,14 +257,6 @@ function App() {
                           }
                         />
                         <Route
-                          path="/course/:id"
-                          element={
-                            <ProtectedRoute role="all">
-                              <ViewCourseDetails />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
                           path="instructor/projects"
                           element={
                             <ProtectedRoute role="5">
@@ -272,111 +273,120 @@ function App() {
                           }
                         />
 
+                        <Route element={<LearnerLayout />}>
+                          <Route
+                            path="learner"
+                            element={<Navigate to="dashboard" />}
+                          />
+                          <Route
+                            path="learner/dashboard"
+                            element={
+                              <ProtectedRoute role="6">
+                                <LearnerPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/roadmaps"
+                            element={
+                              <ProtectedRoute role="6">
+                                <Roadmaps />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="/roadmap/:id"
+                            element={
+                              <ProtectedRoute role="all">
+                                <ViewRoadmapDetails />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="/course/:id"
+                            element={
+                              <ProtectedRoute role="all">
+                                <ViewCourseDetails />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/certification"
+                            element={
+                              <ProtectedRoute role="6">
+                                <LearnerPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/jobs"
+                            element={
+                              <ProtectedRoute role="6">
+                                <LearnerPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/library"
+                            element={
+                              <ProtectedRoute role="6">
+                                <LearnerPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/leaderboard"
+                            element={
+                              <ProtectedRoute role="6">
+                                <LearnerPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/courses"
+                            element={
+                              <ProtectedRoute role="6">
+                                <LearnerPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/practices"
+                            element={
+                              <ProtectedRoute role="6">
+                                <LearnerPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/assessments"
+                            element={
+                              <ProtectedRoute role="6">
+                                <LearnerPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/tutorials"
+                            element={
+                              <ProtectedRoute role="6">
+                                <LearnerPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                        </Route>
+                      </Route>
+
+                      <Route element={<CoursesLayout />}>
                         <Route
-                          path="learner"
-                          element={<Navigate to="dashboard" />}
+                          path="courses"
+                          element={<Navigate to="/:title/:roadmapId" />}
                         />
                         <Route
-                          path="learner/dashboard"
-                          element={
-                            <ProtectedRoute role="6">
-                              <LearnerPage />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="learner/roadmaps"
-                          element={
-                            <ProtectedRoute role="6">
-                              <Roadmaps />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="/roadmap/:id"
-                          element={
-                            <ProtectedRoute role="all">
-                              <ViewRoadmapDetails />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="/course/:title/:chapter"
+                          path="/courses/:title/:roadmapId"
                           element={
                             <ProtectedRoute role="all">
                               <ViewCourseOutline />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="learner/certification"
-                          element={
-                            <ProtectedRoute role="6">
-                              <LearnerPage />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="learner/jobs"
-                          element={
-                            <ProtectedRoute role="6">
-                              <LearnerPage />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="learner/library"
-                          element={
-                            <ProtectedRoute role="6">
-                              <LearnerPage />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="learner/leaderboard"
-                          element={
-                            <ProtectedRoute role="6">
-                              <LearnerPage />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="learner/roadmaps"
-                          element={
-                            <ProtectedRoute role="6">
-                              <Roadmaps />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="learner/courses"
-                          element={
-                            <ProtectedRoute role="6">
-                              <LearnerPage />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="learner/practices"
-                          element={
-                            <ProtectedRoute role="6">
-                              <LearnerPage />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="learner/assessments"
-                          element={
-                            <ProtectedRoute role="6">
-                              <LearnerPage />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="learner/tutorials"
-                          element={
-                            <ProtectedRoute role="6">
-                              <LearnerPage />
                             </ProtectedRoute>
                           }
                         />

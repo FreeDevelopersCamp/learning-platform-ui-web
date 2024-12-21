@@ -12,7 +12,10 @@ const SearchBarContainer = styled.div`
   width: 100%;
   max-width: 500px;
   min-width: 300px;
-  transition: box-shadow 0.2s, border-color 0.3s ease;
+  margin-left: 5px;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.3s ease;
 
   &:hover {
     border-color: var(--color-midnightblue-800);

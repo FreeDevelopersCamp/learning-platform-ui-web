@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRoadmap } from '../../../hooks/roadmaps/useRoadmap';
+import { useFetchRoadmapById } from '../../../hooks/roadmaps/useRoadmap';
 
 import Spinner from '../../../ui/Spinner';
 
@@ -79,7 +79,11 @@ const Button = styled.button`
 
 function RoadmapCard({ roadmapId }) {
   const navigate = useNavigate();
-  const { roadmap, roadmapLoading, roadmapError } = useRoadmap(roadmapId);
+  const {
+    data: roadmap,
+    isLoading: isLoadingRoadmap,
+    error: errorRoadmap,
+  } = useFetchRoadmapById(roadmapId);
 
   const [localRoadmap, setLocalRoadmap] = useState(null);
 
@@ -89,7 +93,7 @@ function RoadmapCard({ roadmapId }) {
     }
   }, [roadmap]);
 
-  if (roadmapLoading || !localRoadmap) return <Spinner />;
+  if (isLoadingRoadmap || !localRoadmap || errorRoadmap) return <Spinner />;
 
   const {
     name,
