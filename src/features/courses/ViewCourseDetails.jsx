@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useCourse } from '../../hooks/courses/useCourse';
+import { useFetchCourseById } from '../../hooks/courses/useCourse';
 
 import Row from '../instructor/roadmaps/Row';
 import DetailsHeading from './DetailsHeading';
@@ -81,10 +81,14 @@ const InstructorsSetContainer = styled(Section)`
 
 function ViewRoadmapDetails() {
   const { id } = useParams();
-  const { course, courseLoading, courseError } = useCourse(id);
-  const { session, user, userProgress } = useOutletContext();
+  const {
+    data: course,
+    isLoading: isCourseLoading,
+    courseError,
+  } = useFetchCourseById(id);
+  const { session, userProgress } = useOutletContext();
 
-  if (courseLoading || !course || courseError) return <Spinner />;
+  if (isCourseLoading || !course || courseError) return <Spinner />;
 
   const { description, subCourses = [], instructor } = course;
 

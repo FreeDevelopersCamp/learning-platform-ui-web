@@ -1,36 +1,58 @@
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { capitalizeWords } from '../../utils/helpers';
+import RecursiveCourses from './RecursiveCourses';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  margin: 30px 50px;
-`;
-
-const Title = styled.div`
-  font-size: 2.8rem;
-  font-weight: bold;
-`;
-
-const Contant = styled.div`
-  background-color: red;
+  margin: 0 5rem;
 `;
 
 function ViewCourseOutline() {
-  const { title, roadmapId } = useParams();
-  const [searchParams] = useSearchParams();
-  const ex = searchParams.get('ex');
+  const { roadmap, setCourseStructure } = useOutletContext();
+  const [tempStructure, setTempStructure] = useState([]);
+  const isFinalizedRef = useRef(false); // Prevent redundant updates
+
+  // Reset tempStructure and finalization flag on roadmap change
+  useEffect(() => {
+    setTempStructure([]); // Reset structure
+    isFinalizedRef.current = false; // Allow updates again
+  }, [roadmap]);
+
+  // Update final structure once all courses are processed
+  useEffect(() => {
+    if (
+      !isFinalizedRef.current &&
+      tempStructure.length === roadmap.coursesIds.length
+    ) {
+      setCourseStructure(tempStructure); // Set final structure
+      isFinalizedRef.current = true; // Block further updates
+    }
+  }, [tempStructure, roadmap.coursesIds.length, setCourseStructure]);
+
+  const addToTempStructure = useCallback((courseStructure, index) => {
+    setTempStructure((prev) => {
+      const updated = [...prev];
+      updated[index] = courseStructure;
+      return updated;
+    });
+  }, []);
 
   return (
     <Container>
-      <Title>{capitalizeWords(title)}</Title>
-      <Title>roadmapId: {roadmapId}</Title>
-      <Contant>contant</Contant>
-      {ex}
+      {roadmap.coursesIds.map((courseId, index) => (
+        <RecursiveCourses
+          key={courseId}
+          courseId={courseId}
+          addToTempStructure={addToTempStructure}
+          index={index}
+          parentEx={`${index + 1}`}
+          level={1}
+        />
+      ))}
     </Container>
   );
 }

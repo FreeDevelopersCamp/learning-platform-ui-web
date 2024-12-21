@@ -113,9 +113,9 @@ function DetailsHeading({
   };
 
   const handleContinueTrack = (roadmapId) => {
-    const name = order[0].name;
+    const topic = order[0].topic;
     navigate(
-      `/courses/${name.toLowerCase().replace(/\s+/g, '-')}/${roadmapId}/?ex=1`,
+      `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${roadmapId}/?ex=1`,
     );
   };
 
