@@ -1,5 +1,6 @@
 import { ChangePassword, CreateUserDto, Login, Session, Token } from './types';
 import { ContentType, HttpClient, RequestParams } from '../../http-client';
+import { getDefaultHeaders } from './../../../utils/headers';
 
 export class Auth<
   SecurityDataType = unknown,
@@ -65,17 +66,18 @@ export class Auth<
    * No description
    *
    * @tags Authentication
-   * @name KillSession
+   * @name logout
    * @request POST:/Auth/logout
    * @secure
-   * @response `default` `boolean` killSession
+   * @response `default` `boolean` logout
    */
-  killSession = (params: RequestParams = {}) =>
+  logout = (params: RequestParams = {}) =>
     this.request<any, boolean>({
       path: `/Auth/logout`,
       method: 'POST',
       secure: true,
       ...params,
+      headers: getDefaultHeaders(),
     });
 
   /**

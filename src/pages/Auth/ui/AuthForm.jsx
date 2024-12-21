@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLogin } from '../../../apis/auth/Auth/hooks/useLogin.ts';
 
+import { useAuth } from './../../../contexts/auth/AuthContext';
 import AuthTabs from './AuthTabs';
 import AuthButtonGroup from './AuthButtonGroup';
 import AuthInput from './AuthInput';
@@ -24,24 +24,28 @@ const AuthForm = () => {
 
   const navigate = useNavigate();
 
-  const { loginFunc, loginLoading } = useLogin();
+  const { login, isLoading } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!username || !password) {
-      setError('Must specify a username and password');
-      return;
-    }
+    try {
+      if (!username || !password) {
+        setError('Must specify a username and password');
+        return;
+      }
 
-    loginFunc({ username, password, role });
+      await login({ username, password, role });
+    } catch (err) {
+      console.error('Login failed', err);
+    }
   };
 
   const toggleForm = (mode) => {
     setIsSignUp(mode === 'signup');
   };
 
-  if (loginLoading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
