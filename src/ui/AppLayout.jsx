@@ -2,13 +2,15 @@ import { useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useSession } from '../hooks/auth/useSession';
+import { useSession } from '../apis/auth/Auth/hooks/useSession.js';
 import { useAuth } from '../contexts/auth/AuthContext';
 
 import Header from './Dashboard/Header.jsx';
 import Sidebar from './Dashboard/Sidebar';
 
 import Spinner from './Spinner';
+import Empty from '@/ui/Empty.jsx';
+import { toast } from 'react-hot-toast';
 
 const StyledAppLayout = styled.div`
   display: flex;
@@ -46,7 +48,7 @@ function AppLayout() {
 
   const mainRef = useRef(null);
 
-  if (isLoading || !auth.isAuthenticated || sessionLoading) return <Spinner />;
+  if (isLoading || sessionLoading || !auth || !session) return <Spinner />;
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 

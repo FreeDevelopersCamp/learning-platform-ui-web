@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
 
-import { useUsers } from '@/hooks/users/useUsers.js';
-import { useApproveUser } from '@/features/users/useApproveUser.js';
-import { useRejectUser } from '@/features/users/useRejectUser.js';
-import { useDeleteUser } from '@/features/users/useDeleteUser.js';
-import { useDeactivateUser } from '@/features/users/useDeactivateUser.js';
+import { useListUser } from '@/apis/core/User/hooks/useListUser.js';
+import { useApproveUser } from '@/apis/core/useApproveUser.js';
+import { useRejectUser } from '@/apis/core/useRejectUser.js';
+import { useDeleteUser } from '@/apis/core/useDeleteUser.js';
+import { useDeactivateUser } from '@/apis/core/useDeactivateUser.js';
 
 import Spinner from '../../ui/Spinner.jsx';
 const UserSelectionContext = createContext();
@@ -15,7 +15,7 @@ export const useUserSelection = () => {
 
 export const UserSelectionProvider = ({ children }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const { users, isLoading } = useUsers();
+  const { users, isLoading } = useListUser();
   const { isApproving, approveUser } = useApproveUser();
   const { isRejecting, rejectUser } = useRejectUser();
   const { isDeactivating, deactivateUser } = useDeactivateUser();

@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useProfile } from '@/hooks/users/useProfile';
+import { useGetProfile } from '@/apis/core/Profile/hooks/useGetProfile.ts';
 
 import ProfileHeader from './ui/ProfileHeader';
 import ProfileWork from './ui/ProfileWork';
@@ -24,7 +24,7 @@ const ProfilePage = () => {
   const [searchParams] = useSearchParams();
   const username = searchParams.get('username') || '';
 
-  const { profile, profileLoading } = useProfile(username);
+  const { profile, profileLoading } = useGetProfile(username);
 
   if (profileLoading || !profile) return <Spinner />;
 

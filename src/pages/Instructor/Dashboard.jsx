@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
-import { useUser } from '../../hooks/users/useUser';
+import { useGetUser } from '../../apis/core/User/hooks/useGetUser.ts';
 
 import DashboardLayout from '../../features/instructor/DashboardLayout';
 import Filterbar from '../../features/instructor/Filterbar';
@@ -26,7 +26,7 @@ function Dashboard() {
   const [filter, setFilter] = useState('all');
   const [filterCount, setFilterCount] = useState(0);
 
-  const { user, isLoading: userLoading } = useUser(session?.username);
+  const { user, isLoading: userLoading } = useGetUser(session?.username);
 
   if (userLoading || !user?._id) return <Spinner />;
 

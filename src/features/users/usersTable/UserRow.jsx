@@ -6,10 +6,10 @@ import { HiEye, HiTrash } from 'react-icons/hi2';
 import PersonOffTwoToneIcon from '@mui/icons-material/PersonOffTwoTone';
 import PersonAddAltTwoToneIcon from '@mui/icons-material/PersonAddAltTwoTone';
 
-import { useApproveUser } from '../useApproveUser.js';
-import { useRejectUser } from '../useRejectUser.js';
-import { useDeleteUser } from '../useDeleteUser.js';
-import { useDeactivateUser } from '../useDeactivateUser.js';
+import { useApproveUser } from '../../../apis/core/useApproveUser.js';
+import { useRejectUser } from '../../../apis/core/useRejectUser.js';
+import { useDeleteUser } from '../../../apis/core/useDeleteUser.js';
+import { useDeactivateUser } from '../../../apis/core/useDeactivateUser.js';
 import { useUserSelection } from '@/contexts/users/UserSelectionContext.jsx';
 import { getRoleCode } from '@/utils/helpers.js';
 

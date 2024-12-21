@@ -23,7 +23,7 @@ function UserAvatar({ user, size }) {
   return (
     <StyledUserAvatar>
       <Avatar
-        src={user?.image || '../../../public/default-user.png'}
+        src={user?.image || '/default-user.png'}
         alt={`${user?.personalInformation?.name?.first
           ?.at(0)
           ?.toUpperCase()}${user?.personalInformation?.name?.last

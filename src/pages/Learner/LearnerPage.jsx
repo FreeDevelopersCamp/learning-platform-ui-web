@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { useAuth } from '../../contexts/auth/AuthContext';
-import { useUser } from '../../hooks/users/useUser';
+import { useGetUser } from '../../apis/core/User/hooks/useGetUser.ts';
 
 import MainSection from './ui/MainSection';
 import ProgressSection from './ui/ProgressSection';
@@ -37,7 +37,7 @@ const MainContainer = styled.div`
 function LearnerPage() {
   const { auth, isLoading } = useAuth();
 
-  const { user, isLoading: userLoading } = useUser(auth?.username, {
+  const { user, isLoading: userLoading } = useGetUser(auth?.username, {
     enabled: !!auth?.username && !isLoading, // Trigger only when username is available and auth is not loading
   });
 

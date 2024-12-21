@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLogin } from '../../../hooks/auth/useLogin';
+import { useLogin } from '../../../apis/auth/Auth/hooks/useLogin.ts';
 
 import AuthTabs from './AuthTabs';
 import AuthButtonGroup from './AuthButtonGroup';

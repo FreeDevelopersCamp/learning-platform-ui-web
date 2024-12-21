@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { useUsers } from '@/hooks/users/useUsers.js';
+import { useListUser } from '@/apis/core/User/hooks/useListUser.js';
 
 import Stats from './Stats.jsx';
 
@@ -29,7 +29,7 @@ const StyledHeading = styled.h5`
 `;
 
 function DashboardLayout({ role }) {
-  const { totalUsers, isLoading, count } = useUsers();
+  const { totalUsers, isLoading, count } = useListUser();
 
   if (isLoading || !totalUsers) return <Spinner />;
 

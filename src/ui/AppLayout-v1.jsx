@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useSession } from '../hooks/auth/useSession';
+import { useSession } from '../apis/auth/Auth/hooks/useSession.js';
 import { useAuth } from '../contexts/auth/AuthContext';
-import { useUser } from '../hooks/users/useUser';
+import { useGetUser } from '../apis/core/User/hooks/useGetUser.ts';
 
 import Header from './Dashboard/Header.jsx';
 import Sidebar from './Dashboard/Sidebar';
@@ -76,7 +76,7 @@ function AppLayout() {
     isLoading,
   } = useAuth();
 
-  const { user, isLoading: userLoading } = useUser(username);
+  const { user, isLoading: userLoading } = useGetUser(username);
 
   useEffect(() => {
     const path = location.pathname.split('/')[2];

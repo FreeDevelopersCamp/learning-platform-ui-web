@@ -1,7 +1,7 @@
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { useUserSelection } from '@/contexts/users/UserSelectionContext.jsx';
-import { useUsers } from '@/hooks/users/useUsers.js';
+import { useListUser } from '@/apis/core/User/hooks/useListUser.js';
 
 import UserRow from './UserRow.jsx';
 import Table from '@/ui/Table.jsx';
@@ -12,12 +12,13 @@ import Pagination from '@/ui/Pagination.jsx';
 import { ColorCheckbox } from '@/ui/LabelledCheckbox.jsx';
 
 function UserTable({ role }) {
-  const { users, isLoading, count } = useUsers();
   const { selectedUsers, handleSelectUser, handleSelectAllUsers } =
     useUserSelection();
 
-  if (isLoading || !users) return <Spinner />;
-  if (!users?.length) return <Empty resourceName="users" />;
+  const { users, isLoading, count } = useListUser();
+
+  if (isLoading) return <Spinner />;
+  if (!users?.length) return <Empty resourceName="Users Table" />;
 
   const isAllSelected = users.every((user) =>
     selectedUsers.includes(user.roleId),
@@ -55,7 +56,7 @@ function UserTable({ role }) {
         <Table.Body
           data={users}
           render={(user) => (
-            <UserRow key={`${user.roleId}`} user={user} role={role}>
+            <UserRow key={user.roleId} user={user} role={role}>
               <FormControlLabel
                 control={
                   <ColorCheckbox

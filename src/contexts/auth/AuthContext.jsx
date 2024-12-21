@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import { Auth } from '../../services/auth/Auth';
+import { Auth } from '@/apis/auth/Auth/Auth.ts';
 
 const AuthContext = createContext();
 
