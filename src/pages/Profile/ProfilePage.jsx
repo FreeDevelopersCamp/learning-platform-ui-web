@@ -3,14 +3,14 @@ import styled from 'styled-components';
 
 import { useGetProfile } from '@/apis/core/Profile/hooks/useGetProfile.ts';
 
-import ProfileHeader from './ui/ProfileHeader';
-import ProfileWork from './ui/ProfileWork';
-import ProfileCertifications from './ui/ProfileCertifications';
-import ProfileCourses from './ui/ProfileCourses';
-import ProfileWorkExperience from './ui/ProfileWorkExperience';
-import ProfileEducation from './ui/ProfileEducation';
-import ProfileAbout from './ui/ProfileAbout';
-import ProfileFooter from './ui/ProfileFooter';
+import ProfileHeader from './components/ProfileHeader';
+import ProfileWork from './components/ProfileWork';
+import ProfileCertifications from './components/ProfileCertifications';
+import ProfileCourses from './components/ProfileCourses';
+import ProfileWorkExperience from './components/ProfileWorkExperience';
+import ProfileEducation from './components/ProfileEducation';
+import ProfileAbout from './components/ProfileAbout';
+import ProfileFooter from './components/ProfileFooter';
 import Spinner from '../../ui/Spinner';
 
 const ProfilePageContainer = styled.div`
