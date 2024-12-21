@@ -20,6 +20,10 @@ import OwnerUsers from '@/pages/owner/OwnerUsers.jsx';
 import OwnerDashboard from '@/pages/owner/OwnerDashboard.jsx';
 import OwnerPermissions from '@/pages/owner/OwnerPermissions.jsx';
 
+import ManagerDashboard from '@/pages/manager/ManagerDashboard.jsx';
+import ManagerUsers from '@/pages/manager/ManagerUsers.jsx';
+import ManagerPermissions from '@/pages/manager/ManagerPermissions.jsx';
+
 import InstructorDashboard from './pages/Instructor/Dashboard';
 import InstructorRoadmaps from './features/instructor/roadmaps/InstructorRoadmaps';
 import InstructorProjects from './features/instructor/roadmaps/InstructorProjects';
@@ -168,6 +172,34 @@ function App() {
                           element={
                             <ProtectedRoute role="1">
                               <OwnerPermissions />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="manager"
+                          element={<Navigate to="dashboard" />}
+                        />
+                        <Route
+                          path="manager/dashboard"
+                          element={
+                            <ProtectedRoute role="2">
+                              <ManagerDashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="manager/users"
+                          element={
+                            <ProtectedRoute role="2">
+                              <ManagerUsers />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="manager/permissions"
+                          element={
+                            <ProtectedRoute role="2">
+                              <ManagerPermissions />
                             </ProtectedRoute>
                           }
                         />

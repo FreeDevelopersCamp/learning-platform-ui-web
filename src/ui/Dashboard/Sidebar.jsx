@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+
 import MainNav from '../MainNav';
+import Spinner from '@/ui/Spinner.jsx';
 
 const StyledSidebar = styled.aside`
   width: ${(props) => (props.isOpen ? '12.5%' : '0px')};
@@ -9,7 +11,7 @@ const StyledSidebar = styled.aside`
 
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: start;
 
   &:hover,
   &:active,
@@ -19,6 +21,8 @@ const StyledSidebar = styled.aside`
 `;
 
 function Sidebar({ isOpen, activeMenu, role, onMenuSelect }) {
+  if (!role) return <Spinner />;
+
   return (
     <StyledSidebar isOpen={isOpen}>
       <MainNav

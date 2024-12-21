@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import Instructor from '../../services/users/instructor';
+import Instructor from '../../apis/core/Instructor/Instructor';
 import toast from 'react-hot-toast';
 
 export function useInstructor(userId: string) {

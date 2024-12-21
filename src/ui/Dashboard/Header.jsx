@@ -24,8 +24,8 @@ import { RxDashboard } from 'react-icons/rx';
 import { FiCalendar } from 'react-icons/fi';
 
 import { useLogout } from '@/contexts/auth/AuthContext';
-import { useSession } from '@/hooks/auth/useSession';
-import { useUser } from '@/hooks/users/useUser.ts';
+import { useSession } from '@/apis/auth/Auth/hooks/useSession.js';
+import { useGetUser } from '@/apis/core/User/hooks/useGetUser.ts';
 import { getRoleCode } from '@/utils/helpers.js';
 
 import AuthButtons from '../Header/AuthButtons';
@@ -139,7 +139,7 @@ const Header = ({ toggleSidebar, atHome = false }) => {
 
   const { isLoading: sessionLoading, session } = useSession();
 
-  const { user, isLoading: userLoading } = useUser(session?.username, {
+  const { user, isLoading: userLoading } = useGetUser(session?.username, {
     enabled: !!session?.username,
   });
 
