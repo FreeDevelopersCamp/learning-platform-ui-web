@@ -1,6 +1,11 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRoadmap } from '../../hooks/roadmaps/useRoadmap';
+
+import { useFetchRoadmapById } from '../../hooks/roadmaps/useRoadmap';
+import { useUpdateRoadmap } from '../../hooks/roadmaps/useRoadmap';
+import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
 import Row from './Row';
 import DetailsHeading from './DetailsHeading';
@@ -53,10 +58,35 @@ const InstructorsSetContainer = styled.div`
 `;
 
 function ViewRoadmapDetails() {
-  const { id } = useParams();
-  const { roadmap, roadmapLoading, roadmapError } = useRoadmap(id);
+  const [percentage, setPercentage] = useState(0);
 
-  if (roadmapLoading || !roadmap || roadmapError) return <Spinner />;
+  const { session, user, userProgress } = useOutletContext();
+  const { id } = useParams();
+
+  const {
+    data: roadmap,
+    isLoading: isLoadingRoadmap,
+    error: errorRoadmap,
+  } = useFetchRoadmapById(id);
+  const { mutate: updateRoadmap } = useUpdateRoadmap();
+
+  const { mutate: updateProgress, isLoading: updatingProgress } =
+    useUpdateProgress();
+
+  if (isLoadingRoadmap || !roadmap || errorRoadmap || updatingProgress)
+    return <Spinner />;
+
+  const {
+    currentRoadmapsIds = [],
+    completedRoadmapsIds = [],
+    completedCoursesIds = [],
+    completedProjectsIds = [],
+    completedPracticesIds = [],
+    xp = 0,
+  } = userProgress || {};
+
+  const isCurrent = currentRoadmapsIds.includes(id);
+  const isCompleted = completedRoadmapsIds.includes(id);
 
   const {
     name,
@@ -119,8 +149,15 @@ function ViewRoadmapDetails() {
 
   return (
     <Row>
-      <DetailsHeading roadmap={roadmap}>
-        <ProgressBar percentage={37} />
+      <DetailsHeading
+        roadmap={roadmap}
+        updateRoadmap={updateRoadmap}
+        session={session}
+        userProgress={userProgress}
+        updateProgress={updateProgress}
+        role={session.role}
+      >
+        {session.role === '6' && <ProgressBar percentage={percentage} />}
       </DetailsHeading>
       <Container>
         <OrderCardsContainer>
@@ -136,6 +173,7 @@ function ViewRoadmapDetails() {
               description={card.description}
               duration={card.duration}
               xp={card.xp}
+              role={session.role}
             />
           ))}
         </OrderCardsContainer>

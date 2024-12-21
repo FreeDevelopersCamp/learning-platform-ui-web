@@ -6,46 +6,37 @@ const ProgressBarContainer = styled.div`
   align-items: flex-start;
   justify-content: center;
   width: 100%;
-  background-color: var(--color-dark-blue-500);
-  padding: 15px 30px 20px;
+  padding: 0px;
   gap: 5px;
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 `;
 
-const Label = styled.div`
-  color: var(--color-grey-200);
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-`;
-
 const BarContainer = styled.div`
   display: flex;
-  width: 50%;
-  background-color: var(--color-dark-blue-900);
-  height: 8px;
+  width: 30%;
+  background-color: var(--color-grey-300);
+  height: 7px;
   border-radius: 5px;
   overflow: hidden;
 `;
 
-const Progress = styled.div`
+const ProgressBar = styled.div`
   height: 100%;
   width: ${(props) => props.percentage || 0}%;
-  background-color: #03ef62;
+  background-color: var(--color-light-green-500);
   transition: width 0.4s ease;
 `;
 
 const Percentage = styled.div`
-  color: var(--color-grey-200);
-  font-size: 1.2rem;
+  color: var(--color-grey-800);
+  font-size: 1.4rem;
 `;
 
-function ProgressBar({ percentage }) {
+function Progress({ percentage }) {
   return (
     <ProgressBarContainer>
-      <Label>Track Completion</Label>
       <div
         style={{
           display: 'flex',
@@ -55,7 +46,7 @@ function ProgressBar({ percentage }) {
         }}
       >
         <BarContainer>
-          <Progress percentage={percentage} />
+          <ProgressBar percentage={percentage} />
         </BarContainer>
         <Percentage>{percentage}%</Percentage>
       </div>
@@ -63,4 +54,4 @@ function ProgressBar({ percentage }) {
   );
 }
 
-export default ProgressBar;
+export default Progress;

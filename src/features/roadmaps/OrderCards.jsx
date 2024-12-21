@@ -109,6 +109,26 @@ const Duration = styled.div`
   color: var(--color-grey-700);
 `;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Start = styled.button`
+  margin: 1.6rem 0 0;
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--color-mutedblue-900);
+  background-color: var(--color-light-green-500);
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: var(--color-light-green-600);
+  }
+`;
 const Button = styled.button`
   color: #3131ff;
   margin: 1.6rem 0 0;
@@ -130,14 +150,28 @@ const Button = styled.button`
   }
 `;
 
-function OrderCards({ index, orderId, type, name, description, duration, xp }) {
+function OrderCards({
+  index,
+  orderId,
+  type,
+  name,
+  description,
+  duration,
+  xp,
+  role,
+}) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleCard = () => setIsOpen(!isOpen);
 
-  const handleButtonClick = () => {
+  const handleViewClick = () => {
     navigate(`/${type}/${orderId}`);
+  };
+
+  const handleStartClick = () => {
+    // navigate to Course outline page
+    // navigate(`/${type}/${orderId}`);
   };
 
   return (
@@ -178,9 +212,12 @@ function OrderCards({ index, orderId, type, name, description, duration, xp }) {
               <p>{xp} XP</p>
             </div>
           </Duration>
-          <Button onClick={handleButtonClick}>
-            View {type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}
-          </Button>
+          <ButtonsContainer>
+            <Button onClick={handleViewClick}>
+              View {type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}
+            </Button>
+            {role === '6' && <Start onClick={handleStartClick}>Start</Start>}
+          </ButtonsContainer>
         </Details>
       )}
     </Card>

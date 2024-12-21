@@ -1,6 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import Progress from '../../ui/Progress';
+
+import { FaCheckCircle } from 'react-icons/fa';
+
 const Card = styled.div`
   display: flex;
   flex-direction: column;
@@ -61,6 +65,41 @@ const Count = styled.div`
   font-size: 1.5rem;
 `;
 
+const ViewAccomplishment = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6em;
+  width: 100%;
+  height: 40px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: var(--color-grey-800);
+  background-color: var(--color-grey-50);
+  border: 2px solid var(--color-grey-500);
+
+  &:hover {
+    background-color: var(--color-grey-300);
+  }
+`;
+
+const Continue = styled.button`
+  width: 110px;
+  height: 40px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: var(--color-mutedblue-900);
+  background-color: var(--color-light-green-500);
+
+  &:hover {
+    background-color: var(--color-light-green-600);
+  }
+`;
+
 const Button = styled.button`
   width: 110px;
   height: 40px;
@@ -70,14 +109,14 @@ const Button = styled.button`
   font-size: 1.4rem;
   color: var(--color-grey-800);
   background-color: var(--color-grey-50);
-  border: 2px solid var(--color-grey-800);
+  border: 2px solid var(--color-grey-500);
 
   &:hover {
     background-color: var(--color-grey-300);
   }
 `;
 
-function RoadmapCard({ roadmap }) {
+function RoadmapCard({ userProgress, roadmap }) {
   const navigate = useNavigate();
 
   const {
@@ -93,20 +132,58 @@ function RoadmapCard({ roadmap }) {
     rating,
   } = roadmap;
 
+  const {
+    currentRoadmapsIds = [],
+    completedRoadmapsIds = [],
+    completedCoursesIds = [],
+    completedProjectsIds = [],
+    completedPracticesIds = [],
+    xp = 0,
+  } = userProgress || {};
+
+  const isCurrent = currentRoadmapsIds.includes(_id);
+  const isCompleted = completedRoadmapsIds.includes(_id);
+
   const handleViewDetails = () => {
     navigate(`/roadmap/${_id}`);
   };
 
   return (
-    <Card onClick={() => handleViewDetails()}>
+    <Card onClick={handleViewDetails}>
       <Type>ROADMAP</Type>
       <Topic>{topic || 'Roadmap Topic'}</Topic>
       <Description>{description || 'No description available.'}</Description>
+
       <Details>
-        <Count>
-          {coursesIds.length + projectsIds.length} Courses and Projects{' '}
-        </Count>
-        <Button onClick={() => handleViewDetails()}>View Details</Button>
+        {isCompleted ? (
+          <ViewAccomplishment onClick={handleViewDetails}>
+            <span
+              style={{
+                fontSize: '1.8rem',
+                color: 'var(--color-light-green-500)',
+              }}
+            >
+              <FaCheckCircle />
+            </span>
+            View accomplishment
+          </ViewAccomplishment>
+        ) : (
+          <>
+            {isCurrent ? (
+              <>
+                <Progress percentage={50} />
+                <Continue onClick={handleViewDetails}>Continue</Continue>
+              </>
+            ) : (
+              <>
+                <Count>
+                  {coursesIds.length + projectsIds.length} Courses and Projects
+                </Count>
+                <Button onClick={handleViewDetails}>View Details</Button>
+              </>
+            )}
+          </>
+        )}
       </Details>
     </Card>
   );

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useRoadmaps } from '../../hooks/roadmaps/useRoadmaps';
+import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { useRoadmaps } from '../../hooks/roadmaps/useRoadmaps';
 
 import Row from './Row';
 import Heading from './Heading';
@@ -30,11 +32,20 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function Roadmaps() {
-  const { allRoadmaps, isAllRoadmapsLoading, allRoadmapsError } = useRoadmaps();
-
   const [filter, setFilter] = useState('all');
   const [filteredRoadmaps, setFilteredRoadmaps] = useState([]);
   const [filterCount, setFilterCount] = useState(0);
+
+  const {
+    session,
+    user,
+    userProgress,
+    progress,
+    createProgress,
+    updateProgress,
+    deleteProgress,
+  } = useOutletContext();
+  const { allRoadmaps, isAllRoadmapsLoading, allRoadmapsError } = useRoadmaps();
 
   useEffect(() => {
     if (!allRoadmaps?.items) return;
@@ -50,8 +61,7 @@ function Roadmaps() {
     setFilterCount(filtered.length);
   }, [filter, allRoadmaps]);
 
-  if (isAllRoadmapsLoading || !allRoadmaps || allRoadmapsError)
-    return <Spinner />;
+  if (isAllRoadmapsLoading || allRoadmapsError) return <Spinner />;
 
   const title = 'Roadmaps';
   const description =
@@ -85,12 +95,20 @@ function Roadmaps() {
       <DashboardLayout>
         <StyledDashboardLayout>
           {filter === 'All'
-            ? allRoadmaps.items.map((roadmap) => (
-                <RoadmapCard key={roadmap.id} roadmap={roadmap} />
+            ? allRoadmaps.items.map((roadmap, index) => (
+                <RoadmapCard
+                  key={roadmap.id || `${roadmap.topic}-${index}`}
+                  userProgress={userProgress}
+                  roadmap={roadmap}
+                />
               ))
             : filteredRoadmaps.length > 0 &&
-              filteredRoadmaps.map((roadmap) => (
-                <RoadmapCard key={roadmap.id} roadmap={roadmap} />
+              filteredRoadmaps.map((roadmap, index) => (
+                <RoadmapCard
+                  key={roadmap.id || `${roadmap.topic}-${index}`}
+                  userProgress={userProgress}
+                  roadmap={roadmap}
+                />
               ))}
         </StyledDashboardLayout>
       </DashboardLayout>
