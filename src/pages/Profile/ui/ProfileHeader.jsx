@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import UserAvatar from '@/features/authentication/UserAvatar';
+import UserAvatar from '@/ui/User/UserAvatar';
 import { getRoleCode } from '@/utils/helpers.js';
 
 const HeaderCover = styled.div`

@@ -5,7 +5,7 @@ import Spinner from './Spinner';
 const ProtectedRoute = ({ children, role }) => {
   const { auth, isLoading } = useAuth();
 
-  if (isLoading || !auth) return <Spinner />;
+  if (isLoading || !auth || !auth?.role) return <Spinner />;
 
   if (!auth.isAuthenticated) {
     return <Navigate to="/login" replace />;

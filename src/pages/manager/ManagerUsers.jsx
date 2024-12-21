@@ -1,10 +1,9 @@
 import { UserSelectionProvider } from '../../contexts/users/UserSelectionContext';
 
-import UserTable from '../../features/users/usersTable/UserTable';
-import UserTableOperations from '../../features/users/usersTable/UserTableOperations';
-
 import Heading from '../../ui/Heading';
 import Row from '../../ui/Row';
+import UserTableOperations from '@/ui/User/usersTable/UserTableOperations';
+import UserTable from '@/ui/User/usersTable/UserTable';
 
 function ManagerUsers() {
   return (

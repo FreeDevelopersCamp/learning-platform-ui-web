@@ -1,13 +1,12 @@
 import { useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { useSession } from '@/apis/auth/Auth/hooks/useSession.js';
 import { useGetUser } from '@/apis/core/User/hooks/useGetUser.ts';
 import { useGetProfile } from '@/apis/core/Profile/hooks/useGetProfile.ts';
 import { useUpdateUser } from '@/apis/core/User/hooks/useUpdateUser.ts';
 import { useUpdateProfile } from '@/apis/core/Profile/hooks/useUpdateProfile.ts';
 
-import UserAvatar from '@/features/authentication/UserAvatar.jsx';
+import UserAvatar from '@/ui/User/UserAvatar.jsx';
 import Spinner from '@/ui/Spinner.jsx';
 import CustomDatePicker from './ui/DatePicker.jsx';
 import {
@@ -27,9 +26,10 @@ import {
   UserInformation,
   ProfileInformation,
 } from './ui/StyledComponents.settings.jsx';
+import { useAuth } from '../../contexts/auth/AuthContext.jsx';
 
 const SettingsPage = () => {
-  const { session, isLoading } = useSession();
+  const { session, isLoading } = useAuth();
   const { user, userLoading } = useGetUser(session?.username);
   const { profile, profileLoading } = useGetProfile(session?.username);
   const [selectedFile, setSelectedFile] = useState(null);

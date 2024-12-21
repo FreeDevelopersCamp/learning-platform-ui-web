@@ -1,5 +1,5 @@
-import PermissionTable from '../../features/permissions/permissionsTable/PermissionTable';
-import PermissionTableOperations from '../../features/permissions/permissionsTable/PermissionTableOperations';
+import PermissionTable from '../../ui/Permissions/permissionsTable/PermissionTable';
+import PermissionTableOperations from '../../ui/Permissions/permissionsTable/PermissionTableOperations';
 
 import Heading from '../../ui/Heading';
 import Row from '../../ui/Row';

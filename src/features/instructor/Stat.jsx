@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Button from '../../ui/Button';
+import Button from '../../ui/Buttons/Button';
 
 const StyledStat = styled.div`
   background-color: var(--color-grey-0);
@@ -38,7 +38,10 @@ const StyledButton = styled(Button)`
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   }
 
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:focus {
     outline: none;

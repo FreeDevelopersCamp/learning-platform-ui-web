@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BsFillLightningFill } from 'react-icons/bs';
 
-import UserAvatar from '../../../features/authentication/UserAvatar';
+import UserAvatar from '../../../ui/User/UserAvatar';
 
 const StyledProgressSection = styled.div`
   display: flex;

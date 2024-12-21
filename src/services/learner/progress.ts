@@ -1,4 +1,4 @@
-import { ContentType, HttpClient } from '../http-client';
+import { ContentType, HttpClient } from '../../apis/http-client';
 
 export default class Progress extends HttpClient {
   private static progress: Progress;
