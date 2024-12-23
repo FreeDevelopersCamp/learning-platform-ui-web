@@ -1,17 +1,17 @@
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-import { useUserSelection } from '../../../../contexts/admin/users/UserSelectionContext';
-import { useUsers } from '../../../../hooks/users/useUsers';
+import { useUserSelection } from '@/contexts/users/UserSelectionContext.jsx';
+import { useUsers } from '@/hooks/users/useUsers.js';
 
-import UserRow from './UserRow';
-import Table from '../../../../ui/Table';
-import Menus from '../../../../ui/Menus';
-import Empty from '../../../../ui/Empty';
-import Spinner from '../../../../ui/Spinner';
-import Pagination from '../../../../ui/Pagination';
-import { ColorCheckbox } from '../../../../ui/LabelledCheckbox';
+import UserRow from './UserRow.jsx';
+import Table from '@/ui/Table.jsx';
+import Menus from '@/ui/Menus.jsx';
+import Empty from '@/ui/Empty.jsx';
+import Spinner from '@/ui/Spinner.jsx';
+import Pagination from '@/ui/Pagination.jsx';
+import { ColorCheckbox } from '@/ui/LabelledCheckbox.jsx';
 
-function UserTable() {
+function UserTable({ role }) {
   const { users, isLoading, count } = useUsers();
   const { selectedUsers, handleSelectUser, handleSelectAllUsers } =
     useUserSelection();
@@ -42,6 +42,7 @@ function UserTable() {
                   size="large"
                 />
               }
+              label=""
             />
           </div>
           <div>User</div>
@@ -54,7 +55,7 @@ function UserTable() {
         <Table.Body
           data={users}
           render={(user) => (
-            <UserRow key={`${user.roleId}`} user={user}>
+            <UserRow key={`${user.roleId}`} user={user} role={role}>
               <FormControlLabel
                 control={
                   <ColorCheckbox
@@ -64,6 +65,7 @@ function UserTable() {
                     size="large"
                   />
                 }
+                label=""
               />
             </UserRow>
           )}

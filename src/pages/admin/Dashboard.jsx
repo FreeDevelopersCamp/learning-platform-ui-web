@@ -1,5 +1,5 @@
-import DashboardFilter from '../../features/Admin/dashboard/DashboardFilter';
-import DashboardLayout from '../../features/admin/dashboard/DashboardLayout';
+import DashboardFilter from '../../features/dashboard/DashboardFilter.jsx';
+import DashboardLayout from '../../features/dashboard/DashboardLayout.jsx';
 
 import Heading from '../../ui/Heading';
 import Row from '../../ui/Row';
@@ -11,7 +11,7 @@ function Dashboard() {
         <Heading as="h1">Dashboard</Heading>
         <DashboardFilter />
       </Row>
-      <DashboardLayout />
+      <DashboardLayout role="admin" />
     </>
   );
 }

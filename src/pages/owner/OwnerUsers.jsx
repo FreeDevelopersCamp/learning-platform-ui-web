@@ -6,7 +6,7 @@ import UserTableOperations from '../../features/users/usersTable/UserTableOperat
 import Heading from '../../ui/Heading';
 import Row from '../../ui/Row';
 
-function Users() {
+function OwnerUsers() {
   return (
     <>
       <Row type="horizontal">
@@ -14,10 +14,10 @@ function Users() {
         <UserTableOperations />
       </Row>
       <UserSelectionProvider>
-        <UserTable role="admin" />
+        <UserTable role="owner" />
       </UserSelectionProvider>
     </>
   );
 }
 
-export default Users;
+export default OwnerUsers;

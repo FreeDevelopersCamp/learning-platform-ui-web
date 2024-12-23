@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
-import { useUsers } from '../../../hooks/users/useUsers';
-import Stats from './Stats';
-import Spinner from '../../../ui/Spinner';
+import { useUsers } from '@/hooks/users/useUsers.js';
+
+import Stats from './Stats.jsx';
+
+import Spinner from '../../ui/Spinner.jsx';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -26,7 +28,7 @@ const StyledHeading = styled.h5`
   font-size: 2.5rem;
 `;
 
-function DashboardLayout() {
+function DashboardLayout({ role }) {
   const { totalUsers, isLoading, count } = useUsers();
 
   if (isLoading || !totalUsers) return <Spinner />;
@@ -42,7 +44,7 @@ function DashboardLayout() {
         </p>
       </div>
       <StyledDashboardLayout>
-        <Stats users={totalUsers} count={count} />
+        <Stats users={totalUsers} count={count} role={role} />
       </StyledDashboardLayout>
     </StyledContainer>
   );

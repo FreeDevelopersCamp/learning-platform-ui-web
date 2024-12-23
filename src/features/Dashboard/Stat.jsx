@@ -1,11 +1,13 @@
 import styled from 'styled-components';
-import UserAvatar from '../../authentication/UserAvatar';
-import Button from '../../../ui/Button';
+
+import UserAvatar from '../authentication/UserAvatar.jsx';
+
+import Button from '../../ui/Button.jsx';
 
 const StyledStat = styled.div`
   /* Box */
-  background-color: var(--color-grey-0);
-  border: 1px solid var(--color-grey-100);
+  background-color: var(--color-coolgray-100);
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius-md);
   padding: 20px;
 
@@ -17,7 +19,7 @@ const StyledStat = styled.div`
   height: 15rem;
 
   /* Add shadow */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow: var(--shadow-md); /* Subtle shadow */
 
   /* Responsive Design */
   @media (max-width: 768px) {
@@ -43,11 +45,14 @@ const StyledButton = styled(Button)`
   &:hover {
     background-color: var(--color-grey-300);
     color: var(--color-primary-dark);
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-md);
   }
 
   /* Smooth transition for hover effects */
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
 
   /* Remove focus outline */
   &:focus {
@@ -123,7 +128,7 @@ const AvatarWrapper = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid var(--color-grey-0); /* Add border for spacing effect */
+  border: 2px solid var(--border-color); /* Add border for spacing effect */
   overflow: hidden;
   margin-left: -1.5rem; /* Overlap avatars */
 
@@ -146,7 +151,7 @@ const MoreAvatars = styled.div`
 
   /* Apply dynamic z-index from props */
   z-index: ${(props) => props.zIndex};
-  border: 2px solid var(--color-grey-0);
+  border: 2px solid var(--border-color);
 `;
 
 function UsersAvatars({ users }) {

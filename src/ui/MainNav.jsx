@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useAuth } from '../contexts/auth/AuthContext';
 
 import {
   HiEnvelope,
-  HiHashtag,
   HiOutlineCalendarDays,
   HiOutlineHome,
   HiOutlineUsers,
   HiPresentationChartLine,
 } from 'react-icons/hi2';
-import { RiDragDropLine } from 'react-icons/ri';
 import { HiChatBubbleLeftRight } from 'react-icons/hi2';
 import { BsShieldLock } from 'react-icons/bs';
 import { IoIosNotificationsOutline } from 'react-icons/io';
@@ -27,12 +24,13 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import CastForEducationIcon from '@mui/icons-material/CastForEducation';
 
+import { useAuth } from '../contexts/auth/AuthContext';
+
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
   padding: 1rem;
-  color: white;
   position: fixed;
   width: 12.5%;
 `;
@@ -42,7 +40,7 @@ const MenuItem = styled.li`
   align-items: center;
   gap: 1rem;
   width: 100%;
-  color: ${(props) => (props.isActive ? 'white' : 'var(--color-grey-300)')};
+  color: ${(props) => (props.isActive ? 'white' : '#9ca3af')};
   background-color: 'transparent';
   border-radius: ${(props) =>
     props.isActive ? 'var(--border-radius-sm)' : '0'};
@@ -57,8 +55,7 @@ const MenuItem = styled.li`
   transition: all 0.3s;
 
   &:hover {
-    background-color: var(--color-grey-600)
-    
+    color: #d1d5db;
   }
 
   & svg {
@@ -70,7 +67,7 @@ const MenuItem = styled.li`
   }
 
   &:hover svg {
-    color: var(--color-brand-500);
+    color: #d1d5db;
   }
 `;
 
@@ -83,7 +80,6 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
       { id: 'dashboard', icon: <HiOutlineHome />, label: 'Dashboard' },
       { id: 'users', icon: <HiOutlineUsers />, label: 'Users' },
       { id: 'permissions', icon: <BsShieldLock />, label: 'Permissions' },
-      { id: 'roadmaps', icon: <HiPresentationChartLine />, label: 'Roadmaps' },
     ];
 
     const instructorMenu = [
@@ -128,7 +124,13 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
       { id: 'tutorials', icon: <CastForEducationIcon />, label: 'Tutorials' },
     ];
 
-    if (role === '0') {
+    if (
+      role === '0' ||
+      role === '1' ||
+      role === '2' ||
+      role === '3' ||
+      role === '4'
+    ) {
       setMenuItems(adminMenu);
     } else if (role === '5') {
       setMenuItems(instructorMenu);
@@ -158,7 +160,9 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
               }
             >
               {item.icon}
-              <span style={{  transform: 'translateY(2.5px)' }} >{item.label}</span>
+              <span style={{ transform: 'translateY(2.5px)' }}>
+                {item.label}
+              </span>
             </MenuItem>
           ))}
         </NavList>

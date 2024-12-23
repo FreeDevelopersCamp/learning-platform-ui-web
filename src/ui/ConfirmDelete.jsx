@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import Button from "./Button";
-import Heading from "./Heading";
+import styled from 'styled-components';
+import Button from './Button';
+import Heading from './Heading';
 
 const StyledConfirmDelete = styled.div`
   width: 40rem;
@@ -9,7 +9,7 @@ const StyledConfirmDelete = styled.div`
   gap: 1.2rem;
 
   & p {
-    color: var(--color-grey-500);
+    color: var(--color-grey-700);
     margin-bottom: 1.2rem;
   }
 

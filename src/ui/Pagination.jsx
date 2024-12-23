@@ -26,7 +26,7 @@ const Buttons = styled.div`
 
 const PaginationButton = styled.button`
   background-color: ${(props) =>
-    props.active ? ' var(--color-mutedblue-600)' : 'var(--color-grey-50)'};
+    props.active ? ' var(--color-mutedblue-600)' : 'var(--color-coolgray-100)'};
   color: ${(props) =>
     props.active ? ' var(--color-mutedblue-50)' : 'inherit'};
   border: none;
