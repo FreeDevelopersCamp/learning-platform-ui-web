@@ -9,9 +9,6 @@ import { DarkModeProvider } from './contexts/DarkModeContext';
 import HomePage from './pages/Home/HomePage';
 import AuthPage from './pages/Auth/AuthPage';
 
-import ProfilePage from './pages/Profile/ProfilePage';
-import SettingsPage from './pages/Settings/SettingsPage';
-
 import Dashboard from './pages/admin/Dashboard';
 import Users from './pages/admin/Users';
 import Permissions from './pages/admin/Permissions';
@@ -51,10 +48,6 @@ import { InstructorProvider } from './contexts/instructor/InstructorContext';
 import { CoursesProvider } from './contexts/courses/CoursesContext';
 import { PracticesProvider } from './contexts/practices/PracticesContext';
 import { ProjectsProvider } from './contexts/projects/ProjectsContext';
-
-import HomeLayout from './ui/HomeLayout';
-import AppLayout from './ui/AppLayout';
-import ProtectedRoute from './ui/ProtectedRoute';
 
 const queryClient = new QueryClient({
   defaultOptions: {
