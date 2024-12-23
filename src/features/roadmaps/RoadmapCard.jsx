@@ -129,6 +129,7 @@ function RoadmapCard({ userProgress, roadmap }) {
     practicesIds = [],
     participants = 0,
     topic,
+    order,
     rating,
   } = roadmap;
 
@@ -144,12 +145,17 @@ function RoadmapCard({ userProgress, roadmap }) {
   const isCurrent = currentRoadmapsIds.includes(_id);
   const isCompleted = completedRoadmapsIds.includes(_id);
 
+  const handleContinue = () => {
+    const topic = order[0].topic;
+    navigate(`/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}`);
+  };
+
   const handleViewDetails = () => {
     navigate(`/roadmap/${_id}`);
   };
 
   return (
-    <Card onClick={handleViewDetails}>
+    <Card>
       <Type>ROADMAP</Type>
       <Topic>{topic || 'Roadmap Topic'}</Topic>
       <Description>{description || 'No description available.'}</Description>
@@ -172,7 +178,7 @@ function RoadmapCard({ userProgress, roadmap }) {
             {isCurrent ? (
               <>
                 <Progress percentage={50} />
-                <Continue onClick={handleViewDetails}>Continue</Continue>
+                <Continue onClick={handleContinue}>Continue</Continue>
               </>
             ) : (
               <>
