@@ -1,22 +1,30 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { capitalizeWords } from '../utils/helpers';
 
 import Chapter from '../features/roadmaps/Chapter';
+import { capitalizeWords } from '../utils/helpers';
 
 import { IoClose } from 'react-icons/io5';
 
 const StyledSidebar = styled.aside`
-  display: flex;
-  flex-direction: column;
-  align-items: left;
+  position: fixed;
+  top: 6.3%;
+  left: 0;
+  height: 100vh;
   width: ${(props) => (props.isOpen ? '14%' : '0px')};
   color: white;
   padding: ${(props) => (props.isOpen ? '8px 0' : '0px')};
-  transition: all 0.3s;
-  background-color: var(--color-grey-100);
+  transition: all 0.3s ease-in-out;
+  background-color: var(--color-grey-0);
   border-right: 1px solid var(--color-grey-50);
-  z-index: 100;
+  z-index: 1000;
+  overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome, Safari, and Opera */
+  }
 
   &:hover,
   &:active,

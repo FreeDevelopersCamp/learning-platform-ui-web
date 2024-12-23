@@ -15,7 +15,7 @@ const Container = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: var(--color-grey-200);
+    background-color: var(--color-grey-100);
   }
 `;
 
@@ -47,7 +47,7 @@ const SubCourseItem = styled.li`
   font-size: 1.2rem;
 
   &:hover {
-    background-color: var(--color-grey-300);
+    background-color: var(--color-grey-200);
   }
 `;
 

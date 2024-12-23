@@ -147,9 +147,7 @@ function RoadmapCard({ userProgress, roadmap }) {
 
   const handleContinue = () => {
     const topic = order[0].topic;
-    navigate(
-      `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}/?ex=1`,
-    );
+    navigate(`/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}`);
   };
 
   const handleViewDetails = () => {

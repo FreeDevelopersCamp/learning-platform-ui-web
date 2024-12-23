@@ -115,7 +115,7 @@ function DetailsHeading({
   const handleContinueTrack = (roadmapId) => {
     const topic = order[0].topic;
     navigate(
-      `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${roadmapId}/?ex=1`,
+      `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${roadmapId}`,
     );
   };
 

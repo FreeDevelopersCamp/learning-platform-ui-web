@@ -319,6 +319,14 @@ function App() {
                             </ProtectedRoute>
                           }
                         />
+                        <Route
+                          path="/courses/:title/:roadmapId/:courseTitle/:courseId"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ViewCourseOutline />
+                            </ProtectedRoute>
+                          }
+                        />
                       </Route>
 
                       <Route path="login" element={<AuthPage />} />
