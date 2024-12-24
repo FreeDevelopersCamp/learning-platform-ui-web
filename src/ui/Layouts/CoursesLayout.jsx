@@ -12,6 +12,7 @@ import Header from '../Header/Header';
 import CoursesSidebar from '../../ui/Sidebar/CoursesSidebar';
 import Spinner from '../Spinner';
 
+
 import { FaListUl } from 'react-icons/fa';
 
 const StyledCoursesLayout = styled.div`
@@ -76,6 +77,7 @@ function CoursesLayout() {
   const { user, isLoading: userLoading } = useGetUser(session?.username, {
     enabled: !!session?.username,
   });
+
   const { data: userProgress, isLoading: userProgressLoading } =
     useFetchProgressByUserId(user?._id);
   const { data: roadmap, isLoading: isLoadingRoadmap } =
