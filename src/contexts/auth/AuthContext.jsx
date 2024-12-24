@@ -3,91 +3,94 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import { Auth } from '../../services/auth/Auth';
+import { Auth } from '../../apis/auth/Auth/Auth.ts';
 
+// Context
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     isAuthenticated: false,
     role: null,
     username: null,
   });
+  const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      setIsLoading(true);
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setAuth({ isAuthenticated: false, role: null, username: null });
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        const authService = new Auth();
-        const session = await authService.request({
-          path: '/Auth/session',
-          method: 'GET',
-          secure: true,
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'x-tenant-id': process.env.REACT_APP_X_TENANT_ID || 'b_1',
-          },
-        });
-
-        setAuth({
-          isAuthenticated: true,
-          role: session.role,
-          username: session.username,
-        });
-      } catch (err) {
-        console.error('Failed to fetch session:', err);
-        localStorage.removeItem('token');
-        setAuth({ isAuthenticated: false, role: null, username: null });
-        setError(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchSession();
-  }, []);
-
-  return (
-    <AuthContext.Provider value={{ auth, setAuth, isLoading, error }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-// Custom hook to handle logout logic
-export const useLogout = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
+  // Fetch Session
+  const fetchSession = async () => {
+    setIsLoading(true);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setAuth({ isAuthenticated: false, role: null, username: null });
+      setSession(null);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const fetchedSession = await new Auth().getSession();
+
+      setAuth({
+        isAuthenticated: true,
+        role: fetchedSession.role,
+        username: fetchedSession.username,
+      });
+      setSession(fetchedSession);
+    } catch (err) {
+      console.error('Failed to fetch session:', err);
+      localStorage.removeItem('token');
+      setAuth({ isAuthenticated: false, role: null, username: null });
+      setSession(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Login
+  const login = async ({ username, password, role }) => {
+    setIsLoading(true);
+    try {
+      const response = await new Auth().login({
+        userName: username,
+        password,
+        role,
+      });
+
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+        setAuth({ isAuthenticated: true, role, username });
+        toast.success('Login successful!');
+        navigate('/home');
+        await fetchSession(); // Fetch the updated session after login
+      } else {
+        throw new Error('No token received');
+      }
+    } catch (err) {
+      console.error('Login failed:', err);
+      toast.error('Failed to login');
+      navigate('/login');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Logout
   const logout = async () => {
     try {
-      const authService = new Auth();
       const token = localStorage.getItem('token');
 
       if (token) {
-        await authService.request({
-          path: '/Auth/logout',
-          method: 'POST',
-          secure: true,
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'x-tenant-id': process.env.REACT_APP_X_TENANT_ID || '',
-          },
-        });
+        await new Auth().logout();
       }
 
-      // Clear cache, local storage, and show a success message
       queryClient.clear();
       localStorage.removeItem('token');
+      setAuth({ isAuthenticated: false, role: null, username: null });
+      setSession(null);
       toast.success('You have successfully logged out.');
       navigate('/home');
     } catch (err) {
@@ -96,8 +99,32 @@ export const useLogout = () => {
     }
   };
 
-  return { logout };
+  useEffect(() => {
+    fetchSession();
+  }, []);
+
+  return (
+    <AuthContext.Provider
+      value={{
+        auth,
+        session,
+        login,
+        logout,
+        isLoading,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-// Hook to access authentication context
-export const useAuth = () => useContext(AuthContext);
+// Hook for simplicity
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export { AuthProvider };

@@ -1,7 +1,7 @@
-import BootcampSection from './ui/BootcampSection';
-import IntroductionSection from './ui/IntroductionSection';
-import EducationStats from './ui/EducationStats';
-import InstructorSection from './ui/InstructorSection';
+import BootcampSection from './components/BootcampSection';
+import IntroductionSection from './components/IntroductionSection';
+import EducationStats from './components/EducationStats';
+import InstructorSection from './components/InstructorSection';
 
 const HomePage = () => {
   return (

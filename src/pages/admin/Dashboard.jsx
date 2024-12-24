@@ -1,5 +1,5 @@
-import DashboardFilter from '../../features/dashboard/DashboardFilter.jsx';
-import DashboardLayout from '../../features/dashboard/DashboardLayout.jsx';
+import DashboardFilter from '../../ui/Dashboard/DashboardFilter.jsx';
+import DashboardLayout from '../../ui/Dashboard/DashboardLayout.jsx';
 
 import Heading from '../../ui/Heading';
 import Row from '../../ui/Row';

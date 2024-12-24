@@ -8,6 +8,10 @@ import { DarkModeProvider } from './contexts/DarkModeContext';
 
 import HomePage from './pages/Home/HomePage';
 import AuthPage from './pages/Auth/AuthPage';
+import ProtectedRoute from './ui/ProtectedRoute';
+
+import ProfilePage from './pages/Profile/ProfilePage';
+import SettingsPage from './pages/Settings/SettingsPage';
 
 import Dashboard from './pages/admin/Dashboard';
 import Users from './pages/admin/Users';
@@ -16,6 +20,10 @@ import Permissions from './pages/admin/Permissions';
 import OwnerUsers from '@/pages/owner/OwnerUsers.jsx';
 import OwnerDashboard from '@/pages/owner/OwnerDashboard.jsx';
 import OwnerPermissions from '@/pages/owner/OwnerPermissions.jsx';
+
+import ManagerDashboard from '@/pages/manager/ManagerDashboard.jsx';
+import ManagerUsers from '@/pages/manager/ManagerUsers.jsx';
+import ManagerPermissions from '@/pages/manager/ManagerPermissions.jsx';
 
 import InstructorDashboard from './pages/Instructor/Dashboard';
 import InstructorRoadmaps from './features/instructor/roadmaps/InstructorRoadmaps';
@@ -34,14 +42,10 @@ import LearnerPage from './pages/Learner/LearnerPage';
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
 
-import HomeLayout from './ui/HomeLayout';
-import AppLayout from './ui/AppLayout';
-import LearnerLayout from './ui/LearnerLayout';
-import CoursesLayout from './ui/CoursesLayout';
-
-import ProtectedRoute from './ui/ProtectedRoute';
-import ProfilePage from './pages/Profile/ProfilePage';
-import SettingsPage from './pages/Settings/SettingsPage';
+import HomeLayout from './ui/Layouts/HomeLayout';
+import AppLayout from './ui/Layouts/AppLayout';
+import LearnerLayout from './ui/Layouts/LearnerLayout';
+import CoursesLayout from './ui/Layouts/CoursesLayout';
 
 import { AuthProvider } from './contexts/auth/AuthContext';
 import { InstructorProvider } from './contexts/instructor/InstructorContext';
@@ -170,6 +174,34 @@ function App() {
                           element={
                             <ProtectedRoute role="1">
                               <OwnerPermissions />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="manager"
+                          element={<Navigate to="dashboard" />}
+                        />
+                        <Route
+                          path="manager/dashboard"
+                          element={
+                            <ProtectedRoute role="2">
+                              <ManagerDashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="manager/users"
+                          element={
+                            <ProtectedRoute role="2">
+                              <ManagerUsers />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="manager/permissions"
+                          element={
+                            <ProtectedRoute role="2">
+                              <ManagerPermissions />
                             </ProtectedRoute>
                           }
                         />
