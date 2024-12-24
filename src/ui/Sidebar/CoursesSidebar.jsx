@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Chapter from '../features/roadmaps/Chapter';
-import { capitalizeWords } from '../utils/helpers';
+import Chapter from '../../features/roadmaps/Chapter';
+import { capitalizeWords } from '../../utils/helpers';
 
 import { IoClose } from 'react-icons/io5';
 

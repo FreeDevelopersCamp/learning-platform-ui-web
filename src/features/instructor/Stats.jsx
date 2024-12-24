@@ -10,7 +10,12 @@ import Spinner from '../../ui/Spinner';
 function Stats({ userId, filter, onFilterCount }) {
   const navigate = useNavigate();
   const [filteredStats, setFilteredStats] = useState([]);
-  const [typeCounts, setTypeCounts] = useState({});
+  const [typeCounts, setTypeCounts] = useState({
+    roadmaps: 0,
+    courses: 0,
+    projects: 0,
+    practices: 0,
+  });
 
   const { instructor, instructorLoading, instructorError } =
     useInstructor(userId);
@@ -20,30 +25,32 @@ function Stats({ userId, filter, onFilterCount }) {
     if (instructor) {
       setInstructorData(instructor);
 
-      let filteredData;
       const counts = {};
+      let filteredData = [];
 
       if (filter === 'all') {
+        // Process all types
         filteredData = Object.entries(instructor)
-          .filter(([key, value]) => Array.isArray(value))
+          .filter(([key, value]) => key.endsWith('Ids') && Array.isArray(value))
           .flatMap(([key, value]) => {
             const cleanKey = key.replace(/Ids$/, '');
-            counts[cleanKey] = value.length;
+            counts[cleanKey] = value.length || 0;
             return value.map((id) => ({ id, type: cleanKey }));
           });
 
-        const orderedCounts = {
+        // Ensure ordered counts and fallback to 0 for missing types
+        setTypeCounts({
           roadmaps: counts.roadmaps || 0,
           courses: counts.courses || 0,
           projects: counts.projects || 0,
           practices: counts.practices || 0,
-        };
-        setTypeCounts(orderedCounts);
+        });
       } else {
-        const cleanFilter = filter.replace(/Ids$/, '');
-        filteredData = (instructor[`${filter}Ids`] || []).map((id) => ({
+        // Process specific filter
+        const keyName = `${filter.toLowerCase()}Ids`; // E.g., 'roadmaps' becomes 'roadmapIds'
+        filteredData = (instructor[keyName] || []).map((id) => ({
           id,
-          type: cleanFilter,
+          type: filter,
         }));
       }
 

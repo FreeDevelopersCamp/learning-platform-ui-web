@@ -3,15 +3,15 @@ import { Outlet } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useAuth } from '../contexts/auth/AuthContext';
-import { useSession } from '../hooks/auth/useSession';
-import { useUser } from '../hooks/users/useUser';
-import { useFetchProgressByUserId } from '../hooks/learner/useProgress';
-import { useFetchRoadmapById } from '../hooks/roadmaps/useRoadmap';
+import { useAuth } from '../../contexts/auth/AuthContext';
+import { useGetUser } from '../../apis/core/User/hooks/useGetUser.ts';
+import { useFetchProgressByUserId } from '../../hooks/learner/useProgress';
+import { useFetchRoadmapById } from '../../hooks/roadmaps/useRoadmap';
 
-import Header from './Dashboard/Header';
-import CoursesSidebar from '../ui/CoursesSidebar';
-import Spinner from './Spinner';
+import Header from '../Header/Header';
+import CoursesSidebar from '../../ui/Sidebar/CoursesSidebar';
+import Spinner from '../Spinner';
+
 
 import { FaListUl } from 'react-icons/fa';
 
@@ -73,9 +73,11 @@ function CoursesLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [courseStructure, setCourseStructure] = useState([]);
 
-  const { auth, isLoading } = useAuth();
-  const { isLoading: sessionLoading, session } = useSession();
-  const { user, isLoading: userLoading } = useUser(session?.username);
+  const { auth, session, isLoading } = useAuth();
+  const { user, isLoading: userLoading } = useGetUser(session?.username, {
+    enabled: !!session?.username,
+  });
+
   const { data: userProgress, isLoading: userProgressLoading } =
     useFetchProgressByUserId(user?._id);
   const { data: roadmap, isLoading: isLoadingRoadmap } =
@@ -83,7 +85,6 @@ function CoursesLayout() {
 
   if (
     isLoading ||
-    sessionLoading ||
     userLoading ||
     userProgressLoading ||
     isLoadingRoadmap ||
