@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useParams, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useUpdateProgress } from '../../hooks/learner/useProgress';
 import ViewOrder from './ViewOrder';
 import Spinner from '../../ui/Spinner';
 
@@ -79,28 +80,23 @@ const Next = styled.button`
 
 function ViewCourseOutline() {
   const navigate = useNavigate();
-  const { roadmap } = useOutletContext();
+  const { courseId } = useParams();
+  const { roadmap, userProgress, persentage } = useOutletContext();
   const [flatStructure, setFlatStructure] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const { mutate: updateProgress, isLoading: updatingProgress } =
+    useUpdateProgress();
+
   const { topic, _id: roadmapId, order = [] } = roadmap;
 
-  const flattenStructure = (items, parentType = null) => {
+  const flattenStructure = (items) => {
     const flat = [];
     items.forEach((item) => {
       if (!item || !item._id) return;
 
-      // Determine the type based on the ID
-      let itemType = parentType || 'course';
-      if (roadmap.projectsIds.includes(item._id)) {
-        itemType = 'project';
-      } else if (roadmap.practicesIds.includes(item._id)) {
-        itemType = 'practice';
-      }
-
       flat.push({
         id: item._id,
-        type: itemType,
         name: item.name,
         description: item.description,
         duration: item.duration,
@@ -108,9 +104,8 @@ function ViewCourseOutline() {
         subCourses: item.subCourses || [],
       });
 
-      // Recursively handle subCourses
       if (item.subCourses && item.subCourses.length > 0) {
-        flat.push(...flattenStructure(item.subCourses, 'subcourse'));
+        flat.push(...flattenStructure(item.subCourses));
       }
     });
     return flat;
@@ -120,17 +115,41 @@ function ViewCourseOutline() {
     if (order && order.length > 0) {
       const flattened = flattenStructure(order);
       setFlatStructure(flattened);
+
+      const incompleteIndex = flattened.findIndex(
+        (item) => !userProgress.completedCoursesIds.includes(item.id),
+      );
+
+      if (incompleteIndex !== -1) {
+        setCurrentIndex(incompleteIndex);
+        saveCourse(flattened[incompleteIndex]); // Save the course when opened
+        updatePath(flattened[incompleteIndex]);
+      }
     }
-  }, [order]);
+  }, [order, userProgress.completedCoursesIds]);
+
+  const saveCourse = (course) => {
+    if (
+      !userProgress.completedCoursesIds.includes(course.id) &&
+      course.id // Ensure course is not already saved
+    ) {
+      const updatedProgress = {
+        ...userProgress,
+        completedCoursesIds: [...userProgress.completedCoursesIds, course.id],
+        progress: persentage,
+      };
+      updateProgress(updatedProgress);
+    }
+  };
 
   const updatePath = (item) => {
     if (!item) return;
     const roadmapTopic = topic.toLowerCase().replace(/\s+/g, '-');
     const courseTitle = item.name
       .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, '') // Remove non-alphanumeric characters
-      .replace(/\s+/g, '-') // Replace spaces with a single dash
-      .replace(/-+/g, '-'); // Replace multiple dashes with a single dash;
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
     const path = `/courses/${roadmapTopic}/${roadmapId}/${courseTitle}/${item.id}`;
     navigate(path);
   };
@@ -138,27 +157,28 @@ function ViewCourseOutline() {
   const handleNext = () => {
     if (currentIndex < flatStructure.length - 1) {
       const nextIndex = currentIndex + 1;
+      const nextItem = flatStructure[nextIndex];
       setCurrentIndex(nextIndex);
-      updatePath(flatStructure[nextIndex]);
+      updatePath(nextItem);
     }
   };
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
       const prevIndex = currentIndex - 1;
+      const prevItem = flatStructure[prevIndex];
       setCurrentIndex(prevIndex);
-      updatePath(flatStructure[prevIndex]);
+      updatePath(prevItem);
     }
   };
 
   const currentItem = flatStructure[currentIndex];
 
-  if (flatStructure.length === 0) return <Spinner />;
+  if (updatingProgress || flatStructure.length === 0) return <Spinner />;
 
   return (
     <Container>
       {currentItem && <ViewOrder order={currentItem} />}
-
       <Buttons>
         <Previous onClick={handlePrevious} disabled={currentIndex === 0}>
           <FaArrowLeftLong />

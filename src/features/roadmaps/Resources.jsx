@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const ResourceContainer = styled.div`
   margin-bottom: 1.5rem;
+  width: 1200px;
 `;
 
 const ResourceTitle = styled.h4`
