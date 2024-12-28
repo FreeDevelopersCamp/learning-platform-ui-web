@@ -12,7 +12,6 @@ import Header from '../Header/Header';
 import CoursesSidebar from '../../ui/Sidebar/CoursesSidebar';
 import Spinner from '../Spinner';
 
-
 import { FaListUl } from 'react-icons/fa';
 
 const StyledCoursesLayout = styled.div`
@@ -69,9 +68,8 @@ const Button = styled.div`
 
 function CoursesLayout() {
   const { roadmapId } = useParams();
-
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [courseStructure, setCourseStructure] = useState([]);
+  const [persentage, setPersentage] = useState(true);
 
   const { auth, session, isLoading } = useAuth();
   const { user, isLoading: userLoading } = useGetUser(session?.username, {
@@ -110,13 +108,16 @@ function CoursesLayout() {
           isOpen={isSidebarOpen}
           toggleSidebar={() => setSidebarOpen((prev) => !prev)}
           roadmap={roadmap}
+          userProgress={userProgress}
+          setPersentage={setPersentage}
+          key={userProgress.completedCoursesIds.length}
         />
         <Container isSidebarOpen={isSidebarOpen}>
           <Outlet
             context={{
               roadmap,
-              courseStructure,
-              setCourseStructure,
+              userProgress,
+              persentage,
             }}
           />
         </Container>

@@ -67,11 +67,6 @@ function ViewOrder({ order }) {
 
   const { name, description, resources = [], status, exercises } = course;
 
-  const statusLabels = {
-    0: 'Only resources',
-    1: 'Can view on application',
-  };
-
   const typeLabels = {
     0: 'Article',
     1: 'Video',
@@ -91,19 +86,10 @@ function ViewOrder({ order }) {
 
   return (
     <Container>
-      <div>ٍStatus: {status}</div>
       <Title>{name}</Title>
       {status === '0' && (
         <>
           <Description>{description}</Description>
-          {/* <h2
-            style={{
-              width: '100%',
-              borderTop: '2px solid var(--color-grey-800)',
-            }}  
-          >
-            Resourses:
-          </h2> */}
         </>
       )}
 
@@ -116,10 +102,6 @@ function ViewOrder({ order }) {
                   <div>
                     <SectionTitle>{type}</SectionTitle>
                     <h4>{resource.name}</h4>
-                    {/* <p>
-                    Description or additional details can go here (rendered
-                    inside the app).
-                  </p> */}
                     <a
                       href={resource.url}
                       target="_blank"
@@ -131,8 +113,6 @@ function ViewOrder({ order }) {
                 ) : (
                   <>
                     <Resources resource={resource} typeLabels={typeLabels} />
-                    <Description>{description}</Description>
-                    <Exercises exercises={exercises} />
                   </>
                 )}
               </ResourceItem>
@@ -140,6 +120,12 @@ function ViewOrder({ order }) {
           </ResourceList>
         </div>
       ))}
+      {status === '1' && (
+        <>
+          <Description>{description}</Description>
+        </>
+      )}
+      <Exercises exercises={exercises} />
     </Container>
   );
 }

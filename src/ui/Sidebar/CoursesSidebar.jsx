@@ -2,8 +2,9 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Chapter from '../../features/roadmaps/Chapter';
-import { capitalizeWords } from '../../utils/helpers';
+import ProgressCircle from './ProgressCircle';
 
+import { capitalizeWords } from '../../utils/helpers';
 import { IoClose } from 'react-icons/io5';
 
 const StyledSidebar = styled.aside`
@@ -19,17 +20,10 @@ const StyledSidebar = styled.aside`
   border-right: 1px solid var(--color-grey-50);
   z-index: 1000;
   overflow-y: auto;
-  scrollbar-width: none; /* Hide scrollbar in Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
-    display: none; /* Hide scrollbar in Chrome, Safari, and Opera */
-  }
-
-  &:hover,
-  &:active,
-  &.active {
-    transition: all 0.3s;
+    display: none;
   }
 `;
 
@@ -44,47 +38,7 @@ const Header = styled.div`
   gap: 3rem;
 `;
 
-const ProgressCircle = styled.div`
-  height: 40px;
-  width: 40px;
-  max-width: 20%;
-  border-radius: 50%;
-  background: conic-gradient(
-    var(--color-yellow-green-800) ${(props) => props.progress || 0}%,
-    var(--color-grey-300) ${(props) => props.progress || 0}% 100%
-  );
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.1s;
-
-  &::before {
-    content: '';
-    width: 28px;
-    height: 28px;
-    background-color: var(--color-grey-100);
-    border-radius: 50%;
-    position: absolute;
-    z-index: 1;
-  }
-
-  &::after {
-    content: '${(props) => props.progress || 0}%';
-    position: absolute;
-    z-index: 2;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: var(--color-grey-900);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: translatey(1px);
-  }
-`;
-
 const Title = styled.div`
-  width: 30px;
   font-size: 1.8rem;
   font-weight: 600;
   color: var(--color-grey-900);
@@ -110,8 +64,19 @@ const List = styled.ul`
   color: white;
 `;
 
-function CoursesSidebar({ isOpen, toggleSidebar, roadmap, isActive = true }) {
+function CoursesSidebar({
+  isOpen,
+  toggleSidebar,
+  roadmap,
+  userProgress,
+  setPersentage,
+  isActive = true,
+}) {
   const { title } = useParams();
+
+  const { coursesIds = [] } = roadmap;
+
+  const { completedCoursesIds = [] } = userProgress || {};
 
   const handleToggleSidebar = () => {
     toggleSidebar();
@@ -130,7 +95,11 @@ function CoursesSidebar({ isOpen, toggleSidebar, roadmap, isActive = true }) {
                 width: '100%',
               }}
             >
-              <ProgressCircle progress={50} />
+              <ProgressCircle
+                coursesIds={coursesIds}
+                completedCoursesIds={completedCoursesIds}
+                setPersentage={setPersentage}
+              />
               <Title>{capitalizeWords(title)}</Title>
             </div>
             <Button onClick={handleToggleSidebar}>
@@ -143,6 +112,9 @@ function CoursesSidebar({ isOpen, toggleSidebar, roadmap, isActive = true }) {
                 key={index}
                 index={index + 1}
                 courseId={courseId}
+                completedCoursesIds={completedCoursesIds}
+                roadmapId={roadmap._id}
+                topic={roadmap.topic}
                 isActive={isActive}
               />
             ))}
