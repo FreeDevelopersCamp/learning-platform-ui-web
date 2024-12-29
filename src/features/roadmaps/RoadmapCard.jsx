@@ -119,69 +119,56 @@ const Button = styled.button`
 function RoadmapCard({ userProgress, roadmap }) {
   const navigate = useNavigate();
 
-  const {
-    _id,
-    name,
-    description,
-    duration,
-    coursesIds = [],
-    projectsIds = [],
-    practicesIds = [],
-    participants = 0,
-    topic,
-    rating,
-  } = roadmap;
+  const { _id, description, coursesIds = [], topic, order = [] } = roadmap;
 
   const {
     currentRoadmapsIds = [],
-    completedRoadmapsIds = [],
     completedCoursesIds = [],
-    completedProjectsIds = [],
-    completedPracticesIds = [],
-    xp = 0,
+    progress,
   } = userProgress || {};
 
   const isCurrent = currentRoadmapsIds.includes(_id);
-  const isCompleted = completedRoadmapsIds.includes(_id);
+
+  const handleContinue = () => {
+    // Find the first incomplete course
+    const nextCourse = order.find(
+      (course) => !completedCoursesIds.includes(course._id),
+    );
+
+    if (nextCourse) {
+      const courseTitle = nextCourse.name
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+      navigate(
+        `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}/${courseTitle}/${nextCourse._id}`,
+      );
+    } else {
+      navigate(`/roadmap/${_id}`);
+    }
+  };
 
   const handleViewDetails = () => {
     navigate(`/roadmap/${_id}`);
   };
 
   return (
-    <Card onClick={handleViewDetails}>
+    <Card>
       <Type>ROADMAP</Type>
       <Topic>{topic || 'Roadmap Topic'}</Topic>
       <Description>{description || 'No description available.'}</Description>
 
       <Details>
-        {isCompleted ? (
-          <ViewAccomplishment onClick={handleViewDetails}>
-            <span
-              style={{
-                fontSize: '1.8rem',
-                color: 'var(--color-light-green-500)',
-              }}
-            >
-              <FaCheckCircle />
-            </span>
-            View accomplishment
-          </ViewAccomplishment>
+        {isCurrent ? (
+          <>
+            <Progress percentage={progress} />
+            <Continue onClick={handleContinue}>Continue</Continue>
+          </>
         ) : (
           <>
-            {isCurrent ? (
-              <>
-                <Progress percentage={50} />
-                <Continue onClick={handleViewDetails}>Continue</Continue>
-              </>
-            ) : (
-              <>
-                <Count>
-                  {coursesIds.length + projectsIds.length} Courses and Projects
-                </Count>
-                <Button onClick={handleViewDetails}>View Details</Button>
-              </>
-            )}
+            <Count>{coursesIds.length} Courses</Count>
+            <Button onClick={handleViewDetails}>View Details</Button>
           </>
         )}
       </Details>

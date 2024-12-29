@@ -85,18 +85,12 @@ function ViewRoadmapDetails() {
     xp = 0,
   } = userProgress || {};
 
-  const isCurrent = currentRoadmapsIds.includes(id);
-  const isCompleted = completedRoadmapsIds.includes(id);
-
   const {
-    name,
     description,
-    duration,
     coursesIds = [],
     projectsIds = [],
     practicesIds = [],
     participants = 0,
-    topic,
     order = [],
     instructor,
   } = roadmap;
