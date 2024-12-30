@@ -19,6 +19,7 @@ import {
   Sidebar,
   SidebarItem,
   SubmitButton,
+  DeactivateButton,
   UploadButton,
   Content,
   Form,
@@ -195,7 +196,9 @@ const SettingsPage = () => {
             />
           </div>
           <div className="flex gap-x-2">
-            <SubmitButton onClick={handleSubmit}>Save Updates</SubmitButton>
+            {/* <DeactivateButton onClick={() => console.log('Deactivate')}>
+              Deactivate My Account
+            </DeactivateButton> */}
             <SubmitButton onClick={handleSubmit}>Save Updates</SubmitButton>
           </div>
         </ProfileSection>

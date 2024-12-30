@@ -1,4 +1,5 @@
 import { ContentType, HttpClient } from '../../http-client';
+import { getDefaultHeaders } from '../../../utils/headers.js';
 
 export default class Learner extends HttpClient {
   private static instance: Learner;
@@ -29,6 +30,7 @@ export default class Learner extends HttpClient {
       method: 'GET',
       secure: true,
       ...params,
+      headers: getDefaultHeaders(),
     });
   }
 
@@ -49,6 +51,7 @@ export default class Learner extends HttpClient {
       secure: true,
       type: ContentType.Json,
       ...params,
+      headers: getDefaultHeaders(),
     });
   }
 
@@ -67,6 +70,7 @@ export default class Learner extends HttpClient {
       method: 'GET',
       secure: true,
       ...params,
+      headers: getDefaultHeaders(),
     });
   }
 
@@ -85,6 +89,7 @@ export default class Learner extends HttpClient {
       method: 'GET',
       secure: true,
       ...params,
+      headers: getDefaultHeaders(),
     });
   }
 
@@ -103,6 +108,7 @@ export default class Learner extends HttpClient {
       method: 'DELETE',
       secure: true,
       ...params,
+      headers: getDefaultHeaders(),
     });
   }
 
@@ -121,6 +127,7 @@ export default class Learner extends HttpClient {
       method: 'GET',
       secure: true,
       ...params,
+      headers: getDefaultHeaders(),
     });
   }
 
@@ -139,6 +146,7 @@ export default class Learner extends HttpClient {
       method: 'DELETE',
       secure: true,
       ...params,
+      headers: getDefaultHeaders(),
     });
   }
 }
