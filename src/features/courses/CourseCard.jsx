@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useCount } from '../../contexts/courses/CoursesContext';
-import { useCourse } from '../../hooks/courses/useCourse';
+import { useFetchCourseById } from '../../hooks/courses/useCourse';
 
 import { convertDurationMinutesToHours } from '../../utils/helpers';
 import Spinner from '../../ui/Spinner';
@@ -118,7 +118,11 @@ const Button = styled.button`
 
 function CourseCard({ courseId, filter }) {
   const navigate = useNavigate();
-  const { course, courseLoading, courseError } = useCourse(courseId);
+  const {
+    data: course,
+    isLoading: isCourseLoading,
+    courseError,
+  } = useFetchCourseById(courseId);
   const { incrementCount, decrementCount } = useCount();
 
   useEffect(() => {
@@ -139,7 +143,7 @@ function CourseCard({ courseId, filter }) {
     };
   }, [course, filter, incrementCount, decrementCount]);
 
-  if (courseLoading || !course || courseError) return <Spinner />;
+  if (isCourseLoading || !course || courseError) return <Spinner />;
 
   const {
     name,

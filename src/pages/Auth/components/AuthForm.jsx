@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from './../../../contexts/auth/AuthContext';
+
 import AuthTabs from './AuthTabs';
 import AuthButtonGroup from './AuthButtonGroup';
 import AuthInput from './AuthInput';
