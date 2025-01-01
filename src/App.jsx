@@ -25,6 +25,14 @@ import ManagerDashboard from '@/pages/manager/ManagerDashboard.jsx';
 import ManagerUsers from '@/pages/manager/ManagerUsers.jsx';
 import ManagerPermissions from '@/pages/manager/ManagerPermissions.jsx';
 
+import AccountManagerUsers from './pages/accountManager/AccountManagerUsers';
+import AccountManagerDashboard from './pages/accountManager/AccountManagerDashboard';
+import AccountManagerPermissions from './pages/accountManager/AccountManagerPermissions';
+
+import ContentManagerDashboard from './pages/contentManager/ContentManagerDashboard';
+import ContentManagerUsers from './pages/contentManager/ContentManagerUsers';
+import ContentManagerPermissions from './pages/contentManager/ContentManagerPermissions';
+
 import InstructorDashboard from './pages/Instructor/Dashboard';
 import InstructorRoadmaps from './features/instructor/roadmaps/InstructorRoadmaps';
 import InstructorProjects from './features/instructor/roadmaps/InstructorProjects';
@@ -202,6 +210,62 @@ function App() {
                           element={
                             <ProtectedRoute role="2">
                               <ManagerPermissions />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="accountManager"
+                          element={<Navigate to="dashboard" />}
+                        />
+                        <Route
+                          path="accountManager/dashboard"
+                          element={
+                            <ProtectedRoute role="3">
+                              <AccountManagerDashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="accountManager/users"
+                          element={
+                            <ProtectedRoute role="3">
+                              <AccountManagerUsers />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="accountManager/permissions"
+                          element={
+                            <ProtectedRoute role="3">
+                              <AccountManagerPermissions />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="contentManager"
+                          element={<Navigate to="dashboard" />}
+                        />
+                        <Route
+                          path="contentManager/dashboard"
+                          element={
+                            <ProtectedRoute role="4">
+                              <ContentManagerDashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="contentManager/users"
+                          element={
+                            <ProtectedRoute role="4">
+                              <ContentManagerUsers />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="contentManager/permissions"
+                          element={
+                            <ProtectedRoute role="4">
+                              <ContentManagerPermissions />
                             </ProtectedRoute>
                           }
                         />
