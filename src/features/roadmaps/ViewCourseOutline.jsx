@@ -3,7 +3,9 @@ import { useNavigate, useParams, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useUpdateProgress } from '../../hooks/learner/useProgress';
-import ViewOrder from './ViewOrder';
+
+import ViewCourse from './ViewCourse';
+import ViewProject from './ViewProject';
 import Spinner from '../../ui/Spinner';
 
 import { FaArrowLeftLong } from 'react-icons/fa6';
@@ -81,14 +83,21 @@ const Next = styled.button`
 function ViewCourseOutline() {
   const navigate = useNavigate();
   const { courseId } = useParams();
-  const { roadmap, userProgress, persentage } = useOutletContext();
+  const { roadmap, userProgress } = useOutletContext();
   const [flatStructure, setFlatStructure] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const { mutate: updateProgress, isLoading: updatingProgress } =
     useUpdateProgress();
 
-  const { topic, _id: roadmapId, order = [] } = roadmap;
+  const {
+    topic,
+    _id: roadmapId,
+    coursesIds = [],
+    projectsIds = [],
+    practicesIds = [],
+    order = [],
+  } = roadmap;
 
   const flattenStructure = (items) => {
     const flat = [];
@@ -101,6 +110,7 @@ function ViewCourseOutline() {
         description: item.description,
         duration: item.duration,
         xp: item.xp,
+        chapterId: item.chapterId,
         subCourses: item.subCourses || [],
       });
 
@@ -115,51 +125,106 @@ function ViewCourseOutline() {
     if (order && order.length > 0) {
       const flattened = flattenStructure(order);
       setFlatStructure(flattened);
+      let selectedIndex = flattened.findIndex((item) => item.id === courseId);
 
-      const incompleteIndex = flattened.findIndex(
-        (item) => !userProgress.completedCoursesIds.includes(item.id),
-      );
+      if (selectedIndex !== -1) {
+        setCurrentIndex(selectedIndex);
 
-      if (incompleteIndex !== -1) {
-        setCurrentIndex(incompleteIndex);
-        saveCourse(flattened[incompleteIndex]); // Save the course when opened
-        updatePath(flattened[incompleteIndex]);
+        const isCourse = coursesIds.includes(flattened[selectedIndex].id);
+        const isProject = projectsIds.includes(flattened[selectedIndex].id);
+        const isPractice = practicesIds.includes(flattened[selectedIndex].id);
+
+        if (isPractice) {
+          // Skip the current practice and move to the next item
+          const nextIndex = selectedIndex + 1;
+          if (nextIndex < flattened.length) {
+            setCurrentIndex(nextIndex);
+            updatePath(flattened[nextIndex]); // Navigate to the next item
+          }
+        } else {
+          isCourse && saveCourse(flattened[selectedIndex]);
+          isProject && saveProject(flattened[selectedIndex]);
+        }
+      } else {
+        // If no valid index is found, navigate to the first incomplete item or default
+        const incompleteIndex = flattened.findIndex(
+          (item) => !userProgress.completedCoursesIds.includes(item.id),
+        );
+        const defaultIndex = incompleteIndex !== -1 ? incompleteIndex : 0;
+        setCurrentIndex(defaultIndex);
+        saveCourse(flattened[defaultIndex]); // Save progress for the default course
       }
     }
-  }, [order, userProgress.completedCoursesIds]);
+  }, [order, courseId, userProgress.completedCoursesIds]);
 
   const saveCourse = (course) => {
-    if (
-      !userProgress.completedCoursesIds.includes(course.id) &&
-      course.id // Ensure course is not already saved
-    ) {
+    if (!userProgress.completedCoursesIds.includes(course.id) && course.id) {
       const updatedProgress = {
         ...userProgress,
-        completedCoursesIds: [...userProgress.completedCoursesIds, course.id],
-        progress: persentage,
+        completedCoursesIds: [
+          ...new Set([...userProgress.completedCoursesIds, course.id]),
+        ],
+        spentTime: (userProgress.spentTime || 0) + (course.duration || 0),
+        xp: (userProgress.xp || 0) + (course.xp || 0),
       };
+
       updateProgress(updatedProgress);
     }
   };
 
+  const saveProject = (project) => {
+    // if (!userProgress.completedCoursesIds.includes(course.id) && course.id) {
+    //   const updatedProgress = {
+    //     ...userProgress,
+    //     completedCoursesIds: [
+    //       ...new Set([...userProgress.completedCoursesIds, course.id]),
+    //     ],
+    //     spentTime: (userProgress.spentTime || 0) + (course.duration || 0),
+    //     xp: (userProgress.xp || 0) + (course.xp || 0),
+    //   };
+
+    //   updateProgress(updatedProgress);
+    // }
+    console.log('saveProject: ', project);
+  };
+
   const updatePath = (item) => {
     if (!item) return;
+
     const roadmapTopic = topic.toLowerCase().replace(/\s+/g, '-');
     const courseTitle = item.name
       .toLowerCase()
       .replace(/[^a-z0-9\s]/g, '')
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-');
+
     const path = `/courses/${roadmapTopic}/${roadmapId}/${courseTitle}/${item.id}`;
     navigate(path);
   };
 
   const handleNext = () => {
-    if (currentIndex < flatStructure.length - 1) {
-      const nextIndex = currentIndex + 1;
-      const nextItem = flatStructure[nextIndex];
-      setCurrentIndex(nextIndex);
-      updatePath(nextItem);
+    const isLastInChapter =
+      currentIndex === flatStructure.length - 1 ||
+      flatStructure[currentIndex + 1]?.chapterId !==
+        flatStructure[currentIndex].chapterId;
+
+    saveCourse(flatStructure[currentIndex]);
+    if (isLastInChapter) {
+      const nextChapterIndex = flatStructure.findIndex(
+        (item) => item.chapterId !== flatStructure[currentIndex].chapterId,
+      );
+      if (nextChapterIndex !== -1) {
+        const nextCourse = flatStructure[nextChapterIndex];
+        setCurrentIndex(nextChapterIndex);
+        updatePath(nextCourse);
+      }
+    } else {
+      if (currentIndex < flatStructure.length - 1) {
+        const nextIndex = currentIndex + 1;
+        const nextItem = flatStructure[nextIndex];
+        setCurrentIndex(nextIndex);
+        updatePath(nextItem);
+      }
     }
   };
 
@@ -178,7 +243,14 @@ function ViewCourseOutline() {
 
   return (
     <Container>
-      {currentItem && <ViewOrder order={currentItem} />}
+      {currentItem &&
+        !practicesIds.includes(currentItem.id) &&
+        (projectsIds.includes(currentItem.id) ? (
+          <ViewProject order={currentItem} />
+        ) : (
+          <ViewCourse order={currentItem} />
+        ))}
+
       <Buttons>
         <Previous onClick={handlePrevious} disabled={currentIndex === 0}>
           <FaArrowLeftLong />

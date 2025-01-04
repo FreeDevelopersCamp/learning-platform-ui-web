@@ -38,14 +38,16 @@ import InstructorRoadmaps from './features/instructor/roadmaps/InstructorRoadmap
 import InstructorProjects from './features/instructor/roadmaps/InstructorProjects';
 import InstructorPractices from './features/instructor/roadmaps/InstructorPractices';
 
-import InstructorCourses from './features/courses/InstructorCourses';
-import ViewCourseDetails from './features/courses/ViewCourseDetails';
+import LearnerPage from './pages/Learner/LearnerPage';
+import Library from './pages/Learner/Library';
 
 import Roadmaps from './features/roadmaps/Roadmaps';
 import ViewRoadmapDetails from './features/roadmaps/ViewRoadmapDetails';
 import ViewCourseOutline from './features/roadmaps/ViewCourseOutline';
 
-import LearnerPage from './pages/Learner/LearnerPage';
+import InstructorCourses from './features/courses/InstructorCourses';
+import Courses from './features/courses/Courses';
+import ViewCourseDetails from './features/courses/ViewCourseDetails';
 
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
@@ -344,6 +346,14 @@ function App() {
                             }
                           />
                           <Route
+                            path="learner/library"
+                            element={
+                              <ProtectedRoute role="6">
+                                <Library />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
                             path="learner/roadmaps"
                             element={
                               <ProtectedRoute role="6">
@@ -403,7 +413,7 @@ function App() {
                             path="learner/courses"
                             element={
                               <ProtectedRoute role="6">
-                                <LearnerPage />
+                                <Courses />
                               </ProtectedRoute>
                             }
                           />

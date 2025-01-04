@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { convertDurationMinutesToHours } from '../../utils/helpers.js';
+import { formatDuration } from '../../utils/helpers.js';
 
 import { FaFreeCodeCamp } from 'react-icons/fa';
 import { LuClock3 } from 'react-icons/lu';
@@ -253,7 +253,7 @@ function DetailsHeading({ course, title, session, userProgress, role }) {
         </Level>
         <Span>
           <LuClock3 style={{ fontSize: '1.6rem', marginTop: '0px' }} />
-          <span>{convertDurationMinutesToHours(duration)}</span>
+          <span>{formatDuration(duration)}</span>
         </Span>
         <Span>
           {'< >'}

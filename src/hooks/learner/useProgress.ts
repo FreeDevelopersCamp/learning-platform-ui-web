@@ -2,23 +2,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Progress from '../../services/learner/progress';
 import toast from 'react-hot-toast';
 
-const token = localStorage.getItem('token');
-const defaultHeaders = {
-  Authorization: `Bearer ${token}`,
-  'x-tenant-id': process.env.REACT_APP_X_TENANT_ID || '',
-};
-
 // Fetch Progress by ID
 export function useFetchProgressById(progressId?: string) {
   return useQuery({
     queryKey: ['progress', progressId],
-    queryFn: () =>
-      Progress.getProgress().request({
-        path: `/progress/${progressId}`,
-        method: 'GET',
-        secure: true,
-        headers: defaultHeaders,
-      }),
+    queryFn: () => new Progress().getById(progressId),
     enabled: !!progressId,
     onError: () => toast.error('Failed to fetch progress data'),
   });
@@ -28,13 +16,7 @@ export function useFetchProgressById(progressId?: string) {
 export function useFetchProgressByUserId(userId?: string) {
   return useQuery({
     queryKey: ['progressByUserId', userId],
-    queryFn: () =>
-      Progress.getProgress().request({
-        path: `/progress/userId/${userId}`,
-        method: 'GET',
-        secure: true,
-        headers: defaultHeaders,
-      }),
+    queryFn: () => new Progress().getByUserId(userId),
     enabled: !!userId,
     onError: () => toast.error('Failed to fetch user progress data'),
   });
@@ -46,13 +28,7 @@ export function useCreateProgress() {
 
   return useMutation({
     mutationFn: (newProgress: Record<string, any>) =>
-      Progress.getProgress().request({
-        path: '/progress',
-        method: 'POST',
-        body: newProgress,
-        secure: true,
-        headers: defaultHeaders,
-      }),
+      new Progress().create(newProgress),
     onSuccess: () => {
       toast.success('Progress created successfully');
       queryClient.invalidateQueries(['progress']);
@@ -67,13 +43,7 @@ export function useUpdateProgress() {
 
   return useMutation({
     mutationFn: (updatedProgress: Record<string, any>) =>
-      Progress.getProgress().request({
-        path: '/progress',
-        method: 'PATCH',
-        body: updatedProgress,
-        secure: true,
-        headers: defaultHeaders,
-      }),
+      new Progress().update(updatedProgress),
     onSuccess: () => {
       toast.success('Progress updated successfully');
       queryClient.invalidateQueries(['progress']);
@@ -87,13 +57,7 @@ export function useDeleteProgress() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      Progress.getProgress().request({
-        path: `/progress/${id}`,
-        method: 'DELETE',
-        secure: true,
-        headers: defaultHeaders,
-      }),
+    mutationFn: (id: string) => new Progress().delete(id),
     onSuccess: () => {
       toast.success('Progress deleted successfully');
       queryClient.invalidateQueries(['progress']);

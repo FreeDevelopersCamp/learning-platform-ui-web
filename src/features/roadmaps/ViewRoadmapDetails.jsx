@@ -77,15 +77,6 @@ function ViewRoadmapDetails() {
     return <Spinner />;
 
   const {
-    currentRoadmapsIds = [],
-    completedRoadmapsIds = [],
-    completedCoursesIds = [],
-    completedProjectsIds = [],
-    completedPracticesIds = [],
-    xp = 0,
-  } = userProgress || {};
-
-  const {
     description,
     coursesIds = [],
     projectsIds = [],

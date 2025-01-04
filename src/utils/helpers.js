@@ -29,8 +29,12 @@ export const formatCurrency = (value) =>
     value,
   );
 
-export const convertDurationMinutesToHours = (minutes) => {
-  const hours = Math.floor(minutes / 60);
+export const formatDuration = (minutes) => {
+  if (minutes < 60) {
+    return `${minutes} Minute${minutes === 1 ? '' : 's'}`;
+  }
+
+  const hours = Math.round(minutes / 60);
   return `${hours} Hour${hours !== 1 ? 's' : ''}`;
 };
 

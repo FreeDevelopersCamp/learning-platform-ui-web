@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import {
@@ -14,12 +15,14 @@ import { IoIosNotificationsOutline } from 'react-icons/io';
 import { FaTasks } from 'react-icons/fa';
 import { GoProjectRoadmap } from 'react-icons/go';
 import { BiTask } from 'react-icons/bi';
-import { MdLeaderboard } from 'react-icons/md';
-import { MdOutlineLibraryBooks } from 'react-icons/md';
+import {
+  MdLeaderboard,
+  MdOutlineLibraryBooks,
+  MdOutlineAssessment,
+} from 'react-icons/md';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import InsightsIcon from '@mui/icons-material/Insights';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import { MdOutlineAssessment } from 'react-icons/md';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import CastForEducationIcon from '@mui/icons-material/CastForEducation';
@@ -39,7 +42,8 @@ const MenuItem = styled.li`
   gap: 1rem;
   width: 100%;
   color: ${(props) => (props.isActive ? 'white' : '#9ca3af')};
-  background-color: 'transparent';
+  background-color: ${(props) =>
+    props.isActive ? 'var(--color-brand-900)' : 'transparent'};
   border-radius: ${(props) =>
     props.isActive ? 'var(--border-radius-sm)' : '0'};
 
@@ -48,7 +52,6 @@ const MenuItem = styled.li`
   min-height: 36px;
   padding: 10px 10px 12px;
 
-  border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s;
 
@@ -59,8 +62,7 @@ const MenuItem = styled.li`
   & svg {
     width: 24px;
     height: 24px;
-    color: ${(props) =>
-      props.isActive ? 'var(--color-brand-600)' : 'var(--color-grey-400)'};
+    color: ${(props) => (props.isActive ? 'white' : 'var(--color-grey-400)')};
     transition: all 0.3s;
   }
 
@@ -69,65 +71,159 @@ const MenuItem = styled.li`
   }
 `;
 
-function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
+function MainNav({ isOpen, role, onMenuSelect }) {
+  const location = useLocation(); // Get current path
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
     const adminMenu = [
-      { id: 'dashboard', icon: <HiOutlineHome />, label: 'Dashboard' },
-      { id: 'users', icon: <HiOutlineUsers />, label: 'Users' },
-      { id: 'permissions', icon: <BsShieldLock />, label: 'Permissions' },
+      {
+        id: 'dashboard',
+        path: '/admin/dashboard',
+        icon: <HiOutlineHome />,
+        label: 'Dashboard',
+      },
+      {
+        id: 'users',
+        path: '/admin/users',
+        icon: <HiOutlineUsers />,
+        label: 'Users',
+      },
+      {
+        id: 'permissions',
+        path: '/admin/permissions',
+        icon: <BsShieldLock />,
+        label: 'Permissions',
+      },
     ];
 
     const instructorMenu = [
-      { id: 'dashboard', icon: <HiOutlineHome />, label: 'Dashboard' },
-      { id: 'roadmaps', icon: <HiPresentationChartLine />, label: 'Roadmaps' },
-      { id: 'courses', icon: <FaTasks />, label: 'Courses' },
-      { id: 'projects', icon: <GoProjectRoadmap />, label: 'Projects' },
-      { id: 'practices', icon: <BiTask />, label: 'Practices' },
-      { id: 'learner', icon: <HiOutlineUsers />, label: 'Learner' },
-      { id: 'email', icon: <HiEnvelope />, label: 'Email' },
-      { id: 'chat', icon: <HiChatBubbleLeftRight />, label: 'Chat' },
+      {
+        id: 'dashboard',
+        path: '/instructor/dashboard',
+        icon: <HiOutlineHome />,
+        label: 'Dashboard',
+      },
+      {
+        id: 'roadmaps',
+        path: '/instructor/roadmaps',
+        icon: <HiPresentationChartLine />,
+        label: 'Roadmaps',
+      },
+      {
+        id: 'courses',
+        path: '/instructor/courses',
+        icon: <FaTasks />,
+        label: 'Courses',
+      },
+      {
+        id: 'projects',
+        path: '/instructor/projects',
+        icon: <GoProjectRoadmap />,
+        label: 'Projects',
+      },
+      {
+        id: 'practices',
+        path: '/instructor/practices',
+        icon: <BiTask />,
+        label: 'Practices',
+      },
+      {
+        id: 'learner',
+        path: '/instructor/learner',
+        icon: <HiOutlineUsers />,
+        label: 'Learner',
+      },
+      {
+        id: 'email',
+        path: '/instructor/email',
+        icon: <HiEnvelope />,
+        label: 'Email',
+      },
+      {
+        id: 'chat',
+        path: '/instructor/chat',
+        icon: <HiChatBubbleLeftRight />,
+        label: 'Chat',
+      },
       {
         id: 'notifications',
-        icon: <IoIosNotificationsOutline style={{ fontSize: '3rem' }} />,
+        path: '/instructor/notifications',
+        icon: <IoIosNotificationsOutline />,
         label: 'Notifications',
       },
-      { id: 'calendar', icon: <HiOutlineCalendarDays />, label: 'Calendar' },
+      {
+        id: 'calendar',
+        path: '/instructor/calendar',
+        icon: <HiOutlineCalendarDays />,
+        label: 'Calendar',
+      },
     ];
 
     const learnerMenu = [
-      { id: 'dashboard', icon: <HiOutlineHome />, label: 'Dashboard' },
-      { id: 'library', icon: <MdOutlineLibraryBooks />, label: 'My Library' },
+      {
+        id: 'dashboard',
+        path: '/learner/dashboard',
+        icon: <HiOutlineHome />,
+        label: 'Dashboard',
+      },
+      {
+        id: 'library',
+        path: '/learner/library',
+        icon: <MdOutlineLibraryBooks />,
+        label: 'My Library',
+      },
       {
         id: 'leaderboard',
+        path: '/learner/leaderboard',
         icon: <MdLeaderboard />,
         label: 'Leaderboard',
       },
-      { id: 'roadmaps', icon: <InsightsIcon />, label: 'Roadmaps' },
-      { id: 'courses', icon: <TipsAndUpdatesIcon />, label: 'Courses' },
-      { id: 'practices', icon: <FitnessCenterIcon />, label: 'Practices' },
+      {
+        id: 'roadmaps',
+        path: '/learner/roadmaps',
+        icon: <InsightsIcon />,
+        label: 'Roadmaps',
+      },
+      {
+        id: 'courses',
+        path: '/learner/courses',
+        icon: <TipsAndUpdatesIcon />,
+        label: 'Courses',
+      },
+      {
+        id: 'practices',
+        path: '/learner/practices',
+        icon: <FitnessCenterIcon />,
+        label: 'Practices',
+      },
       {
         id: 'assessments',
+        path: '/learner/assessments',
         icon: <MdOutlineAssessment />,
         label: 'Assessments',
       },
-      { id: 'projects', icon: <AccountTreeIcon />, label: 'Projects' },
+      {
+        id: 'projects',
+        path: '/learner/projects',
+        icon: <AccountTreeIcon />,
+        label: 'Projects',
+      },
       {
         id: 'certifications',
+        path: '/learner/certifications',
         icon: <WorkspacePremiumIcon />,
         label: 'Certifications',
       },
-      { id: 'tutorials', icon: <CastForEducationIcon />, label: 'Tutorials' },
+      {
+        id: 'tutorials',
+        path: '/learner/tutorials',
+        icon: <CastForEducationIcon />,
+        label: 'Tutorials',
+      },
     ];
 
-    if (
-      role === '0' ||
-      role === '1' ||
-      role === '2' ||
-      role === '3' ||
-      role === '4'
-    ) {
+    if (['0', '1', '2', '3', '4'].includes(role)) {
       setMenuItems(adminMenu);
     } else if (role === '5') {
       setMenuItems(instructorMenu);
@@ -145,13 +241,15 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
           {menuItems.map((item) => (
             <MenuItem
               key={item.id}
-              isActive={activeMenu === item.id}
+              isActive={
+                location.pathname === item.path ||
+                (item.id === 'roadmaps' &&
+                  location.pathname.includes('roadmap'))
+              }
               onClick={() => onMenuSelect(item.id)}
             >
               {item.icon}
-              <span style={{ transform: 'translateY(2.5px)' }}>
-                {item.label}
-              </span>
+              <span>{item.label}</span>
             </MenuItem>
           ))}
         </NavList>

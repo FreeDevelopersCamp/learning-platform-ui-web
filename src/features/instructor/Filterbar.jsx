@@ -17,7 +17,6 @@ const StyledFilterbar = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  overflow: hidden;
 `;
 
 const TotalWrapper = styled.div`

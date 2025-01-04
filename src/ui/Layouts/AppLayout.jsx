@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -37,11 +37,20 @@ const Container = styled.div`
 function AppLayout() {
   const navigate = useNavigate();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [activeMenu, setActiveMenu] = useState('dashboard');
+
+  // Retrieve the active menu from local storage or set to default
+  const [activeMenu, setActiveMenu] = useState(
+    () => localStorage.getItem('activeMenu') || 'dashboard',
+  );
 
   const { auth, session, isLoading } = useAuth();
 
   const mainRef = useRef(null);
+
+  useEffect(() => {
+    // Save active menu to local storage on change
+    localStorage.setItem('activeMenu', activeMenu);
+  }, [activeMenu]);
 
   if (isLoading || !auth || !session) return <Spinner />;
 

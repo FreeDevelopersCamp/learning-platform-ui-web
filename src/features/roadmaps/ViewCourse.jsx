@@ -56,7 +56,7 @@ const ResourceItem = styled.li`
   }
 `;
 
-function ViewOrder({ order }) {
+function ViewCourse({ order }) {
   const {
     data: course,
     isLoading: isCourseLoading,
@@ -130,4 +130,4 @@ function ViewOrder({ order }) {
   );
 }
 
-export default ViewOrder;
+export default ViewCourse;

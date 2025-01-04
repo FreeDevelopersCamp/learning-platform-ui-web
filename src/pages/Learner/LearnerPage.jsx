@@ -1,3 +1,4 @@
+import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAuth } from '../../contexts/auth/AuthContext';
@@ -41,16 +42,19 @@ function LearnerPage() {
     enabled: !!auth?.username && !isLoading, // Trigger only when username is available and auth is not loading
   });
 
+  const { userProgress } = useOutletContext();
+
   if (isLoading || userLoading || !auth || !user) return <Spinner />;
+
   return (
     <Container>
       <MainContainer>
         <Welcome user={user} />
         <StatsContainer>
-          <Stats />
+          <Stats userProgress={userProgress} />
         </StatsContainer>
-        <MainSection />
-        <CoursesSection />
+        <MainSection userProgress={userProgress} />
+        <CoursesSection userProgress={userProgress} />
       </MainContainer>
       <div className="flex flex-col gap-4">
         <ProgressSection user={user} />

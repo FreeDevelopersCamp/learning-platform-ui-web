@@ -96,9 +96,11 @@ function CoursesSidebar({
               }}
             >
               <ProgressCircle
+                roadmapId={roadmap._id}
                 coursesIds={coursesIds}
                 completedCoursesIds={completedCoursesIds}
                 setPersentage={setPersentage}
+                userProgress={userProgress}
               />
               <Title>{capitalizeWords(title)}</Title>
             </div>
