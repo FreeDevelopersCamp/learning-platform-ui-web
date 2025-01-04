@@ -78,6 +78,7 @@ function CoursesLayout() {
 
   const { data: userProgress, isLoading: userProgressLoading } =
     useFetchProgressByUserId(user?._id);
+
   const { data: roadmap, isLoading: isLoadingRoadmap } =
     useFetchRoadmapById(roadmapId);
 

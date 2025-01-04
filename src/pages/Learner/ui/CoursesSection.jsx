@@ -1,9 +1,11 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 
 import Progress from './Progress';
+import Spinner from '../../../ui/Spinner';
 
 // Wrapper for the entire section
 const SectionWrapper = styled.div`
@@ -164,7 +166,11 @@ const ContinueButton = styled.button`
   }
 `;
 
-function CoursesSection() {
+function CoursesSection({ userProgress }) {
+  // const navigate = useNavigate();
+  // const courseId = userProgress?.currentCoursesIds[0]?.itemId;
+  // const progress = userProgress?.currentCoursesIds[0]?.progress;
+
   // Dummy course data
   const courses = [
     { title: 'Working with Dates and Times In Python', progress: 54 },
@@ -177,6 +183,7 @@ function CoursesSection() {
     { title: 'Data Science for Business', progress: 16 },
   ];
 
+  console.log('userProgress;', userProgress);
   return (
     <SectionWrapper>
       <Header>

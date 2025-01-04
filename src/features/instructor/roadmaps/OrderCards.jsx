@@ -7,7 +7,7 @@ import { IoIosArrowUp } from 'react-icons/io';
 import { LuClock3 } from 'react-icons/lu';
 import { FaCheck } from 'react-icons/fa';
 
-import { convertDurationMinutesToHours } from '../../../utils/helpers';
+import { formatDuration } from '../../../utils/helpers';
 
 const Card = styled.div`
   width: 100%;
@@ -165,7 +165,7 @@ function OrderCards({ index, orderId, type, name, description, duration, xp }) {
                   marginRight: '5px',
                 }}
               />
-              <p>{convertDurationMinutesToHours(duration)}</p>
+              <Duration>{formatDuration(duration)}zzzzz</Duration>
             </div>
             <div style={{ display: 'flex' }}>
               <FaCheck

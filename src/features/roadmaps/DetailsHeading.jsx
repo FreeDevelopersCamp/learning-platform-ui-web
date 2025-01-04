@@ -98,6 +98,7 @@ function DetailsHeading({
 
   const {
     currentRoadmapsIds = [],
+    currentCoursesIds = [],
     completedRoadmapsIds = [],
     completedCoursesIds = [],
     completedProjectsIds = [],
@@ -105,15 +106,16 @@ function DetailsHeading({
     xp,
   } = userProgress || {};
 
-  const isCurrent = currentRoadmapsIds.includes(roadmap._id);
-  const isCompleted = completedRoadmapsIds.includes(roadmap._id);
+  const isCurrentRoadmap = currentRoadmapsIds.some((entry) => {
+    return entry.itemId?.toString().trim() === roadmap._id?.toString().trim();
+  });
 
   const handleUpdateRoadmap = (roadmapId) => {
     navigate(`/roadmap/${roadmapId}`);
   };
 
   const handleContinueTrack = (roadmapId) => {
-    const topic = order[0].topic;
+    const topic = order[0]?.topic || '';
     navigate(
       `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${roadmapId}`,
     );
@@ -122,18 +124,23 @@ function DetailsHeading({
   const handleRegisterRoadmap = (roadmapId) => {
     const updatedProgress = {
       ...userProgress,
-      currentRoadmapsIds: [...currentRoadmapsIds, roadmapId],
+      currentRoadmapsIds: [
+        ...(userProgress?.currentRoadmapsIds || []),
+        { itemId: roadmapId.toString(), progress: 0 },
+      ],
     };
     updateProgress(updatedProgress);
 
-    const ubdatedData = {
-      _id,
+    const updatedData = {
+      _id: roadmap._id,
       participants: (roadmap.participants || 0) + 1,
     };
-    updateRoadmap(ubdatedData);
+    updateRoadmap(updatedData);
 
     navigate(`/roadmap/${roadmapId}`);
   };
+
+  console.log('isCurrentRoadmap: ', isCurrentRoadmap);
 
   return (
     <>
@@ -144,7 +151,7 @@ function DetailsHeading({
             <Button onClick={() => handleUpdateRoadmap(roadmap._id)}>
               Update Roadmap
             </Button>
-          ) : isCurrent ? (
+          ) : isCurrentRoadmap ? (
             <Button onClick={() => handleContinueTrack(roadmap._id)}>
               Continue Track
             </Button>

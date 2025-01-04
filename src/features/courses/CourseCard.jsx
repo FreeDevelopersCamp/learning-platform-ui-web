@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import { useCount } from '../../contexts/courses/CoursesContext';
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
 
-import { convertDurationMinutesToHours } from '../../utils/helpers';
+import { formatDuration } from '../../utils/helpers';
 import Spinner from '../../ui/Spinner';
+import Progress from '../../ui/Progress';
 
 const Card = styled.div`
   width: 300px;
@@ -114,34 +115,22 @@ const Button = styled.button`
   &:hover {
     background-color: var(--color-grey-300);
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--color-grey-500);
+    background-color: var(--color-grey-100);
+    border: 2px solid var(--color-grey-300);
+  }
 `;
 
-function CourseCard({ courseId, filter }) {
+function CourseCard({ courseId, filter, role, progressStatus }) {
   const navigate = useNavigate();
   const {
     data: course,
     isLoading: isCourseLoading,
     courseError,
   } = useFetchCourseById(courseId);
-  const { incrementCount, decrementCount } = useCount();
-
-  useEffect(() => {
-    if (
-      course &&
-      (filter === 'All' || course.name.toLowerCase() === filter.toLowerCase())
-    ) {
-      incrementCount();
-    }
-
-    return () => {
-      if (
-        course &&
-        (filter === 'All' || course.name.toLowerCase() === filter.toLowerCase())
-      ) {
-        decrementCount();
-      }
-    };
-  }, [course, filter, incrementCount, decrementCount]);
 
   if (isCourseLoading || !course || courseError) return <Spinner />;
 
@@ -149,21 +138,22 @@ function CourseCard({ courseId, filter }) {
     name,
     description,
     duration,
-    exercises = [],
-    level,
-    resources = [],
-    reviews = [],
     instructor: { user },
-    subCourses = [],
-    tips = [],
     topic,
-    xp,
-    rating,
-    status, // 1: short ,,, 0: resourses
   } = course;
 
   const handleViewDetails = () => {
     navigate(`/course/${courseId}`);
+  };
+
+  const handleStart = (e) => {
+    e.stopPropagation();
+    navigate(`/course/${courseId}/start`);
+  };
+
+  const handleContinue = (e) => {
+    e.stopPropagation();
+    navigate(`/course/${courseId}/continue`);
   };
 
   return (
@@ -189,8 +179,30 @@ function CourseCard({ courseId, filter }) {
           </InstructorName>
         </Instructor>
         <Details>
-          <Duration>{convertDurationMinutesToHours(duration)}</Duration>
-          <Button>View Details</Button>
+          {progressStatus === 'completed' ? (
+            <>
+              <Progress percentage={100} />
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleViewDetails();
+                }}
+                disabled
+              >
+                Completed
+              </Button>
+            </>
+          ) : progressStatus === 'inProgress' ? (
+            <>
+              <Progress percentage={50 /* Replace with actual progress */} />
+              <Button onClick={handleContinue}>Continue</Button>
+            </>
+          ) : (
+            <>
+              <Duration>{formatDuration(duration)}</Duration>
+              <Button onClick={handleStart}>Start</Button>
+            </>
+          )}
         </Details>
       </Card>
     )

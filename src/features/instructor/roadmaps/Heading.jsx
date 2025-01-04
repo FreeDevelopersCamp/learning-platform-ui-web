@@ -7,7 +7,7 @@ const Container = styled.div`
   align-items: flex-start;
   width: 100%;
   max-width: 1100px;
-  height: 150px;
+  min-height: 120px;
   font-family: Arial, Helvetica, sans-serif;
   background-color: var(--color-mutedblue-900);
   color: white;

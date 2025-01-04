@@ -2,14 +2,15 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { useOutletContext } from 'react-router-dom';
 
+import { useFetchCourseList } from '../../hooks/courses/useCourse';
 import { useCount } from '../../contexts/courses/CoursesContext';
-import { useInstructorData } from '../../contexts/instructor/InstructorContext';
 
 import Row from '../instructor/roadmaps/Row';
 import Heading from '../instructor/roadmaps/Heading';
 import Filterbar from '../instructor/Filterbar';
 import Total from '../instructor/roadmaps/Total';
 import DashboardLayout from '../instructor/DashboardLayout';
+
 import CourseCard from './CourseCard';
 
 import Spinner from '../../ui/Spinner';
@@ -34,15 +35,14 @@ const StyledDashboardLayout = styled.div`
   }
 `;
 
-function InstructorCourses() {
-  const { session } = useOutletContext();
-  const { instructorData } = useInstructorData();
+function Courses() {
+  const { session, userProgress } = useOutletContext();
   const [filter, setFilter] = useState('All');
   const { count } = useCount();
 
-  const { coursesIds = [] } = instructorData || {};
+  const { data: courses, isLoading: isCoursesLoading } = useFetchCourseList();
 
-  if (!instructorData) return <Spinner />;
+  if (isCoursesLoading || !courses) return <Spinner />;
 
   function handleFilterChange(selectedFilter) {
     setFilter(selectedFilter);
@@ -79,6 +79,21 @@ function InstructorCourses() {
     { value: 'others', label: '+Others' },
   ];
 
+  // Compute progress statuses
+  const computeProgressStatus = (courseId) => {
+    if (userProgress?.completedCoursesIds?.includes(courseId)) {
+      return 'completed';
+    }
+    if (
+      userProgress?.currentCoursesIds?.some(
+        (entry) => entry.itemId === courseId,
+      )
+    ) {
+      return 'inProgress';
+    }
+    return 'notStarted';
+  };
+
   return (
     <Row>
       <Heading title={title} description={description} />
@@ -90,18 +105,23 @@ function InstructorCourses() {
       </Filterbar>
       <DashboardLayout>
         <StyledDashboardLayout>
-          {coursesIds.map((courseId) => (
-            <CourseCard
-              key={courseId}
-              courseId={courseId}
-              filter={filter}
-              role={session.role}
-            />
-          ))}
+          {courses.items.map((course) => {
+            const progressStatus = computeProgressStatus(course._id);
+
+            return (
+              <CourseCard
+                key={course._id}
+                courseId={course._id}
+                filter={filter}
+                role={session.role}
+                progressStatus={progressStatus}
+              />
+            );
+          })}
         </StyledDashboardLayout>
       </DashboardLayout>
     </Row>
   );
 }
 
-export default InstructorCourses;
+export default Courses;

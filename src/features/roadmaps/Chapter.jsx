@@ -99,12 +99,7 @@ const Chapter = ({
   } = useFetchCourseById(courseId);
 
   const navigate = useNavigate();
-  // const [isListOpen, setIsListOpen] = useState(() => {
-  //   const savedState = localStorage.getItem(`chapter-${courseId}`);
-  //   return savedState ? JSON.parse(savedState) : false;
-  // });
   const [isListOpen, setIsListOpen] = useState(false);
-
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -121,11 +116,6 @@ const Chapter = ({
       setProgress(calculatedProgress);
     }
   }, [course, completedCoursesIds, isCourseLoading]);
-
-  // Save the state to localStorage when toggled
-  // useEffect(() => {
-  //   localStorage.setItem(`chapter-${courseId}`, JSON.stringify(isListOpen));
-  // }, [isListOpen, courseId]);
 
   if (isCourseLoading || !course || error) return null;
 

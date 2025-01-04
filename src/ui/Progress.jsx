@@ -6,6 +6,7 @@ const ProgressBarContainer = styled.div`
   align-items: flex-start;
   justify-content: center;
   width: 100%;
+
   padding: 0px;
   gap: 5px;
   border-radius: 5px;
@@ -15,7 +16,7 @@ const ProgressBarContainer = styled.div`
 
 const BarContainer = styled.div`
   display: flex;
-  width: 30%;
+  width: 50%;
   background-color: var(--color-grey-300);
   height: 7px;
   border-radius: 5px;

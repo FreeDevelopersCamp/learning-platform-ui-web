@@ -3,7 +3,6 @@ import styled from 'styled-components';
 const TotalStyle = styled.div`
   padding: 0 0 15px;
   font-size: 1.5rem;
-  margin-bottom: 5rem;
 `;
 
 function Total({ filter, count }) {

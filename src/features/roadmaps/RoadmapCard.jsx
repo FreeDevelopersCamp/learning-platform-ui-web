@@ -65,26 +65,6 @@ const Count = styled.div`
   font-size: 1.5rem;
 `;
 
-const ViewAccomplishment = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.6em;
-  width: 100%;
-  height: 40px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: var(--color-grey-800);
-  background-color: var(--color-grey-50);
-  border: 2px solid var(--color-grey-500);
-
-  &:hover {
-    background-color: var(--color-grey-300);
-  }
-`;
-
 const Continue = styled.button`
   width: 110px;
   height: 40px;
@@ -121,30 +101,77 @@ function RoadmapCard({ userProgress, roadmap }) {
 
   const { _id, description, coursesIds = [], topic, order = [] } = roadmap;
 
-  const {
-    currentRoadmapsIds = [],
-    completedCoursesIds = [],
-    progress,
-  } = userProgress || {};
+  const { currentRoadmapsIds = [], completedCoursesIds = [] } =
+    userProgress || {};
 
-  const isCurrent = currentRoadmapsIds.includes(_id);
+  const isCurrent = currentRoadmapsIds.some((entry) => {
+    return entry.itemId?.toString().trim() === _id?.toString().trim();
+  });
 
-  const handleContinue = () => {
-    // Find the first incomplete course
-    const nextCourse = order.find(
-      (course) => !completedCoursesIds.includes(course._id),
-    );
+  const progress =
+    currentRoadmapsIds.find((entry) => {
+      return entry.itemId?.toString().trim() === _id?.toString().trim();
+    })?.progress || 0;
 
-    if (nextCourse) {
-      const courseTitle = nextCourse.name
+  const handleContinue = (e) => {
+    e.stopPropagation();
+
+    // Recursive function to find the course in nested structures
+    const findCourseInNestedStructure = (courses, courseId) => {
+      for (const course of courses) {
+        if (course._id === courseId) return course; // Found the course
+
+        // Check in subcourses if they exist
+        if (course.subCourses && course.subCourses.length > 0) {
+          const foundInSub = findCourseInNestedStructure(
+            course.subCourses,
+            courseId,
+          );
+          if (foundInSub) return foundInSub;
+        }
+      }
+      return null;
+    };
+
+    if (completedCoursesIds.length > 0) {
+      const lastCompletedCourseId =
+        completedCoursesIds[completedCoursesIds.length - 1];
+
+      // Use the recursive function to find the course
+      const lastCompletedCourse = findCourseInNestedStructure(
+        order,
+        lastCompletedCourseId,
+      );
+
+      if (lastCompletedCourse) {
+        const courseTitle = lastCompletedCourse.name
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-');
+
+        // Navigate to the last completed course
+        navigate(
+          `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}/${courseTitle}/${lastCompletedCourse._id}`,
+        );
+        return;
+      }
+    }
+
+    // Fallback: Navigate to the first course if no completed course found
+    if (order.length > 0) {
+      const firstCourse = order[0];
+      const courseTitle = firstCourse.name
         .toLowerCase()
         .replace(/[^a-z0-9\s]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-');
+
       navigate(
-        `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}/${courseTitle}/${nextCourse._id}`,
+        `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}/${courseTitle}/${firstCourse._id}`,
       );
     } else {
+      // Navigate to the roadmap overview if no courses exist
       navigate(`/roadmap/${_id}`);
     }
   };
@@ -154,7 +181,7 @@ function RoadmapCard({ userProgress, roadmap }) {
   };
 
   return (
-    <Card>
+    <Card onClick={handleViewDetails}>
       <Type>ROADMAP</Type>
       <Topic>{topic || 'Roadmap Topic'}</Topic>
       <Description>{description || 'No description available.'}</Description>
