@@ -63,10 +63,13 @@ const AuthForm = () => {
 
       <div className="auth-container">
         <AuthTabs isSignUp={isSignUp} toggleForm={toggleForm} />
+
         <form className="auth-card" onSubmit={handleSubmit}>
           <AuthTitle isSignUp={isSignUp} />
           {/* <ErrorMessage error={error} /> */}
+
           <AuthButtonGroup isSignUp={isSignUp} />
+
           <SeparatorLine text={'or'} />
 
           {/* Username Input */}
