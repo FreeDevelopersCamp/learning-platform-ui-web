@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useFetchCourseById } from '../../hooks/courses/useCourse';
+import { useFetchProjectById } from '../../hooks/projects/useProject';
 
 import Row from '../instructor/roadmaps/Row';
 import DetailsHeading from './DetailsHeading';
@@ -14,6 +14,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 
 import Spinner from '../../ui/Spinner';
 
+// Styled Components
 const Container = styled.div`
   display: grid;
   grid-template-columns: 3.5fr 1fr;
@@ -45,7 +46,7 @@ const Description = styled.div`
   margin-bottom: 1rem;
 `;
 
-const AboutCourse = styled.div`
+const AboutProject = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -75,24 +76,24 @@ const InstructorsSetContainer = styled(Section)`
   overflow: hidden;
 `;
 
-function ViewRoadmapDetails() {
+function ViewProjectDetails() {
   const { id } = useParams();
   const {
-    data: course,
-    isLoading: isCourseLoading,
-    courseError,
-  } = useFetchCourseById(id);
+    data: project,
+    isLoading: isProjectLoading,
+    projectError,
+  } = useFetchProjectById(id);
   const { session, userProgress } = useOutletContext();
 
-  if (isCourseLoading || !course || courseError) return <Spinner />;
+  if (isProjectLoading || !project || projectError) return <Spinner />;
 
-  const { description, subCourses = [], instructor } = course;
+  const { description, tasks = [], prerequisites = [], instructor } = project;
 
   return (
     <Row>
       <DetailsHeading
-        course={course}
-        title={course.name}
+        project={project}
+        title={project.name}
         userProgress={userProgress}
         role={session.role}
       />
@@ -100,48 +101,57 @@ function ViewRoadmapDetails() {
         <OrderCardsContainer>
           <Title>Description</Title>
           <Description>{description}</Description>
-          {subCourses.map((course1, index) => (
+          {tasks.map((task, index) => (
             <OrderCard
               key={index}
               index={index + 1}
-              course={course1}
-              title={course.name}
+              task={task}
               role={session.role}
               userProgress={userProgress}
             />
           ))}
         </OrderCardsContainer>
 
-        <AboutCourse>
+        <AboutProject>
           <Prerequisites>
             <span style={{ display: 'flex', gap: '7px' }}>
               <LuGraduationCap style={{ fontSize: '2.2rem' }} /> Prerequisites
             </span>
-            <span style={{ display: 'flex', gap: '7px' }}>
-              <FaCheckCircle
-                style={{
-                  fontSize: '2rem',
-                  marginLeft: '2px',
-                  color: '  var(--color-light-green-500)',
-                }}
-              />
-              <p style={{ fontWeight: '400', fontSize: '1.3rem' }}>
+            {prerequisites.length > 0 ? (
+              prerequisites.map((prerequisite, i) => (
+                <span
+                  key={i}
+                  style={{
+                    display: 'flex',
+                    gap: '7px',
+                    fontWeight: '400',
+                    fontSize: '1.3rem',
+                  }}
+                >
+                  <FaCheckCircle
+                    style={{
+                      fontSize: '2rem',
+                      marginLeft: '2px',
+                      color: 'var(--color-light-green-500)',
+                    }}
+                  />
+                  {prerequisite}
+                </span>
+              ))
+            ) : (
+              <span style={{ fontWeight: '400', fontSize: '1.3rem' }}>
                 There are no prerequisites
-              </p>
-            </span>
+              </span>
+            )}
           </Prerequisites>
-          {/* <Resourses>
-            <span style={{ display: 'flex', gap: '7px' }}>
-              <HiMenuAlt1 style={{ fontSize: '2.2rem' }} /> Resources
-            </span>
-          </Resourses> */}
+
           <InstructorsSetContainer>
             <InstructorsSet instructor={instructor} />
           </InstructorsSetContainer>
-        </AboutCourse>
+        </AboutProject>
       </Container>
     </Row>
   );
 }
 
-export default ViewRoadmapDetails;
+export default ViewProjectDetails;

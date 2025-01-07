@@ -6,7 +6,7 @@ import ProgressCircle from './ProgressCircle';
 
 import { capitalizeWords } from '../../utils/helpers';
 import { IoClose } from 'react-icons/io5';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const StyledSidebar = styled.aside`
   position: fixed;
@@ -74,30 +74,31 @@ function CoursesSidebar({
   isActive = true,
 }) {
   const { title } = useParams();
-  const { coursesIds = [], projectsIds = [], order = [] } = roadmap;
+  const { coursesIds = [], projectsIds = [] } = roadmap;
   const { completedCoursesIds = [] } = userProgress || {};
-  const [processedOrder, setProcessedOrder] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [project, setProject] = useState();
 
   const handleToggleSidebar = () => {
     toggleSidebar();
   };
 
-  // Process the order in useEffect
-  useEffect(() => {
-    const combinedOrder = order
-      .map((item) => {
-        if (projectsIds.includes(item._id)) {
-          return { ...item, type: 'project' };
-        }
-        if (coursesIds.includes(item._id)) {
-          return { ...item, type: 'course' };
-        }
-        return null; // Skip unknown types
-      })
-      .filter(Boolean); // Remove null values
+  const nextItemIsProject = (order, currentId) => {
+    if (currentIndex >= order.length) return;
 
-    setProcessedOrder(combinedOrder);
-  }, [order, coursesIds, projectsIds]);
+    if (order[currentIndex]._id === currentId) {
+      for (let i = 1; i + currentIndex < order.length; i++) {
+        if (coursesIds.includes(order[currentIndex + i]._id)) break;
+
+        if (projectsIds.includes(order[currentIndex + i]._id)) {
+          setProject(order[currentIndex + i]);
+          setCurrentIndex(currentIndex + i);
+          return order[currentIndex + i];
+        }
+      }
+    }
+    setCurrentIndex(currentIndex + 1);
+  };
 
   return (
     <StyledSidebar isOpen={isOpen}>
@@ -126,34 +127,23 @@ function CoursesSidebar({
             </Button>
           </Header>
           <List>
-            {(() => {
-              let courseIndex = 0; // Initialize a counter for courses
-              return processedOrder.map((item, index) => {
-                if (item.type === 'project') {
-                  return null; // Skip rendering for projects directly
-                }
+            {roadmap.coursesIds.map((courseId, index) => {
+              const nextProject = nextItemIsProject(roadmap.order, courseId);
 
-                courseIndex++; // Increment the course index for each course
-
-                const nextProject =
-                  processedOrder[index + 1]?.type === 'project'
-                    ? processedOrder[index + 1]
-                    : null;
-
-                return (
-                  <Chapter
-                    key={index}
-                    index={courseIndex}
-                    courseId={item._id}
-                    project={nextProject}
-                    completedCoursesIds={completedCoursesIds}
-                    roadmapId={roadmap._id}
-                    topic={roadmap.topic}
-                    isActive={isActive}
-                  />
-                );
-              });
-            })()}
+              console.log('nextProject:', nextProject);
+              return (
+                <Chapter
+                  key={index}
+                  index={index + 1}
+                  courseId={courseId}
+                  completedCoursesIds={completedCoursesIds}
+                  roadmapId={roadmap._id}
+                  topic={roadmap.topic}
+                  project={nextProject}
+                  isActive={isActive}
+                />
+              );
+            })}
           </List>
         </>
       )}

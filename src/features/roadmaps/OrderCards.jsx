@@ -65,6 +65,7 @@ const Order = styled.div`
   border-radius: 50%;
   color: var(--color-grey-100);
   background-color: var(--color-mutedblue-800);
+  padding-right: 1px;
 `;
 
 const Status = styled.div`
@@ -199,7 +200,7 @@ function OrderCards({
                   marginRight: '5px',
                 }}
               />
-              <p>{formatDuration(duration)}</p>
+              <p>{duration && formatDuration(duration)}</p>
             </div>
             <div style={{ display: 'flex' }}>
               <FaCheck

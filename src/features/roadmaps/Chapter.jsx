@@ -6,6 +6,7 @@ import { useFetchCourseById } from '../../hooks/courses/useCourse';
 
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 import { FaCheck } from 'react-icons/fa';
+import { IoRocketSharp } from 'react-icons/io5';
 
 const Container = styled.div`
   width: 100%;
@@ -91,6 +92,7 @@ const Chapter = ({
   completedCoursesIds,
   roadmapId,
   topic,
+  project,
 }) => {
   const {
     data: course,
@@ -117,11 +119,7 @@ const Chapter = ({
     }
   }, [course, completedCoursesIds, isCourseLoading]);
 
-  if (isCourseLoading || !course || error) return null;
-
-  const toggleList = () => {
-    setIsListOpen((prev) => !prev);
-  };
+  const toggleList = () => setIsListOpen((prev) => !prev);
 
   const navigateToCourse = (id, name) => {
     const courseTitle = name
@@ -132,15 +130,31 @@ const Chapter = ({
     navigate(`/courses/${topic}/${roadmapId}/${courseTitle}/${id}`);
   };
 
+  const navigateToProject = () => {
+    if (!project) return;
+    const projectTitle = project.title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+    navigate(`/courses/${topic}/${roadmapId}/${projectTitle}/${project._id}`);
+  };
+
+  if (isCourseLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading course data</p>;
+  if (!course) return null;
+
   return (
     <Container>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <ProgressContainer progress={progress}>
-          <ProgressText progress={progress}>
+          <ProgressText>
             {progress > 0 ? (
               `${progress}%`
             ) : (
-              <span style={{ fontSize: '1.2rem' }}>{index}</span>
+              <span style={{ fontSize: '1.2rem', marginTop: '.2px' }}>
+                {index}
+              </span>
             )}
           </ProgressText>
         </ProgressContainer>
@@ -154,35 +168,48 @@ const Chapter = ({
       {isListOpen && (
         <List>
           {course.subCourses?.length > 0 ? (
-            course.subCourses.map((subCourse, index1) => {
-              const isSubCourseCompleted = completedCoursesIds.includes(
-                subCourse._id,
-              );
-              return (
-                <SubCourseItem
-                  key={index1}
-                  onClick={() =>
-                    navigateToCourse(subCourse._id, subCourse.name)
-                  }
-                >
-                  <span style={{ marginRight: '7px' }}>
-                    {isSubCourseCompleted ? (
-                      <FaCheck
-                        style={{
-                          color: 'var(--color-yellow-green-800)',
-                          marginTop: '2px',
-                        }}
-                      />
-                    ) : (
-                      `${index}.${index1 + 1}`
-                    )}
-                  </span>
-                  {subCourse.name}
-                </SubCourseItem>
-              );
-            })
+            course.subCourses.map((subCourse, subIndex) => (
+              <SubCourseItem
+                key={subCourse._id}
+                onClick={() => navigateToCourse(subCourse._id, subCourse.name)}
+              >
+                <span style={{ marginRight: '7px' }}>
+                  {completedCoursesIds.includes(subCourse._id) ? (
+                    <FaCheck
+                      style={{
+                        color: 'var(--color-yellow-green-800)',
+                        marginTop: '2px',
+                      }}
+                    />
+                  ) : (
+                    `${index}.${subIndex + 1}`
+                  )}
+                </span>
+                {subCourse.name}
+              </SubCourseItem>
+            ))
           ) : (
-            <p>No subcourses available.</p>
+            <p></p>
+          )}
+          {project && (
+            <SubCourseItem
+              onClick={navigateToProject}
+              style={{ marginTop: '1rem', fontWeight: 'bold' }}
+            >
+              <span
+                style={{
+                  display: 'flex',
+                  marginRight: '7px',
+                  color: 'var(--color-blue-600)',
+                  gap: '3px',
+                  fontSize: '1.2rem',
+                }}
+              >
+                <IoRocketSharp style={{ marginTop: '3px' }} />
+                {`Project:`}
+              </span>
+              {project.title}
+            </SubCourseItem>
           )}
         </List>
       )}

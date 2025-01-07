@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useCount } from '../../../contexts/projects/ProjectsContext';
-import { useProject } from '../../../hooks/projects/useProject';
+import { useFetchProjectById } from '../../../hooks/projects/useProject';
 
 import { FaCheck } from 'react-icons/fa';
 import Spinner from '..//../../ui/Spinner';
@@ -117,7 +117,8 @@ const Button = styled.button`
 
 function ProjectCard({ projectId, filter }) {
   const navigate = useNavigate();
-  const { project, projectLoading, projectError } = useProject(projectId);
+  const { project, projectLoading, projectError } =
+    useFetchProjectById(projectId);
   const { incrementCount, decrementCount } = useCount();
 
   useEffect(() => {

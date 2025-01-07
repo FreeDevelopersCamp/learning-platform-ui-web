@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useCount } from '../../../contexts/projects/ProjectsContext';
-import { useInstructorData } from '../../../contexts/instructor/InstructorContext';
+import { useOutletContext } from 'react-router-dom';
+
+import { useCount } from '../../contexts/projects/ProjectsContext';
+import { useInstructorData } from '../../contexts/instructor/InstructorContext';
 
 import Row from './Row';
 import Heading from './Heading';
-import Filterbar from '../../instructor/Filterbar';
+import Filterbar from './Filterbar';
 import Total from '../roadmaps/Total';
-import DashboardLayout from '../../instructor/DashboardLayout';
-import ProjectCard from '../../projects/ProjectCard';
+import DashboardLayout from './DashboardLayout';
+import ProjectCard from './ProjectCard';
 
-import Spinner from '../../../ui/Spinner';
-import { useOutletContext } from 'react-router-dom';
+import Spinner from '../../ui/Spinner';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -32,15 +33,30 @@ const StyledDashboardLayout = styled.div`
   }
 `;
 
-function InstructorProjects() {
+function Projects() {
   const [filter, setFilter] = useState('all');
   const { count } = useCount();
   const { instructorData } = useInstructorData();
-  const { session } = useOutletContext();
+  const { session, userProgress } = useOutletContext();
 
   const { projectsIds = [] } = instructorData || {};
 
   if (!instructorData) return <Spinner />;
+
+  // Function to compute the project status
+  const computeProjectStatus = (projectId) => {
+    if (userProgress?.completedProjectsIds?.includes(projectId)) {
+      return 'completed';
+    }
+    if (
+      userProgress?.currentProjectsIds?.some(
+        (entry) => entry.itemId === projectId,
+      )
+    ) {
+      return 'inProgress';
+    }
+    return 'notStarted';
+  };
 
   function handleFilterChange(selectedFilter) {
     setFilter(selectedFilter);
@@ -76,18 +92,23 @@ function InstructorProjects() {
       </Filterbar>
       <DashboardLayout>
         <StyledDashboardLayout>
-          {projectsIds.map((projectId) => (
-            <ProjectCard
-              key={projectId}
-              projectId={projectId}
-              filter={filter}
-              role={session.role}
-            />
-          ))}
+          {projectsIds.map((projectId) => {
+            const projectStatus = computeProjectStatus(projectId);
+
+            return (
+              <ProjectCard
+                key={projectId}
+                projectId={projectId}
+                filter={filter}
+                role={session.role}
+                projectStatus={projectStatus}
+              />
+            );
+          })}
         </StyledDashboardLayout>
       </DashboardLayout>
     </Row>
   );
 }
 
-export default InstructorProjects;
+export default Projects;

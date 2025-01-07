@@ -1,19 +1,7 @@
 import { ContentType, HttpClient } from '../../apis/http-client';
+import { getDefaultHeaders } from '../../utils/headers.js';
 
 export default class Project extends HttpClient {
-  private static project: Project;
-
-  private constructor() {
-    super(); // Call the parent class constructor
-  }
-
-  public static getProject(): Project {
-    if (!Project.project) {
-      Project.project = new Project();
-    }
-    return Project.project;
-  }
-
   /**
    * Fetch a list of projects with optional pagination.
    *
@@ -28,6 +16,7 @@ export default class Project extends HttpClient {
       path: `/project`,
       method: 'GET',
       secure: true,
+      headers: getDefaultHeaders(),
       ...params,
     });
   }
@@ -41,11 +30,12 @@ export default class Project extends HttpClient {
    * @secure
    * @response `default` List of Projects
    */
-  listByInstructor(id: string, params = {}) {
+  listByInstructor(instructorId: string, params = {}) {
     return this.request({
-      path: `/project/projectByInstructor/${id}`,
+      path: `/project/projectByInstructor/${instructorId}`,
       method: 'GET',
       secure: true,
+      headers: getDefaultHeaders(),
       ...params,
     });
   }
@@ -59,11 +49,12 @@ export default class Project extends HttpClient {
    * @secure
    * @response `default` Project information
    */
-  getById(id: string, params = {}) {
+  getById(projectId: string, params = {}) {
     return this.request({
-      path: `/project/${id}`,
+      path: `/project/${projectId}`,
       method: 'GET',
       secure: true,
+      headers: getDefaultHeaders(),
       ...params,
     });
   }
@@ -84,6 +75,7 @@ export default class Project extends HttpClient {
       body: data,
       secure: true,
       type: ContentType.Json,
+      headers: getDefaultHeaders(),
       ...params,
     });
   }
@@ -104,6 +96,7 @@ export default class Project extends HttpClient {
       body: data,
       secure: true,
       type: ContentType.Json,
+      headers: getDefaultHeaders(),
       ...params,
     });
   }
@@ -117,11 +110,12 @@ export default class Project extends HttpClient {
    * @secure
    * @response `default` Deleted result
    */
-  delete(id: string, params = {}) {
+  delete(projectId: string, params = {}) {
     return this.request({
-      path: `/project/${id}`,
+      path: `/project/${projectId}`,
       method: 'DELETE',
       secure: true,
+      headers: getDefaultHeaders(),
       ...params,
     });
   }
