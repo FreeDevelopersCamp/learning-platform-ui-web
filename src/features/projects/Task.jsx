@@ -50,16 +50,16 @@ const XP = styled.span`
   color: #6c757d;
 `;
 
-function Chapter({ course, title, index, role }) {
+function Task({ task, projectTitle, index, role }) {
   const navigate = useNavigate();
 
-  const { _id, name, xp } = course;
+  const { _id, name, xp } = task;
 
   const handleButtonClick = () => {
     navigate(
-      `/course/${title.toLowerCase()}/${name
+      `/project/${projectTitle.toLowerCase()}/${name
         .toLowerCase()
-        .replace(/\s+/g, '-')}/?ex=${index}`,
+        .replace(/\s+/g, '-')}/?task=${index}`,
     );
   };
 
@@ -88,4 +88,4 @@ function Chapter({ course, title, index, role }) {
   );
 }
 
-export default Chapter;
+export default Task;

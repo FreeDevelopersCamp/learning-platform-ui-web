@@ -48,6 +48,10 @@ import ViewCourseOutline from './features/roadmaps/ViewCourseOutline';
 import InstructorCourses from './features/courses/InstructorCourses';
 import Courses from './features/courses/Courses';
 import ViewCourseDetails from './features/courses/ViewCourseDetails';
+import ViewOneCourseOutline from './features/courses/ViewOneCourseOutline';
+
+import Projects from './features/projects/Projects';
+import ViewProjectDetails from './features/projects/ViewProjectDetails';
 
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
@@ -418,26 +422,18 @@ function App() {
                             }
                           />
                           <Route
-                            path="learner/practices"
+                            path="learner/projects"
                             element={
                               <ProtectedRoute role="6">
-                                <LearnerPage />
+                                <Projects />
                               </ProtectedRoute>
                             }
                           />
                           <Route
-                            path="learner/assessments"
+                            path="/project/:id"
                             element={
-                              <ProtectedRoute role="6">
-                                <LearnerPage />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="learner/tutorials"
-                            element={
-                              <ProtectedRoute role="6">
-                                <LearnerPage />
+                              <ProtectedRoute role="all">
+                                <ViewProjectDetails />
                               </ProtectedRoute>
                             }
                           />
@@ -462,6 +458,14 @@ function App() {
                           element={
                             <ProtectedRoute role="all">
                               <ViewCourseOutline />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/course/:name/:courseId"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ViewOneCourseOutline />
                             </ProtectedRoute>
                           }
                         />

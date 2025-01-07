@@ -8,6 +8,7 @@ import { useFetchProjectById } from '../../hooks/projects/useProject';
 import { FaCheck } from 'react-icons/fa';
 import Spinner from '../../ui/Spinner';
 
+// Styled Components
 const Card = styled.div`
   width: 300px;
   background-color: white;
@@ -82,12 +83,6 @@ const Prerequisites = styled.div`
   color: #6c757d;
 `;
 
-const Status = styled.span`
-  font-size: 12px;
-  color: ${(props) => (props.status === '0' ? 'red' : 'green')};
-  font-weight: bold;
-`;
-
 const XP = styled.span`
   font-size: 12px;
   color: #6c757d;
@@ -106,19 +101,29 @@ const Button = styled.button`
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  color: #001b38;
-  background-color: #f9f9f9;
-  border: 2px solid #003366;
+  color: ${(props) => props.color || '#001b38'};
+  background-color: ${(props) => props.bgColor || '#f9f9f9'};
+  border: 2px solid ${(props) => props.borderColor || '#003366'};
 
   &:hover {
     background-color: var(--color-grey-300);
   }
+
+  &:disabled {
+    background-color: #eaeaea;
+    color: #aaa;
+    cursor: not-allowed;
+  }
 `;
 
-function ProjectCard({ projectId, filter }) {
+// Unified ProjectCard Component
+function ProjectCard({ projectId, filter, role, projectStatus }) {
   const navigate = useNavigate();
-  const { project, projectLoading, projectError } =
-    useFetchProjectById(projectId);
+  const {
+    data: project,
+    isLoading: projectLoading,
+    error: projectError,
+  } = useFetchProjectById(projectId);
   const { incrementCount, decrementCount } = useCount();
 
   useEffect(() => {
@@ -146,25 +151,70 @@ function ProjectCard({ projectId, filter }) {
 
   const {
     name,
-    title,
     description,
     prerequisites,
-    status,
     category,
     topic,
     xp,
     participants,
   } = project;
 
-  const handleViewDetails = (projectId) => {
+  const handleViewDetails = () => {
     navigate(`/project/${projectId}`);
+  };
+
+  const renderButton = () => {
+    if (role === '5') {
+      return <Button onClick={handleViewDetails}>View Details</Button>;
+    }
+
+    if (role === '6') {
+      if (projectStatus === 'completed') {
+        return (
+          <Button
+            disabled
+            bgColor="#e0ffe0"
+            color="#007700"
+            borderColor="#00aa00"
+          >
+            Completed
+          </Button>
+        );
+      }
+
+      if (projectStatus === 'inProgress') {
+        return (
+          <Button
+            onClick={handleViewDetails}
+            bgColor="#fffbcc"
+            color="#aa8800"
+            borderColor="#aa8800"
+          >
+            Continue
+          </Button>
+        );
+      }
+
+      return (
+        <Button
+          onClick={handleViewDetails}
+          bgColor="#cce5ff"
+          color="#0056b3"
+          borderColor="#0056b3"
+        >
+          Start
+        </Button>
+      );
+    }
+
+    return null;
   };
 
   return (
     (filter === 'all' ||
       project?.topic?.toLowerCase().replace(/\s+/g, '-') ===
         filter?.toLowerCase()) && (
-      <Card>
+      <Card onClick={handleViewDetails}>
         <Content>
           <Header>
             <Subtitle>Project</Subtitle>
@@ -185,16 +235,9 @@ function ProjectCard({ projectId, filter }) {
             <XP>
               <strong>XP:</strong> {xp}
             </XP>
-            <FaCheck
-              style={{
-                color: '#0fd15d',
-                marginLeft: '5px',
-              }}
-            />
+            <FaCheck style={{ color: '#0fd15d', marginLeft: '5px' }} />
           </div>
-          <Button onClick={() => handleViewDetails(projectId)}>
-            View Details
-          </Button>
+          {renderButton()}
         </Details>
       </Card>
     )

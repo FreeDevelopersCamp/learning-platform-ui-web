@@ -123,12 +123,6 @@ function MainNav({ isOpen, role, onMenuSelect }) {
         label: 'Projects',
       },
       {
-        id: 'practices',
-        path: '/instructor/practices',
-        icon: <BiTask />,
-        label: 'Practices',
-      },
-      {
         id: 'learner',
         path: '/instructor/learner',
         icon: <HiOutlineUsers />,
@@ -190,18 +184,6 @@ function MainNav({ isOpen, role, onMenuSelect }) {
         path: '/learner/courses',
         icon: <TipsAndUpdatesIcon />,
         label: 'Courses',
-      },
-      {
-        id: 'practices',
-        path: '/learner/practices',
-        icon: <FitnessCenterIcon />,
-        label: 'Practices',
-      },
-      {
-        id: 'assessments',
-        path: '/learner/assessments',
-        icon: <MdOutlineAssessment />,
-        label: 'Assessments',
       },
       {
         id: 'projects',

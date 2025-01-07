@@ -3,8 +3,10 @@ import { useParams } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useFetchRoadmapById } from '../../hooks/roadmaps/useRoadmap';
-import { useUpdateRoadmap } from '../../hooks/roadmaps/useRoadmap';
+import {
+  useFetchRoadmapById,
+  useUpdateRoadmap,
+} from '../../hooks/roadmaps/useRoadmap';
 import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
 import Row from './Row';
@@ -60,7 +62,7 @@ const InstructorsSetContainer = styled.div`
 function ViewRoadmapDetails() {
   const [percentage, setPercentage] = useState(0);
 
-  const { session, user, userProgress } = useOutletContext();
+  const { session, userProgress } = useOutletContext();
   const { id } = useParams();
 
   const {
@@ -68,13 +70,14 @@ function ViewRoadmapDetails() {
     isLoading: isLoadingRoadmap,
     error: errorRoadmap,
   } = useFetchRoadmapById(id);
-  const { mutate: updateRoadmap } = useUpdateRoadmap();
 
+  const { mutate: updateRoadmap } = useUpdateRoadmap();
   const { mutate: updateProgress, isLoading: updatingProgress } =
     useUpdateProgress();
 
-  if (isLoadingRoadmap || !roadmap || errorRoadmap || updatingProgress)
+  if (isLoadingRoadmap || !roadmap || errorRoadmap || updatingProgress) {
     return <Spinner />;
+  }
 
   const {
     description,
@@ -86,51 +89,24 @@ function ViewRoadmapDetails() {
     instructor,
   } = roadmap;
 
-  const orderCards = [];
+  const orderCards = order
+    .filter((item) => item && !practicesIds.includes(item._id)) // Skip practices
+    .map((item) => {
+      const type = coursesIds.includes(item._id)
+        ? 'course'
+        : projectsIds.includes(item._id)
+          ? 'project'
+          : 'participant';
 
-  order.forEach((item) => {
-    if (!item || !item._id) {
-      return;
-    }
-
-    if (coursesIds.includes(item._id)) {
-      orderCards.push({
+      return {
         id: item._id,
-        type: 'course',
+        type,
         name: item.name,
         description: item.description,
         duration: item.duration,
         xp: item.xp,
-      });
-    } else if (projectsIds.includes(item._id)) {
-      orderCards.push({
-        id: item._id,
-        type: 'project',
-        name: item.name,
-        description: item.description,
-        duration: item.duration,
-        xp: item.xp,
-      });
-    } else if (practicesIds.includes(item._id)) {
-      orderCards.push({
-        id: item._id,
-        type: 'practice',
-        name: item.name,
-        description: item.description,
-        duration: item.duration,
-        xp: item.xp,
-      });
-    } else if (participants === item._id) {
-      orderCards.push({
-        id: item._id,
-        type: 'participant',
-        name: item.name,
-        description: item.description,
-        duration: item.duration,
-        xp: item.xp,
-      });
-    }
-  });
+      };
+    });
 
   return (
     <Row>

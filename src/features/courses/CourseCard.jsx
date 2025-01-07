@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useCount } from '../../contexts/courses/CoursesContext';
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
 
 import { formatDuration } from '../../utils/helpers';
@@ -108,9 +107,9 @@ const Button = styled.button`
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  color: #001b38;
-  background-color: #f9f9f9;
-  border: 2px solid #003366;
+  color: ${(props) => props.color || '#001b38'};
+  background-color: ${(props) => props.bgColor || '#f9f9f9'};
+  border: 2px solid ${(props) => props.borderColor || '#003366'};
 
   &:hover {
     background-color: var(--color-grey-300);
@@ -126,13 +125,9 @@ const Button = styled.button`
 
 function CourseCard({ courseId, filter, role, progressStatus }) {
   const navigate = useNavigate();
-  const {
-    data: course,
-    isLoading: isCourseLoading,
-    courseError,
-  } = useFetchCourseById(courseId);
+  const { data: course, isLoading, error } = useFetchCourseById(courseId);
 
-  if (isCourseLoading || !course || courseError) return <Spinner />;
+  if (isLoading || !course || error) return <Spinner />;
 
   const {
     name,
@@ -146,14 +141,57 @@ function CourseCard({ courseId, filter, role, progressStatus }) {
     navigate(`/course/${courseId}`);
   };
 
-  const handleStart = (e) => {
-    e.stopPropagation();
-    navigate(`/course/${courseId}/start`);
-  };
+  const renderButton = () => {
+    if (role === '5') {
+      return <Button onClick={handleViewDetails}>View Details</Button>;
+    }
 
-  const handleContinue = (e) => {
-    e.stopPropagation();
-    navigate(`/course/${courseId}/continue`);
+    if (role === '6') {
+      if (progressStatus === 'completed') {
+        return (
+          <Button
+            disabled
+            bgColor="#e0ffe0"
+            color="#007700"
+            borderColor="#00aa00"
+          >
+            Completed
+          </Button>
+        );
+      }
+
+      if (progressStatus === 'inProgress') {
+        return (
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/course/${courseId}/continue`);
+            }}
+            bgColor="#fffbcc"
+            color="#aa8800"
+            borderColor="#aa8800"
+          >
+            Continue
+          </Button>
+        );
+      }
+
+      return (
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/course/${courseId}/start`);
+          }}
+          bgColor="#cce5ff"
+          color="#0056b3"
+          borderColor="#0056b3"
+        >
+          Start
+        </Button>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -179,30 +217,8 @@ function CourseCard({ courseId, filter, role, progressStatus }) {
           </InstructorName>
         </Instructor>
         <Details>
-          {progressStatus === 'completed' ? (
-            <>
-              <Progress percentage={100} />
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleViewDetails();
-                }}
-                disabled
-              >
-                Completed
-              </Button>
-            </>
-          ) : progressStatus === 'inProgress' ? (
-            <>
-              <Progress percentage={50 /* Replace with actual progress */} />
-              <Button onClick={handleContinue}>Continue</Button>
-            </>
-          ) : (
-            <>
-              <Duration>{formatDuration(duration)}</Duration>
-              <Button onClick={handleStart}>Start</Button>
-            </>
-          )}
+          <Duration>{formatDuration(duration)}</Duration>
+          {renderButton()}
         </Details>
       </Card>
     )

@@ -182,10 +182,9 @@ function ViewCourseOutline() {
     //     spentTime: (userProgress.spentTime || 0) + (course.duration || 0),
     //     xp: (userProgress.xp || 0) + (course.xp || 0),
     //   };
-
     //   updateProgress(updatedProgress);
     // }
-    console.log('saveProject: ', project);
+    // console.log('saveProject: ', project);
   };
 
   const updatePath = (item) => {
@@ -230,17 +229,35 @@ function ViewCourseOutline() {
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
-      const prevIndex = currentIndex - 1;
-      const prevItem = flatStructure[prevIndex];
-      setCurrentIndex(prevIndex);
-      updatePath(prevItem);
+      let prevIndex = currentIndex - 1;
+
+      // Navigate to the previous non-practice item
+      while (
+        prevIndex >= 0 &&
+        practicesIds.includes(flatStructure[prevIndex]?.id)
+      ) {
+        prevIndex -= 1; // Skip practice items
+      }
+
+      if (prevIndex >= 0) {
+        const prevItem = flatStructure[prevIndex];
+
+        if (projectsIds.includes(prevItem.id)) {
+          // If the previous item is a project, update state and navigate
+          setCurrentIndex(prevIndex);
+          updatePath(prevItem);
+        } else {
+          // Handle as a course
+          setCurrentIndex(prevIndex);
+          updatePath(prevItem);
+        }
+      }
     }
   };
 
   const currentItem = flatStructure[currentIndex];
 
   if (updatingProgress || flatStructure.length === 0) return <Spinner />;
-
   return (
     <Container>
       {currentItem &&

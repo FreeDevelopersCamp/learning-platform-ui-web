@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-
-import Chapter from './Chapter';
-
+import Task from './Task'; // Task component for displaying individual tasks
 import { IoIosArrowDown } from 'react-icons/io';
 import { IoIosArrowUp } from 'react-icons/io';
+import { FaCheck } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const Card = styled.div`
@@ -63,21 +62,45 @@ const Description = styled.p`
   color: var(--color-grey-700);
 `;
 
+const ActionsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 25px;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+  color: var(--color-grey-500);
+`;
+
 const Button = styled.button`
   display: flex;
+  align-items: center;
   color: #3131ff;
-  padding: 2rem 0 4px;
   background: none;
-  border-radius: 4px;
   border: none;
   cursor: pointer;
   font-size: 1.5rem;
+  gap: 0.5rem;
   text-decoration: none;
   transition: all 0.3s ease-in-out;
 
   &:hover {
     background-color: var(--color-grey-200);
   }
+`;
+
+const XPContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.4rem;
+  color: var(--color-grey-700);
+`;
+
+const GreenCheck = styled(FaCheck)`
+  color: #0fd15d;
+  font-size: 1.6rem;
 `;
 
 const Start = styled.button`
@@ -110,29 +133,29 @@ const Details = styled.div`
   color: var(--color-grey-700);
 `;
 
-function OrderCard({ index, course, title, role, userProgress }) {
+function OrderCard({ index, task, role, userProgress }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { _id, name, description, subCourses = [] } = course;
+  const { _id, title, description, tasks = [], xp } = task;
 
-  // Determine course status
+  // Determine project/task status
   const isCompleted =
-    userProgress?.completedCoursesIds &&
-    userProgress.completedCoursesIds.includes(_id);
+    userProgress?.completedProjectsIds &&
+    userProgress.completedProjectsIds.includes(_id);
 
   const isCurrent =
-    userProgress?.currentCoursesIds &&
-    userProgress.currentCoursesIds.includes(_id);
+    userProgress?.currentProjectsIds &&
+    userProgress.currentProjectsIds.includes(_id);
 
   const toggleCard = () => setIsOpen(!isOpen);
 
   const handleStartClick = (e) => {
     e.stopPropagation();
     navigate(
-      `/course/${title.toLowerCase()}/${name
+      `/project/${title.toLowerCase()}/${title
         .toLowerCase()
-        .replace(/\s+/g, '-')}/?ex=1`,
+        .replace(/\s+/g, '-')}/?task=1`,
     );
   };
 
@@ -150,38 +173,29 @@ function OrderCard({ index, course, title, role, userProgress }) {
     <Card>
       <Container>
         <Order>{index}</Order>
-        <Title>{name}</Title>
+        <Title>{title}</Title>
       </Container>
       <Description>{description}</Description>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '100%',
-          marginTop: '25px',
-          borderTop: '1px solid #ddd',
-          paddingTop: '20px',
-          color: 'var(--color-grey-500)',
-        }}
-      >
+      <ActionsContainer>
         <Button onClick={toggleCard}>
-          View Chapter Details
-          <IconContainer>
+          View Task Details
+          <IconContainer style={{ marginTop: '12px' }}>
             {!isOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
           </IconContainer>
         </Button>
-
-        {role === '6' && renderButton()}
-      </div>
+        <XPContainer>
+          <GreenCheck />
+          {xp} XP
+        </XPContainer>
+      </ActionsContainer>
 
       {isOpen && (
         <Details>
-          {subCourses.map((subCourse, subIndex) => (
-            <Chapter
-              key={subIndex}
-              index={subIndex + 1}
-              course={subCourse}
+          {tasks.map((subTask, taskIndex) => (
+            <Task
+              key={taskIndex}
+              index={taskIndex + 1}
+              task={subTask}
               title={title}
               role={role}
             />

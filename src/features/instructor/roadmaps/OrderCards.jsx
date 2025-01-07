@@ -140,14 +140,17 @@ function OrderCards({ index, orderId, type, name, description, duration, xp }) {
     navigate(`/${type}/${orderId}`);
   };
 
+  console.log('type: ', type);
+
+  if (type === 'practice') {
+    return null;
+  }
+
   return (
     <Card>
       <Type onClick={toggleCard}>{type}</Type>
       <Container onClick={toggleCard}>
         <Order>{index}</Order>
-        {/* <Status>
-          <FaCheck />
-        </Status> */}
         <Title>{name}</Title>
         <IconContainer>
           {!isOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
@@ -165,7 +168,7 @@ function OrderCards({ index, orderId, type, name, description, duration, xp }) {
                   marginRight: '5px',
                 }}
               />
-              <Duration>{formatDuration(duration)}zzzzz</Duration>
+              <Duration>{formatDuration(duration)}</Duration>
             </div>
             <div style={{ display: 'flex' }}>
               <FaCheck
