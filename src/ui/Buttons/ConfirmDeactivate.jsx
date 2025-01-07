@@ -20,7 +20,12 @@ const StyledConfirmDeactivate = styled.div`
   }
 `;
 
-function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
+function ConfirmDeactivate({
+  resourceName,
+  onConfirm,
+  disabled,
+  onCloseModal,
+}) {
   return (
     <StyledConfirmDeactivate>
       <Heading as="h3">Deactivate {resourceName}</Heading>
@@ -42,4 +47,4 @@ function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
   );
 }
 
-export default ConfirmDelete;
+export default ConfirmDeactivate;

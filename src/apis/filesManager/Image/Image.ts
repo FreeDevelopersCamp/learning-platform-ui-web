@@ -1,28 +1,21 @@
-import { ContentType, HttpClient, RequestParams } from '../../http-client';
-import { Token } from '../../auth/Auth/types';
+import { HttpClient } from '../../http-client';
+import { getDefaultHeaders } from '../../../utils/headers.js';
 
 export class Image<
   SecurityDataType = unknown,
 > extends HttpClient<SecurityDataType> {
   /**
-   * No description
-   *
-   * @name uploadImage
-   * @request POST:/image/upload
-   * @response `default` `ResourceImageDto` Upload file
+   * Uploads an image file for a specific user.
+   * @param data The FormData containing the file.
+   * @param userId The ID of the user uploading the image.
+   * @param params Additional request parameters.
    */
-  uploadImage = (
-    data: {
-      /** @format binary */
-      file?: File;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<any, Token>({
-      path: `/image/upload`,
+  uploadImage = async (formData: FormData, userId: string) => {
+    return this.request<any, { imageUrl: string }>({
+      path: `/image/upload/${userId}`, // Append userId correctly
       method: 'POST',
-      body: data,
-      type: ContentType.FormData,
-      ...params,
+      body: formData, // Send FormData directly
+      headers: getDefaultHeaders(),
     });
+  };
 }

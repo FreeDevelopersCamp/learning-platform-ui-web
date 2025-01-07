@@ -17,6 +17,7 @@ export class Profile extends HttpClient {
       method: 'PATCH',
       body: data,
       secure: true,
+      headers: getDefaultHeaders(),
       type: ContentType.Json,
       ...params,
     });
@@ -36,6 +37,8 @@ export class Profile extends HttpClient {
       path: `/profile/${id}`,
       method: 'GET',
       secure: true,
+      headers: getDefaultHeaders(),
+
       ...params,
     });
   }

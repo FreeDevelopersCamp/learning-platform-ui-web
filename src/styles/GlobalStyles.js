@@ -618,7 +618,8 @@ const GlobalStyles = createGlobalStyle`
                         --color-green-900: #114f32;
 
                         /* Reds */
-                        --color-red-50: #231012;
+                        ${'' /* --color-red-50: #231012; */}
+                        --color-red-50: #c24335;
                         --color-red-100: #3c1a1d;
                         --color-red-200: #6a2e33;
                         --color-red-300: #e74c3c; /* Bright for errors */
@@ -650,15 +651,7 @@ const GlobalStyles = createGlobalStyle`
                         --color-light-800: #f1f5f9;
                         --color-light-900: #f9fafb; /* Off-white */
 
-                        /* Reds for Dark Mode */
-                        --color-red-50: #231012;
-                        --color-red-100: #3c1a1d;
-                        --color-red-200: #6a2e33;
-                        --color-red-500: #e74c3c; /* Bright for errors */
-                        --color-red-600: #c24335;
-                        --color-red-700: #9a372c;
-                        --color-red-800: #762b22;
-                        --color-red-900: #53201a;
+
 
                         --backdrop-color: rgba(0, 0, 0, 0.3);
 
@@ -792,6 +785,7 @@ const GlobalStyles = createGlobalStyle`
                 font-weight: 400;
                 font-style: normal;
         }
+
 `;
 
 export default GlobalStyles;

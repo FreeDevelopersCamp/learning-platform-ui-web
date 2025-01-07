@@ -41,7 +41,6 @@ const AuthProvider = ({ children }) => {
       });
       setSession(fetchedSession);
     } catch (err) {
-      console.error('Failed to fetch session:', err);
       localStorage.removeItem('token');
       setAuth({ isAuthenticated: false, role: null, username: null });
       setSession(null);
@@ -70,9 +69,11 @@ const AuthProvider = ({ children }) => {
         throw new Error('No token received');
       }
     } catch (err) {
-      console.error('Login failed:', err);
-      toast.error('Failed to login');
-      navigate('/login');
+      // Handle error based on the backend response structure
+      const errorMessage = err.response?.data?.message || 'Failed to login';
+      toast.error(errorMessage);
+
+      navigate('/login'); // Keep the user on the login page
     } finally {
       setIsLoading(false);
     }
@@ -94,7 +95,6 @@ const AuthProvider = ({ children }) => {
       toast.success('You have successfully logged out.');
       navigate('/home');
     } catch (err) {
-      console.error('Error during logout:', err);
       toast.error('Logout failed. Please try again.');
     }
   };

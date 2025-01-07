@@ -11,7 +11,6 @@ export function useDeactivateUser() {
       if (!serviceInstance) {
         throw new Error(`No service instance found for role: ${user.role}`);
       }
-
       const res = await serviceInstance.deactivate(user.roleId);
       return res;
     },

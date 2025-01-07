@@ -5,58 +5,8 @@ export const Container = styled.div`
   background-color: var(--color-grey-0);
   padding: 2rem;
   margin: 0 auto;
-  width: 70%;
+  width: 72%;
   gap: 2rem;
-`;
-
-export const LeftSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: 100%;
-  font-size: 2.8rem;
-  font-weight: bold;
-  gap: 1rem;
-
-  h1 {
-    font-weight: 600;
-    color: var(--color-grey-900);
-  }
-`;
-
-export const Sidebar = styled.div`
-  width: 100%;
-  background-color: var(--color-coolgray-100);
-  border-radius: 8px;
-  margin-right: 2rem;
-`;
-
-export const SidebarItem = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 1rem;
-  font-size: 1.6rem;
-  font-weight: ${(props) => (props.active ? '600' : '400')};
-  color: var(--color-grey-700);
-  cursor: pointer;
-  border: 1px solid var(--color-grey-100);
-
-  background-color: ${(props) =>
-    props.active ? 'var(--color-grey-0)' : 'transparent'};
-
-  &:hover {
-    background-color: var(--color-grey-0);
-  }
-
-  &:active {
-    background-color: var(--color-coolgray-100);
-  }
-
-  span {
-    font-size: 2rem;
-  }
 `;
 
 export const Content = styled.div`
@@ -73,7 +23,7 @@ export const ProfileSection = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   width: 100%;
 `;
 
@@ -104,6 +54,22 @@ export const SubmitButton = styled.button`
 
   &:hover {
     background-color: var(--color-coolgray-600);
+  }
+`;
+
+export const DeactivateButton = styled.button`
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-red-50);
+  background-color: var(--color-red-50);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.6rem;
+  margin-left: 1rem;
+
+  &:hover {
+    background-color: var(--color-red-100);
+    border-color: var(--color-coolgray-600);
   }
 `;
 
@@ -138,8 +104,17 @@ export const FormArea = styled.textarea`
 
 export const Label = styled.label`
   display: block;
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   margin-bottom: 0.5rem;
+`;
+
+export const LabelHeading = styled.label`
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 4px; /* Adjust this to create space */
+  border-bottom: 2px solid var(--color-grey-900); /* Set underline thickness and color */
+  margin-top: 2rem;
 `;
 
 export const Input = styled.input`
@@ -150,4 +125,25 @@ export const Input = styled.input`
   font-size: 1.4rem;
   background-color: var(--color-grey-0);
   color: var(--color-grey-700);
+`;
+
+export const AddMore = styled.button`
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-coolgray-900);
+  background-color: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.6rem;
+  width: 50%;
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+  color: var(--color-coolgray-900);
+
+  &:hover {
+    background-color: var(--color-coolgray-800);
+    color: var(--color-grey-50);
+  }
 `;
