@@ -4,11 +4,11 @@ import styled from 'styled-components';
 
 import { useCount } from '../../contexts/projects/ProjectsContext';
 import { useFetchProjectById } from '../../hooks/projects/useProject';
+import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
 import { FaCheck } from 'react-icons/fa';
 import Spinner from '../../ui/Spinner';
 
-// Styled Components
 const Card = styled.div`
   width: 300px;
   background-color: white;
@@ -116,14 +116,17 @@ const Button = styled.button`
   }
 `;
 
-// Unified ProjectCard Component
-function ProjectCard({ projectId, filter, role, projectStatus }) {
+function ProjectCard({ projectId, filter, role, userProgress }) {
   const navigate = useNavigate();
+  const { mutate: updateProgress, isLoading: updateLoading } =
+    useUpdateProgress();
+
   const {
     data: project,
     isLoading: projectLoading,
     error: projectError,
   } = useFetchProjectById(projectId);
+
   const { incrementCount, decrementCount } = useCount();
 
   useEffect(() => {
@@ -147,20 +150,53 @@ function ProjectCard({ projectId, filter, role, projectStatus }) {
     };
   }, [project, filter, incrementCount, decrementCount]);
 
-  if (projectLoading || !project || projectError) return <Spinner />;
+  if (projectLoading || !project || projectError || updateLoading)
+    return <Spinner />;
 
-  const {
-    name,
-    description,
-    prerequisites,
-    category,
-    topic,
-    xp,
-    participants,
-  } = project;
+  const { name, description, prerequisites, topic, xp, participants } = project;
 
-  const handleViewDetails = () => {
-    navigate(`/project/${projectId}`);
+  // Determine if the project is completed or in progress
+  const isCompleted =
+    userProgress?.completedProjectsIds &&
+    userProgress.completedProjectsIds.includes(project?._id);
+
+  const isCurrent =
+    userProgress?.currentProjectsIds &&
+    userProgress.currentProjectsIds.includes(project?._id);
+
+  const handleStartClick = (e) => {
+    e.stopPropagation();
+
+    if (project && project.name && project._id) {
+      // Check if the project is already in currentProjectsIds
+      const isAlreadySaved = userProgress?.currentProjectsIds?.includes(
+        project._id,
+      );
+
+      if (isAlreadySaved) {
+        // If the project is already saved, navigate directly without updating progress
+        navigate(
+          `/project/${project.name.toLowerCase().replace(/\s+/g, '-')}/${project._id}`,
+        );
+        return;
+      }
+
+      // If the project is not saved, add it to currentProjectsIds and update progress
+      const updatedProgress = {
+        ...userProgress,
+        currentProjectsIds: [
+          ...new Set([
+            ...(userProgress?.currentProjectsIds || []),
+            project._id,
+          ]),
+        ],
+      };
+
+      updateProgress(updatedProgress);
+      navigate(
+        `/project/${project.name.toLowerCase().replace(/\s+/g, '-')}/${project._id}`,
+      );
+    }
   };
 
   const renderButton = () => {
@@ -169,7 +205,7 @@ function ProjectCard({ projectId, filter, role, projectStatus }) {
     }
 
     if (role === '6') {
-      if (projectStatus === 'completed') {
+      if (isCompleted) {
         return (
           <Button
             disabled
@@ -182,13 +218,14 @@ function ProjectCard({ projectId, filter, role, projectStatus }) {
         );
       }
 
-      if (projectStatus === 'inProgress') {
+      // "Continue" button will have the same style as "Start"
+      if (isCurrent) {
         return (
           <Button
-            onClick={handleViewDetails}
-            bgColor="#fffbcc"
-            color="#aa8800"
-            borderColor="#aa8800"
+            onClick={handleStartClick}
+            bgColor="#cce5ff"
+            color="#0056b3"
+            borderColor="#0056b3"
           >
             Continue
           </Button>
@@ -197,7 +234,7 @@ function ProjectCard({ projectId, filter, role, projectStatus }) {
 
       return (
         <Button
-          onClick={handleViewDetails}
+          onClick={handleStartClick}
           bgColor="#cce5ff"
           color="#0056b3"
           borderColor="#0056b3"
@@ -208,6 +245,10 @@ function ProjectCard({ projectId, filter, role, projectStatus }) {
     }
 
     return null;
+  };
+
+  const handleViewDetails = () => {
+    navigate(`/project/${projectId}`);
   };
 
   return (

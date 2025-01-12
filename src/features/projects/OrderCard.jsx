@@ -133,7 +133,7 @@ const Details = styled.div`
   color: var(--color-grey-700);
 `;
 
-function OrderCard({ index, task, role, userProgress }) {
+function OrderCard({ index, project, task, role, userProgress }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -153,9 +153,7 @@ function OrderCard({ index, task, role, userProgress }) {
   const handleStartClick = (e) => {
     e.stopPropagation();
     navigate(
-      `/project/${title.toLowerCase()}/${title
-        .toLowerCase()
-        .replace(/\s+/g, '-')}/?task=1`,
+      `/project/${project.name.toLowerCase().replace(/\s+/g, '-')}/${project._id}`,
     );
   };
 
@@ -170,7 +168,7 @@ function OrderCard({ index, task, role, userProgress }) {
   };
 
   return (
-    <Card>
+    <Card onClick={handleStartClick}>
       <Container>
         <Order>{index}</Order>
         <Title>{title}</Title>

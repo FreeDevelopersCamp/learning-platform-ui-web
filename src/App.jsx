@@ -52,6 +52,7 @@ import ViewOneCourseOutline from './features/courses/ViewOneCourseOutline';
 
 import Projects from './features/projects/Projects';
 import ViewProjectDetails from './features/projects/ViewProjectDetails';
+import ViewProjectOutline from './features/projects/ViewProjectOutline';
 
 import PageNotFound from './pages/PageNotFound';
 import PageNotAuthorized from './pages/PageNotAuthorized';
@@ -417,6 +418,14 @@ function App() {
                             element={
                               <ProtectedRoute role="all">
                                 <ViewProjectDetails />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="/project/:name/:projectId"
+                            element={
+                              <ProtectedRoute role="all">
+                                <ViewProjectOutline />
                               </ProtectedRoute>
                             }
                           />

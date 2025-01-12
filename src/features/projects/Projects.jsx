@@ -43,21 +43,6 @@ function Projects() {
 
   if (!instructorData) return <Spinner />;
 
-  // Function to compute the project status
-  const computeProjectStatus = (projectId) => {
-    if (userProgress?.completedProjectsIds?.includes(projectId)) {
-      return 'completed';
-    }
-    if (
-      userProgress?.currentProjectsIds?.some(
-        (entry) => entry.itemId === projectId,
-      )
-    ) {
-      return 'inProgress';
-    }
-    return 'notStarted';
-  };
-
   function handleFilterChange(selectedFilter) {
     setFilter(selectedFilter);
   }
@@ -93,15 +78,13 @@ function Projects() {
       <DashboardLayout>
         <StyledDashboardLayout>
           {projectsIds.map((projectId) => {
-            const projectStatus = computeProjectStatus(projectId);
-
             return (
               <ProjectCard
                 key={projectId}
                 projectId={projectId}
                 filter={filter}
                 role={session.role}
-                projectStatus={projectStatus}
+                userProgress={userProgress}
               />
             );
           })}
