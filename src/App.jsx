@@ -241,6 +241,7 @@ function App() {
                             </ProtectedRoute>
                           }
                         />
+
                         <Route
                           path="contentManager"
                           element={<Navigate to="dashboard" />}
@@ -261,6 +262,15 @@ function App() {
                             </ProtectedRoute>
                           }
                         />
+                        <Route
+                          path="contentManager/permissions"
+                          element={
+                            <ProtectedRoute role="4">
+                              <ContentManagerPermissions />
+                            </ProtectedRoute>
+                          }
+                        />
+
                         <Route
                           path="contentManager/permissions"
                           element={

@@ -86,14 +86,6 @@ function MainNav({ isOpen, activeMenu, role, onMenuSelect }) {
       { id: 'projects', icon: <GoProjectRoadmap />, label: 'Projects' },
       { id: 'practices', icon: <BiTask />, label: 'Practices' },
       { id: 'learner', icon: <HiOutlineUsers />, label: 'Learner' },
-      { id: 'email', icon: <HiEnvelope />, label: 'Email' },
-      { id: 'chat', icon: <HiChatBubbleLeftRight />, label: 'Chat' },
-      {
-        id: 'notifications',
-        icon: <IoIosNotificationsOutline style={{ fontSize: '3rem' }} />,
-        label: 'Notifications',
-      },
-      { id: 'calendar', icon: <HiOutlineCalendarDays />, label: 'Calendar' },
     ];
 
     const learnerMenu = [

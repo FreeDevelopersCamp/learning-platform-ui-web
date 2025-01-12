@@ -24,18 +24,26 @@ const AuthForm = () => {
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
-
   const { login, isLoading } = useAuth();
+
+  const handleBackendLogin = async ({ email, password }) => {
+    try {
+      // Use backend login API with email and predefined password
+      await login({ username: email, password, role }); // Role can be set dynamically if needed
+    } catch (err) {
+      console.error('External login failed:', err);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      if (!username || !password) {
-        setError('Must specify a username and password');
-        return;
-      }
+    if (!username || !password) {
+      setError('Must specify a username and password');
+      return;
+    }
 
+    try {
       await login({ username, password, role });
     } catch (err) {
       console.error('Login failed', err);
@@ -66,9 +74,10 @@ const AuthForm = () => {
 
         <form className="auth-card" onSubmit={handleSubmit}>
           <AuthTitle isSignUp={isSignUp} />
-          {/* <ErrorMessage error={error} /> */}
-
-          <AuthButtonGroup isSignUp={isSignUp} />
+          <AuthButtonGroup
+            isSignUp={isSignUp}
+            onBackendLogin={handleBackendLogin}
+          />
 
           <SeparatorLine text={'or'} />
 
@@ -112,7 +121,6 @@ const AuthForm = () => {
             <AuthPrimaryButton isSignUp={isSignUp} />
           </div>
 
-          {/* Sign-In Links */}
           {!isSignUp && <AuthLinks />}
         </form>
       </div>

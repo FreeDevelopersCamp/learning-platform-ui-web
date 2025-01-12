@@ -7,6 +7,7 @@ import { useDeleteUser } from '@/apis/core/useDeleteUser.js';
 import { useDeactivateUser } from '@/apis/core/useDeactivateUser.js';
 
 import Spinner from '../../ui/Spinner.jsx';
+import { useVerifyInstructor } from '@/apis/core/useVerifyInstructor.js';
 const UserSelectionContext = createContext();
 
 export const useUserSelection = () => {
@@ -20,8 +21,16 @@ export const UserSelectionProvider = ({ children }) => {
   const { isRejecting, rejectUser } = useRejectUser();
   const { isDeactivating, deactivateUser } = useDeactivateUser();
   const { isDeleting, deleteUser } = useDeleteUser();
+  const { isVerifying, verifyInstructor } = useVerifyInstructor();
 
-  if (isLoading || isApproving || isRejecting || isDeleting || isDeactivating)
+  if (
+    isLoading ||
+    isApproving ||
+    isRejecting ||
+    isDeleting ||
+    isDeactivating ||
+    isVerifying
+  )
     return <Spinner />;
 
   const handleSelectUser = (roleId) => {
@@ -55,6 +64,8 @@ export const UserSelectionProvider = ({ children }) => {
               return deleteUser(user);
             case 'deactivate':
               return deactivateUser(user);
+            case 'verify':
+              return verifyInstructor(user);
             default:
               throw new Error(`Unknown action: ${action}`);
           }
