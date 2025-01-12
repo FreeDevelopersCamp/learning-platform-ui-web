@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { FaCheck } from 'react-icons/fa';
@@ -79,59 +79,69 @@ const SubmitButton = styled.button`
 
 function Exercises({ exercises }) {
   const [answers, setAnswers] = useState(
-    exercises.map(() => ({
+    exercises?.map(() => ({
       selected: null,
       submitted: false,
       isCorrect: null,
-    })),
+    })) || [],
   );
+
+  useEffect(() => {
+    setAnswers(
+      exercises?.map(() => ({
+        selected: null,
+        submitted: false,
+        isCorrect: null,
+      })) || [],
+    );
+  }, [exercises]);
 
   const handleOptionChange = (index, selected) => {
     const updatedAnswers = [...answers];
-    updatedAnswers[index].selected = selected;
+    updatedAnswers[index] = {
+      ...updatedAnswers[index],
+      selected,
+    };
     setAnswers(updatedAnswers);
   };
 
   const handleSubmit = (index) => {
     const updatedAnswers = [...answers];
-    updatedAnswers[index].submitted = true;
-    updatedAnswers[index].isCorrect =
-      exercises[index].correctAnswer === `${updatedAnswers[index].selected}`;
+    updatedAnswers[index] = {
+      ...updatedAnswers[index],
+      submitted: true,
+      isCorrect:
+        exercises[index]?.correctAnswer ===
+        `${updatedAnswers[index]?.selected}`,
+    };
     setAnswers(updatedAnswers);
   };
 
   return (
     <Container>
-      {exercises.map((exercise, index) => (
+      {exercises?.map((exercise, index) => (
         <QuestionContainer key={index}>
           <Question>
             Question {index + 1} of {exercises.length}
           </Question>
           <Description>{exercise.question}</Description>
           <Options>
-            {exercise.answers.map((answer, answerIndex) => (
+            {exercise.answers?.map((answer, answerIndex) => (
               <Option key={answerIndex}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: '.5rem',
-                  }}
-                >
+                <div>
                   <input
                     type="radio"
                     name={`question-${index}`}
                     value={answerIndex}
-                    checked={answers[index].selected === answerIndex}
+                    checked={answers[index]?.selected === answerIndex}
                     onChange={() => handleOptionChange(index, answerIndex)}
-                    disabled={answers[index].submitted}
+                    disabled={answers[index]?.submitted}
                   />
                   {answer}
                 </div>
-                {answers[index].submitted &&
-                  answers[index].selected === answerIndex &&
-                  (answers[index].isCorrect ? (
+                {answers[index]?.submitted &&
+                  answers[index]?.selected === answerIndex &&
+                  (answers[index]?.isCorrect ? (
                     <FaCheck color="green" />
                   ) : (
                     <IoClose color="red" size="1.6rem" />
@@ -142,10 +152,10 @@ function Exercises({ exercises }) {
           <SubmitButton
             onClick={() => handleSubmit(index)}
             disabled={
-              answers[index].selected === null || answers[index].submitted
+              answers[index]?.selected === null || answers[index]?.submitted
             }
           >
-            {answers[index].submitted ? 'Submitted!' : 'Submit'}
+            {answers[index]?.submitted ? 'Submitted!' : 'Submit'}
           </SubmitButton>
         </QuestionContainer>
       ))}

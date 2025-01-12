@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const InProgressContainer = styled.div`
-  margin-bottom: 2rem;
+  margin: 2rem 18rem;
 `;
 
 const ProgressCard = styled.div`
@@ -11,13 +11,13 @@ const ProgressCard = styled.div`
   margin-bottom: 1rem;
 `;
 
-function InProgress({ items }) {
-  if (items.length === 0) return <p>No courses in progress.</p>;
+function InProgress({ courses }) {
+  if (courses.length === 0) return;
 
   return (
     <InProgressContainer>
       <h2>In Progress</h2>
-      {items.map((item) => (
+      {courses.map((item) => (
         <ProgressCard key={item.id}>
           <h3>{item.name}</h3>
           <p>{item.description}</p>

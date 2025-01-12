@@ -1,5 +1,4 @@
-import { useParams } from 'react-router-dom';
-import { useOutletContext } from 'react-router-dom';
+import { useParams, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
@@ -30,19 +29,17 @@ const OrderCardsContainer = styled.div`
   gap: 2rem;
 `;
 
-const Title = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+const Title = styled.h2`
   font-weight: bold;
   font-size: 1.7rem;
+  margin-bottom: 1rem;
 `;
 
-const Description = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 1rem;
+const Description = styled.p`
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: var(--color-grey-700);
+  margin-bottom: 1.5rem;
 `;
 
 const AboutCourse = styled.div`
@@ -51,7 +48,6 @@ const AboutCourse = styled.div`
   gap: 20px;
   height: 600px;
   overflow: hidden;
-  border: none;
 `;
 
 const Section = styled.div`
@@ -75,66 +71,82 @@ const InstructorsSetContainer = styled(Section)`
   overflow: hidden;
 `;
 
-function ViewRoadmapDetails() {
-  const { id } = useParams();
+function ViewCourseDetails() {
+  const { id } = useParams(); // Get the course ID from the URL
   const {
     data: course,
     isLoading: isCourseLoading,
-    courseError,
-  } = useFetchCourseById(id);
-  const { session, userProgress } = useOutletContext();
+    error: courseError,
+  } = useFetchCourseById(id); // Fetch course details
+  const { session, userProgress } = useOutletContext(); // Get session and progress data
 
-  if (isCourseLoading || !course || courseError) return <Spinner />;
+  // Show a loading spinner if the data is being fetched
+  if (isCourseLoading) return <Spinner />;
+  // Show an error message if there is an issue fetching the course
+  if (courseError || !course)
+    return <p>Error loading course details. Please try again later.</p>;
 
-  const { description, subCourses = [], instructor } = course;
+  const { name, description, subCourses = [], instructor } = course;
 
   return (
     <Row>
+      {/* Header Section with Course Title and Progress */}
       <DetailsHeading
         course={course}
-        title={course.name}
+        title={name}
         userProgress={userProgress}
         role={session.role}
       />
+
       <Container>
+        {/* Left Section: Course Description and Subcourses */}
         <OrderCardsContainer>
           <Title>Description</Title>
-          <Description>{description}</Description>
-          {subCourses.map((course1, index) => (
-            <OrderCard
-              key={index}
-              index={index + 1}
-              course={course1}
-              title={course.name}
-              role={session.role}
-              userProgress={userProgress}
-            />
-          ))}
+          <Description>
+            {description || 'No description available.'}
+          </Description>
+
+          {/* Render Subcourses */}
+          {subCourses.length > 0 ? (
+            subCourses.map((subCourse, index) => (
+              <OrderCard
+                key={subCourse._id || index}
+                index={index + 1}
+                parentCourse={course}
+                course={subCourse}
+                title={name}
+                role={session.role}
+                userProgress={userProgress}
+              />
+            ))
+          ) : (
+            <p>No sub-courses available for this course.</p>
+          )}
         </OrderCardsContainer>
 
+        {/* Right Section: Additional Course Information */}
         <AboutCourse>
+          {/* Prerequisites Section */}
           <Prerequisites>
-            <span style={{ display: 'flex', gap: '7px' }}>
-              <LuGraduationCap style={{ fontSize: '2.2rem' }} /> Prerequisites
+            <span style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+              <LuGraduationCap style={{ fontSize: '2.2rem' }} />
+              Prerequisites
             </span>
-            <span style={{ display: 'flex', gap: '7px' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
               <FaCheckCircle
                 style={{
                   fontSize: '2rem',
                   marginLeft: '2px',
-                  color: '  var(--color-light-green-500)',
+                  color: 'var(--color-light-green-500)',
                 }}
               />
               <p style={{ fontWeight: '400', fontSize: '1.3rem' }}>
-                There are no prerequisites
+                There are no prerequisites.
               </p>
             </span>
           </Prerequisites>
-          {/* <Resourses>
-            <span style={{ display: 'flex', gap: '7px' }}>
-              <HiMenuAlt1 style={{ fontSize: '2.2rem' }} /> Resources
-            </span>
-          </Resourses> */}
+
+          {/* Instructors Section */}
           <InstructorsSetContainer>
             <InstructorsSet instructor={instructor} />
           </InstructorsSetContainer>
@@ -144,4 +156,4 @@ function ViewRoadmapDetails() {
   );
 }
 
-export default ViewRoadmapDetails;
+export default ViewCourseDetails;

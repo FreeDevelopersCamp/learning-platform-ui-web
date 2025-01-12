@@ -11,13 +11,20 @@ const BookmarkCard = styled.div`
   margin-bottom: 1rem;
 `;
 
-function Bookmarks({ items }) {
-  if (items.length === 0) return <p>No Bookmarks Available</p>;
+function Bookmarks({ courses = [], projects = [] }) {
+  if (courses.length === 0 && projects.length === 0)
+    return <p>No Bookmarks Available</p>;
 
   return (
     <BookmarksContainer>
       <h2>Bookmarks</h2>
-      {items.map((item) => (
+      {courses.map((item) => (
+        <BookmarkCard key={item.id}>
+          <h3>{item.name}</h3>
+          <p>{item.description}</p>
+        </BookmarkCard>
+      ))}
+      {projects.map((item) => (
         <BookmarkCard key={item.id}>
           <h3>{item.name}</h3>
           <p>{item.description}</p>

@@ -110,30 +110,35 @@ const Details = styled.div`
   color: var(--color-grey-700);
 `;
 
-function OrderCard({ index, course, title, role, userProgress }) {
+function OrderCard({ index, parentCourse, course, title, role, userProgress }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { _id, name, description, subCourses = [] } = course;
+  const { _id: courseId, name, description, subCourses = [] } = course;
 
   // Determine course status
   const isCompleted =
     userProgress?.completedCoursesIds &&
-    userProgress.completedCoursesIds.includes(_id);
+    userProgress.completedCoursesIds.includes(courseId);
 
   const isCurrent =
     userProgress?.currentCoursesIds &&
-    userProgress.currentCoursesIds.includes(_id);
+    userProgress.currentCoursesIds.includes(courseId);
 
-  const toggleCard = () => setIsOpen(!isOpen);
+  const toggleCard = (e) => {
+    e.stopPropagation();
+    setIsOpen(!isOpen);
+  };
+
+  const handleViewCourse = () => {
+    const formattedName = parentCourse.name.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/course/${formattedName}/${parentCourse._id}`);
+  };
 
   const handleStartClick = (e) => {
     e.stopPropagation();
-    navigate(
-      `/course/${title.toLowerCase()}/${name
-        .toLowerCase()
-        .replace(/\s+/g, '-')}/?ex=1`,
-    );
+    const formattedName = parentCourse.name.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/course/${formattedName}/${parentCourse._id}`);
   };
 
   const renderButton = () => {
@@ -147,7 +152,7 @@ function OrderCard({ index, course, title, role, userProgress }) {
   };
 
   return (
-    <Card>
+    <Card onClick={handleViewCourse}>
       <Container>
         <Order>{index}</Order>
         <Title>{name}</Title>
@@ -181,6 +186,7 @@ function OrderCard({ index, course, title, role, userProgress }) {
             <Chapter
               key={subIndex}
               index={subIndex + 1}
+              parentCourse={parentCourse}
               course={subCourse}
               title={title}
               role={role}

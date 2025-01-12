@@ -5,11 +5,11 @@ import styled from 'styled-components';
 
 import { useAuth } from '../../contexts/auth/AuthContext';
 import { useGetUser } from '../../apis/core/User/hooks/useGetUser.ts';
+import { useFetchCourseById } from '../../hooks/courses/useCourse';
 import { useFetchProgressByUserId } from '../../hooks/learner/useProgress';
-import { useFetchRoadmapById } from '../../hooks/roadmaps/useRoadmap';
 
 import Header from '../Header/Header';
-import CoursesSidebar from '../../ui/Sidebar/CoursesSidebar';
+import CourseSidebar from '../../ui/Sidebar/CourseSidebar';
 import Spinner from '../Spinner';
 
 import { FaListUl } from 'react-icons/fa';
@@ -66,8 +66,8 @@ const Button = styled.div`
   }
 `;
 
-function CoursesLayout() {
-  const { roadmapId } = useParams();
+function CourseLayout() {
+  const { name, courseId } = useParams();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [persentage, setPersentage] = useState(true);
 
@@ -76,19 +76,24 @@ function CoursesLayout() {
     enabled: !!session?.username,
   });
 
+  const {
+    data: course,
+    isLoading: isCourseLoading,
+    error,
+  } = useFetchCourseById(courseId);
+
   const { data: userProgress, isLoading: userProgressLoading } =
     useFetchProgressByUserId(user?._id);
-
-  const { data: roadmap, isLoading: isLoadingRoadmap } =
-    useFetchRoadmapById(roadmapId);
 
   if (
     isLoading ||
     userLoading ||
     userProgressLoading ||
+    isCourseLoading ||
     !auth.isAuthenticated ||
     !user ||
-    !userProgress
+    !userProgress ||
+    !course
   )
     return <Spinner />;
 
@@ -103,10 +108,10 @@ function CoursesLayout() {
             />
           </Button>
         )}
-        <CoursesSidebar
+        <CourseSidebar
           isOpen={isSidebarOpen}
           toggleSidebar={() => setSidebarOpen((prev) => !prev)}
-          roadmap={roadmap}
+          course={course}
           userProgress={userProgress}
           setPersentage={setPersentage}
           key={userProgress.completedCoursesIds.length}
@@ -114,9 +119,8 @@ function CoursesLayout() {
         <Container isSidebarOpen={isSidebarOpen}>
           <Outlet
             context={{
-              roadmap,
+              course,
               userProgress,
-              persentage,
             }}
           />
         </Container>
@@ -125,4 +129,4 @@ function CoursesLayout() {
   );
 }
 
-export default CoursesLayout;
+export default CourseLayout;

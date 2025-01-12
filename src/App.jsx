@@ -60,6 +60,7 @@ import HomeLayout from './ui/Layouts/HomeLayout';
 import AppLayout from './ui/Layouts/AppLayout';
 import LearnerLayout from './ui/Layouts/LearnerLayout';
 import CoursesLayout from './ui/Layouts/CoursesLayout';
+import CourseLayout from './ui/Layouts/CourseLayout';
 
 import { AuthProvider } from './contexts/auth/AuthContext';
 import { InstructorProvider } from './contexts/instructor/InstructorContext';
@@ -91,7 +92,6 @@ function App() {
                       <Route element={<HomeLayout />}>
                         <Route index element={<Navigate replace to="home" />} />
                         <Route path="home" element={<HomePage />} />
-
                         <Route
                           path="profile"
                           element={
@@ -133,7 +133,6 @@ function App() {
                           }
                         />
                       </Route>
-
                       <Route element={<AppLayout />}>
                         <Route
                           path="admin"
@@ -350,6 +349,14 @@ function App() {
                             }
                           />
                           <Route
+                            path="learner/leaderboard"
+                            element={
+                              <ProtectedRoute role="6">
+                                <LearnerPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
                             path="learner/library"
                             element={
                               <ProtectedRoute role="6">
@@ -383,30 +390,6 @@ function App() {
                           />
                           <Route
                             path="learner/certification"
-                            element={
-                              <ProtectedRoute role="6">
-                                <LearnerPage />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="learner/jobs"
-                            element={
-                              <ProtectedRoute role="6">
-                                <LearnerPage />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="learner/library"
-                            element={
-                              <ProtectedRoute role="6">
-                                <LearnerPage />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="learner/leaderboard"
                             element={
                               <ProtectedRoute role="6">
                                 <LearnerPage />
@@ -461,6 +444,9 @@ function App() {
                             </ProtectedRoute>
                           }
                         />
+                      </Route>
+
+                      <Route element={<CourseLayout />}>
                         <Route
                           path="/course/:name/:courseId"
                           element={
@@ -469,8 +455,15 @@ function App() {
                             </ProtectedRoute>
                           }
                         />
+                        <Route
+                          path="/course/:name/:courseId/:subCourseName/:subCourseId"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ViewOneCourseOutline />
+                            </ProtectedRoute>
+                          }
+                        />
                       </Route>
-
                       <Route path="login" element={<AuthPage />} />
                       <Route path="signup" element={<AuthPage />} />
                       <Route
