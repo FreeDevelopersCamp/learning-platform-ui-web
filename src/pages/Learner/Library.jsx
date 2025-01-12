@@ -2,10 +2,6 @@ import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useAuth } from '../../contexts/auth/AuthContext';
-import { useGetUser } from '../../apis/core/User/hooks/useGetUser.ts';
-
-import Spinner from '../../ui/Spinner';
 import Filterbar from './ui/Filterbar.jsx';
 import Bookmarks from './ui/Bookmarks.jsx';
 import InProgress from './ui/InProgress.jsx';
@@ -22,19 +18,21 @@ const Container = styled.div`
 
 function Library() {
   const [filter, setFilter] = useState('all');
-  const { auth, isLoading: authLoading } = useAuth();
-
-  const { user, isLoading: userLoading } = useGetUser(auth?.username, {
-    enabled: !!auth?.username && !authLoading,
-  });
 
   const { userProgress } = useOutletContext();
-
-  if (authLoading || userLoading || !auth || !user) return <Spinner />;
 
   const bookmarksIds = userProgress?.BookmarksIds || [];
   const currentCoursesIds = userProgress?.currentCoursesIds || [];
   const completedCoursesIds = userProgress?.completedCoursesIds || [];
+  const completedProjectsIds = userProgress?.completedProjectsIds || [];
+
+  // Separate courses and projects from bookmarksIds
+  const bookmarkedCourses = bookmarksIds.filter(
+    (item) => item.type === 'course',
+  );
+  const bookmarkedProjects = bookmarksIds.filter(
+    (item) => item.type === 'project',
+  );
 
   const filterOptions = [
     { label: 'All', value: 'all' },
@@ -55,13 +53,16 @@ function Library() {
         onFilterChange={handleFilterChange}
       />
       {(filter === 'all' || filter === 'bookmarks') && (
-        <Bookmarks items={bookmarksIds} />
+        <Bookmarks courses={bookmarkedCourses} projects={bookmarkedProjects} />
       )}
       {(filter === 'all' || filter === 'in-progress') && (
-        <InProgress items={currentCoursesIds} />
+        <InProgress courses={currentCoursesIds} />
       )}
       {(filter === 'all' || filter === 'completed') && (
-        <Completed items={completedCoursesIds} />
+        <Completed
+          courses={completedCoursesIds}
+          projects={completedProjectsIds}
+        />
       )}
     </Container>
   );

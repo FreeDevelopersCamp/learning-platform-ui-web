@@ -118,7 +118,6 @@ function DetailsHeading({ project, userProgress, role }) {
     duration,
     participants = 0,
     prerequisites = [],
-    status,
   } = project || {};
 
   const isCompleted =
@@ -129,8 +128,39 @@ function DetailsHeading({ project, userProgress, role }) {
     userProgress?.currentProjectsIds &&
     userProgress.currentProjectsIds.includes(project?._id);
 
-  const handleStartClick = () => {
-    navigate(`/project/${project._id}`);
+  const handleStartClick = (e) => {
+    e.stopPropagation();
+
+    if (project && project.name && project._id) {
+      // Check if the project is already in currentProjectsIds
+      const isAlreadySaved = userProgress?.currentProjectsIds?.includes(
+        project._id,
+      );
+
+      if (isAlreadySaved) {
+        // If the project is already saved, navigate directly without updating progress
+        navigate(
+          `/project/${project.name.toLowerCase().replace(/\s+/g, '-')}/${project._id}`,
+        );
+        return;
+      }
+
+      // If the project is not saved, add it to currentProjectsIds and update progress
+      const updatedProgress = {
+        ...userProgress,
+        currentProjectsIds: [
+          ...new Set([
+            ...(userProgress?.currentProjectsIds || []),
+            project._id,
+          ]),
+        ],
+      };
+
+      updateProgress(updatedProgress);
+      navigate(
+        `/project/${project.name.toLowerCase().replace(/\s+/g, '-')}/${project._id}`,
+      );
+    }
   };
 
   const handleBookmark = () => {

@@ -105,6 +105,7 @@ function ViewProjectDetails() {
             <OrderCard
               key={index}
               index={index + 1}
+              project={project}
               task={task}
               role={session.role}
               userProgress={userProgress}

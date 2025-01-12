@@ -36,7 +36,7 @@ const VideoContainer = styled.div`
   }
 `;
 
-function Resources({ resource, typeLabels }) {
+function Resources({ resource }) {
   if (!resource || !resource.type) {
     return (
       <ResourceContainer>
@@ -74,26 +74,8 @@ function Resources({ resource, typeLabels }) {
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              style={{
-                width: '100%',
-                height: '100%',
-              }}
-              onError={(e) => console.error('Iframe error:', e)}
             ></iframe>
           </VideoContainer>
-        </div>
-      )}
-      {/* Add additional types here */}
-      {!typeLabels[resource.type] && (
-        <div>
-          <ResourceTitle>Unknown Type: {resource.name}</ResourceTitle>
-          <ResourceLink
-            href={resource.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Open Resource
-          </ResourceLink>
         </div>
       )}
     </ResourceContainer>

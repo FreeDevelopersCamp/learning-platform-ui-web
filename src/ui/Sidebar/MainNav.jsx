@@ -216,6 +216,14 @@ function MainNav({ isOpen, role, onMenuSelect }) {
     }
   }, [role]);
 
+  const isActive = (item) => {
+    // Check if the current path matches the main path or sub-paths
+    const isExactMatch = location.pathname === item.path;
+    const isSubMatch = location.pathname.startsWith(item.path);
+
+    return isExactMatch || (item.id === 'roadmaps' && isSubMatch);
+  };
+
   return (
     isOpen && (
       <nav>
@@ -223,11 +231,7 @@ function MainNav({ isOpen, role, onMenuSelect }) {
           {menuItems.map((item) => (
             <MenuItem
               key={item.id}
-              isActive={
-                location.pathname === item.path ||
-                (item.id === 'roadmaps' &&
-                  location.pathname.includes('roadmap'))
-              }
+              isActive={isActive(item)}
               onClick={() => onMenuSelect(item.id)}
             >
               {item.icon}

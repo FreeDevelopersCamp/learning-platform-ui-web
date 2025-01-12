@@ -20,7 +20,7 @@ const StyledSidebar = styled.aside`
   }
 `;
 
-function Sidebar({ isOpen, role, onMenuSelect }) {
+function Sidebar({ isOpen, role, onMenuSelect, activeMenu }) {
   const location = useLocation(); // Get the current path directly in Sidebar
 
   if (!role) return <Spinner />;
@@ -32,6 +32,7 @@ function Sidebar({ isOpen, role, onMenuSelect }) {
         currentPath={location.pathname} // Pass the current path to MainNav
         role={role}
         onMenuSelect={onMenuSelect}
+        activeMenu={activeMenu} // Pass active menu to MainNav
       />
     </StyledSidebar>
   );

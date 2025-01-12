@@ -254,7 +254,7 @@ function DetailsHeading({ course, title, userProgress, role }) {
     return levelIcons[level] || levelIcons['0'];
   };
 
-  console.log('userProgress: ', userProgress);
+  // console.log('userProgress: ', userProgress)print
   return (
     <Container>
       <Topic>{name}</Topic>
