@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import { Auth } from '../../apis/auth/Auth/Auth.ts';
+import { Auth } from '@/apis/auth/Auth/Auth.ts';
 
 // Context
 const AuthContext = createContext();
@@ -69,11 +69,56 @@ const AuthProvider = ({ children }) => {
         throw new Error('No token received');
       }
     } catch (err) {
-      // Handle error based on the backend response structure
       const errorMessage = err.response?.data?.message || 'Failed to login';
       toast.error(errorMessage);
+      navigate('/login');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-      navigate('/login'); // Keep the user on the login page
+  // Sign Up
+  const signup = async ({
+    username,
+    password,
+    email,
+    roles,
+    firstName,
+    lastName,
+    gender,
+  }) => {
+    setIsLoading(true);
+    try {
+      const createUserDto = {
+        userName: username,
+        password,
+        roles,
+        personalInformation: {
+          name: {
+            first: firstName,
+            last: lastName,
+          },
+          gender,
+        },
+        contacts: {
+          email,
+        },
+      };
+
+      const response = await new Auth().register(createUserDto); // Use Auth.signup() here
+
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+        setAuth({ isAuthenticated: true, role: roles, username });
+        toast.success('Signup successful!');
+        navigate('/home');
+        await fetchSession(); // Fetch the updated session after signup
+      } else {
+        throw new Error('No token received');
+      }
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'Failed to signup';
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -109,6 +154,7 @@ const AuthProvider = ({ children }) => {
         auth,
         session,
         login,
+        signup,
         logout,
         isLoading,
       }}

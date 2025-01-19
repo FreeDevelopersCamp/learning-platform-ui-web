@@ -13,6 +13,7 @@ const RoleLabel = styled.label`
   font-weight: bold;
   padding-left: 6px;
   color: var(--color-grey-800);
+  margin-bottom: 8px;
 `;
 
 const RoleDropdown = styled.select`
@@ -24,16 +25,6 @@ const RoleDropdown = styled.select`
   border-radius: 5px;
   background-color: var(--color-grey-0);
   color: var(--color-grey-800);
-  -webkit-appearance: none; /* Remove default browser styling */
-  -moz-appearance: none;
-  appearance: none;
-  position: relative;
-
-  /* Add custom spacing for the arrow icon */
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: calc(100% - 13px) center;
-  background-size: 16px;
 
   &:focus {
     outline: none;
@@ -41,32 +32,81 @@ const RoleDropdown = styled.select`
   }
 `;
 
-const RoleOption = styled.option`
-  font-size: 1.4rem;
-  color: var(--color-grey-800);
-  background-color: var(--color-grey-0);
+const CheckboxContainer = styled.div`
+  display: flex;
+  padding-left: 20px;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const RoleCheckbox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  input {
+    transform: scale(1.2);
+  }
+
+  label {
+    font-size: 1.2rem;
+    color: var(--color-grey-800);
+  }
 `;
 
 // Component Definition
-const AuthRoleSelector = ({ selectedRole, setSelectedRole }) => {
+const AuthRoleSelector = ({ isSignUp, selectedRoles, setSelectedRoles }) => {
+  const rolesOptions = [
+    { value: '0', label: 'Admin' },
+    { value: '1', label: 'Owner' },
+    { value: '2', label: 'Manager' },
+    { value: '3', label: 'Account Manager' },
+    { value: '4', label: 'Content Manager' },
+    { value: '5', label: 'Instructor' },
+    { value: '6', label: 'Learner' },
+  ];
+
+  const handleCheckboxChange = (value) => {
+    if (selectedRoles.includes(value)) {
+      setSelectedRoles(selectedRoles.filter((role) => role !== value));
+    } else {
+      setSelectedRoles([...selectedRoles, value]);
+    }
+  };
+
   return (
     <RoleSelectorContainer>
-      <RoleLabel htmlFor="role-selector">Select Role</RoleLabel>
-      <RoleDropdown
-        id="role-selector"
-        value={selectedRole}
-        onChange={(e) => setSelectedRole(e.target.value)}
-      >
-        <RoleOption defaultValue value="0">
-          Admin
-        </RoleOption>
-        <RoleOption value="1">Owner</RoleOption>
-        <RoleOption value="2">Manager</RoleOption>
-        <RoleOption value="3">Account Manager</RoleOption>
-        <RoleOption value="4">Content Manager</RoleOption>
-        <RoleOption value="5">Instructor</RoleOption>
-        <RoleOption value="6">Learner</RoleOption>
-      </RoleDropdown>
+      <RoleLabel>{isSignUp ? 'Select Roles' : 'Select Role'}</RoleLabel>
+      {isSignUp ? (
+        <CheckboxContainer>
+          {rolesOptions.map((role) => (
+            <RoleCheckbox key={role.value}>
+              <input
+                type="checkbox"
+                id={`role-${role.value}`}
+                value={role.value}
+                checked={selectedRoles.includes(role.value)}
+                onChange={() => handleCheckboxChange(role.value)}
+              />
+              <label htmlFor={`role-${role.value}`}>{role.label}</label>
+            </RoleCheckbox>
+          ))}
+        </CheckboxContainer>
+      ) : (
+        <RoleDropdown
+          value={selectedRoles[0] || ''}
+          onChange={(e) => setSelectedRoles([e.target.value])}
+        >
+          <option value="" disabled>
+            Select a role
+          </option>
+          {rolesOptions.map((role) => (
+            <option key={role.value} value={role.value}>
+              {role.label}
+            </option>
+          ))}
+        </RoleDropdown>
+      )}
     </RoleSelectorContainer>
   );
 };
