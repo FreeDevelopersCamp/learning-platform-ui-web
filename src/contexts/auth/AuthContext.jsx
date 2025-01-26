@@ -15,6 +15,7 @@ const AuthProvider = ({ children }) => {
     username: null,
   });
   const [session, setSession] = useState(null);
+  const [sessions, setSessions] = useState([]); // State for storing sessions
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -44,6 +45,24 @@ const AuthProvider = ({ children }) => {
       localStorage.removeItem('token');
       setAuth({ isAuthenticated: false, role: null, username: null });
       setSession(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch All Sessions
+  const listSessions = async () => {
+    setIsLoading(true);
+    try {
+      const response = await new Auth().listSession();
+
+      console.log('API Response:', response); // Log the entire response
+
+      setSessions(response || []);
+      return response;
+    } catch (err) {
+      toast.error('Failed to fetch sessions');
+      console.error('Error fetching sessions:', err);
     } finally {
       setIsLoading(false);
     }
@@ -153,10 +172,12 @@ const AuthProvider = ({ children }) => {
       value={{
         auth,
         session,
+        sessions,
         login,
         signup,
         logout,
         isLoading,
+        listSessions,
       }}
     >
       {children}

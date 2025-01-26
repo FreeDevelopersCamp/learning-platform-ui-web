@@ -25,6 +25,25 @@ export class User extends HttpClient {
    * No description
    *
    * @tags user
+   * @name listOthers
+   * @request GET:/user
+   * @secure
+   * @response `default` List of users
+   */
+  listOthers(params = {}) {
+    return this.request({
+      path: `/user/listOthers`,
+      method: 'GET',
+      secure: true,
+      headers: getDefaultHeaders(),
+      ...params,
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags user
    * @name Update
    * @request PATCH:/user
    * @secure

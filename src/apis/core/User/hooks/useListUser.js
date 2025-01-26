@@ -159,5 +159,6 @@ export function useListUser() {
     users: currentPageUsers,
     count: sortedUsers.length,
     totalUsers: usersWithStatus,
+    usersData: users,
   };
 }

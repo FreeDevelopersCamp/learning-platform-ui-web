@@ -60,6 +60,7 @@ import { InstructorProvider } from './contexts/instructor/InstructorContext';
 import { CoursesProvider } from './contexts/courses/CoursesContext';
 import { PracticesProvider } from './contexts/practices/PracticesContext';
 import { ProjectsProvider } from './contexts/projects/ProjectsContext';
+import ChatPage from '@/pages/Chat/ChatPage.jsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -123,6 +124,15 @@ function App() {
                           element={
                             <ProtectedRoute role="all">
                               <ProfilePage />
+                            </ProtectedRoute>
+                          }
+                        />
+
+                        <Route
+                          path="chat"
+                          element={
+                            <ProtectedRoute role="all">
+                              <ChatPage />
                             </ProtectedRoute>
                           }
                         />
