@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import ChatContainer from '@/ui/Message/ChatContainer.jsx';
 import ChatSidebar from '@/ui/Message/ChatSidebar.jsx';
 import Spinner from '@/ui/Spinner.jsx';
@@ -15,30 +15,55 @@ const Container = styled.div`
 
 const ChatPage = () => {
   const [selectedUser, setSelectedUser] = useState(null);
-  const { usersData: users, isLoading } = useListUser(); // Fetch all users
-  const { session, isLoading: sessionLoading } = useAuth(); // Fetch sessions
 
-  const handleUserSelect = (user) => {
+  // Fetch users
+  const { usersData: users, isLoading } = useListUser();
+
+  // Auth-related data
+  const {
+    session,
+    sessions,
+    listSessions,
+    isLoading: sessionLoading,
+  } = useAuth();
+
+  // Memoize `listSessions`
+  const memoizedListSessions = useCallback(listSessions, [listSessions]);
+
+  // Memoize `sessions`
+  const memoizedSessions = useMemo(() => sessions, [sessions]);
+
+  // Memoize `users`
+  const memoizedUsers = useMemo(() => users, [users]);
+
+  // Memoize `currentUser`
+  const currentUser = useMemo(() => {
+    return users?.find((user) => user.userName === session?.username);
+  }, [users, session?.username]);
+
+  const handleUserSelect = useCallback((user) => {
     setSelectedUser(user);
-  };
+  }, []);
 
   if (isLoading || sessionLoading) return <Spinner />;
-
-  const currentUserId = users.find((u) => u.userName === session.username);
 
   return (
     <Container className="flex h-screen bg-gray-100">
       <ChatSidebar
-        users={users}
+        users={memoizedUsers}
         onUserSelect={handleUserSelect}
         selectedUser={selectedUser}
+        sessions={memoizedSessions}
+        listSessions={memoizedListSessions}
       />
 
       {selectedUser ? (
         <ChatContainer
-          senderId={currentUserId._id}
-          receiverId={selectedUser._id}
+          senderId={currentUser?._id}
+          receiverId={selectedUser?._id}
           token={session?.token}
+          receiver={selectedUser}
+          sender={currentUser}
         />
       ) : (
         <div className="flex items-center justify-center w-full text-gray-500">
