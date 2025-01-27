@@ -1,12 +1,8 @@
 export interface CreateUserDto {
   /** @default [] */
   roles: number[];
-  policies?: PolicyDto[];
   personalInformation: Person;
   contacts: Contact;
-  address: Address;
-  /** @default "" */
-  image?: string;
   /**
    * @maxLength 20
    * @default ""
@@ -17,8 +13,6 @@ export interface CreateUserDto {
    * @default ""
    */
   password: string;
-  companyId: string;
-  brandManufacturer?: BrandManufacturerDto[];
 }
 
 export interface Token {
@@ -74,63 +68,20 @@ export interface ChangePassword {
   newPassword: string;
 }
 
-export interface PolicyDto {
-  /** @maxLength 20 */
-  name: string;
-  permissions: string[];
-}
-
 export interface Person {
   name: Name;
   /** @default 0 */
   gender: string;
-  /**
-   * @format date-time
-   * @default "2024-08-11T14:44:56.206Z"
-   */
-  dateOfBirth: string;
 }
 
 export interface Contact {
   /** @default "" */
   email: string;
-  mobile: Mobile;
-  emergencyMobile: Mobile;
-}
-
-export interface Address {
-  /** @default 0 */
-  country: string;
-  /** @default 0 */
-  city: string;
-  /** @default "" */
-  street: string;
-  /** @default "" */
-  postalCode: string;
-}
-
-export interface BrandManufacturerDto {
-  /** @default "" */
-  brand: string;
-  /** @default "" */
-  manufacturer: string;
 }
 
 export interface Name {
   /** @default "" */
   first: string;
   /** @default "" */
-  second: string;
-  /** @default "" */
-  third: string;
-  /** @default "" */
   last: string;
-}
-
-export interface Mobile {
-  /** @default 0 */
-  provider?: number;
-  /** @default "" */
-  countryCode?: string;
-  mobile: string;
 }

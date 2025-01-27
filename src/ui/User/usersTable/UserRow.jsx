@@ -5,12 +5,14 @@ import styled from 'styled-components';
 import { HiEye, HiTrash } from 'react-icons/hi2';
 import PersonOffTwoToneIcon from '@mui/icons-material/PersonOffTwoTone';
 import PersonAddAltTwoToneIcon from '@mui/icons-material/PersonAddAltTwoTone';
+import { IoMdCheckmarkCircle } from 'react-icons/io';
 
 import { useUserSelection } from '@/contexts/users/UserSelectionContext.jsx';
 import { useApproveUser } from '@/apis/core/useApproveUser.js';
 import { useRejectUser } from '@/apis/core/useRejectUser.js';
 import { useDeleteUser } from '@/apis/core/useDeleteUser.js';
 import { useDeactivateUser } from '@/apis/core/useDeactivateUser.js';
+import { useVerifyInstructor } from '@/apis/core/useVerifyInstructor.js';
 import { getRoleCode } from '@/utils/helpers.js';
 
 import ConfirmApprove from '@/ui/Buttons/ConfirmApprove.jsx';
@@ -41,30 +43,39 @@ const Stacked = styled.div`
 `;
 
 const statusToTagName = {
-  1: 'blue',
+  1: 'teal',
   2: 'lime',
   3: 'rose',
+  4: 'brand',
 };
 
 const statusToTagText = {
   1: 'Pending',
   2: 'Activated',
   3: 'Deactivated',
+  4: 'Verified',
 };
 
 function UserRow({ user, role: MainRole, children }) {
-  let { userName, image, role, personalInformation, contacts, status } = user;
+  let { userName, role, personalInformation, contacts, status } = user;
 
   const navigate = useNavigate();
   const { isApproving } = useApproveUser();
   const { isRejecting } = useRejectUser();
   const { isDeleting } = useDeleteUser();
   const { isDeactivating } = useDeactivateUser();
+  const { isVerifying } = useVerifyInstructor();
+
+  const isLoading =
+    isApproving ||
+    isRejecting ||
+    isDeleting ||
+    isVerifying ||
+    isDeleting ||
+    isDeactivating;
 
   const { selectedUsers, handleSelectUser, handleUserAction } =
     useUserSelection();
-
-  if (!image) image = '@/public/default-user.png';
 
   let roleCode = getRoleCode(role);
   const [pendingAction, setPendingAction] = useState(null); // Tracks the current action
@@ -113,6 +124,7 @@ function UserRow({ user, role: MainRole, children }) {
             </Menus.Button>
 
             {(statusToTagText[status] === 'Pending' ||
+              statusToTagText[status] === 'Verified' ||
               statusToTagText[status] === 'Deactivated') && (
               <Modal.Open opens={`approve-${user.roleId}`}>
                 <Menus.Button
@@ -142,10 +154,20 @@ function UserRow({ user, role: MainRole, children }) {
                 </Modal.Open>
               )}
 
+            {statusToTagText[status] === 'Activated' &&
+              role === '5' &&
+              MainRole === 'accountManager' && (
+                <Modal.Open opens={`verify-${user.roleId}`}>
+                  <Menus.Button icon={<IoMdCheckmarkCircle />}>
+                    Verify Instructor
+                  </Menus.Button>
+                </Modal.Open>
+              )}
+
             {statusToTagText[status] === 'Activated' && (
               <Modal.Open opens={`deactivate-${user.roleId}`}>
                 <Menus.Button icon={<PersonOffTwoToneIcon />}>
-                  Deactivated user
+                  Deactivate user
                 </Menus.Button>
               </Modal.Open>
             )}
@@ -153,13 +175,15 @@ function UserRow({ user, role: MainRole, children }) {
         </Menus.Menu>
 
         {(statusToTagText[status] === 'Pending' ||
+          statusToTagText[status] === 'Verified' ||
           statusToTagText[status] === 'Deactivated') && (
-          <Modal.Window name={`approve-${user.roleId}`}>
+          <Modal.Window
+            name={`approve-${user.roleId}`}
+            key={`approveKey-${user.roleId}`}
+          >
             <ConfirmApprove
               resourceName="user"
-              disabled={
-                isApproving || isRejecting || isDeleting || isDeactivating
-              }
+              disabled={isLoading}
               onConfirm={() => handleUserActionWrapper(user.roleId, 'approve')}
               key={user.roleId}
             />
@@ -167,37 +191,53 @@ function UserRow({ user, role: MainRole, children }) {
         )}
 
         {statusToTagText[status] === 'Pending' && (
-          <Modal.Window name={`reject-${user.roleId}`} key={user.roleId}>
+          <Modal.Window
+            name={`reject-${user.roleId}`}
+            key={`rejectKey-${user.roleId}`}
+          >
             <ConfirmReject
               resourceName="user"
-              disabled={
-                isApproving || isRejecting || isDeleting || isDeactivating
-              }
+              disabled={isLoading}
               onConfirm={() => handleUserActionWrapper(user.roleId, 'reject')}
             />
           </Modal.Window>
         )}
 
         {statusToTagText[status] === 'Deactivated' && (
-          <Modal.Window name={`delete-${user.roleId}`} key={user.roleId}>
+          <Modal.Window
+            name={`delete-${user.roleId}`}
+            key={`deleteKey-${user.roleId}`}
+          >
             <ConfirmDelete
               resourceName="user"
-              disabled={
-                isApproving || isRejecting || isDeleting || isDeactivating
-              }
+              disabled={isLoading}
               onConfirm={() => handleUserActionWrapper(user.roleId, 'delete')}
             />
           </Modal.Window>
         )}
 
+        {statusToTagText[status] === 'Activated' && role === '5' && (
+          <Modal.Window
+            name={`verify-${user.roleId}`}
+            key={`verifyKey-${user.roleId}`}
+          >
+            <ConfirmApprove
+              resourceName="user"
+              disabled={isLoading}
+              onConfirm={() => handleUserActionWrapper(user.roleId, 'verify')}
+            />
+          </Modal.Window>
+        )}
+
         {statusToTagText[status] === 'Activated' && (
-          <Modal.Window name={`deactivate-${user.roleId}`} key={user.roleId}>
+          <Modal.Window
+            name={`deactivate-${user.roleId}`}
+            key={`deactivateKey-${user.roleId}`}
+          >
             <ConfirmDeactivate
               resourceName="user"
               resourceId={user.roleId}
-              disabled={
-                isApproving || isRejecting || isDeleting || isDeactivating
-              }
+              disabled={isLoading}
               onConfirm={() =>
                 handleUserActionWrapper(user.roleId, 'deactivate')
               }

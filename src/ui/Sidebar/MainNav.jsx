@@ -98,60 +98,12 @@ function MainNav({ isOpen, role, onMenuSelect }) {
     ];
 
     const instructorMenu = [
-      {
-        id: 'dashboard',
-        path: '/instructor/dashboard',
-        icon: <HiOutlineHome />,
-        label: 'Dashboard',
-      },
-      {
-        id: 'roadmaps',
-        path: '/instructor/roadmaps',
-        icon: <HiPresentationChartLine />,
-        label: 'Roadmaps',
-      },
-      {
-        id: 'courses',
-        path: '/instructor/courses',
-        icon: <FaTasks />,
-        label: 'Courses',
-      },
-      {
-        id: 'projects',
-        path: '/instructor/projects',
-        icon: <GoProjectRoadmap />,
-        label: 'Projects',
-      },
-      {
-        id: 'learner',
-        path: '/instructor/learner',
-        icon: <HiOutlineUsers />,
-        label: 'Learner',
-      },
-      {
-        id: 'email',
-        path: '/instructor/email',
-        icon: <HiEnvelope />,
-        label: 'Email',
-      },
-      {
-        id: 'chat',
-        path: '/instructor/chat',
-        icon: <HiChatBubbleLeftRight />,
-        label: 'Chat',
-      },
-      {
-        id: 'notifications',
-        path: '/instructor/notifications',
-        icon: <IoIosNotificationsOutline />,
-        label: 'Notifications',
-      },
-      {
-        id: 'calendar',
-        path: '/instructor/calendar',
-        icon: <HiOutlineCalendarDays />,
-        label: 'Calendar',
-      },
+      { id: 'dashboard', icon: <HiOutlineHome />, label: 'Dashboard' },
+      { id: 'roadmaps', icon: <HiPresentationChartLine />, label: 'Roadmaps' },
+      { id: 'courses', icon: <FaTasks />, label: 'Courses' },
+      { id: 'projects', icon: <GoProjectRoadmap />, label: 'Projects' },
+      { id: 'practices', icon: <BiTask />, label: 'Practices' },
+      { id: 'learner', icon: <HiOutlineUsers />, label: 'Learner' },
     ];
 
     const learnerMenu = [
