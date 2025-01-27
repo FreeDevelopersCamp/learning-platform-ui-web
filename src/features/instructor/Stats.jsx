@@ -14,7 +14,6 @@ function Stats({ userId, filter, onFilterCount }) {
     roadmaps: 0,
     courses: 0,
     projects: 0,
-    practices: 0,
   });
 
   const { instructor, instructorLoading, instructorError } =
@@ -43,7 +42,6 @@ function Stats({ userId, filter, onFilterCount }) {
           roadmaps: counts.roadmaps || 0,
           courses: counts.courses || 0,
           projects: counts.projects || 0,
-          practices: counts.practices || 0,
         });
       } else {
         // Process specific filter

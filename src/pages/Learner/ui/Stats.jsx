@@ -3,14 +3,15 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
+import { formatDuration } from '../../../utils/helpers';
 import Stat from './Stat';
 
-function Stats() {
+function Stats({ userProgress }) {
   return (
     <>
       <Stat
         title="Hours Spent"
-        data="34h"
+        data={formatDuration(userProgress.spentTime)}
         bgColor="#e0f7fa"
         iconColor="#00796b"
         iconBgColor="#b2dfdb"
@@ -19,7 +20,7 @@ function Stats() {
       </Stat>
       <Stat
         title="Projects Passed"
-        data="1"
+        data={userProgress.completedProjectsIds.length}
         bgColor="#fce4ec"
         iconColor="#880e4f"
         iconBgColor="#f8bbd0"
@@ -28,7 +29,7 @@ function Stats() {
       </Stat>
       <Stat
         title="Practices Completed"
-        data="8"
+        data={userProgress.completedPracticesIds.length}
         bgColor="#ede7f6"
         iconColor="#5e35b1"
         iconBgColor="#d1c4e9"
@@ -37,7 +38,7 @@ function Stats() {
       </Stat>
       <Stat
         title="Courses Completed"
-        data="4"
+        data={userProgress.completedCoursesIds.length}
         bgColor="#fff3e0"
         iconColor="#e65100"
         iconBgColor="#ffcc80"

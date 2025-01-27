@@ -26,13 +26,13 @@ const TotalWrapper = styled.div`
 
 const Line = styled.div`
   height: ${(props) => (props.isFixed ? '5px' : '0')};
-  z-index: 1000;
+  z-index: 999;
   width: calc(115rem - 1.9rem);
   transform: translateX(-1.5rem);
   box-shadow: ${(props) =>
     props.isFixed ? '0 1px 2px rgba(0, 0, 0, 0.1)' : 'none'};
-
   transition: all 0.1s ease-in-out;
+  margin-bottom: 100px;
 `;
 
 function Filterbar({ filterOptions, onFilterChange, children }) {

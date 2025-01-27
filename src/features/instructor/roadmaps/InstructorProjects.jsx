@@ -8,9 +8,10 @@ import Heading from './Heading';
 import Filterbar from '../../instructor/Filterbar';
 import Total from '../roadmaps/Total';
 import DashboardLayout from '../../instructor/DashboardLayout';
-import ProjectCard from './ProjectCard';
+import ProjectCard from '../../projects/ProjectCard';
 
 import Spinner from '../../../ui/Spinner';
+import { useOutletContext } from 'react-router-dom';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -35,6 +36,7 @@ function InstructorProjects() {
   const [filter, setFilter] = useState('all');
   const { count } = useCount();
   const { instructorData } = useInstructorData();
+  const { session } = useOutletContext();
 
   const { projectsIds = [] } = instructorData || {};
 
@@ -79,6 +81,7 @@ function InstructorProjects() {
               key={projectId}
               projectId={projectId}
               filter={filter}
+              role={session.role}
             />
           ))}
         </StyledDashboardLayout>

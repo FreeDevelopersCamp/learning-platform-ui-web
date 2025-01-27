@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useOutletContext } from 'react-router-dom';
 
 import { useCount } from '../../contexts/courses/CoursesContext';
 import { useInstructorData } from '../../contexts/instructor/InstructorContext';
@@ -34,6 +35,7 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function InstructorCourses() {
+  const { session } = useOutletContext();
   const { instructorData } = useInstructorData();
   const [filter, setFilter] = useState('All');
   const { count } = useCount();
@@ -89,7 +91,12 @@ function InstructorCourses() {
       <DashboardLayout>
         <StyledDashboardLayout>
           {coursesIds.map((courseId) => (
-            <CourseCard key={courseId} courseId={courseId} filter={filter} />
+            <CourseCard
+              key={courseId}
+              courseId={courseId}
+              filter={filter}
+              role={session.role}
+            />
           ))}
         </StyledDashboardLayout>
       </DashboardLayout>

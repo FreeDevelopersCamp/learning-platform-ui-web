@@ -50,40 +50,29 @@ const XP = styled.span`
   color: #6c757d;
 `;
 
-function Chapter({ course, title, index }) {
+function Chapter({ parentCourse, course, index = 0, role = '' }) {
   const navigate = useNavigate();
 
-  const {
-    _id,
-    name,
-    description,
-    category,
-    topic,
-    status,
-    duration,
-    instructorId,
-    resources = [],
-    tips = [],
-    subCourses = [],
-    xp,
-    created,
-    updated,
-    raters = [],
-    rating,
-  } = course;
+  // Extract properties with fallback values
+  const { _id: courseId, name, xp = 0 } = course;
+  const { name: parentName, _id: parentId } = parentCourse;
 
-  const handleButtonClick = () => {
-    navigate(
-      `/course/${title.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, '-')}/?ex=${index}`,
-    );
+  // Guard against missing data
+  if (!courseId) {
+    return null; // Skip rendering if `courseId` is missing
+  }
+
+  const handleViewCourse = (e) => {
+    e.stopPropagation();
+    // Format parent course name to URL-friendly format
+    const formattedName = parentName.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/course/${formattedName}/${parentId}`);
   };
 
   return (
-    <Card onClick={handleButtonClick}>
+    <Card onClick={role === '6' ? handleViewCourse : null}>
       <Container>
-        <Order>
-          <IoPlayOutline />
-        </Order>
+        <Order>{index}</Order>
         <Title>{name}</Title>
       </Container>
 

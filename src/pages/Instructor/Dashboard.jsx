@@ -43,7 +43,6 @@ function Dashboard() {
     { value: 'roadmaps', label: 'Roadmaps' },
     { value: 'courses', label: 'Courses' },
     { value: 'projects', label: 'Projects' },
-    { value: 'practices', label: 'Practices' },
   ];
 
   return (

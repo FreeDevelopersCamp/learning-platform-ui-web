@@ -78,6 +78,7 @@ function CoursesLayout() {
 
   const { data: userProgress, isLoading: userProgressLoading } =
     useFetchProgressByUserId(user?._id);
+
   const { data: roadmap, isLoading: isLoadingRoadmap } =
     useFetchRoadmapById(roadmapId);
 
@@ -85,11 +86,9 @@ function CoursesLayout() {
     isLoading ||
     userLoading ||
     userProgressLoading ||
-    isLoadingRoadmap ||
     !auth.isAuthenticated ||
     !user ||
-    !userProgress ||
-    !roadmap
+    !userProgress
   )
     return <Spinner />;
 

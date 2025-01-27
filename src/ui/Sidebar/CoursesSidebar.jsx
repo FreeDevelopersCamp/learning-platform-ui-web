@@ -6,6 +6,7 @@ import ProgressCircle from './ProgressCircle';
 
 import { capitalizeWords } from '../../utils/helpers';
 import { IoClose } from 'react-icons/io5';
+import { useState, useEffect } from 'react';
 
 const StyledSidebar = styled.aside`
   position: fixed;
@@ -73,14 +74,30 @@ function CoursesSidebar({
   isActive = true,
 }) {
   const { title } = useParams();
-
-  const { coursesIds = [] } = roadmap;
-
+  const { coursesIds = [], projectsIds = [], order = [] } = roadmap;
   const { completedCoursesIds = [] } = userProgress || {};
+  const [processedOrder, setProcessedOrder] = useState([]);
 
   const handleToggleSidebar = () => {
     toggleSidebar();
   };
+
+  // Process the order in useEffect
+  useEffect(() => {
+    const combinedOrder = order
+      .map((item) => {
+        if (projectsIds.includes(item._id)) {
+          return { ...item, type: 'project' };
+        }
+        if (coursesIds.includes(item._id)) {
+          return { ...item, type: 'course' };
+        }
+        return null; // Skip unknown types
+      })
+      .filter(Boolean); // Remove null values
+
+    setProcessedOrder(combinedOrder);
+  }, [order, coursesIds, projectsIds]);
 
   return (
     <StyledSidebar isOpen={isOpen}>
@@ -96,9 +113,11 @@ function CoursesSidebar({
               }}
             >
               <ProgressCircle
+                roadmapId={roadmap._id}
                 coursesIds={coursesIds}
                 completedCoursesIds={completedCoursesIds}
                 setPersentage={setPersentage}
+                userProgress={userProgress}
               />
               <Title>{capitalizeWords(title)}</Title>
             </div>
@@ -107,17 +126,34 @@ function CoursesSidebar({
             </Button>
           </Header>
           <List>
-            {roadmap.coursesIds.map((courseId, index) => (
-              <Chapter
-                key={index}
-                index={index + 1}
-                courseId={courseId}
-                completedCoursesIds={completedCoursesIds}
-                roadmapId={roadmap._id}
-                topic={roadmap.topic}
-                isActive={isActive}
-              />
-            ))}
+            {(() => {
+              let courseIndex = 0; // Initialize a counter for courses
+              return processedOrder.map((item, index) => {
+                if (item.type === 'project') {
+                  return null; // Skip rendering for projects directly
+                }
+
+                courseIndex++; // Increment the course index for each course
+
+                const nextProject =
+                  processedOrder[index + 1]?.type === 'project'
+                    ? processedOrder[index + 1]
+                    : null;
+
+                return (
+                  <Chapter
+                    key={index}
+                    index={courseIndex}
+                    courseId={item._id}
+                    project={nextProject}
+                    completedCoursesIds={completedCoursesIds}
+                    roadmapId={roadmap._id}
+                    topic={roadmap.topic}
+                    isActive={isActive}
+                  />
+                );
+              });
+            })()}
           </List>
         </>
       )}

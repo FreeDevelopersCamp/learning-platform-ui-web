@@ -9,8 +9,13 @@ export function useCount() {
 export function CoursesProvider({ children }) {
   const [count, setCount] = useState(0);
 
-  const incrementCount = () => setCount((prevCount) => prevCount + 1);
-  const decrementCount = () => setCount((prevCount) => prevCount - 1);
+  const incrementCount = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
+
+  const decrementCount = () => {
+    setCount((prevCount) => prevCount - 1);
+  };
 
   return (
     <CoursesContext.Provider value={{ count, incrementCount, decrementCount }}>

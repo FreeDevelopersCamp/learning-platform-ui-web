@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import FetchAllSubCourses from './FetchAllSubCourses';
+import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
 const ProgressContainer = styled.div`
   height: 42px;
@@ -31,9 +32,16 @@ const ProgressText = styled.div`
   font-weight: bold;
 `;
 
-function ProgressCircle({ coursesIds, completedCoursesIds, setPersentage }) {
+function ProgressCircle({
+  roadmapId,
+  coursesIds,
+  completedCoursesIds,
+  setPersentage,
+  userProgress,
+}) {
   const [progress, setProgress] = useState(0);
   const [allSubCourses, setAllSubCourses] = useState([]);
+  const { mutate: updateProgress } = useUpdateProgress();
 
   useEffect(() => {
     const calculateProgress = () => {
@@ -46,12 +54,30 @@ function ProgressCircle({ coursesIds, completedCoursesIds, setPersentage }) {
       const percentage = totalCount
         ? Math.round((completedCount / totalCount) * 100)
         : 0;
+
       setProgress(percentage);
-      setPersentage(percentage);
+
+      if (roadmapId && userProgress) {
+        const updatedProgress = {
+          ...userProgress,
+          currentRoadmapsIds: userProgress.currentRoadmapsIds.map((roadmap) =>
+            roadmap.itemId === roadmapId
+              ? { ...roadmap, progress: percentage }
+              : roadmap,
+          ),
+        };
+        updateProgress(updatedProgress);
+      }
     };
 
     calculateProgress();
-  }, [allSubCourses, completedCoursesIds, setPersentage]);
+  }, [
+    allSubCourses,
+    completedCoursesIds,
+    roadmapId,
+    userProgress,
+    updateProgress,
+  ]);
 
   return (
     <>

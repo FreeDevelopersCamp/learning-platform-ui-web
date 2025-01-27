@@ -7,7 +7,7 @@ import { IoIosArrowUp } from 'react-icons/io';
 import { LuClock3 } from 'react-icons/lu';
 import { FaCheck } from 'react-icons/fa';
 
-import { convertDurationMinutesToHours } from '../../../utils/helpers';
+import { formatDuration } from '../../../utils/helpers';
 
 const Card = styled.div`
   width: 100%;
@@ -140,14 +140,17 @@ function OrderCards({ index, orderId, type, name, description, duration, xp }) {
     navigate(`/${type}/${orderId}`);
   };
 
+  console.log('type: ', type);
+
+  if (type === 'practice') {
+    return null;
+  }
+
   return (
     <Card>
       <Type onClick={toggleCard}>{type}</Type>
       <Container onClick={toggleCard}>
         <Order>{index}</Order>
-        {/* <Status>
-          <FaCheck />
-        </Status> */}
         <Title>{name}</Title>
         <IconContainer>
           {!isOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
@@ -165,7 +168,7 @@ function OrderCards({ index, orderId, type, name, description, duration, xp }) {
                   marginRight: '5px',
                 }}
               />
-              <p>{convertDurationMinutesToHours(duration)}</p>
+              <Duration>{formatDuration(duration)}</Duration>
             </div>
             <div style={{ display: 'flex' }}>
               <FaCheck

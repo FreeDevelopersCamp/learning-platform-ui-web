@@ -36,15 +36,7 @@ function Roadmaps() {
   const [filteredRoadmaps, setFilteredRoadmaps] = useState([]);
   const [filterCount, setFilterCount] = useState(0);
 
-  const {
-    session,
-    user,
-    userProgress,
-    progress,
-    createProgress,
-    updateProgress,
-    deleteProgress,
-  } = useOutletContext();
+  const { userProgress } = useOutletContext();
   const { allRoadmaps, isAllRoadmapsLoading, allRoadmapsError } = useRoadmaps();
 
   useEffect(() => {
@@ -92,7 +84,7 @@ function Roadmaps() {
       >
         <Total filter={filter} count={filterCount} />
       </Filterbar>
-      <DashboardLayout>
+      <DashboardLayout filterCount={filterCount}>
         <StyledDashboardLayout>
           {filter === 'All'
             ? allRoadmaps.items.map((roadmap, index) => (

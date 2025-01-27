@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import { useLocation } from 'react-router-dom';
 import MainNav from './MainNav';
 import Spinner from '@/ui/Spinner.jsx';
 
@@ -20,16 +20,19 @@ const StyledSidebar = styled.aside`
   }
 `;
 
-function Sidebar({ isOpen, activeMenu, role, onMenuSelect }) {
+function Sidebar({ isOpen, role, onMenuSelect, activeMenu }) {
+  const location = useLocation(); // Get the current path directly in Sidebar
+
   if (!role) return <Spinner />;
 
   return (
     <StyledSidebar isOpen={isOpen}>
       <MainNav
         isOpen={isOpen}
-        activeMenu={activeMenu}
+        currentPath={location.pathname} // Pass the current path to MainNav
         role={role}
         onMenuSelect={onMenuSelect}
+        activeMenu={activeMenu} // Pass active menu to MainNav
       />
     </StyledSidebar>
   );

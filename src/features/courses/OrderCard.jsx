@@ -51,29 +51,9 @@ const Order = styled.div`
   background-color: #001b38;
 `;
 
-const Status = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 25px;
-  height: 25px;
-  font-size: 1.4rem;
-  font-weight: bold;
-  border-radius: 50%;
-  color: #001b38;
-  background-color: #03ef62;
-`;
-
 const Title = styled.div`
   font-size: 1.7rem;
   font-weight: bold;
-  color: var(--color-grey-700);
-`;
-
-const Details = styled.div`
-  padding-top: 0.5rem;
-  margin-top: 1rem;
-  font-size: 1.4rem;
   color: var(--color-grey-700);
 `;
 
@@ -115,41 +95,64 @@ const Start = styled.button`
   &:hover {
     background-color: var(--color-light-green-600);
   }
+
+  &:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+  }
 `;
 
-function OrderCard({ index, course, title, role }) {
+const Details = styled.div`
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  font-size: 1.4rem;
+  color: var(--color-grey-700);
+`;
+
+function OrderCard({ index, parentCourse, course, title, role, userProgress }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    _id,
-    name,
-    description,
-    category,
-    topic,
-    status,
-    duration,
-    instructorId,
-    resources = [],
-    tips = [],
-    subCourses = [],
-    xp,
-    created,
-    updated,
-    raters = [],
-    rating,
-  } = course;
+  const { _id: courseId, name, description, subCourses = [] } = course;
 
-  const toggleCard = () => setIsOpen(!isOpen);
+  // Determine course status
+  const isCompleted =
+    userProgress?.completedCoursesIds &&
+    userProgress.completedCoursesIds.includes(courseId);
 
-  const handleStartClick = () => {
-    navigate(
-      `/course/${title.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, '-')}/?ex=1`,
-    );
+  const isCurrent =
+    userProgress?.currentCoursesIds &&
+    userProgress.currentCoursesIds.includes(courseId);
+
+  const toggleCard = (e) => {
+    e.stopPropagation();
+    setIsOpen(!isOpen);
+  };
+
+  const handleViewCourse = () => {
+    const formattedName = parentCourse.name.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/course/${formattedName}/${parentCourse._id}`);
+  };
+
+  const handleStartClick = (e) => {
+    e.stopPropagation();
+    const formattedName = parentCourse.name.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/course/${formattedName}/${parentCourse._id}`);
+  };
+
+  const renderButton = () => {
+    if (isCompleted) {
+      return <Start disabled>Completed</Start>;
+    } else if (isCurrent) {
+      return <Start onClick={handleStartClick}>Continue</Start>;
+    } else {
+      return <Start onClick={handleStartClick}>Start</Start>;
+    }
   };
 
   return (
-    <Card>
+    <Card onClick={handleViewCourse}>
       <Container>
         <Order>{index}</Order>
         <Title>{name}</Title>
@@ -174,17 +177,19 @@ function OrderCard({ index, course, title, role }) {
           </IconContainer>
         </Button>
 
-        {role === '6' && <Start onClick={handleStartClick}>Start</Start>}
+        {role === '6' && renderButton()}
       </div>
 
       {isOpen && (
         <Details>
-          {subCourses.map((course, index) => (
+          {subCourses.map((subCourse, subIndex) => (
             <Chapter
-              key={index}
-              index={index + 1}
-              course={course}
+              key={subIndex}
+              index={subIndex + 1}
+              parentCourse={parentCourse}
+              course={subCourse}
               title={title}
+              role={role}
             />
           ))}
         </Details>

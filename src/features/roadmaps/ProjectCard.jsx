@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useCount } from '../../contexts/projects/ProjectsContext';
-import { useProject } from '../../hooks/projects/useProject';
+import { useFetchProjectById } from '../../hooks/projects/useProject';
 
 import { FaCheck } from 'react-icons/fa';
 import Spinner from '../../ui/Spinner';
@@ -19,7 +19,9 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
 
   &:hover {
     box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.2);
@@ -115,7 +117,8 @@ const Button = styled.button`
 
 function ProjectCard({ projectId, filter }) {
   const navigate = useNavigate();
-  const { project, projectLoading, projectError } = useProject(projectId);
+  const { project, projectLoading, projectError } =
+    useFetchProjectById(projectId);
   const { incrementCount, decrementCount } = useCount();
 
   useEffect(() => {

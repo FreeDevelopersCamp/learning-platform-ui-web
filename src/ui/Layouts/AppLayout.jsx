@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAuth } from '../../contexts/auth/AuthContext.jsx';
@@ -36,12 +36,29 @@ const Container = styled.div`
 
 function AppLayout() {
   const navigate = useNavigate();
+  const location = useLocation(); // Get the current route
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [activeMenu, setActiveMenu] = useState('dashboard');
+
+  // Dynamically determine the active menu based on the current path
+  const [activeMenu, setActiveMenu] = useState(() => {
+    const path = location.pathname.split('/')[2] || 'dashboard';
+    return path;
+  });
 
   const { auth, session, isLoading } = useAuth();
 
   const mainRef = useRef(null);
+
+  useEffect(() => {
+    // Save active menu to local storage on change
+    localStorage.setItem('activeMenu', activeMenu);
+  }, [activeMenu]);
+
+  useEffect(() => {
+    // Dynamically update the active menu when the path changes
+    const path = location.pathname.split('/')[2] || 'dashboard';
+    setActiveMenu(path);
+  }, [location]);
 
   if (isLoading || !auth || !session) return <Spinner />;
 

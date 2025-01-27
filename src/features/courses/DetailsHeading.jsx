@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { convertDurationMinutesToHours } from '../../utils/helpers.js';
 
-import { FaFreeCodeCamp } from 'react-icons/fa';
+import { useUpdateProgress } from '../../hooks/learner/useProgress';
+
+import { formatDuration } from '../../utils/helpers.js';
+
 import { LuClock3 } from 'react-icons/lu';
 import { GoDotFill } from 'react-icons/go';
 import { FaRegBookmark } from 'react-icons/fa6';
@@ -51,6 +53,11 @@ const Button = styled.button`
 
   &:hover {
     background-color: var(--color-light-green-600);
+  }
+
+  &:disabled {
+    background-color: var(--color-light-green-700);
+    color: var(--color-mutedblue-300);
   }
 `;
 
@@ -113,11 +120,14 @@ const XP = styled.span`
   color: var(--color-mutedblue-900);
 `;
 
-function DetailsHeading({ course, title, session, userProgress, role }) {
+function DetailsHeading({ course, title, userProgress, role }) {
   const navigate = useNavigate();
 
+  const { mutate: updateProgress, isLoading: updatingProgress } =
+    useUpdateProgress();
+
   const {
-    _id,
+    _id: courseId,
     name,
     description,
     category,
@@ -143,24 +153,44 @@ function DetailsHeading({ course, title, session, userProgress, role }) {
     completedCoursesIds = [],
     completedProjectsIds = [],
     completedPracticesIds = [],
-    xpp,
+    xp: xpp,
   } = userProgress || {};
 
-  const isCurrent = currentCoursesIds.includes(_id);
-  const isCompleted = completedCoursesIds.includes(_id);
+  const isCurrent = currentCoursesIds.includes(courseId);
+  const isCompleted = completedCoursesIds.includes(courseId);
 
-  const handleUpdateCourse = (courseId) => {
+  const handleUpdateCourse = () => {
     navigate(`/course/${courseId}`);
   };
 
-  const handleContinueCourse = (courseId) => {
+  const handleContinueCourse = () => {
     navigate(`/course/${courseId}`);
   };
 
   const handlePracticeCourse = () => {
-    navigate(
-      `/course/${title.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, '-')}/?ex=1`,
-    );
+    const sanitizedCourseName = name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, '-');
+    navigate(`/course/${sanitizedCourseName}/${courseId}`);
+  };
+
+  const handleBookmarkCourse = () => {
+    if (
+      !userProgress ||
+      userProgress.BookmarksIds.some((bookmark) => bookmark.itemId === courseId)
+    )
+      return;
+
+    const updatedProgress = {
+      ...userProgress,
+      BookmarksIds: [
+        ...userProgress.BookmarksIds,
+        { itemId: courseId, type: 'course' },
+      ],
+    };
+
+    updateProgress(updatedProgress);
   };
 
   const renderLevelIcons = (level) => {
@@ -224,21 +254,27 @@ function DetailsHeading({ course, title, session, userProgress, role }) {
     return levelIcons[level] || levelIcons['0'];
   };
 
+  // console.log('userProgress: ', userProgress)print
   return (
     <Container>
       <Topic>{name}</Topic>
       <Buttons>
-        {session.role === '5' ? (
-          <Button onClick={() => handleUpdateCourse(_id)}>Update Course</Button>
+        {role === '5' ? (
+          <Button onClick={() => handleUpdateCourse()}>Update Course</Button>
         ) : isCurrent ? (
-          <Button onClick={() => handleContinueCourse(_id)}>Continue</Button>
+          <Button onClick={() => handleContinueCourse()}>Continue</Button>
+        ) : isCompleted ? (
+          <Button disabled>Completed</Button>
         ) : (
           <Button onClick={() => handlePracticeCourse()}>Practice Now</Button>
         )}
-        <Bookmark>
-          <FaRegBookmark style={{ fontSize: '1.6rem', color: '#fcce0d' }} />
-          Bookmark
-        </Bookmark>
+
+        {role === '6' && (
+          <Bookmark onClick={() => handleBookmarkCourse()}>
+            <FaRegBookmark style={{ fontSize: '1.6rem', color: '#fcce0d' }} />
+            Bookmark
+          </Bookmark>
+        )}
       </Buttons>
       <Stats>
         <Level>
@@ -253,7 +289,7 @@ function DetailsHeading({ course, title, session, userProgress, role }) {
         </Level>
         <Span>
           <LuClock3 style={{ fontSize: '1.6rem', marginTop: '0px' }} />
-          <span>{convertDurationMinutesToHours(duration)}</span>
+          <span>{formatDuration(duration)}</span>
         </Span>
         <Span>
           {'< >'}

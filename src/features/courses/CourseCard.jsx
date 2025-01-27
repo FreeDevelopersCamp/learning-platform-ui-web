@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useCount } from '../../contexts/courses/CoursesContext';
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
 
-import { convertDurationMinutesToHours } from '../../utils/helpers';
+import { formatDuration } from '../../utils/helpers';
 import Spinner from '../../ui/Spinner';
+import Progress from '../../ui/Progress';
 
 const Card = styled.div`
   width: 300px;
@@ -107,63 +107,91 @@ const Button = styled.button`
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  color: #001b38;
-  background-color: #f9f9f9;
-  border: 2px solid #003366;
+  color: ${(props) => props.color || '#001b38'};
+  background-color: ${(props) => props.bgColor || '#f9f9f9'};
+  border: 2px solid ${(props) => props.borderColor || '#003366'};
 
   &:hover {
     background-color: var(--color-grey-300);
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--color-grey-500);
+    background-color: var(--color-grey-100);
+    border: 2px solid var(--color-grey-300);
+  }
 `;
 
-function CourseCard({ courseId, filter }) {
+function CourseCard({ courseId, filter, role, progressStatus }) {
   const navigate = useNavigate();
-  const {
-    data: course,
-    isLoading: isCourseLoading,
-    courseError,
-  } = useFetchCourseById(courseId);
-  const { incrementCount, decrementCount } = useCount();
+  const { data: course, isLoading, error } = useFetchCourseById(courseId);
 
-  useEffect(() => {
-    if (
-      course &&
-      (filter === 'All' || course.name.toLowerCase() === filter.toLowerCase())
-    ) {
-      incrementCount();
-    }
-
-    return () => {
-      if (
-        course &&
-        (filter === 'All' || course.name.toLowerCase() === filter.toLowerCase())
-      ) {
-        decrementCount();
-      }
-    };
-  }, [course, filter, incrementCount, decrementCount]);
-
-  if (isCourseLoading || !course || courseError) return <Spinner />;
+  if (isLoading || !course || error) return <Spinner />;
 
   const {
     name,
     description,
     duration,
-    exercises = [],
-    level,
-    resources = [],
-    reviews = [],
     instructor: { user },
-    subCourses = [],
-    tips = [],
     topic,
-    xp,
-    rating,
-    status, // 1: short ,,, 0: resourses
   } = course;
 
   const handleViewDetails = () => {
     navigate(`/course/${courseId}`);
+  };
+
+  const renderButton = () => {
+    if (role === '5') {
+      return <Button onClick={handleViewDetails}>View Details</Button>;
+    }
+
+    if (role === '6') {
+      if (progressStatus === 'completed') {
+        return (
+          <Button
+            disabled
+            bgColor="#e0ffe0"
+            color="#007700"
+            borderColor="#00aa00"
+          >
+            Completed
+          </Button>
+        );
+      }
+
+      if (progressStatus === 'inProgress') {
+        return (
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/course/${courseId}/continue`);
+            }}
+            bgColor="#fffbcc"
+            color="#aa8800"
+            borderColor="#aa8800"
+          >
+            Continue
+          </Button>
+        );
+      }
+
+      return (
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/course/${courseId}/start`);
+          }}
+          bgColor="#cce5ff"
+          color="#0056b3"
+          borderColor="#0056b3"
+        >
+          Start
+        </Button>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -189,8 +217,8 @@ function CourseCard({ courseId, filter }) {
           </InstructorName>
         </Instructor>
         <Details>
-          <Duration>{convertDurationMinutesToHours(duration)}</Duration>
-          <Button>View Details</Button>
+          <Duration>{formatDuration(duration)}</Duration>
+          {renderButton()}
         </Details>
       </Card>
     )

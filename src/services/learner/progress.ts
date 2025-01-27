@@ -1,19 +1,7 @@
 import { ContentType, HttpClient } from '../../apis/http-client';
+import { getDefaultHeaders } from '../../utils/headers.js';
 
 export default class Progress extends HttpClient {
-  private static progress: Progress;
-
-  private constructor() {
-    super(); // Call the parent class constructor
-  }
-
-  public static getProgress(): Progress {
-    if (!Progress.progress) {
-      Progress.progress = new Progress();
-    }
-    return Progress.progress;
-  }
-
   /**
    * Fetch a list of progresses.
    *
@@ -28,6 +16,7 @@ export default class Progress extends HttpClient {
       path: `/progress`,
       method: 'GET',
       secure: true,
+      headers: getDefaultHeaders(),
       ...params,
     });
   }
@@ -46,6 +35,8 @@ export default class Progress extends HttpClient {
       path: `/progress/${id}`,
       method: 'GET',
       secure: true,
+      headers: getDefaultHeaders(),
+
       ...params,
     });
   }
@@ -64,6 +55,8 @@ export default class Progress extends HttpClient {
       path: `/progress/userId/${userId}`,
       method: 'GET',
       secure: true,
+      headers: getDefaultHeaders(),
+
       ...params,
     });
   }
@@ -84,6 +77,8 @@ export default class Progress extends HttpClient {
       body: data,
       secure: true,
       type: ContentType.Json,
+      headers: getDefaultHeaders(),
+
       ...params,
     });
   }
@@ -104,6 +99,8 @@ export default class Progress extends HttpClient {
       body: data,
       secure: true,
       type: ContentType.Json,
+      headers: getDefaultHeaders(),
+
       ...params,
     });
   }
@@ -122,6 +119,8 @@ export default class Progress extends HttpClient {
       path: `/progress/${id}`,
       method: 'DELETE',
       secure: true,
+      headers: getDefaultHeaders(),
+
       ...params,
     });
   }
