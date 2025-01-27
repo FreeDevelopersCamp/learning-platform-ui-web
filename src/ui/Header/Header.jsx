@@ -252,23 +252,23 @@ const Header = ({ page, toggleSidebar, atHome = false }) => {
                   My Profile
                 </Menus.Button>
 
-                <Menus.Button
-                  icon={<NotificationsIcon />}
-                  onClick={() => console.log('Logout clicked')}
-                >
-                  Notifications
-                </Menus.Button>
+                {/*<Menus.Button*/}
+                {/*  icon={<NotificationsIcon />}*/}
+                {/*  onClick={() => console.log('Logout clicked')}*/}
+                {/*>*/}
+                {/*  Notification Center*/}
+                {/*</Menus.Button>*/}
 
-                <Menus.Button
-                  icon={<EmailIcon />}
-                  onClick={() => console.log('Logout clicked')}
-                >
-                  Email
-                </Menus.Button>
+                {/*<Menus.Button*/}
+                {/*  icon={<EmailIcon />}*/}
+                {/*  onClick={() => console.log('Logout clicked')}*/}
+                {/*>*/}
+                {/*  Email*/}
+                {/*</Menus.Button>*/}
 
                 <Menus.Button
                   icon={<HiChatBubbleLeftRight />}
-                  onClick={() => console.log('Logout clicked')}
+                  onClick={() => navigate('/chat')}
                 >
                   Chat
                 </Menus.Button>

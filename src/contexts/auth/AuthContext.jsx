@@ -1,11 +1,17 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import { Auth } from '../../apis/auth/Auth/Auth.ts';
+import { Auth } from '@/apis/auth/Auth/Auth.ts';
 
-// Context
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
@@ -15,25 +21,23 @@ const AuthProvider = ({ children }) => {
     username: null,
   });
   const [session, setSession] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [sessions, setSessions] = useState([]); // State for storing sessions
+  const [isLoading, setIsLoading] = useState(false); // Unified loading state
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // Fetch Session
-  const fetchSession = async () => {
-    setIsLoading(true);
+  // Fetch the current session
+  const fetchSession = useCallback(async () => {
     const token = localStorage.getItem('token');
     if (!token) {
       setAuth({ isAuthenticated: false, role: null, username: null });
       setSession(null);
-      setIsLoading(false);
       return;
     }
 
     try {
       const fetchedSession = await new Auth().getSession();
-
       setAuth({
         isAuthenticated: true,
         role: fetchedSession.role,
@@ -44,49 +48,56 @@ const AuthProvider = ({ children }) => {
       localStorage.removeItem('token');
       setAuth({ isAuthenticated: false, role: null, username: null });
       setSession(null);
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, []);
 
-  // Login
-  const login = async ({ username, password, role }) => {
-    setIsLoading(true);
+  // Fetch all sessions
+  const listSessions = useCallback(async () => {
     try {
-      const response = await new Auth().login({
-        userName: username,
-        password,
-        role,
-      });
-
-      if (response.token) {
-        localStorage.setItem('token', response.token);
-        setAuth({ isAuthenticated: true, role, username });
-        toast.success('Login successful!');
-        navigate('/home');
-        await fetchSession(); // Fetch the updated session after login
-      } else {
-        throw new Error('No token received');
-      }
+      const fetchedSessions = await new Auth().listSession();
+      setSessions(fetchedSessions || []);
+      return fetchedSessions;
     } catch (err) {
-      // Handle error based on the backend response structure
-      const errorMessage = err.response?.data?.message || 'Failed to login';
-      toast.error(errorMessage);
-
-      navigate('/login'); // Keep the user on the login page
-    } finally {
-      setIsLoading(false);
+      toast.error('Failed to fetch sessions');
+      console.error('Error fetching sessions:', err);
     }
-  };
+  }, []);
 
-  // Logout
-  const logout = async () => {
+  // Login method
+  const login = useCallback(
+    async ({ username, password, role }) => {
+      setIsLoading(true);
+      try {
+        const response = await new Auth().login({
+          userName: username,
+          password,
+          role,
+        });
+
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          setAuth({ isAuthenticated: true, role, username });
+          toast.success('Login successful!');
+          await fetchSession(); // Fetch session after login
+          navigate('/home');
+        } else {
+          throw new Error('No token received');
+        }
+      } catch (err) {
+        const errorMessage = err.response?.data?.message || 'Failed to login';
+        toast.error(errorMessage);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [fetchSession, navigate],
+  );
+
+  // Logout method
+  const logout = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-
-      if (token) {
-        await new Auth().logout();
-      }
+      if (token) await new Auth().logout();
 
       queryClient.clear();
       localStorage.removeItem('token');
@@ -97,33 +108,32 @@ const AuthProvider = ({ children }) => {
     } catch (err) {
       toast.error('Logout failed. Please try again.');
     }
-  };
+  }, [navigate, queryClient]);
 
+  // Initialize session on mount
   useEffect(() => {
     fetchSession();
-  }, []);
+  }, [fetchSession]);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        auth,
-        session,
-        login,
-        logout,
-        isLoading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      auth,
+      session,
+      sessions,
+      login,
+      logout,
+      isLoading,
+      listSessions,
+    }),
+    [auth, session, sessions, login, logout, isLoading, listSessions],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// Hook for simplicity
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };
 

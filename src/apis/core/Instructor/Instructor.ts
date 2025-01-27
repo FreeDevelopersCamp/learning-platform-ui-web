@@ -135,6 +135,25 @@ export default class Instructor extends HttpClient {
    * No description
    *
    * @tags instructor
+   * @name Verify
+   * @request GET:/instructor/approve/{id}
+   * @secure
+   * @response `default` Approve result
+   */
+  verify(id: string, params = {}) {
+    return this.request({
+      path: `/instructor/verify/${id}`,
+      method: 'GET',
+      secure: true,
+      ...params,
+      headers: getDefaultHeaders(),
+    });
+  }
+
+  /**
+   * No description
+   *
+   * @tags instructor
    * @name Reject
    * @request DELETE:/instructor/reject/{id}
    * @secure

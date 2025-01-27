@@ -85,7 +85,7 @@ export class Auth<
    *
    * @tags Authentication
    * @name getSession
-   * @request POST:/Auth/session
+   * @request GET:/Auth/session
    * @secure
    * @response `default` `` getSession
    */
@@ -95,5 +95,23 @@ export class Auth<
       method: 'GET',
       secure: true,
       ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Authentication
+   * @name listSession
+   * @request GET:/Auth/sessions
+   * @secure
+   * @response `default` `` getSession
+   */
+  listSession = (params: RequestParams = {}) =>
+    this.request<any, Session[]>({
+      path: `/Auth/sessions`,
+      method: 'GET',
+      secure: true,
+      ...params,
+      headers: getDefaultHeaders(),
     });
 }
