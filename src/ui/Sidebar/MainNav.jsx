@@ -104,6 +104,18 @@ function MainNav({ isOpen, role, onMenuSelect }) {
       { id: 'projects', icon: <GoProjectRoadmap />, label: 'Projects' },
       { id: 'practices', icon: <BiTask />, label: 'Practices' },
       { id: 'learner', icon: <HiOutlineUsers />, label: 'Learner' },
+      { id: 'courses_table', icon: <FaTasks />, label: 'Courses Table' },
+      {
+        id: 'projects_table',
+        icon: <GoProjectRoadmap />,
+        label: 'Projects Table',
+      },
+      { id: 'practices_table', icon: <BiTask />, label: 'Practices Table' },
+      {
+        id: 'roadmaps_table',
+        icon: <HiPresentationChartLine />,
+        label: 'Roadmaps Table',
+      },
     ];
 
     const learnerMenu = [

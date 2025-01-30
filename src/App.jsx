@@ -37,6 +37,10 @@ import InstructorDashboard from './pages/Instructor/Dashboard';
 import InstructorRoadmaps from './features/instructor/roadmaps/InstructorRoadmaps';
 import InstructorProjects from './features/instructor/roadmaps/InstructorProjects';
 import InstructorPractices from './features/instructor/roadmaps/InstructorPractices';
+import CoursesTable from './pages/Instructor/CoursesTable';
+import ProjectsTable from './pages/Instructor/ProjectsTable';
+import PracticesTable from './pages/Instructor/PracticesTable';
+import RoadmapsTable from './pages/Instructor/RoadmapsTable';
 
 import LearnerPage from './pages/Learner/LearnerPage';
 import Library from './pages/Learner/Library';
@@ -352,6 +356,39 @@ function App() {
                           element={
                             <ProtectedRoute role="5">
                               <InstructorPractices />
+                            </ProtectedRoute>
+                          }
+                        />
+
+                        <Route
+                          path="instructor/courses_table"
+                          element={
+                            <ProtectedRoute role="5">
+                              <CoursesTable />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/projects_table"
+                          element={
+                            <ProtectedRoute role="5">
+                              <ProjectsTable />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/practices_table"
+                          element={
+                            <ProtectedRoute role="5">
+                              <PracticesTable />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/roadmaps_table"
+                          element={
+                            <ProtectedRoute role="5">
+                              <RoadmapsTable />
                             </ProtectedRoute>
                           }
                         />
