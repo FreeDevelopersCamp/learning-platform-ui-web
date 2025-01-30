@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
+import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
 import Resources from './Resources';
 import Exercises from './Exercises';
@@ -10,9 +12,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
-  gap: 1rem;
+  padding: 1rem 0;
+  margin-top: 0;
 `;
 
 const Description = styled.div`
@@ -56,14 +59,39 @@ const ResourceItem = styled.li`
   }
 `;
 
-function ViewCourse({ order }) {
-  const {
-    data: course,
-    isLoading: isCourseLoading,
-    courseError,
-  } = useFetchCourseById(order.id);
+function ViewCourse({ order, userProgress }) {
+  const { data: course, isLoading: isCourseLoading } = useFetchCourseById(
+    order.id,
+  );
+  const { mutate: updateProgress, isLoading: updatingProgress } =
+    useUpdateProgress();
 
-  if (isCourseLoading || !course || courseError) return <Spinner />;
+  useEffect(() => {
+    if (!course || !userProgress || !userProgress._id || !course._id) return;
+
+    if (!userProgress.completedCoursesIds.includes(course._id)) {
+      const updatedProgress = {
+        _id: userProgress._id,
+        userId: userProgress.user?._id,
+        completedCoursesIds: [
+          ...new Set([...userProgress.completedCoursesIds, course._id]),
+        ],
+        spentTime: (userProgress.spentTime || 0) + (course.duration || 0),
+        xp: (userProgress.xp || 0) + (course.xp || 0),
+      };
+
+      updateProgress(updatedProgress, {
+        onError: (error) => {
+          console.error(
+            '❌ Failed to update progress:',
+            error.response?.data || error,
+          );
+        },
+      });
+    }
+  }, [course, userProgress, updateProgress]);
+
+  if (isCourseLoading || updatingProgress) return <Spinner />;
 
   const { name, description, resources = [], status, exercises } = course;
 

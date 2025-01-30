@@ -7,6 +7,11 @@ import { formatDuration } from '../../../utils/helpers';
 import Stat from './Stat';
 
 function Stats({ userProgress }) {
+  const passedProjectsCount =
+    userProgress?.currentProjectsIds?.filter(
+      (project) => project.status === '2',
+    ).length || 0;
+
   return (
     <>
       <Stat
@@ -20,7 +25,7 @@ function Stats({ userProgress }) {
       </Stat>
       <Stat
         title="Projects Passed"
-        data={userProgress.completedProjectsIds.length}
+        data={passedProjectsCount}
         bgColor="#fce4ec"
         iconColor="#880e4f"
         iconBgColor="#f8bbd0"

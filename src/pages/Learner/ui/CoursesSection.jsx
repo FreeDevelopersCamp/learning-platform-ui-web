@@ -26,11 +26,14 @@ const Header = styled.div`
     color: #111827;
   }
 
-  a {
+  button {
     font-size: 1.5rem;
     color: #2563eb; /* Blue link */
     text-decoration: none;
     font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
 
     &:hover {
       text-decoration: underline;
@@ -63,7 +66,7 @@ const CourseInfo = styled.div`
   gap: 1rem;
 `;
 
-// Icon Placeholder (Replace with actual icons if available)
+// Icon Placeholder
 const Icon = styled.div`
   width: 40px;
   height: 40px;
@@ -97,93 +100,40 @@ const CourseDetails = styled.div`
   }
 `;
 
-// Progress Bar Wrapper
-const ProgressWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-`;
-
-// Progress Bar
-const ProgressBar = styled.div`
-  height: 8px;
-  border-radius: 4px;
-  background-color: #e5e7eb;
-  overflow: hidden;
-  margin-top: 0.5rem;
-
-  div {
-    height: 100%;
-    width: ${(props) => props.percentage || 0}%;
-    background-color: #03ef62; /* Green color */
-  }
-`;
-
 // Continue Button
 const ContinueButton = styled.button`
   border: 2px solid transparent;
   border-radius: 4px;
-
-  content: '';
-  display: block;
-  inset: 0px;
   font-size: 1.4rem;
   font-weight: 500;
-
   display: inline-flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  font-family: Studio-Feixen-Sans, Arial, sans-serif;
-  font-weight: 700;
-
-  -webkit-box-pack: center;
+  align-items: center;
   justify-content: center;
-  line-height: 1;
-  margin: 0px;
-  outline: 0px;
   padding: 0px 16px;
-  position: relative;
-  text-decoration: none;
-  transition: background-color 125ms ease-out;
-
-  user-select: none;
-
   background-color: var(--wf-brand--main, #03ef62);
   color: var(--wf-brand--text-on-color, #05192d);
-
-  font-size: var(--wf-button--medium, 14px);
-
   height: 36px;
   min-width: 36px;
-  width: auto;
-
   cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #08e669; /* Darker green */
-    border-color: var(--color-grey-400); /* Darker green */
+    background-color: #08e669;
+    border-color: var(--color-grey-400);
   }
 `;
 
 function CoursesSection({ userProgress }) {
-  // const navigate = useNavigate();
-  // const courseId = userProgress?.currentCoursesIds[0]?.itemId;
-  // const progress = userProgress?.currentCoursesIds[0]?.progress;
+  const navigate = useNavigate();
 
-  // Dummy course data
-  const courses = [
-    { title: 'Working with Dates and Times In Python', progress: 54 },
-    { title: 'Writing Efficient Python Code', progress: 55 },
-    {
-      title: 'Introduction to Data Visualization with Matplotlib',
-      progress: 2,
-    },
-    { title: 'Introduction to Data Literacy', progress: 39 },
-    { title: 'Data Science for Business', progress: 16 },
-  ];
+  // Ensure userProgress is valid
+  if (
+    !userProgress?.currentCoursesIds ||
+    userProgress.currentCoursesIds.length === 0
+  ) {
+    return;
+  }
 
-  console.log('userProgress;', userProgress);
   return (
     <SectionWrapper>
       <Header>
@@ -191,11 +141,17 @@ function CoursesSection({ userProgress }) {
           <RocketLaunchIcon />
           <h2>Pick up where you left off</h2>
         </div>
-        <a href="#">See All In My Library</a>
+        {/* ✅ Updated: Use navigate() instead of href */}
+        <button onClick={() => navigate('/learner/library')}>
+          See All In My Library
+        </button>
       </Header>
 
-      {courses.map((course, index) => (
-        <CourseItem key={index}>
+      {userProgress.currentCoursesIds.map((course, index) => (
+        <CourseItem
+          key={index}
+          onClick={() => navigate(`/courses/${course.itemId}`)}
+        >
           <CourseInfo>
             <Icon>
               <TipsAndUpdatesIcon />
@@ -205,7 +161,7 @@ function CoursesSection({ userProgress }) {
               <span>Course</span>
               <p>{course.title}</p>
               <Progress
-                progress={50}
+                progress={course.progress || 0}
                 bgColor="#E0E1E9"
                 fillColor="#03EF62"
                 labelColor="#000"
@@ -214,7 +170,15 @@ function CoursesSection({ userProgress }) {
             </CourseDetails>
           </CourseInfo>
 
-          <ContinueButton>Continue</ContinueButton>
+          {/* ✅ Updated: Prevent duplicate navigation */}
+          <ContinueButton
+            onClick={(e) => {
+              e.stopPropagation(); // Prevents triggering CourseItem's onClick
+              navigate(`/courses/${course.itemId}`);
+            }}
+          >
+            Continue
+          </ContinueButton>
         </CourseItem>
       ))}
     </SectionWrapper>

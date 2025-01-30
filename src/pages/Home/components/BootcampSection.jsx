@@ -16,7 +16,6 @@ const BootcampTitle = styled.h1`
   font-weight: bold;
   margin-bottom: 10px;
   color: #d1d5db;
-
 `;
 
 const Highlight = styled.span`
@@ -59,7 +58,9 @@ const JobCard = styled.div`
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
   border: 2px solid transparent;
 
   &:hover,

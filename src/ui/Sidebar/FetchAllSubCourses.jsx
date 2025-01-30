@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
-import Spinner from '../Spinner';
 
 function FetchAllSubCourses({ courseId, setAllSubCourses }) {
   const {

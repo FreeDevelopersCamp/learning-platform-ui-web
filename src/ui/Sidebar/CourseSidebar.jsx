@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
+import { capitalizeWords } from '../../utils/helpers';
+import { IoClose, IoMenu } from 'react-icons/io5';
+
 import CourseProgressCircle from './CourseProgressCircle';
 import SubCourses from './SubCourses';
-import { capitalizeWords } from '../../utils/helpers';
-
-import { IoClose, IoMenu } from 'react-icons/io5';
 
 const StyledSidebar = styled.aside`
   position: fixed;
@@ -13,15 +13,11 @@ const StyledSidebar = styled.aside`
   height: 100vh;
   width: ${(props) => (props.isOpen ? '14%' : '0')};
   padding: ${(props) => (props.isOpen ? '8px 0' : '0')};
-  background-color: var(--color-grey-0);
+  background-color: #fff !important; /* Ensure white background */
   border-right: 1px solid var(--color-grey-50);
   overflow-y: auto;
   transition: all 0.3s ease-in-out;
   z-index: 1000;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const Header = styled.div`
@@ -54,13 +50,7 @@ const List = styled.ul`
   padding: 1rem;
 `;
 
-function CourseSidebar({
-  isOpen,
-  toggleSidebar,
-  course,
-  userProgress,
-  setPersentage,
-}) {
+function CourseSidebar({ isOpen, toggleSidebar, course, userProgress }) {
   const { completedCoursesIds = [] } = userProgress || {};
   const { subCourses = [] } = course || {};
 
@@ -73,7 +63,6 @@ function CourseSidebar({
               courseId={course._id}
               coursesIds={subCourses}
               completedCoursesIds={completedCoursesIds}
-              setPersentage={setPersentage}
               userProgress={userProgress}
             />
             <Title>{capitalizeWords(course.name)}</Title>

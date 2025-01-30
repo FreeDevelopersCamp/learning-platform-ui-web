@@ -144,6 +144,7 @@ function App() {
                           }
                         />
                       </Route>
+
                       <Route element={<AppLayout />}>
                         <Route
                           path="admin"
@@ -370,14 +371,6 @@ function App() {
                             }
                           />
                           <Route
-                            path="learner/leaderboard"
-                            element={
-                              <ProtectedRoute role="6">
-                                <LearnerPage />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
                             path="learner/library"
                             element={
                               <ProtectedRoute role="6">
@@ -493,6 +486,7 @@ function App() {
                           }
                         />
                       </Route>
+
                       <Route path="login" element={<AuthPage />} />
                       <Route path="signup" element={<AuthPage />} />
                       <Route

@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
-import EmailIcon from '@mui/icons-material/Email';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import PeopleIcon from '@mui/icons-material/People';
 import { MdMenuOpen, MdOutlineMenu, MdTranslate } from 'react-icons/md';
 import {
@@ -28,7 +26,6 @@ import { getRoleCode } from '@/utils/helpers.js';
 
 import AuthButtons from './AuthButtons';
 import ShortcutsMenus from './ShortcutsMenu';
-import SearchBar from './SearchBar';
 import Menus from './ProfileMenu';
 import SpinnerMini from '../SpinnerMini';
 import NavBar from './NavBar';
@@ -180,7 +177,6 @@ const Header = ({ page, toggleSidebar, atHome = false }) => {
           </div>
         )}
         <NavBar hidden={!atHome} />
-        <SearchBar />
       </div>
 
       {session && session?.active ? (

@@ -6,7 +6,7 @@ const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 320px;
+  max-width: 500px;
   height: 45px;
   border: 2px solid var(--color-grey-400);
   border-radius: 8px;
@@ -27,17 +27,12 @@ const SearchContainer = styled.div`
 
 const SearchInput = styled.input`
   flex: 1;
-  border: none !important;
-  outline: none !important;
+  border: none;
+  outline: none;
   background: transparent;
   font-size: 1.4rem;
   padding-left: 0.8rem;
   width: 100%;
-
-  &:focus {
-    border: none;
-    outline: none;
-  }
 
   &::placeholder {
     color: var(--color-grey-500);
@@ -65,7 +60,7 @@ function Filter({ onSearchChange }) {
       <StyledSearchIcon />
       <SearchInput
         type="text"
-        placeholder="Search Roadmaps..."
+        placeholder="Search Courses..."
         value={searchQuery}
         onChange={handleChange}
       />

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { BsFillLightningFill } from 'react-icons/bs';
 
 import UserAvatar from '../../../ui/User/UserAvatar';
+import { formatDuration } from '../../../utils/helpers'; // Import duration formatter
 
 const StyledProgressSection = styled.div`
   display: flex;
@@ -31,21 +32,20 @@ const ProfileSection = styled.div`
   }
 
   button {
-    font-size: 1.5rem; /* Tailwind: text-lg */
-    font-weight: 500; /* Tailwind: font-medium */
-    color: #6b7280; /* Tailwind: text-gray-500 */
-    background: none; /* Remove default button styles */
-    border: none; /* Remove default border */
-    outline: none; /* Remove focus outline */
-    cursor: pointer; /* Change to pointer on hover */
-    transition: color 0.3s ease; /* Smooth transition for color */
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #6b7280;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
 
     &:hover {
-      color: #4b5563; /* Tailwind: text-gray-600 */
+      color: #4b5563;
     }
 
     &:active {
-      color: #1f2937; /* Tailwind: text-gray-800 */
+      color: #1f2937;
     }
   }
 `;
@@ -118,18 +118,18 @@ const DailyStreak = styled.div`
       .label {
         font-size: 1.2rem;
         font-weight: 500;
-        color: #6b7280; /* Gray for the day label */
+        color: #6b7280;
       }
 
       .circle {
         width: 24px;
         height: 24px;
         border-radius: 50%;
-        background-color: #e5e7eb; /* Gray for inactive */
+        background-color: #e5e7eb;
         transition: background-color 0.3s ease;
 
         &.active {
-          background-color: #3b82f6; /* Blue for active */
+          background-color: #3b82f6;
         }
       }
     }
@@ -141,18 +141,20 @@ const CompletionStats = styled.div`
   grid-template-columns: repeat(3, 1fr);
   justify-content: space-between;
   width: 100%;
+  gap: 0.5rem;
 
   div {
     text-align: center;
+    padding: 0.5rem 0;
 
     p {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-weight: 500;
       color: #1f2937;
     }
 
     span {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: 500;
     }
 
@@ -178,18 +180,26 @@ const TotalHours = styled.div`
   span {
     font-size: 1.75rem;
     font-weight: 600;
-    color: #1f2937; /* Gray for the total hours label */
+    color: #1f2937;
   }
 `;
 
-function ProgressSection({ user }) {
+function ProgressSection({ user, userProgress }) {
   const navigate = useNavigate();
-
   const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']; // Labels for days of the week
+
+  // **Extract user progress statistics**
+  const totalHours = formatDuration(userProgress?.spentTime || 0);
+  const completedCourses = userProgress?.completedCoursesIds?.length || 0;
+  const completedRoadmaps = userProgress?.completedRoadmapsIds?.length || 0;
+
+  // **Filter projects that have `status === '2'` (Passed)**
+  const completedProjects =
+    userProgress?.currentProjectsIds?.filter((p) => p.status === '2')?.length ||
+    0;
 
   function handleClick(e) {
     e.preventDefault();
-    console.log(user);
     navigate(`/profile?username=${user.userName}`);
   }
 
@@ -208,11 +218,11 @@ function ProgressSection({ user }) {
       <StatsRow>
         <div>
           <span>Daily XP</span>
-          <p>0/250</p>
+          <p>50/250</p>
         </div>
         <div>
           <span>Total XP</span>
-          <p>175,959</p>
+          <p>{userProgress.xp}</p>
         </div>
       </StatsRow>
 
@@ -220,7 +230,7 @@ function ProgressSection({ user }) {
 
       <TotalHours>
         <p>Total Hours Spent: </p>
-        <span> 56h 14m</span>
+        <span>{totalHours}</span>
       </TotalHours>
 
       <Divider />
@@ -232,14 +242,14 @@ function ProgressSection({ user }) {
             <span className="streak-icon">
               <BsFillLightningFill />
             </span>
-            <span>0 Days</span>
+            <span>1 Days</span>
           </div>
         </div>
         <div className="streak-wrapper">
           {days.map((day, index) => (
             <div className="day" key={index}>
               <span className="label">{day}</span>
-              <div className={`circle ${index < 2 ? 'active' : ''}`} />
+              <div className={`circle ${index < 1 ? 'active' : ''}`} />
             </div>
           ))}
         </div>
@@ -249,15 +259,15 @@ function ProgressSection({ user }) {
 
       <CompletionStats>
         <div>
-          <p>31</p>
+          <p>{completedCourses}</p>
           <span>Courses completed</span>
         </div>
         <div>
-          <p>3</p>
+          <p>{completedRoadmaps}</p>
           <span>Roadmaps completed</span>
         </div>
         <div>
-          <p>5</p>
+          <p>{completedProjects}</p>
           <span>Projects completed</span>
         </div>
       </CompletionStats>

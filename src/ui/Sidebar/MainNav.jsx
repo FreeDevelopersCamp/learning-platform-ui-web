@@ -120,12 +120,6 @@ function MainNav({ isOpen, role, onMenuSelect }) {
         label: 'My Library',
       },
       {
-        id: 'leaderboard',
-        path: '/learner/leaderboard',
-        icon: <MdLeaderboard />,
-        label: 'Leaderboard',
-      },
-      {
         id: 'roadmaps',
         path: '/learner/roadmaps',
         icon: <InsightsIcon />,

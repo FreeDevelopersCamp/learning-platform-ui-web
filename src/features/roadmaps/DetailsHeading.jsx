@@ -84,9 +84,7 @@ function DetailsHeading({
   const navigate = useNavigate();
 
   const {
-    _id,
     name,
-    description,
     duration,
     coursesIds = [],
     projectsIds = [],
@@ -96,15 +94,7 @@ function DetailsHeading({
     order,
   } = roadmap;
 
-  const {
-    currentRoadmapsIds = [],
-    currentCoursesIds = [],
-    completedRoadmapsIds = [],
-    completedCoursesIds = [],
-    completedProjectsIds = [],
-    completedPracticesIds = [],
-    xp,
-  } = userProgress || {};
+  const { currentRoadmapsIds = [] } = userProgress || {};
 
   const isCurrentRoadmap = currentRoadmapsIds.some((entry) => {
     return entry.itemId?.toString().trim() === roadmap._id?.toString().trim();
@@ -124,6 +114,7 @@ function DetailsHeading({
   const handleRegisterRoadmap = (roadmapId) => {
     const updatedProgress = {
       ...userProgress,
+      userId: userProgress.user._id,
       currentRoadmapsIds: [
         ...(userProgress?.currentRoadmapsIds || []),
         { itemId: roadmapId.toString(), progress: 0 },
@@ -139,8 +130,6 @@ function DetailsHeading({
 
     navigate(`/roadmap/${roadmapId}`);
   };
-
-  console.log('isCurrentRoadmap: ', isCurrentRoadmap);
 
   return (
     <>

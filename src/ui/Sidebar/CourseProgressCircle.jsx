@@ -37,7 +37,6 @@ function ProgressCircle({
   courseId,
   coursesIds,
   completedCoursesIds,
-  setPersentage,
   userProgress,
 }) {
   const [progress, setProgress] = useState(0);
