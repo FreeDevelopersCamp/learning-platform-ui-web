@@ -5,14 +5,20 @@ import Roadmap from '../Roadmap';
 export function useDeleteRoadmap() {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (id) => Roadmap.getInstance().delete(id),
+  const { isLoading: isDeleting, mutateAsync: deleteRoadmap } = useMutation({
+    mutationFn: async (id) => {
+      const response = await Roadmap.getInstance().delete(id);
+      return response;
+    },
     onSuccess: () => {
       toast.success('Roadmap deleted successfully');
-      queryClient.invalidateQueries(['roadmaps']);
+      queryClient.invalidateQueries({ queryKey: ['roadmaps'] });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Deletion error:', error);
       toast.error('Failed to delete roadmap');
     },
   });
+
+  return { isDeleting, deleteRoadmap };
 }

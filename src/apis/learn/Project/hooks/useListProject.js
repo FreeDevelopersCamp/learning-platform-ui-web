@@ -5,7 +5,7 @@ import Project from '../Project';
 
 const PAGE_SIZE = 10;
 
-export function useListProjects() {
+export function useListProject(instructorId) {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
@@ -14,9 +14,10 @@ export function useListProjects() {
     data: projectsData,
     error,
   } = useQuery({
-    queryKey: ['projects'],
-    queryFn: () => Project.getInstance().list(),
+    queryKey: ['projects', instructorId],
+    queryFn: () => Project.getInstance().listByInstructor(instructorId),
     keepPreviousData: true,
+    enabled: !!instructorId, // Ensures the query only runs if instructorId exists
     onError: () => toast.error('Failed to fetch projects'),
   });
 
@@ -66,9 +67,9 @@ export function useListProjects() {
   // Prefetch adjacent pages
   if (currentPage < pageCount) {
     queryClient.prefetchQuery({
-      queryKey: ['projects', currentPage + 1],
+      queryKey: ['projects', instructorId, currentPage + 1],
       queryFn: () =>
-        Project.getInstance().list({
+        Project.getInstance().listByInstructor(instructorId, {
           params: {
             page: currentPage + 1,
             limit: PAGE_SIZE,
@@ -79,9 +80,9 @@ export function useListProjects() {
 
   if (currentPage > 1) {
     queryClient.prefetchQuery({
-      queryKey: ['projects', currentPage - 1],
+      queryKey: ['projects', instructorId, currentPage - 1],
       queryFn: () =>
-        Project.getInstance().list({
+        Project.getInstance().listByInstructor(instructorId, {
           params: {
             page: currentPage - 1,
             limit: PAGE_SIZE,
@@ -97,6 +98,6 @@ export function useListProjects() {
     count: sortedProjects.length,
     totalProjects: projects.length,
     pageCount,
-    allProjects: projects,
+    instructorProjects: projects,
   };
 }

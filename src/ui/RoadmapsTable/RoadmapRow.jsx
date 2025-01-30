@@ -9,15 +9,15 @@ import Menus from '../Menus/Menus.jsx';
 import Modal from '../Menus/Modal.jsx';
 
 import Spinner from '../Spinner.jsx';
-import { useDeleteProject } from '../../apis/learn/Project/hooks/useDeleteProject';
-import { useUpdateProject } from '../../apis/learn/Project/hooks/useUpdateProject';
+import { useDeleteRoadmap } from '../../apis/learn/Roadmap/hooks/useDeleteRoadmap.ts';
+import { useUpdateRoadmap } from '../../apis/learn/Roadmap/hooks/useUpdateRoadmap.js';
 
-function ProjectRow({ project }) {
-  let { name, category, topic, xp } = project;
+function RoadmapRow({ roadmap }) {
+  let { name, category, level, xp } = roadmap;
 
   const navigate = useNavigate();
-  const { isDeleting, deleteProject } = useDeleteProject();
-  const { isUpdating, updateProject } = useUpdateProject();
+  const { isDeleting, deleteRoadmap } = useDeleteRoadmap();
+  const { isUpdating, updateRoadmap } = useUpdateRoadmap();
 
   const isLoading = isDeleting || isUpdating;
 
@@ -32,53 +32,52 @@ function ProjectRow({ project }) {
         <span>{category}</span>
       </div>
 
-      <div>{topic}</div>
+      <div>{level}</div>
 
       <div className="flex items-center gap-4">{xp}</div>
 
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={project._id} />
-          <Menus.List id={project._id}>
+          <Menus.Toggle id={roadmap._id} />
+          <Menus.List id={roadmap._id}>
             <Menus.Button
               icon={<HiEye />}
-              onClick={() => navigate(`/project/${project._id}`)}
+              onClick={() => navigate(`/roadmap/${roadmap._id}`)}
             >
               See details
             </Menus.Button>
 
-            <Modal.Open opens={`update-${project._id}`}>
-              <Menus.Button key={`${project._id}`} icon={<HiPencil />}>
-                Update project
+            <Modal.Open opens={`update-${roadmap._id}`}>
+              <Menus.Button key={`${roadmap._id}`} icon={<HiPencil />}>
+                Update roadmap
               </Menus.Button>
             </Modal.Open>
 
-            <Modal.Open opens={`delete-${project._id}`}>
-              <Menus.Button icon={<HiTrash />}>Delete project</Menus.Button>
+            <Modal.Open opens={`delete-${roadmap._id}`}>
+              <Menus.Button icon={<HiTrash />}>Delete roadmap</Menus.Button>
             </Modal.Open>
           </Menus.List>
         </Menus.Menu>
 
         <Modal.Window
-          name={`update-${project._id}`}
-          key={`update-${project._id}`}
+          name={`update-${roadmap._id}`}
+          key={`update-${roadmap._id}`}
         >
           <ConfirmApprove
-            resourceName="project"
+            resourceName="roadmap"
             disabled={isLoading}
-            // onConfirm={() => (user.roleId, 'approve')}
-            key={project._id}
+            key={roadmap._id}
           />
         </Modal.Window>
 
         <Modal.Window
-          name={`delete-${project._id}`}
-          key={`delete-${project._id}`}
+          name={`delete-${roadmap._id}`}
+          key={`delete-${roadmap._id}`}
         >
           <ConfirmDelete
-            resourceName="project"
+            resourceName="roadmap"
             disabled={isLoading}
-            onConfirm={() => deleteProject(project._id)}
+            onConfirm={() => deleteRoadmap(roadmap._id)}
           />
         </Modal.Window>
       </Modal>
@@ -86,4 +85,4 @@ function ProjectRow({ project }) {
   );
 }
 
-export default ProjectRow;
+export default RoadmapRow;

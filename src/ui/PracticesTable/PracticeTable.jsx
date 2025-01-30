@@ -1,28 +1,28 @@
 import Empty from '@/ui/Empty.jsx';
-
 import Menus from '@/ui/Menus/Menus.jsx';
 import Table from '@/ui/Tables/Table.jsx';
 import Pagination from '../Tables/Pagination.jsx';
-import ProjectRow from './ProjectRow.jsx';
+import PracticeRow from './PracticeRow.jsx';
 
-function ProjectTable({ projects, count }) {
-  if (!projects?.length) return <Empty resourceName="Projects Table" />;
+function PracticeTable({ practices, count }) {
+  console.log(practices);
+  if (!practices?.length) return <Empty resourceName="Practices Table" />;
 
   return (
     <Menus>
       <Table columns="2fr 2fr 2fr 2fr 0.5fr">
         <Table.Header>
-          <div>Project Name</div>
+          <div>Practice Name</div>
           <div>Category</div>
-          <div>Topic</div>
+          <div>Difficulty</div>
           <div>XP</div>
           <div>Actions</div>
         </Table.Header>
 
         <Table.Body
-          data={projects}
-          render={(project) => (
-            <ProjectRow key={project._id} project={project} />
+          data={practices}
+          render={(practice) => (
+            <PracticeRow key={practice._id} practice={practice} />
           )}
         />
 
@@ -34,4 +34,4 @@ function ProjectTable({ projects, count }) {
   );
 }
 
-export default ProjectTable;
+export default PracticeTable;

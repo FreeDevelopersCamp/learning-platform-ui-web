@@ -5,7 +5,8 @@ import Roadmap from '../Roadmap';
 
 const PAGE_SIZE = 10;
 
-export function useListRoadmap() {
+export function useListRoadmap(instructorId) {
+  const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
   const {
@@ -13,18 +14,36 @@ export function useListRoadmap() {
     data: roadmapsData,
     error,
   } = useQuery({
-    queryKey: ['roadmaps'],
-    queryFn: () => Roadmap.getInstance().list(),
+    queryKey: ['roadmaps', instructorId],
+    queryFn: () =>
+      instructorId
+        ? Roadmap.getInstance().listByInstructor(instructorId)
+        : Promise.resolve([]),
     keepPreviousData: true,
+    enabled: !!instructorId, // Ensure query only runs if instructorId exists
     onError: () => toast.error('Failed to fetch roadmaps'),
   });
 
-  const roadmaps = roadmapsData?.items || [];
+  const roadmaps = roadmapsData?.items || roadmapsData || [];
+
+  // Filtering by status
+  const statusFilter = searchParams.get('status') || 'all';
+  const filteredRoadmaps = roadmaps.filter((roadmap) => {
+    if (statusFilter !== 'all') {
+      const statusMap = {
+        draft: 'draft',
+        published: 'published',
+        archived: 'archived',
+      };
+      return roadmap.status === statusMap[statusFilter];
+    }
+    return true;
+  });
 
   // Sorting logic
   const sortBy = searchParams.get('sortBy') || 'title-asc';
   const [field, direction] = sortBy.split('-');
-  const sortedRoadmaps = [...roadmaps].sort((a, b) => {
+  const sortedRoadmaps = [...filteredRoadmaps].sort((a, b) => {
     const valueA =
       field === 'title' ? a.title?.toLowerCase() : new Date(a[field]);
     const valueB =
@@ -48,6 +67,33 @@ export function useListRoadmap() {
 
   const pageCount = Math.ceil(sortedRoadmaps.length / PAGE_SIZE);
 
+  // Prefetch adjacent pages
+  if (currentPage < pageCount) {
+    queryClient.prefetchQuery({
+      queryKey: ['roadmaps', instructorId, currentPage + 1],
+      queryFn: () =>
+        Roadmap.getInstance().listByInstructor(instructorId, {
+          params: {
+            page: currentPage + 1,
+            limit: PAGE_SIZE,
+          },
+        }),
+    });
+  }
+
+  if (currentPage > 1) {
+    queryClient.prefetchQuery({
+      queryKey: ['roadmaps', instructorId, currentPage - 1],
+      queryFn: () =>
+        Roadmap.getInstance().listByInstructor(instructorId, {
+          params: {
+            page: currentPage - 1,
+            limit: PAGE_SIZE,
+          },
+        }),
+    });
+  }
+
   return {
     isLoading,
     error,
@@ -55,5 +101,6 @@ export function useListRoadmap() {
     count: sortedRoadmaps.length,
     totalRoadmaps: roadmaps.length,
     pageCount,
+    instructorRoadmaps: roadmaps,
   };
 }

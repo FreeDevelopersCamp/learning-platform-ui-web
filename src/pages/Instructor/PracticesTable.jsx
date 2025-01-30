@@ -4,7 +4,7 @@ import { useGetUser } from '../../apis/core/User/hooks/useGetUser';
 import { useAuth } from '../../contexts/auth/AuthContext';
 
 import Heading from '../../ui/Heading';
-import PracticeTable from '../../ui/ProjectsTable/ProjectTable';
+import PracticeTable from '../../ui/PracticesTable/PracticeTable';
 import Row from '../../ui/Row';
 import Spinner from '../../ui/Spinner';
 

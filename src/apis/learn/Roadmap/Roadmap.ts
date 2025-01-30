@@ -34,6 +34,23 @@ export default class Roadmap extends HttpClient {
 
   /**
    * @tags roadmap
+   * @name ListByInstructor
+   * @request GET:/roadmap/roadmapByInstructor/{id}
+   * @secure
+   * @response `default` List of roadmaps by instructor
+   */
+  listByInstructor(instructorId, params = {}) {
+    return this.request({
+      path: `/roadmap/roadmapByInstructor/${instructorId}`,
+      method: 'GET',
+      secure: true,
+      ...params,
+      headers: getDefaultHeaders(),
+    });
+  }
+
+  /**
+   * @tags roadmap
    * @name GetById
    * @request GET:/roadmap/{id}
    * @secure

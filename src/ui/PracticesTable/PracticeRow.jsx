@@ -9,15 +9,15 @@ import Menus from '../Menus/Menus.jsx';
 import Modal from '../Menus/Modal.jsx';
 
 import Spinner from '../Spinner.jsx';
-import { useDeleteProject } from '../../apis/learn/Project/hooks/useDeleteProject';
-import { useUpdateProject } from '../../apis/learn/Project/hooks/useUpdateProject';
+import { useDeletePractice } from '../../apis/learn/Practice/hooks/useDeletePractice.ts';
+import { useUpdatePractice } from '../../apis/learn/Practice/hooks/useUpdatePractice.ts';
 
-function ProjectRow({ project }) {
-  let { name, category, topic, xp } = project;
+function PracticeRow({ practice }) {
+  let { name, category, difficulty, xp } = practice;
 
   const navigate = useNavigate();
-  const { isDeleting, deleteProject } = useDeleteProject();
-  const { isUpdating, updateProject } = useUpdateProject();
+  const { isDeleting, deletePractice } = useDeletePractice();
+  const { isUpdating, updatePractice } = useUpdatePractice();
 
   const isLoading = isDeleting || isUpdating;
 
@@ -32,53 +32,52 @@ function ProjectRow({ project }) {
         <span>{category}</span>
       </div>
 
-      <div>{topic}</div>
+      <div>{difficulty}</div>
 
       <div className="flex items-center gap-4">{xp}</div>
 
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={project._id} />
-          <Menus.List id={project._id}>
+          <Menus.Toggle id={practice._id} />
+          <Menus.List id={practice._id}>
             <Menus.Button
               icon={<HiEye />}
-              onClick={() => navigate(`/project/${project._id}`)}
+              onClick={() => navigate(`/practice/${practice._id}`)}
             >
               See details
             </Menus.Button>
 
-            <Modal.Open opens={`update-${project._id}`}>
-              <Menus.Button key={`${project._id}`} icon={<HiPencil />}>
-                Update project
+            <Modal.Open opens={`update-${practice._id}`}>
+              <Menus.Button key={`${practice._id}`} icon={<HiPencil />}>
+                Update practice
               </Menus.Button>
             </Modal.Open>
 
-            <Modal.Open opens={`delete-${project._id}`}>
-              <Menus.Button icon={<HiTrash />}>Delete project</Menus.Button>
+            <Modal.Open opens={`delete-${practice._id}`}>
+              <Menus.Button icon={<HiTrash />}>Delete practice</Menus.Button>
             </Modal.Open>
           </Menus.List>
         </Menus.Menu>
 
         <Modal.Window
-          name={`update-${project._id}`}
-          key={`update-${project._id}`}
+          name={`update-${practice._id}`}
+          key={`update-${practice._id}`}
         >
           <ConfirmApprove
-            resourceName="project"
+            resourceName="practice"
             disabled={isLoading}
-            // onConfirm={() => (user.roleId, 'approve')}
-            key={project._id}
+            key={practice._id}
           />
         </Modal.Window>
 
         <Modal.Window
-          name={`delete-${project._id}`}
-          key={`delete-${project._id}`}
+          name={`delete-${practice._id}`}
+          key={`delete-${practice._id}`}
         >
           <ConfirmDelete
-            resourceName="project"
+            resourceName="practice"
             disabled={isLoading}
-            onConfirm={() => deleteProject(project._id)}
+            onConfirm={() => deletePractice(practice._id)}
           />
         </Modal.Window>
       </Modal>
@@ -86,4 +85,4 @@ function ProjectRow({ project }) {
   );
 }
 
-export default ProjectRow;
+export default PracticeRow;

@@ -14,11 +14,11 @@ function ProjectsTable() {
   const { instructor, instructorLoading } = useGetInstructor(user?._id);
   const {
     instructorProjects,
-    isLoading: practiceLoading,
+    isLoading: projectLoading,
     count,
   } = useListProject(instructor?._id);
 
-  if (isLoading || userLoading || instructorLoading || practiceLoading)
+  if (isLoading || userLoading || instructorLoading || projectLoading)
     return <Spinner />;
 
   return (
