@@ -42,6 +42,26 @@ export default class Progress extends HttpClient {
   }
 
   /**
+   * Fetch progress details by ID.
+   *
+   * @tags Progress
+   * @name GetById
+   * @request GET:/progress/details/{id}
+   * @secure
+   * @response `default` Progress information
+   */
+  getDetails(id: string, params = {}) {
+    return this.request({
+      path: `/progress/details/${id}`,
+      method: 'GET',
+      secure: true,
+      headers: getDefaultHeaders(),
+
+      ...params,
+    });
+  }
+
+  /**
    * Fetch progress details by User ID.
    *
    * @tags Progress

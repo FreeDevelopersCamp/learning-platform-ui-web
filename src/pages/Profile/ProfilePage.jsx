@@ -12,6 +12,10 @@ import ProfileEducation from './components/ProfileEducation';
 import ProfileAbout from './components/ProfileAbout';
 import ProfileFooter from './components/ProfileFooter';
 import Spinner from '../../ui/Spinner';
+import { useGetUser } from '../../apis/core/User/hooks/useGetUser';
+import { useGetDetails } from '../../apis/learn/Progress/hooks/useGetDetails';
+import ProfileProjects from './components/ProfileProjects';
+import ProfileRoadmaps from './components/ProfileRoadmaps';
 
 const ProfilePageContainer = styled.div`
   display: flex;
@@ -25,8 +29,10 @@ const ProfilePage = () => {
   const username = searchParams.get('username') || '';
 
   const { profile, profileLoading } = useGetProfile(username);
+  const { user, userLoading } = useGetUser(username);
+  const { progress, isLoading: progressLoading } = useGetDetails(user?._id);
 
-  if (profileLoading || !profile) return <Spinner />;
+  if (profileLoading || progressLoading || userLoading) return <Spinner />;
 
   return (
     <ProfilePageContainer>
@@ -40,7 +46,9 @@ const ProfilePage = () => {
       <ProfileAbout about={profile.about} />
       <ProfileWork work={profile.work} />
       <ProfileCertifications certifications={profile.certifications} />
-      <ProfileCourses completedContent={profile.completedContent} />
+      <ProfileCourses progress={progress} />
+      <ProfileProjects progress={progress} />
+      <ProfileRoadmaps progress={progress} />
       <ProfileWorkExperience experience={profile.experience} />
       <ProfileEducation education={profile.education} />
       <ProfileFooter />
