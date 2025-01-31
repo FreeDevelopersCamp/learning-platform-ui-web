@@ -1,16 +1,13 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { useCount } from '../../contexts/projects/ProjectsContext';
-import { useFetchProjectById } from '../../hooks/projects/useProject';
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
-
 import { FaCheck } from 'react-icons/fa';
+
 import Spinner from '../../ui/Spinner';
 
+// ✅ Styled Components
 const Card = styled.div`
   width: 300px;
+  height: 360px;
   background-color: white;
   border: 1px solid #eaeaea;
   border-radius: 3px;
@@ -116,120 +113,66 @@ const Button = styled.button`
   }
 `;
 
-function ProjectCard({ projectId, filter, role, userProgress }) {
+// ✅ Passed and Submitted Button Styles
+const PassedButton = styled(Button)`
+  background-color: #1b5e20; /* Dark Green */
+  color: white;
+  border-color: #1b5e20;
+
+  &:hover {
+    background-color: #144d17; /* Darker Green */
+  }
+`;
+
+const SubmittedButton = styled(Button)`
+  background-color: #4caf50; /* Light Green */
+  color: white;
+  border-color: #4caf50;
+
+  &:hover {
+    background-color: #45a049; /* Slightly Darker Green */
+  }
+`;
+
+// ✅ Updated ProjectCard Component
+function ProjectCard({ project, role, userProgress }) {
   const navigate = useNavigate();
-  const { mutate: updateProgress, isLoading: updateLoading } =
-    useUpdateProgress();
 
-  const {
-    data: project,
-    isLoading: projectLoading,
-    error: projectError,
-  } = useFetchProjectById(projectId);
+  // ✅ Ensure project exists before rendering
+  if (!project) return <Spinner />;
 
-  const { incrementCount, decrementCount } = useCount();
+  const { _id, name, description, prerequisites, topic, xp, participants } =
+    project;
 
-  useEffect(() => {
-    if (
-      project &&
-      (filter === 'all' ||
-        project?.topic?.toLowerCase()?.replace(/\s+/g, '-') ===
-          filter?.toLowerCase())
-    ) {
-      incrementCount();
-    }
-    return () => {
-      if (
-        project &&
-        (filter === 'all' ||
-          project?.topic?.toLowerCase()?.replace(/\s+/g, '-') ===
-            filter?.toLowerCase())
-      ) {
-        decrementCount();
-      }
-    };
-  }, [project, filter, incrementCount, decrementCount]);
-
-  if (projectLoading || !project || projectError || updateLoading)
-    return <Spinner />;
-
-  const { name, description, prerequisites, topic, xp, participants } = project;
-
-  // Determine if the project is completed or in progress
-  const isCompleted =
-    userProgress?.completedProjectsIds &&
-    userProgress.completedProjectsIds.includes(project?._id);
-
-  const isCurrent =
-    userProgress?.currentProjectsIds &&
-    userProgress.currentProjectsIds.includes(project?._id);
+  // ✅ Get project status from userProgress
+  const currentProject = userProgress?.currentProjectsIds?.find(
+    (p) => p.id === _id,
+  );
+  const projectStatus = currentProject?.status ?? null;
 
   const handleStartClick = (e) => {
     e.stopPropagation();
-
-    if (project && project.name && project._id) {
-      // Check if the project is already in currentProjectsIds
-      const isAlreadySaved = userProgress?.currentProjectsIds?.includes(
-        project._id,
-      );
-
-      if (isAlreadySaved) {
-        // If the project is already saved, navigate directly without updating progress
-        navigate(
-          `/project/${project.name.toLowerCase().replace(/\s+/g, '-')}/${project._id}`,
-        );
-        return;
-      }
-
-      // If the project is not saved, add it to currentProjectsIds and update progress
-      const updatedProgress = {
-        ...userProgress,
-        currentProjectsIds: [
-          ...new Set([
-            ...(userProgress?.currentProjectsIds || []),
-            project._id,
-          ]),
-        ],
-      };
-
-      updateProgress(updatedProgress);
-      navigate(
-        `/project/${project.name.toLowerCase().replace(/\s+/g, '-')}/${project._id}`,
-      );
-    }
+    if (!name || !_id) return;
+    navigate(`/project/${name.toLowerCase().replace(/\s+/g, '-')}/${_id}`);
   };
 
+  const handleViewDetails = () => {
+    navigate(`/project/${_id}`);
+  };
+
+  // ✅ Render Button Logic Based on Status
   const renderButton = () => {
     if (role === '5') {
       return <Button onClick={handleViewDetails}>View Details</Button>;
     }
 
     if (role === '6') {
-      if (isCompleted) {
-        return (
-          <Button
-            disabled
-            bgColor="#e0ffe0"
-            color="#007700"
-            borderColor="#00aa00"
-          >
-            Completed
-          </Button>
-        );
+      if (projectStatus === '2') {
+        return <PassedButton disabled>Passed</PassedButton>;
       }
 
-      // "Continue" button will have the same style as "Start"
-      if (isCurrent) {
-        return (
-          <Button
-            onClick={handleStartClick}
-            bgColor="#cce5ff"
-            color="#0056b3"
-            borderColor="#0056b3"
-          >
-            Continue
-          </Button>
-        );
+      if (projectStatus === '0' || projectStatus === '1') {
+        return <SubmittedButton>Submitted</SubmittedButton>;
       }
 
       return (
@@ -247,41 +190,32 @@ function ProjectCard({ projectId, filter, role, userProgress }) {
     return null;
   };
 
-  const handleViewDetails = () => {
-    navigate(`/project/${projectId}`);
-  };
-
   return (
-    (filter === 'all' ||
-      project?.topic?.toLowerCase().replace(/\s+/g, '-') ===
-        filter?.toLowerCase()) && (
-      <Card onClick={handleViewDetails}>
-        <Content>
-          <Header>
-            <Subtitle>Project</Subtitle>
-            <Title>{name}</Title>
-            <Category>{topic}</Category>
-          </Header>
-          <Description>{description}</Description>
-          <Prerequisites>
-            <strong>Prerequisites:</strong>{' '}
-            {prerequisites?.join(', ') || 'None'}
-          </Prerequisites>
-          <Participants>
-            <strong>Participants:</strong> {participants || 0}
-          </Participants>
-        </Content>
-        <Details>
-          <div style={{ display: 'flex' }}>
-            <XP>
-              <strong>XP:</strong> {xp}
-            </XP>
-            <FaCheck style={{ color: '#0fd15d', marginLeft: '5px' }} />
-          </div>
-          {renderButton()}
-        </Details>
-      </Card>
-    )
+    <Card onClick={handleViewDetails}>
+      <Content>
+        <Header>
+          <Subtitle>Project</Subtitle>
+          <Title>{name}</Title>
+          <Category>{topic}</Category>
+        </Header>
+        <Description>{description}</Description>
+        <Prerequisites>
+          <strong>Prerequisites:</strong> {prerequisites?.join(', ') || 'None'}
+        </Prerequisites>
+        <Participants>
+          <strong>Participants:</strong> {participants || 0}
+        </Participants>
+      </Content>
+      <Details>
+        <div style={{ display: 'flex' }}>
+          <XP>
+            <strong>XP:</strong> {xp}
+          </XP>
+          <FaCheck style={{ color: '#0fd15d', marginLeft: '5px' }} />
+        </div>
+        {renderButton()}
+      </Details>
+    </Card>
   );
 }
 

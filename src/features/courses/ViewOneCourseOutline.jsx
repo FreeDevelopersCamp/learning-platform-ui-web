@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -15,7 +15,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start; /* Ensure content starts from the top */
   width: 100%;
   gap: 1.5rem;
 `;
@@ -28,7 +28,14 @@ const Description = styled.div`
 const Title = styled.h1`
   font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+`;
+
+const Topic = styled.h2`
+  font-size: 1.6rem;
+  color: var(--color-grey-700);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
 `;
 
 const Buttons = styled.div`
@@ -84,9 +91,11 @@ function ViewOneCourseOutline() {
 
   const [flatStructure, setFlatStructure] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const { mutate: updateProgress, isLoading: updatingProgress } =
     useUpdateProgress();
+
+  // ✅ UseRef to prevent duplicate updates
+  const updatedCoursesRef = useRef(new Set());
 
   useEffect(() => {
     if (course?.subCourses) {
@@ -126,22 +135,44 @@ function ViewOneCourseOutline() {
     );
   };
 
-  const saveProgress = (item) => {
-    if (!userProgress.completedCoursesIds.includes(item._id)) {
+  const saveProgress = (course) => {
+    if (!course || !userProgress || !userProgress._id || !course._id) return;
+
+    // ✅ Prevent duplicate updates
+    if (updatedCoursesRef.current.has(course._id)) return;
+    updatedCoursesRef.current.add(course._id);
+
+    if (!userProgress.completedCoursesIds.includes(course._id)) {
       const updatedProgress = {
-        ...userProgress,
+        _id: userProgress._id,
+        userId: userProgress.user?._id,
         completedCoursesIds: [
-          ...new Set([...userProgress.completedCoursesIds, item._id]),
+          ...new Set([...userProgress.completedCoursesIds, course._id]),
         ],
+        spentTime: (userProgress.spentTime || 0) + (course.duration || 0),
+        xp: (userProgress.xp || 0) + (course.xp || 0),
       };
 
-      updateProgress(updatedProgress);
+      updateProgress(updatedProgress, {
+        onError: (error) => {
+          console.error(
+            '❌ Failed to update progress:',
+            error.response?.data || error,
+          );
+        },
+      });
     }
   };
 
+  // ✅ Save progress once when component renders
+  useEffect(() => {
+    if (flatStructure.length > 0) {
+      saveProgress(flatStructure[currentIndex]);
+    }
+  }, [flatStructure]); // Removed `currentIndex` dependency to prevent multiple calls
+
   const handleNext = () => {
     if (currentIndex < flatStructure.length - 1) {
-      saveProgress(flatStructure[currentIndex]);
       const nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
       updatePath(flatStructure[nextIndex]);
@@ -172,10 +203,10 @@ function ViewOneCourseOutline() {
   return (
     <Container>
       <Title>{currentItem.name || course?.name}</Title>
+      <Topic>Video: {currentItem.name || course?.name}</Topic>
       <Description>
         {currentItem.description || course?.description}
       </Description>
-
       {Object.entries(groupedResources).length > 0 &&
         Object.entries(groupedResources).map(([type, resources]) => (
           <div key={type}>
@@ -184,11 +215,9 @@ function ViewOneCourseOutline() {
             ))}
           </div>
         ))}
-
       {currentItem.exercises?.length > 0 && (
         <Exercises exercises={currentItem.exercises} />
       )}
-
       <Buttons>
         <Button
           type="previous"

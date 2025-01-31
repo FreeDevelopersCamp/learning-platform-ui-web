@@ -19,6 +19,8 @@ const StyledDashboardLayout = styled.div`
   overflow: auto;
   flex-grow: 1;
   padding: 0.5rem 0;
+  min-height: 700px;
+  margin-top: 3rem;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -36,7 +38,12 @@ const NoCoursesMessage = styled.div`
   font-size: 1.6rem;
   font-weight: 500;
   color: var(--color-grey-600);
-  padding: 4rem 0;
+  padding: 2rem 0; /* ✅ Reduce padding */
+  margin: 0 auto; /* ✅ Center properly */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 `;
 
 function Courses() {
@@ -99,6 +106,7 @@ function Courses() {
                   courseId={course._id}
                   role={session.role}
                   progressStatus={progressStatus}
+                  userProgress={userProgress}
                 />
               );
             })

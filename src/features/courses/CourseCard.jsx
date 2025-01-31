@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
+import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
-import { formatDuration } from '../../utils/helpers';
+import { formatDurationCard } from '../../utils/helpers';
 import Spinner from '../../ui/Spinner';
 
 const Card = styled.div`
-  width: 300px;
+  width: 320px;
+  height: 360px;
   background-color: white;
   border: 1px solid #eaeaea;
   border-radius: 5px;
@@ -30,12 +31,15 @@ const Card = styled.div`
 
 const Content = styled.div`
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Instructor = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  margin-top: auto;
 `;
 
 const InstructorImage = styled.img`
@@ -90,7 +94,6 @@ const Details = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
   padding-top: 16px;
   border-top: 1px solid #eaeaea;
 `;
@@ -123,26 +126,64 @@ const Button = styled.button`
   }
 `;
 
-function CourseCard({ courseId, role, progressStatus }) {
+function CourseCard({ courseId, role, progressStatus, userProgress }) {
   const navigate = useNavigate();
   const { data: course, isLoading, error } = useFetchCourseById(courseId);
+  const { mutate: updateProgress, isLoading: updatingProgress } =
+    useUpdateProgress();
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || updatingProgress) return <Spinner />;
   if (error || !course) return <p>Error loading course.</p>;
 
   const { name, description, duration, instructor, topic } = course;
-
   const instructorName = instructor?.user?.userName || 'Unknown Instructor';
   const instructorImage =
     instructor?.user?.image || 'https://via.placeholder.com/40';
 
-  const handleViewDetails = () => {
-    navigate(`/course/${courseId}`);
+  const handleStartCourse = (e) => {
+    e.stopPropagation();
+    if (!userProgress || !userProgress._id || !courseId) return;
+
+    // Check if the course is already in progress
+    const isAlreadyInProgress = userProgress.currentCoursesIds.some(
+      (entry) => entry.itemId === courseId,
+    );
+
+    if (isAlreadyInProgress) {
+      navigate(`/course/${courseId}/start`);
+      return;
+    }
+
+    // Update user progress by adding the course to currentCoursesIds
+    const updatedProgress = {
+      _id: userProgress._id,
+      userId: userProgress.user?._id,
+      currentCoursesIds: [
+        ...userProgress.currentCoursesIds,
+        { itemId: courseId, startedAt: new Date().toISOString() },
+      ],
+    };
+
+    updateProgress(updatedProgress, {
+      onSuccess: () => {
+        navigate(`/course/${courseId}/start`);
+      },
+      onError: (error) => {
+        console.error(
+          '❌ Failed to update progress:',
+          error.response?.data || error,
+        );
+      },
+    });
   };
 
   const renderButton = () => {
     if (role === '5') {
-      return <Button onClick={handleViewDetails}>View Details</Button>;
+      return (
+        <Button onClick={() => navigate(`/course/${courseId}`)}>
+          View Details
+        </Button>
+      );
     }
 
     if (role === '6') {
@@ -161,10 +202,7 @@ function CourseCard({ courseId, role, progressStatus }) {
         case 'inProgress':
           return (
             <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/course/${courseId}/continue`);
-              }}
+              onClick={() => navigate(`/course/${courseId}/continue`)}
               bgColor="#fffbcc"
               color="#aa8800"
               borderColor="#aa8800"
@@ -175,10 +213,7 @@ function CourseCard({ courseId, role, progressStatus }) {
         default:
           return (
             <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/course/${courseId}/start`);
-              }}
+              onClick={handleStartCourse}
               bgColor="#cce5ff"
               color="#0056b3"
               borderColor="#0056b3"
@@ -193,7 +228,7 @@ function CourseCard({ courseId, role, progressStatus }) {
   };
 
   return (
-    <Card onClick={handleViewDetails}>
+    <Card onClick={() => navigate(`/course/${courseId}`)}>
       <Content>
         <Header>
           <Subtitle>Course</Subtitle>
@@ -210,7 +245,7 @@ function CourseCard({ courseId, role, progressStatus }) {
         <InstructorName>{instructorName}</InstructorName>
       </Instructor>
       <Details>
-        <Duration>{formatDuration(duration)}</Duration>
+        <Duration>{formatDurationCard(duration)}</Duration>
         {renderButton()}
       </Details>
     </Card>

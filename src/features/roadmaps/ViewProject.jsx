@@ -227,7 +227,7 @@ function ViewProject({ order, userProgress }) {
     updateProgress(updatedProgress, {
       onError: (error) => {
         console.error(
-          '❌ Failed to update progress:',
+          'Project already submitted!',
           error.response?.data || error,
         );
       },

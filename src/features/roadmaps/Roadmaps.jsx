@@ -38,6 +38,14 @@ const FilterWrapper = styled.div`
   margin-bottom: 1rem;
 `;
 
+const NoCoursesMessage = styled.div`
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--color-grey-600);
+  padding: 4rem 0;
+`;
+
 function Roadmaps() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredRoadmaps, setFilteredRoadmaps] = useState([]);
@@ -80,7 +88,7 @@ function Roadmaps() {
               />
             ))
           ) : (
-            <p>No roadmaps found.</p>
+            <NoCoursesMessage>No roadmaps found.</NoCoursesMessage>
           )}
         </StyledDashboardLayout>
       </DashboardLayout>

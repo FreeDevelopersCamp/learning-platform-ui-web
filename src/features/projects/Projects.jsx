@@ -1,95 +1,166 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useOutletContext } from 'react-router-dom';
 
-import { useCount } from '../../contexts/projects/ProjectsContext';
 import { useInstructorData } from '../../contexts/instructor/InstructorContext';
+import { useFetchProjectById } from '../../hooks/projects/useProject';
 
 import Row from './Row';
 import Heading from './Heading';
 import Filterbar from './Filterbar';
-import Total from '../roadmaps/Total';
 import DashboardLayout from './DashboardLayout';
 import ProjectCard from './ProjectCard';
 
 import Spinner from '../../ui/Spinner';
 
+const FetchProjectsLayout = styled.div`
+  display: flex; /* ✅ Use flexbox */
+  flex-wrap: wrap; /* ✅ Allow projects to wrap naturally */
+  justify-content: flex-start; /* ✅ Align cards from left to right */
+  align-items: flex-start; /* ✅ Align projects to start from top */
+  gap: 2rem;
+  height: 0;
+  width: 0;
+`;
+
+// ✅ Styled Components
 const StyledDashboardLayout = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: repeat(auto-fit, minmax(300, 1fr));
-  gap: 10rem;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(300px, 1fr)
+  ); /* ✅ Auto-fit columns */
+  gap: 5rem 10rem; /* ✅ 2rem gap between rows, 3rem gap between columns */
   overflow: auto;
-  padding-top: ${(props) => (props.isFilterbarFixed ? '5.5rem' : '0')};
+  flex-grow: 1;
+  padding: 0.5rem 0;
+  min-height: 700px;
+  margin-top: 3rem;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(250px, 1fr)
+    ); /* ✅ Adjust for smaller screens */
   }
 
   @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: 1fr; /* ✅ Full width for very small screens */
   }
 `;
 
+const NoProjectsMessage = styled.div`
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--color-grey-600);
+  padding: 2rem 0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
+function FetchProjects({ projectId, setProjects }) {
+  const { data: project, isLoading } = useFetchProjectById(projectId);
+
+  useEffect(() => {
+    if (project && !isLoading) {
+      setProjects((prevProjects) => {
+        const isAlreadyAdded = prevProjects.some((p) => p._id === project._id);
+        if (!isAlreadyAdded) {
+          return [...prevProjects, project];
+        }
+        return prevProjects;
+      });
+    }
+  }, [project, isLoading, setProjects]);
+
+  if (isLoading) return <Spinner />;
+  return null;
+}
+
 function Projects() {
-  const [filter, setFilter] = useState('all');
-  const { count } = useCount();
-  const { instructorData } = useInstructorData();
   const { session, userProgress } = useOutletContext();
+  const { instructorData } = useInstructorData();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [projects, setProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  const [isFetched, setIsFetched] = useState(false);
 
   const { projectsIds = [] } = instructorData || {};
 
-  if (!instructorData) return <Spinner />;
+  useEffect(() => {
+    setIsFetched(false); // ✅ Reset isFetched
+  }, []);
 
-  function handleFilterChange(selectedFilter) {
-    setFilter(selectedFilter);
-  }
+  // ✅ Fetch projects separately
+  useEffect(() => {
+    setFilteredProjects(projects); // Initially show all projects
+  }, [projects]);
 
-  const title = 'Projects';
-  const description =
-    'Transform your knowledge into real-world solutions by working on hands-on projects that challenge and inspire you!';
+  // ✅ Filter projects dynamically based on name, title, or topic
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredProjects(projects);
+    } else {
+      const lowerSearch = searchQuery.toLowerCase();
+      const filtered = projects.filter((project) =>
+        [project.name, project.title, project.topic]
+          .map((field) => field?.toLowerCase() || '')
+          .some((field) => field.includes(lowerSearch)),
+      );
+      setFilteredProjects(filtered);
+    }
+  }, [searchQuery, projects]);
 
-  const filterOptions = [
-    { value: 'all', label: 'All' },
-    { value: 'web-development', label: 'Web Development' },
-    { value: 'version-control', label: 'Version Control' },
-    { value: 'c++', label: 'C++' },
-    { value: 'sql', label: 'SQL' },
-    { value: 'excel', label: 'Excel' },
-    { value: 'html', label: 'Html' },
-    { value: 'css', label: 'Css' },
-    { value: 'tailwind-css', label: 'Tailwind CSS' },
-    { value: 'javascript', label: 'JavaScript' },
-    { value: 'git', label: 'Git' },
-    { value: 'docker', label: 'Docker' },
-  ];
+  console.log('userProgress: ', userProgress);
+
+  if (!projectsIds) return <Spinner />;
 
   return (
     <Row>
-      <Heading title={title} description={description} />
-      <Filterbar
-        filterOptions={filterOptions}
-        onFilterChange={handleFilterChange}
-      >
-        <Total filter={filter} count={count} />
-      </Filterbar>
-      <DashboardLayout>
-        <StyledDashboardLayout>
-          {projectsIds.map((projectId) => {
-            return (
-              <ProjectCard
-                key={projectId}
-                projectId={projectId}
-                filter={filter}
-                role={session.role}
-                userProgress={userProgress}
-              />
-            );
-          })}
-        </StyledDashboardLayout>
-      </DashboardLayout>
+      <Heading
+        title="Projects"
+        description="Transform your knowledge into real-world solutions by working on hands-on projects that challenge and inspire you!"
+      />
+      <Filterbar onSearchChange={setSearchQuery} />
+
+      {/* ✅ Fetch projects here */}
+      {!isFetched && projectsIds.length > 0 && (
+        <FetchProjectsLayout>
+          {projects.length >= projectsIds.length ? setIsFetched(true) : null}
+          {projectsIds.map((projectId) => (
+            <FetchProjects
+              key={projectId}
+              projectId={projectId}
+              setProjects={setProjects}
+              setIsFetched={setIsFetched}
+              size={projectsIds.length}
+            />
+          ))}
+        </FetchProjectsLayout>
+      )}
+
+      {isFetched && (
+        <DashboardLayout>
+          <StyledDashboardLayout>
+            {filteredProjects.length > 0 ? (
+              filteredProjects.map((project) => (
+                <ProjectCard
+                  key={project._id}
+                  project={project}
+                  role={session.role}
+                  userProgress={userProgress}
+                />
+              ))
+            ) : (
+              <NoProjectsMessage>No matching projects found.</NoProjectsMessage>
+            )}
+          </StyledDashboardLayout>
+        </DashboardLayout>
+      )}
     </Row>
   );
 }

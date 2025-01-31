@@ -2,15 +2,16 @@ import { useParams } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { LuGraduationCap } from 'react-icons/lu';
+import { FaCheckCircle } from 'react-icons/fa';
+
 import { useFetchProjectById } from '../../hooks/projects/useProject';
+import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
 import Row from '../instructor/roadmaps/Row';
 import DetailsHeading from './DetailsHeading';
 import OrderCard from './OrderCard';
 import InstructorsSet from '../roadmaps/InstructorsSet';
-
-import { LuGraduationCap } from 'react-icons/lu';
-import { FaCheckCircle } from 'react-icons/fa';
 
 import Spinner from '../../ui/Spinner';
 
@@ -78,14 +79,19 @@ const InstructorsSetContainer = styled(Section)`
 
 function ViewProjectDetails() {
   const { id } = useParams();
+  const { session, userProgress } = useOutletContext();
+
   const {
     data: project,
     isLoading: isProjectLoading,
     projectError,
   } = useFetchProjectById(id);
-  const { session, userProgress } = useOutletContext();
 
-  if (isProjectLoading || !project || projectError) return <Spinner />;
+  const { mutate: updateProgress, isLoading: updatingProgress } =
+    useUpdateProgress();
+
+  if (isProjectLoading || !project || projectError || updatingProgress)
+    return <Spinner />;
 
   const { description, tasks = [], prerequisites = [], instructor } = project;
 
@@ -94,8 +100,9 @@ function ViewProjectDetails() {
       <DetailsHeading
         project={project}
         title={project.name}
-        userProgress={userProgress}
         role={session.role}
+        userProgress={userProgress}
+        updateProgress={updateProgress}
       />
       <Container>
         <OrderCardsContainer>

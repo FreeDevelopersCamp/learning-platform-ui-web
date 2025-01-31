@@ -3,29 +3,19 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import {
-  HiEnvelope,
-  HiOutlineCalendarDays,
   HiOutlineHome,
   HiOutlineUsers,
   HiPresentationChartLine,
 } from 'react-icons/hi2';
-import { HiChatBubbleLeftRight } from 'react-icons/hi2';
 import { BsShieldLock } from 'react-icons/bs';
-import { IoIosNotificationsOutline } from 'react-icons/io';
 import { FaTasks } from 'react-icons/fa';
 import { GoProjectRoadmap } from 'react-icons/go';
 import { BiTask } from 'react-icons/bi';
-import {
-  MdLeaderboard,
-  MdOutlineLibraryBooks,
-  MdOutlineAssessment,
-} from 'react-icons/md';
+import { MdOutlineLibraryBooks } from 'react-icons/md';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import InsightsIcon from '@mui/icons-material/Insights';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import CastForEducationIcon from '@mui/icons-material/CastForEducation';
 
 const NavList = styled.ul`
   display: flex;
@@ -142,12 +132,6 @@ function MainNav({ isOpen, role, onMenuSelect }) {
         path: '/learner/certifications',
         icon: <WorkspacePremiumIcon />,
         label: 'Certifications',
-      },
-      {
-        id: 'tutorials',
-        path: '/learner/tutorials',
-        icon: <CastForEducationIcon />,
-        label: 'Tutorials',
       },
     ];
 

@@ -1,14 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
-
-import { formatDuration } from '../../utils/helpers.js';
+import { toast } from 'react-hot-toast';
 
 import { LuClock3 } from 'react-icons/lu';
 import { GoDotFill } from 'react-icons/go';
 import { FaRegBookmark } from 'react-icons/fa6';
 import { HiOutlineUsers } from 'react-icons/hi2';
+
+import { formatDuration } from '../../utils/helpers.js';
 
 const Container = styled.div`
   display: flex;
@@ -120,41 +119,20 @@ const XP = styled.span`
   color: var(--color-mutedblue-900);
 `;
 
-function DetailsHeading({ course, title, userProgress, role }) {
+function DetailsHeading({ course, role, userProgress, updateProgress }) {
   const navigate = useNavigate();
-
-  const { mutate: updateProgress, isLoading: updatingProgress } =
-    useUpdateProgress();
 
   const {
     _id: courseId,
     name,
-    description,
-    category,
-    topic,
-    status,
     duration,
-    instructorId,
-    resources = [],
-    tips = [],
     subCoursesIds = [],
     xp,
-    created,
-    updated,
-    raters = [],
-    rating,
     level,
   } = course;
 
-  const {
-    currentRoadmapsIds = [],
-    completedRoadmapsIds = [],
-    currentCoursesIds = [],
-    completedCoursesIds = [],
-    completedProjectsIds = [],
-    completedPracticesIds = [],
-    xp: xpp,
-  } = userProgress || {};
+  const { currentCoursesIds = [], completedCoursesIds = [] } =
+    userProgress || {};
 
   const isCurrent = currentCoursesIds.includes(courseId);
   const isCompleted = completedCoursesIds.includes(courseId);
@@ -176,18 +154,24 @@ function DetailsHeading({ course, title, userProgress, role }) {
   };
 
   const handleBookmarkCourse = () => {
-    if (
-      !userProgress ||
-      userProgress.BookmarksIds.some((bookmark) => bookmark.itemId === courseId)
-    )
+    const isAlreadyBookmarked = userProgress?.BookmarksIds?.some(
+      (bookmark) => bookmark.itemId === courseId,
+    );
+
+    if (isAlreadyBookmarked) {
+      toast.success('🚀 Project already bookmarked!');
       return;
+    }
+
+    const newBookmark = {
+      itemId: courseId,
+      type: 'course',
+    };
 
     const updatedProgress = {
       ...userProgress,
-      BookmarksIds: [
-        ...userProgress.BookmarksIds,
-        { itemId: courseId, type: 'course' },
-      ],
+      userId: userProgress.user._id,
+      BookmarksIds: [...userProgress.BookmarksIds, newBookmark],
     };
 
     updateProgress(updatedProgress);

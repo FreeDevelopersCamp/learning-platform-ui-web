@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaListUl } from 'react-icons/fa';
 
 import { useAuth } from '../../contexts/auth/AuthContext';
 import { useGetUser } from '../../apis/core/User/hooks/useGetUser.ts';
@@ -25,46 +24,34 @@ const StyledCoursesLayout = styled.div`
 
 const Main = styled.main`
   display: flex;
-  flex-grow: 1;
-  position: relative;
-  align-items: flex-start;
-  justify-content: center;
   width: 100%;
   height: calc(100vh - var(--header-height));
   background-color: #fff !important;
   overflow: hidden;
-  padding-top: 0 !important; /* Ensures no space between header and content */
+  padding-top: 0 !important;
+`;
+
+const SidebarWrapper = styled.div`
+  width: ${(props) =>
+    props.isOpen ? '14%' : '0px'}; /* ✅ Sidebar has fixed width */
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+  background-color: #fff;
+  height: 100%;
+  border-right: 1px solid var(--color-grey-300);
 `;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-grow: 1;
+  align-items: center; /* ✅ Centers content horizontally */
+  justify-content: flex-start; /* ✅ Keeps content at the top */
   width: 100%;
-  height: 100%;
-  padding: 2rem 3rem 3rem; /* Reduced top padding */
-  overflow-y: auto; /* Inner scroll */
-  overflow-x: hidden;
-  margin-top: 0 !important; /* Removes extra space */
-`;
-
-const Button = styled.div`
-  position: absolute;
-  top: 8rem;
-  left: 0;
-  border: 2px solid var(--color-grey-700);
-  border-radius: 5px;
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%;
-  padding: 1rem;
-  cursor: pointer;
-  transition: all 1s;
-
-  &:hover {
-    background-color: var(--color-grey-300);
-  }
+  max-width: 1300px; /* ✅ Ensures content does not stretch too wide */
+  margin: 0 auto; /* ✅ Centers the container itself */
+  padding: 2rem 3rem 3rem;
+  overflow-y: auto; /* ✅ Enables scrolling */
+  margin-top: 9vh;
 `;
 
 function CourseLayout() {
@@ -102,20 +89,16 @@ function CourseLayout() {
     <StyledCoursesLayout>
       <Header page={'courses'} />
       <Main>
-        {!isSidebarOpen && (
-          <Button onClick={() => setSidebarOpen((prev) => !prev)}>
-            <FaListUl
-              style={{ fontSize: '2rem', color: 'var(--color-grey-700)' }}
-            />
-          </Button>
-        )}
-        <CourseSidebar
-          isOpen={isSidebarOpen}
-          toggleSidebar={() => setSidebarOpen((prev) => !prev)}
-          course={course}
-          userProgress={userProgress}
-          key={userProgress.completedCoursesIds.length}
-        />
+        <SidebarWrapper isOpen={isSidebarOpen}>
+          <CourseSidebar
+            isOpen={isSidebarOpen}
+            toggleSidebar={() => setSidebarOpen((prev) => !prev)}
+            course={course}
+            userProgress={userProgress}
+            key={userProgress.completedCoursesIds.length}
+          />
+        </SidebarWrapper>
+
         <Container isSidebarOpen={isSidebarOpen}>
           <Outlet
             context={{
