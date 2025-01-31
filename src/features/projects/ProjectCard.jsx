@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { useCount } from '../../contexts/projects/ProjectsContext';
 import { useFetchProjectById } from '../../hooks/projects/useProject';
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
+import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
 
 import { FaCheck } from 'react-icons/fa';
 import Spinner from '../../ui/Spinner';

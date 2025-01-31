@@ -1,5 +1,5 @@
-import { ContentType, HttpClient } from '../../apis/http-client';
-import { getDefaultHeaders } from '../../utils/headers.js';
+import { ContentType, HttpClient } from '../../http-client';
+import { getDefaultHeaders } from '../../../utils/headers.js';
 
 export default class Progress extends HttpClient {
   /**

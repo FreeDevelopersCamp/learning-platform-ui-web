@@ -3,23 +3,15 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import {
-  HiEnvelope,
-  HiOutlineCalendarDays,
   HiOutlineHome,
   HiOutlineUsers,
   HiPresentationChartLine,
 } from 'react-icons/hi2';
-import { HiChatBubbleLeftRight } from 'react-icons/hi2';
 import { BsShieldLock } from 'react-icons/bs';
-import { IoIosNotificationsOutline } from 'react-icons/io';
 import { FaTasks } from 'react-icons/fa';
 import { GoProjectRoadmap } from 'react-icons/go';
 import { BiTask } from 'react-icons/bi';
-import {
-  MdLeaderboard,
-  MdOutlineLibraryBooks,
-  MdOutlineAssessment,
-} from 'react-icons/md';
+import { MdLeaderboard, MdOutlineLibraryBooks } from 'react-icons/md';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import InsightsIcon from '@mui/icons-material/Insights';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
@@ -154,6 +146,12 @@ function MainNav({ isOpen, role, onMenuSelect }) {
         path: '/learner/projects',
         icon: <AccountTreeIcon />,
         label: 'Projects',
+      },
+      {
+        id: 'practices',
+        path: '/learner/practices',
+        icon: <FitnessCenterIcon />,
+        label: 'Practices',
       },
       {
         id: 'certifications',

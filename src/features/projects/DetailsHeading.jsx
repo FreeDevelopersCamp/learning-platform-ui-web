@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
+import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
 import { formatDuration } from '../../utils/helpers.js';
 import { LuClock3 } from 'react-icons/lu';
 import { FaRegBookmark } from 'react-icons/fa6';
-import { HiOutlineUsers } from 'react-icons/hi2';
 
 const Container = styled.div`
   display: flex;
