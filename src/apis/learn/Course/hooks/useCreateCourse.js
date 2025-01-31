@@ -5,7 +5,7 @@ import Course from '../Course';
 export function useCreateCourse() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  const { mutate: createCourse, isLoading: isCreating } = useMutation({
     mutationFn: (newCourse) => Course.getInstance().create(newCourse),
     onSuccess: () => {
       toast.success('Course created successfully');
@@ -15,4 +15,6 @@ export function useCreateCourse() {
       toast.error('Failed to create course');
     },
   });
+
+  return { createCourse, isCreating };
 }

@@ -14,7 +14,7 @@ function PracticeTable({ practices, count }) {
         <Table.Header>
           <div>Practice Name</div>
           <div>Category</div>
-          <div>Difficulty</div>
+          <div>Topic</div>
           <div>XP</div>
           <div>Actions</div>
         </Table.Header>

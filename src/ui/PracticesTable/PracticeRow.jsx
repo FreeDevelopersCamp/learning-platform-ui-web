@@ -11,9 +11,10 @@ import Modal from '../Menus/Modal.jsx';
 import Spinner from '../Spinner.jsx';
 import { useDeletePractice } from '../../apis/learn/Practice/hooks/useDeletePractice.ts';
 import { useUpdatePractice } from '../../apis/learn/Practice/hooks/useUpdatePractice.ts';
+import UpdatePracticeForm from './UpdatePracticeForm.jsx';
 
 function PracticeRow({ practice }) {
-  let { name, category, difficulty, xp } = practice;
+  let { name, category, topic, xp } = practice;
 
   const navigate = useNavigate();
   const { isDeleting, deletePractice } = useDeletePractice();
@@ -32,7 +33,7 @@ function PracticeRow({ practice }) {
         <span>{category}</span>
       </div>
 
-      <div>{difficulty}</div>
+      <div>{topic}</div>
 
       <div className="flex items-center gap-4">{xp}</div>
 
@@ -48,9 +49,7 @@ function PracticeRow({ practice }) {
             </Menus.Button>
 
             <Modal.Open opens={`update-${practice._id}`}>
-              <Menus.Button key={`${practice._id}`} icon={<HiPencil />}>
-                Update practice
-              </Menus.Button>
+              <Menus.Button icon={<HiPencil />}>Update practice</Menus.Button>
             </Modal.Open>
 
             <Modal.Open opens={`delete-${practice._id}`}>
@@ -58,17 +57,6 @@ function PracticeRow({ practice }) {
             </Modal.Open>
           </Menus.List>
         </Menus.Menu>
-
-        <Modal.Window
-          name={`update-${practice._id}`}
-          key={`update-${practice._id}`}
-        >
-          <ConfirmApprove
-            resourceName="practice"
-            disabled={isLoading}
-            key={practice._id}
-          />
-        </Modal.Window>
 
         <Modal.Window
           name={`delete-${practice._id}`}
@@ -79,6 +67,10 @@ function PracticeRow({ practice }) {
             disabled={isLoading}
             onConfirm={() => deletePractice(practice._id)}
           />
+        </Modal.Window>
+
+        <Modal.Window name={`update-${practice._id}`}>
+          <UpdatePracticeForm practice={practice} />
         </Modal.Window>
       </Modal>
     </Table.Row>

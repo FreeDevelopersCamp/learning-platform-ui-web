@@ -1,18 +1,26 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import Project from '../Project';
+import Project from '../Project'; // Ensure this points to your API service
 
 export function useCreateProject() {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (newProject) => Project.getInstance().create(newProject),
+  const mutation = useMutation({
+    mutationFn: async (newProject) => {
+      return Project.getInstance().create(newProject);
+    },
     onSuccess: () => {
       toast.success('Project created successfully');
-      queryClient.invalidateQueries(['projects']);
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Create Project Error:', error);
       toast.error('Failed to create project');
     },
   });
+
+  return {
+    isCreating: mutation.isLoading,
+    createProject: mutation.mutate, // ✅ Explicitly return the function
+  };
 }

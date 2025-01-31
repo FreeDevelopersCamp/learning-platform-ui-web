@@ -5,14 +5,23 @@ import Roadmap from '../Roadmap';
 export function useCreateRoadmap() {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (newRoadmap) => Roadmap.getInstance().create(newRoadmap),
+  const { mutate: createRoadmap, isLoading: isCreating } = useMutation({
+    mutationFn: async (newRoadmap) => {
+      console.log('API Request Payload:', newRoadmap); // ✅ Debugging log
+      return Roadmap.getInstance().create(newRoadmap);
+    },
     onSuccess: () => {
       toast.success('Roadmap created successfully');
-      queryClient.invalidateQueries(['roadmaps']);
+      queryClient.invalidateQueries({ queryKey: ['roadmaps'] });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Create Roadmap Error:', error);
       toast.error('Failed to create roadmap');
     },
   });
+
+  return {
+    isCreating,
+    createRoadmap,
+  };
 }

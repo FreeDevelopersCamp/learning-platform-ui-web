@@ -94,7 +94,7 @@ export default class Practice extends HttpClient {
    */
   update(data, params = {}) {
     return this.request({
-      path: `/practice}`,
+      path: `/practice`,
       method: 'PATCH',
       body: data,
       secure: true,
