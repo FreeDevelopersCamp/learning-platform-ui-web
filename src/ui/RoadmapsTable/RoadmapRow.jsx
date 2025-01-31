@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { HiEye, HiPencil, HiTrash } from 'react-icons/hi2';
 
-import ConfirmApprove from '../Buttons/ConfirmApprove.jsx';
 import ConfirmDelete from '../Buttons/ConfirmDelete.jsx';
 import Table from '../Tables/Table.jsx';
 import Menus from '../Menus/Menus.jsx';
@@ -11,9 +10,10 @@ import Modal from '../Menus/Modal.jsx';
 import Spinner from '../Spinner.jsx';
 import { useDeleteRoadmap } from '../../apis/learn/Roadmap/hooks/useDeleteRoadmap.ts';
 import { useUpdateRoadmap } from '../../apis/learn/Roadmap/hooks/useUpdateRoadmap.js';
+import UpdateRoadmapForm from './UpdateRoadmapForm.jsx';
 
 function RoadmapRow({ roadmap }) {
-  let { name, category, level, xp } = roadmap;
+  let { name, category, topic, xp } = roadmap;
 
   const navigate = useNavigate();
   const { isDeleting, deleteRoadmap } = useDeleteRoadmap();
@@ -32,7 +32,7 @@ function RoadmapRow({ roadmap }) {
         <span>{category}</span>
       </div>
 
-      <div>{level}</div>
+      <div>{topic}</div>
 
       <div className="flex items-center gap-4">{xp}</div>
 
@@ -63,11 +63,7 @@ function RoadmapRow({ roadmap }) {
           name={`update-${roadmap._id}`}
           key={`update-${roadmap._id}`}
         >
-          <ConfirmApprove
-            resourceName="roadmap"
-            disabled={isLoading}
-            key={roadmap._id}
-          />
+          <UpdateRoadmapForm roadmap={roadmap} />
         </Modal.Window>
 
         <Modal.Window

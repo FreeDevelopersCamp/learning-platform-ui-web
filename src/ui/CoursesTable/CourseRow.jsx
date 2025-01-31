@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { HiEye, HiPencil, HiTrash } from 'react-icons/hi2';
 
@@ -12,6 +11,7 @@ import Modal from '../Menus/Modal.jsx';
 import Spinner from '../Spinner.jsx';
 import { useDeleteCourse } from '../../apis/learn/Course/hooks/useDeleteCourse.ts';
 import { useUpdateCourse } from '../../apis/learn/Course/hooks/useUpdateCourse.ts';
+import UpdateCourseForm from './UpdateCourseForm.jsx';
 
 function CourseRow({ course }) {
   let { name, category, topic, duration } = course;
@@ -35,7 +35,7 @@ function CourseRow({ course }) {
 
       <div>{topic}</div>
 
-      <div className="flex items-center gap-4">{duration}</div>
+      <div className="flex items-center gap-4">{duration} Minutes</div>
 
       <Modal>
         <Menus.Menu>
@@ -60,18 +60,15 @@ function CourseRow({ course }) {
           </Menus.List>
         </Menus.Menu>
 
+        {/* Update Course Modal */}
         <Modal.Window
           name={`update-${course._id}`}
           key={`update-${course._id}`}
         >
-          <ConfirmApprove
-            resourceName="course"
-            disabled={isLoading}
-            // onConfirm={() => (user.roleId, 'approve')}
-            key={course._id}
-          />
+          <UpdateCourseForm course={course} />
         </Modal.Window>
 
+        {/* Delete Course Modal */}
         <Modal.Window
           name={`delete-${course._id}`}
           key={`delete-${course._id}`}

@@ -11,6 +11,7 @@ import Modal from '../Menus/Modal.jsx';
 import Spinner from '../Spinner.jsx';
 import { useDeleteProject } from '../../apis/learn/Project/hooks/useDeleteProject';
 import { useUpdateProject } from '../../apis/learn/Project/hooks/useUpdateProject';
+import UpdateProjectForm from './UpdateProjectForm.jsx';
 
 function ProjectRow({ project }) {
   let { name, category, topic, xp } = project;
@@ -48,27 +49,16 @@ function ProjectRow({ project }) {
             </Menus.Button>
 
             <Modal.Open opens={`update-${project._id}`}>
-              <Menus.Button key={`${project._id}`} icon={<HiPencil />}>
-                Update project
-              </Menus.Button>
+              <Menus.Button icon={<HiPencil />}>Update project</Menus.Button>
             </Modal.Open>
-
             <Modal.Open opens={`delete-${project._id}`}>
               <Menus.Button icon={<HiTrash />}>Delete project</Menus.Button>
             </Modal.Open>
           </Menus.List>
         </Menus.Menu>
 
-        <Modal.Window
-          name={`update-${project._id}`}
-          key={`update-${project._id}`}
-        >
-          <ConfirmApprove
-            resourceName="project"
-            disabled={isLoading}
-            // onConfirm={() => (user.roleId, 'approve')}
-            key={project._id}
-          />
+        <Modal.Window name={`update-${project._id}`}>
+          <UpdateProjectForm project={project} />
         </Modal.Window>
 
         <Modal.Window

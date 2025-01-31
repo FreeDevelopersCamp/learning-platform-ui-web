@@ -6,14 +6,14 @@ export function useUpdateCourse() {
   const queryClient = useQueryClient();
 
   const { isLoading: isUpdating, mutate: updateCourse } = useMutation({
-    mutationFn: async ({ updatedData }: { updatedData: any }) => {
-      // Use the Course service instance to update the course
+    mutationFn: async (updatedData) => {
+      // Correct parameter structure
+      console.log('Updating Course with data:', updatedData);
       return await Course.getInstance().update(updatedData);
     },
     onSuccess: () => {
       toast.success('Course successfully updated');
-      // Invalidate the courses query to refetch the updated list
-      queryClient.invalidateQueries({ queryKey: ['courses'] });
+      queryClient.invalidateQueries({ queryKey: ['courses'] }); // Refetch course list
     },
     onError: (err) => {
       console.error('Update error:', err);

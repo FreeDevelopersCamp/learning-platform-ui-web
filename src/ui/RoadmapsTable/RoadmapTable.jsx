@@ -13,7 +13,7 @@ function RoadmapTable({ roadmaps, count }) {
         <Table.Header>
           <div>Roadmap Name</div>
           <div>Category</div>
-          <div>Level</div>
+          <div>Topic</div>
           <div>XP</div>
           <div>Actions</div>
         </Table.Header>
