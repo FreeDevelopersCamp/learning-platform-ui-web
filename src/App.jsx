@@ -75,6 +75,8 @@ import { ProjectsProvider } from './contexts/projects/ProjectsContext';
 import ChatPage from '@/pages/Chat/ChatPage.jsx';
 import PracticesPage from './pages/Learner/PracticesPage';
 import Practice from './pages/Learner/Practice';
+import NotificationsPage from './pages/Notifications/NotificationsPage';
+import SubmissionsReviewTable from './pages/Instructor/SubmissionsReviewTable';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -137,6 +139,14 @@ function App() {
                           element={
                             <ProtectedRoute role="all">
                               <ProfilePage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="settings/notifications"
+                          element={
+                            <ProtectedRoute role="all">
+                              <NotificationsPage />
                             </ProtectedRoute>
                           }
                         />
@@ -394,6 +404,14 @@ function App() {
                             </ProtectedRoute>
                           }
                         />
+                        <Route
+                          path="instructor/learner"
+                          element={
+                            <ProtectedRoute role="5">
+                              <SubmissionsReviewTable />
+                            </ProtectedRoute>
+                          }
+                        />
 
                         <Route element={<LearnerLayout />}>
                           <Route
@@ -449,7 +467,7 @@ function App() {
                             }
                           />
                           <Route
-                            path="learner/certification"
+                            path="learner/certifications"
                             element={
                               <ProtectedRoute role="6">
                                 <LearnerPage />

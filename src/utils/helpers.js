@@ -65,3 +65,16 @@ export const getRoleCode = (role) => {
       return 'Unknown';
   }
 };
+
+export const getSubmissionCode = (role) => {
+  switch (role) {
+    case '0':
+      return 'Not Submitted';
+    case '1':
+      return 'Submitted';
+    case '2':
+      return 'Passed';
+    default:
+      return 'Unknown';
+  }
+};

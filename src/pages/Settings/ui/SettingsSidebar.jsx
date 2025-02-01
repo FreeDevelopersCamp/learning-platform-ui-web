@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const LeftSection = styled.div`
@@ -51,6 +52,7 @@ export const SidebarItem = styled.div`
 `;
 
 function SettingsSidebar() {
+  const navigate = useNavigate();
   return (
     <LeftSection>
       <h1>Account Settings</h1>
@@ -61,7 +63,7 @@ function SettingsSidebar() {
         <SidebarItem>
           Subscription <span>&gt;</span>
         </SidebarItem>
-        <SidebarItem>
+        <SidebarItem onClick={() => navigate('/settings/notifications')}>
           Notifications <span>&gt;</span>
         </SidebarItem>
         <SidebarItem>

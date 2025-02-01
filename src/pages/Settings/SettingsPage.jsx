@@ -40,7 +40,6 @@ const SettingsPage = () => {
   const { session, logout, isLoading } = useAuth();
   const { user, userLoading } = useGetUser(session?.username);
   const { profile, profileLoading } = useGetProfile(session?.username);
-  const [selectedFile, setSelectedFile] = useState(null);
 
   const [formData, setFormData] = useState({});
 

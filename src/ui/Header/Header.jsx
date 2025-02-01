@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
-import EmailIcon from '@mui/icons-material/Email';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PeopleIcon from '@mui/icons-material/People';
 import { MdMenuOpen, MdOutlineMenu, MdTranslate } from 'react-icons/md';
@@ -25,6 +24,9 @@ import { FiCalendar } from 'react-icons/fi';
 
 import { useGetUser } from '@/apis/core/User/hooks/useGetUser.ts';
 import { getRoleCode } from '@/utils/helpers.js';
+import { useDarkMode } from '@/contexts/DarkModeContext';
+import { useAuth } from '../../contexts/auth/AuthContext';
+import { useGetNotifications } from '../../apis/communication/Notification/hooks/useGetNotifications';
 
 import AuthButtons from './AuthButtons';
 import ShortcutsMenus from './ShortcutsMenu';
@@ -32,8 +34,8 @@ import SearchBar from './SearchBar';
 import Menus from './ProfileMenu';
 import SpinnerMini from '../SpinnerMini';
 import NavBar from './NavBar';
-import { useDarkMode } from '@/contexts/DarkModeContext';
-import { useAuth } from '../../contexts/auth/AuthContext';
+import Modal from '../Menus/Modal';
+import NotificationsMenu from './NotificationsMenu';
 
 const HeaderContainer = styled.div`
   background-color: var(--color-grey-0);
@@ -123,6 +125,28 @@ const HeaderContainer = styled.div`
       }
     }
 
+    .icon-notifications {
+      margin-top: 0.75rem;
+      font-size: 2.2rem;
+      color: var(--color-grey-900);
+      font-weight: 700;
+      padding: 7px;
+      border-radius: 50%;
+      transition: color 0.5s;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-grey-700);
+        background-color: var(--color-grey-100);
+      }
+
+      button:focus,
+      button:active {
+        outline: none;
+        border: none;
+      }
+    }
+
     *:focus,
     *:active {
       outline: none;
@@ -134,15 +158,19 @@ const Header = ({ page, toggleSidebar, atHome = false }) => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
-  const { logout } = useAuth();
 
-  const { isLoading: sessionLoading, session } = useAuth();
+  const { isLoading: sessionLoading, session, logout } = useAuth();
 
   const { user, isLoading: userLoading } = useGetUser(session?.username, {
     enabled: !!session?.username,
   });
 
-  if ((sessionLoading || userLoading || !session || !user) && !atHome)
+  const { notifications, isLoading } = useGetNotifications(user?._id);
+
+  if (
+    (sessionLoading || userLoading || !session || !user || isLoading) &&
+    !atHome
+  )
     return <SpinnerMini />;
 
   const handleToggle = () => {
@@ -153,144 +181,144 @@ const Header = ({ page, toggleSidebar, atHome = false }) => {
   const toggleStyles = atHome ? { display: 'none' } : { display: 'block' };
 
   return (
-    <HeaderContainer>
-      <div className="left-section">
-        <div
-          className="logo architects-daughter-regular"
-          onClick={() => navigate('/')}
-        >
-          {`freeDevelopersCamp`}
-          <span className="pl-1">{'('}</span>
-          <span className="pb-2">
-            <BsFire />
-          </span>
-          <span>)</span>
-        </div>
-        {page === 'course' && (
+    <Modal>
+      <HeaderContainer>
+        <div className="left-section">
           <div
-            className="menu-icon"
-            style={toggleStyles}
-            onClick={handleToggle}
+            className="logo architects-daughter-regular"
+            onClick={() => navigate('/')}
           >
-            {isSidebarOpen ? (
-              <MdOutlineMenu style={{ fontSize: '2.4rem', zIndex: 1 }} />
-            ) : (
-              <MdMenuOpen style={{ fontSize: '2.4rem' }} />
-            )}
+            {`freeDevelopersCamp`}
+            <span className="pl-1">{'('}</span>
+            <span className="pb-2">
+              <BsFire />
+            </span>
+            <span>)</span>
           </div>
-        )}
-        <NavBar hidden={!atHome} />
-        <SearchBar />
-      </div>
-
-      {session && session?.active ? (
-        <div className="right-section">
-          <div className="icon-container">
-            <button className="flex items-center">
-              <MdTranslate />
-            </button>
-          </div>
-          <div className="icon-container">
-            <button onClick={toggleDarkMode} className="flex items-center">
-              {isDarkMode ? <HiOutlineSun /> : <HiOutlineMoon />}
-            </button>
-          </div>
-          <div className="icon-container">
-            <ShortcutsMenus>
-              <ShortcutsMenus.Menu>
-                <ShortcutsMenus.Toggle icon={<RiStarSmileLine />} />
-                <ShortcutsMenus.List>
-                  <ShortcutsMenus.Button
-                    icon={<RxDashboard />}
-                    onClick={() =>
-                      navigate(
-                        `${getRoleCode(session.role).toLowerCase().split(' ').join('')}`,
-                      )
-                    }
-                  >
-                    Dashboard
-                  </ShortcutsMenus.Button>
-                  <ShortcutsMenus.Button
-                    icon={<PeopleIcon />}
-                    onClick={() => navigate('/community')}
-                  >
-                    Community
-                  </ShortcutsMenus.Button>
-                  <ShortcutsMenus.Button
-                    icon={<FiCalendar />}
-                    onClick={() => navigate('/calendar')}
-                  >
-                    Calendar
-                  </ShortcutsMenus.Button>
-                  <ShortcutsMenus.Button
-                    icon={<RiDragDropLine />}
-                    onClick={() => navigate('/taskboard')}
-                  >
-                    Task Board
-                  </ShortcutsMenus.Button>
-                </ShortcutsMenus.List>
-              </ShortcutsMenus.Menu>
-            </ShortcutsMenus>
-          </div>
-          <div className="icon-container">
-            <button className="flex items-center">
-              <RiNotificationLine />
-            </button>
-          </div>
-
-          <Menus>
-            <Menus.Menu>
-              <Menus.Toggle id={user?._id} user={user} />
-              <Menus.List id={user?._id}>
-                <Menus.Button
-                  icon={<HiUser />}
-                  onClick={() =>
-                    navigate(`/profile?username=${user?.userName}`)
-                  }
-                  style={{ fontSize: '2rem' }}
-                >
-                  My Profile
-                </Menus.Button>
-
-                {/*<Menus.Button*/}
-                {/*  icon={<NotificationsIcon />}*/}
-                {/*  onClick={() => console.log('Logout clicked')}*/}
-                {/*>*/}
-                {/*  Notification Center*/}
-                {/*</Menus.Button>*/}
-
-                {/*<Menus.Button*/}
-                {/*  icon={<EmailIcon />}*/}
-                {/*  onClick={() => console.log('Logout clicked')}*/}
-                {/*>*/}
-                {/*  Email*/}
-                {/*</Menus.Button>*/}
-
-                <Menus.Button
-                  icon={<HiChatBubbleLeftRight />}
-                  onClick={() => navigate('/chat')}
-                >
-                  Chat
-                </Menus.Button>
-
-                <Menus.Button
-                  icon={<SettingsIcon />}
-                  onClick={() => navigate(`/settings`)}
-                >
-                  Account Settings
-                </Menus.Button>
-
-                <Menus.Button icon={<LogoutIcon />} onClick={logout}>
-                  Log Out
-                </Menus.Button>
-              </Menus.List>
-            </Menus.Menu>
-          </Menus>
+          {page === 'course' && (
+            <div
+              className="menu-icon"
+              style={toggleStyles}
+              onClick={handleToggle}
+            >
+              {isSidebarOpen ? (
+                <MdOutlineMenu style={{ fontSize: '2.4rem', zIndex: 1 }} />
+              ) : (
+                <MdMenuOpen style={{ fontSize: '2.4rem' }} />
+              )}
+            </div>
+          )}
+          <NavBar hidden={!atHome} />
+          <SearchBar />
         </div>
-      ) : (
-        <AuthButtons />
-      )}
-    </HeaderContainer>
+
+        {session && session?.active ? (
+          <div className="right-section">
+            <div className="icon-container">
+              <button className="flex items-center">
+                <MdTranslate />
+              </button>
+            </div>
+            <div className="icon-container">
+              <button onClick={toggleDarkMode} className="flex items-center">
+                {isDarkMode ? <HiOutlineSun /> : <HiOutlineMoon />}
+              </button>
+            </div>
+            <div className="icon-container">
+              <ShortcutsMenus>
+                <ShortcutsMenus.Menu>
+                  <ShortcutsMenus.Toggle icon={<RiStarSmileLine />} />
+                  <ShortcutsMenus.List>
+                    <ShortcutsMenus.Button
+                      icon={<RxDashboard />}
+                      onClick={() =>
+                        navigate(
+                          `${getRoleCode(session.role).toLowerCase().split(' ').join('')}`,
+                        )
+                      }
+                    >
+                      Dashboard
+                    </ShortcutsMenus.Button>
+                    <ShortcutsMenus.Button
+                      icon={<PeopleIcon />}
+                      onClick={() => navigate('/community')}
+                    >
+                      Community
+                    </ShortcutsMenus.Button>
+                    <ShortcutsMenus.Button
+                      icon={<FiCalendar />}
+                      onClick={() => navigate('/calendar')}
+                    >
+                      Calendar
+                    </ShortcutsMenus.Button>
+                    <ShortcutsMenus.Button
+                      icon={<RiDragDropLine />}
+                      onClick={() => navigate('/taskboard')}
+                    >
+                      Task Board
+                    </ShortcutsMenus.Button>
+                  </ShortcutsMenus.List>
+                </ShortcutsMenus.Menu>
+              </ShortcutsMenus>
+            </div>
+
+            <div className="icon-notifications">
+              <NotificationsMenu notifications={notifications}>
+                {({ isOpen, setIsOpen }) => (
+                  <>
+                    <NotificationsMenu.Toggle
+                      id="notifications-menu"
+                      onClick={() => setIsOpen(!isOpen)}
+                    />
+                    {isOpen && (
+                      <NotificationsMenu.List
+                        id="notifications-menu"
+                        notifications={notifications}
+                      />
+                    )}
+                  </>
+                )}
+              </NotificationsMenu>
+            </div>
+
+            <Menus>
+              <Menus.Menu>
+                <Menus.Toggle id={user?._id} user={user} />
+                <Menus.List id={user?._id}>
+                  <Menus.Button
+                    icon={<HiUser />}
+                    onClick={() =>
+                      navigate(`/profile?username=${user?.userName}`)
+                    }
+                    style={{ fontSize: '2rem' }}
+                  >
+                    My Profile
+                  </Menus.Button>
+                  <Menus.Button
+                    icon={<HiChatBubbleLeftRight />}
+                    onClick={() => navigate('/chat')}
+                  >
+                    Chat
+                  </Menus.Button>
+
+                  <Menus.Button
+                    icon={<SettingsIcon />}
+                    onClick={() => navigate(`/settings`)}
+                  >
+                    Account Settings
+                  </Menus.Button>
+                  <Menus.Button icon={<LogoutIcon />} onClick={logout}>
+                    Log Out
+                  </Menus.Button>
+                </Menus.List>
+              </Menus.Menu>
+            </Menus>
+          </div>
+        ) : (
+          <AuthButtons />
+        )}
+      </HeaderContainer>
+    </Modal>
   );
 };
 
