@@ -3,8 +3,6 @@ import styled from 'styled-components';
 
 import Progress from '../../ui/Progress';
 
-import { FaCheckCircle } from 'react-icons/fa';
-
 const Card = styled.div`
   display: flex;
   flex-direction: column;
@@ -13,16 +11,18 @@ const Card = styled.div`
   font-family: Arial, Helvetica, sans-serif;
   background-color: var(--color-grey-50);
   color: var(--color-mutedblue-900);
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 20px;
   width: 100%;
   cursor: pointer;
   transition:
-    transform 0.4s ease,
-    box-shadow 0.4s ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    box-shadow: 0px 2px 10px 0 var(--color-grey-300);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.12);
     transform: translateY(-2px);
   }
 `;
@@ -54,7 +54,7 @@ const Details = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 0 auto;
+  margin-top: auto;
   padding-top: 16px;
   border-top: 1px solid var(--color-grey-300);
   z-index: 1;
@@ -74,6 +74,7 @@ const Continue = styled.button`
   font-size: 1.5rem;
   color: var(--color-mutedblue-900);
   background-color: var(--color-light-green-500);
+  border: none;
 
   &:hover {
     background-color: var(--color-light-green-600);
@@ -100,28 +101,25 @@ function RoadmapCard({ userProgress, roadmap }) {
   const navigate = useNavigate();
 
   const { _id, description, coursesIds = [], topic, order = [] } = roadmap;
-
   const { currentRoadmapsIds = [], completedCoursesIds = [] } =
     userProgress || {};
 
-  const isCurrent = currentRoadmapsIds.some((entry) => {
-    return entry.itemId?.toString().trim() === _id?.toString().trim();
-  });
+  const isCurrent = currentRoadmapsIds.some(
+    (entry) => entry.itemId?.toString().trim() === _id?.toString().trim(),
+  );
 
   const progress =
-    currentRoadmapsIds.find((entry) => {
-      return entry.itemId?.toString().trim() === _id?.toString().trim();
-    })?.progress || 0;
+    currentRoadmapsIds.find(
+      (entry) => entry.itemId?.toString().trim() === _id?.toString().trim(),
+    )?.progress || 0;
 
   const handleContinue = (e) => {
     e.stopPropagation();
 
-    // Recursive function to find the course in nested structures
     const findCourseInNestedStructure = (courses, courseId) => {
       for (const course of courses) {
-        if (course._id === courseId) return course; // Found the course
+        if (course._id === courseId) return course;
 
-        // Check in subcourses if they exist
         if (course.subCourses && course.subCourses.length > 0) {
           const foundInSub = findCourseInNestedStructure(
             course.subCourses,
@@ -136,8 +134,6 @@ function RoadmapCard({ userProgress, roadmap }) {
     if (completedCoursesIds.length > 0) {
       const lastCompletedCourseId =
         completedCoursesIds[completedCoursesIds.length - 1];
-
-      // Use the recursive function to find the course
       const lastCompletedCourse = findCourseInNestedStructure(
         order,
         lastCompletedCourseId,
@@ -150,7 +146,6 @@ function RoadmapCard({ userProgress, roadmap }) {
           .replace(/\s+/g, '-')
           .replace(/-+/g, '-');
 
-        // Navigate to the last completed course
         navigate(
           `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}/${courseTitle}/${lastCompletedCourse._id}`,
         );
@@ -158,7 +153,6 @@ function RoadmapCard({ userProgress, roadmap }) {
       }
     }
 
-    // Fallback: Navigate to the first course if no completed course found
     if (order.length > 0) {
       const firstCourse = order[0];
       const courseTitle = firstCourse.name
@@ -171,7 +165,6 @@ function RoadmapCard({ userProgress, roadmap }) {
         `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}/${courseTitle}/${firstCourse._id}`,
       );
     } else {
-      // Navigate to the roadmap overview if no courses exist
       navigate(`/roadmap/${_id}`);
     }
   };

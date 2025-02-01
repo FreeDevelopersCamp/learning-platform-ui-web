@@ -1,6 +1,6 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useFetchRoadmapById } from '../../../hooks/roadmaps/useRoadmap';
 
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 
@@ -8,7 +8,6 @@ import Progress from './Progress';
 import Review from './Review';
 
 import { formatDuration } from '../../../utils/helpers';
-import Spinner from '../../../ui/Spinner';
 
 const StyledMainSection = styled.div`
   display: flex;
@@ -17,6 +16,7 @@ const StyledMainSection = styled.div`
   background-color: var(--color-theme-100);
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
 `;
 
 const TrackInfo = styled.div`
@@ -24,16 +24,6 @@ const TrackInfo = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 3rem;
-
-  a {
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 `;
 
 const StyledButton = styled.button`
@@ -54,7 +44,6 @@ const CourseName = styled.h2`
   font-weight: 600;
   font-size: 2.4rem;
   text-decoration: none;
-  cursor: pointer;
   margin-top: 1rem;
   margin-bottom: 1rem;
 `;
@@ -66,40 +55,36 @@ const ProgressSection = styled.div`
   gap: 3rem;
 `;
 
-function MainSection({ userProgress }) {
+function MainSection({ roadmap, userProgress }) {
   const navigate = useNavigate();
-  const roadmapId = userProgress?.currentRoadmapsIds[0]?.itemId;
-  const progress = userProgress?.currentRoadmapsIds[0]?.progress;
 
-  const { data: roadmap, isLoading: isLoadingRoadmap } =
-    useFetchRoadmapById(roadmapId);
+  const { _id, topic, order = [] } = roadmap;
+  const { completedCoursesIds = [] } = userProgress;
 
-  if (isLoadingRoadmap) return <Spinner />;
-  if (!roadmap) return <div>No roadmap found.</div>;
-
-  const currentCourse = roadmap.order.find(
-    (course) => !userProgress.completedCoursesIds.includes(course._id),
+  // ✅ Find the next incomplete course efficiently
+  const currentCourse = useMemo(
+    () => order.find((course) => !completedCoursesIds.includes(course._id)),
+    [order, completedCoursesIds],
   );
 
-  const totalTimeLeft = roadmap.order.reduce((acc, course) => {
-    if (!userProgress.completedCoursesIds.includes(course._id)) {
-      return acc + (course.duration || 0);
-    }
-    return acc;
-  }, 0);
+  // ✅ Calculate total time left efficiently
+  const totalTimeLeft = useMemo(
+    () =>
+      order.reduce((acc, course) => {
+        return !completedCoursesIds.includes(course._id)
+          ? acc + (course.duration || 0)
+          : acc;
+      }, 0),
+    [order, completedCoursesIds],
+  );
 
-  const handleContinue = () => {
-    if (!roadmap || !userProgress?.completedCoursesIds) {
-      console.error('Roadmap or user progress data is missing.');
-      return;
-    }
+  const handleContinue = (e) => {
+    e.stopPropagation();
 
-    // Recursive function to find the course in nested structures
     const findCourseInNestedStructure = (courses, courseId) => {
       for (const course of courses) {
-        if (course._id === courseId) return course; // Found the course
+        if (course._id === courseId) return course;
 
-        // Check in subCourses if they exist
         if (course.subCourses && course.subCourses.length > 0) {
           const foundInSub = findCourseInNestedStructure(
             course.subCourses,
@@ -111,16 +96,11 @@ function MainSection({ userProgress }) {
       return null;
     };
 
-    if (userProgress.completedCoursesIds.length > 0) {
-      // Get the last completed course ID
+    if (completedCoursesIds.length > 0) {
       const lastCompletedCourseId =
-        userProgress.completedCoursesIds[
-          userProgress.completedCoursesIds.length - 1
-        ];
-
-      // Use the recursive function to find the course
+        completedCoursesIds[completedCoursesIds.length - 1];
       const lastCompletedCourse = findCourseInNestedStructure(
-        roadmap.order,
+        order,
         lastCompletedCourseId,
       );
 
@@ -131,32 +111,26 @@ function MainSection({ userProgress }) {
           .replace(/\s+/g, '-')
           .replace(/-+/g, '-');
 
-        // Navigate to the last completed course
         navigate(
-          `/courses/${roadmap.topic.toLowerCase().replace(/\s+/g, '-')}/${roadmapId}/${courseTitle}/${lastCompletedCourse._id}`,
+          `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}/${courseTitle}/${lastCompletedCourse._id}`,
         );
         return;
       }
     }
 
-    // Fallback: Navigate to the first course if no completed course is found
-    const nextCourse = roadmap.order.find(
-      (course) => !userProgress.completedCoursesIds.includes(course._id),
-    );
-
-    if (nextCourse) {
-      const courseTitle = nextCourse.name
+    if (order.length > 0) {
+      const firstCourse = order[0];
+      const courseTitle = firstCourse.name
         .toLowerCase()
         .replace(/[^a-z0-9\s]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-');
 
       navigate(
-        `/courses/${roadmap.topic.toLowerCase().replace(/\s+/g, '-')}/${roadmapId}/${courseTitle}/${nextCourse._id}`,
+        `/courses/${topic.toLowerCase().replace(/\s+/g, '-')}/${_id}/${courseTitle}/${firstCourse._id}`,
       );
     } else {
-      // Navigate to roadmap overview if all courses are completed
-      navigate(`/roadmap/${roadmapId}`);
+      navigate(`/roadmap/${_id}`);
     }
   };
 
@@ -173,16 +147,18 @@ function MainSection({ userProgress }) {
               : 'You have completed all courses!'}
           </CourseName>
           <ProgressSection>
-            <Progress progress={progress} width="50%" />
+            <Progress
+              progress={userProgress.currentRoadmapsIds?.[0]?.progress || 0}
+              width="50%"
+            />
             <div className="flex flex-row items-center gap-2">
               <QueryBuilderIcon />
-              {/* {`${formatDuration(currentCourse.duration)} to go`} */}
               {`${formatDuration(totalTimeLeft)} to go`}
             </div>
           </ProgressSection>
         </div>
         <div>
-          <StyledButton onClick={() => handleContinue()}>
+          <StyledButton onClick={handleContinue}>
             {currentCourse ? 'Keep Making Progress' : 'View Certificate'}
           </StyledButton>
         </div>

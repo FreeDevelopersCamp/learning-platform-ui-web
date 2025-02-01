@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
 import { FaFreeCodeCamp } from 'react-icons/fa';
 import { LuClock3 } from 'react-icons/lu';
 import { FaBolt } from 'react-icons/fa';
@@ -79,14 +78,13 @@ function DetailsHeading({
   userProgress,
   updateProgress,
   role,
+  setPercentage,
   children,
 }) {
   const navigate = useNavigate();
 
   const {
-    _id,
     name,
-    description,
     duration,
     coursesIds = [],
     projectsIds = [],
@@ -96,19 +94,16 @@ function DetailsHeading({
     order,
   } = roadmap;
 
-  const {
-    currentRoadmapsIds = [],
-    currentCoursesIds = [],
-    completedRoadmapsIds = [],
-    completedCoursesIds = [],
-    completedProjectsIds = [],
-    completedPracticesIds = [],
-    xp,
-  } = userProgress || {};
+  const { currentRoadmapsIds = [] } = userProgress || {};
 
-  const isCurrentRoadmap = currentRoadmapsIds.some((entry) => {
-    return entry.itemId?.toString().trim() === roadmap._id?.toString().trim();
-  });
+  // ✅ Get progress for the current roadmap
+  const currentRoadmapEntry = currentRoadmapsIds.find(
+    (entry) =>
+      entry.itemId?.toString().trim() === roadmap._id?.toString().trim(),
+  );
+
+  const progress = currentRoadmapEntry ? currentRoadmapEntry.progress : 0;
+  setPercentage(progress);
 
   const handleUpdateRoadmap = (roadmapId) => {
     navigate(`/roadmap/${roadmapId}`);
@@ -124,6 +119,7 @@ function DetailsHeading({
   const handleRegisterRoadmap = (roadmapId) => {
     const updatedProgress = {
       ...userProgress,
+      userId: userProgress.user._id,
       currentRoadmapsIds: [
         ...(userProgress?.currentRoadmapsIds || []),
         { itemId: roadmapId.toString(), progress: 0 },
@@ -140,18 +136,17 @@ function DetailsHeading({
     navigate(`/roadmap/${roadmapId}`);
   };
 
-  console.log('isCurrentRoadmap: ', isCurrentRoadmap);
-
   return (
     <>
       <Container>
         <DetailsContainer role={role}>
           <Topic>{name}</Topic>
+
           {session.role === '5' ? (
             <Button onClick={() => handleUpdateRoadmap(roadmap._id)}>
               Update Roadmap
             </Button>
-          ) : isCurrentRoadmap ? (
+          ) : currentRoadmapEntry ? (
             <Button onClick={() => handleContinueTrack(roadmap._id)}>
               Continue Track
             </Button>
@@ -160,6 +155,7 @@ function DetailsHeading({
               Start Track
             </Button>
           )}
+
           <Stats>
             <Span>
               <FaFreeCodeCamp style={{ fontSize: '2.2rem' }} />
@@ -194,9 +190,12 @@ function DetailsHeading({
               <RiTeamLine style={{ fontSize: '1.8rem' }} />
               <span>{participants}</span> participants
             </Span>
+            {/* ✅ Show progress */}
+            <Span>
+              <FaBolt style={{ fontSize: '1.7rem', color: 'gold' }} />
+            </Span>
           </Stats>
         </DetailsContainer>
-        {/* for learner */}
         <ProgressBarContainer>{children}</ProgressBarContainer>
       </Container>
     </>

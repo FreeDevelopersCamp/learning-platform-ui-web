@@ -1,15 +1,16 @@
 import { useParams, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { LuGraduationCap } from 'react-icons/lu';
+import { FaCheckCircle } from 'react-icons/fa';
+
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
+import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
 import Row from '../instructor/roadmaps/Row';
 import DetailsHeading from './DetailsHeading';
 import OrderCard from './OrderCard';
 import InstructorsSet from '../roadmaps/InstructorsSet';
-
-import { LuGraduationCap } from 'react-icons/lu';
-import { FaCheckCircle } from 'react-icons/fa';
 
 import Spinner from '../../ui/Spinner';
 
@@ -73,15 +74,19 @@ const InstructorsSetContainer = styled(Section)`
 
 function ViewCourseDetails() {
   const { id } = useParams(); // Get the course ID from the URL
+  const { session, userProgress } = useOutletContext(); // Get session and progress data
+
   const {
     data: course,
     isLoading: isCourseLoading,
     error: courseError,
   } = useFetchCourseById(id); // Fetch course details
-  const { session, userProgress } = useOutletContext(); // Get session and progress data
+
+  const { mutate: updateProgress, isLoading: updatingProgress } =
+    useUpdateProgress();
 
   // Show a loading spinner if the data is being fetched
-  if (isCourseLoading) return <Spinner />;
+  if (isCourseLoading || updatingProgress) return <Spinner />;
   // Show an error message if there is an issue fetching the course
   if (courseError || !course)
     return <p>Error loading course details. Please try again later.</p>;
@@ -94,8 +99,9 @@ function ViewCourseDetails() {
       <DetailsHeading
         course={course}
         title={name}
-        userProgress={userProgress}
         role={session.role}
+        userProgress={userProgress}
+        updateProgress={updateProgress}
       />
 
       <Container>

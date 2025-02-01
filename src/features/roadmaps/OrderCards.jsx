@@ -7,7 +7,7 @@ import { IoIosArrowUp } from 'react-icons/io';
 import { LuClock3 } from 'react-icons/lu';
 import { FaCheck } from 'react-icons/fa';
 
-import { formatDuration } from '../../utils/helpers';
+import { formatDurationCard } from '../../utils/helpers';
 
 const Card = styled.div`
   width: 100%;
@@ -66,19 +66,6 @@ const Order = styled.div`
   color: var(--color-grey-100);
   background-color: var(--color-mutedblue-800);
   padding-right: 1px;
-`;
-
-const Status = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 25px;
-  height: 25px;
-  font-size: 1.4rem;
-  font-weight: bold;
-  border-radius: 50%;
-  color: var(--color-mutedblue-900);
-  background-color: #03ef62;
 `;
 
 const Title = styled.h2`
@@ -180,9 +167,6 @@ function OrderCards({
       <Type onClick={toggleCard}>{type}</Type>
       <Container onClick={toggleCard}>
         <Order>{index}</Order>
-        {/* <Status>
-          <FaCheck />
-        </Status> */}
         <Title>{name}</Title>
         <IconContainer>
           {!isOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
@@ -200,7 +184,7 @@ function OrderCards({
                   marginRight: '5px',
                 }}
               />
-              <p>{duration && formatDuration(duration)}</p>
+              <p>{duration && formatDurationCard(duration)}</p>
             </div>
             <div style={{ display: 'flex' }}>
               <FaCheck
@@ -217,7 +201,7 @@ function OrderCards({
             <Button onClick={handleViewClick}>
               View {type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}
             </Button>
-            {role === '6' && <Start onClick={handleStartClick}>Start</Start>}
+            {role === '6' && <Start onClick={handleViewClick}>Start</Start>}
           </ButtonsContainer>
         </Details>
       )}

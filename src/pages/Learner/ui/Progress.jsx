@@ -13,7 +13,7 @@ const ProgressWrapper = styled.div`
 const ProgressContainer = styled.div`
   flex: 1; /* Allows the bar to stretch */
   height: 1rem;
-  background-color: var(--color-light-200);
+  background-color: var(--color-grey-300);
   border-radius: 4rem;
   overflow: hidden;
   position: relative;

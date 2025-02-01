@@ -30,12 +30,27 @@ export const formatCurrency = (value) =>
   );
 
 export const formatDuration = (minutes) => {
+  if (minutes === 0) {
+    return `${minutes}`;
+  }
   if (minutes < 60) {
     return `${minutes} Minute${minutes === 1 ? '' : 's'}`;
   }
 
   const hours = Math.round(minutes / 60);
-  return `${hours} Hour${hours !== 1 ? 's' : ''}`;
+  return `${hours}`;
+};
+
+export const formatDurationCard = (minutes) => {
+  if (minutes === 0) {
+    return `${minutes}`;
+  }
+  if (minutes < 60) {
+    return `${minutes} Minute${minutes === 1 ? '' : 's'}`;
+  }
+
+  const hours = Math.round(minutes / 60);
+  return `${hours} Hour${hours === 1 ? '' : 's'}`;
 };
 
 export const capitalizeWords = (text) => {

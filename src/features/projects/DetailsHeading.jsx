@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
-import { formatDuration } from '../../utils/helpers.js';
+import { toast } from 'react-hot-toast';
 import { LuClock3 } from 'react-icons/lu';
 import { FaRegBookmark } from 'react-icons/fa6';
+
+import { formatDurationCard } from '../../utils/helpers.js';
 
 const Container = styled.div`
   display: flex;
@@ -44,15 +45,33 @@ const Button = styled.button`
   font-size: 1.5rem;
   gap: 0.5rem;
   color: var(--color-mutedblue-900);
-  background-color: var(--color-light-green-500);
+  background-color: ${(props) =>
+    props.bgColor || 'var(--color-light-green-500)'};
 
   &:hover {
-    background-color: var(--color-light-green-600);
+    background-color: ${(props) =>
+      props.hoverBg || 'var(--color-light-green-600)'};
   }
+`;
 
-  &:disabled {
-    background-color: var(--color-light-green-700);
-    color: var(--color-mutedblue-300);
+// ✅ Passed and Submitted Button Styles
+const PassedButton = styled(Button)`
+  background-color: #1b5e20; /* Dark Green */
+  color: white;
+  border-color: #1b5e20;
+
+  &:hover {
+    background-color: #144d17; /* Darker Green */
+  }
+`;
+
+const SubmittedButton = styled(Button)`
+  background-color: #4caf50; /* Light Green */
+  color: white;
+  border-color: #4caf50;
+
+  &:hover {
+    background-color: #45a049; /* Slightly Darker Green */
   }
 `;
 
@@ -106,10 +125,8 @@ const XP = styled.span`
   color: var(--color-mutedblue-900);
 `;
 
-function DetailsHeading({ project, userProgress, role }) {
+function DetailsHeading({ project, role, userProgress, updateProgress }) {
   const navigate = useNavigate();
-  const { mutate: updateProgress, isLoading: updatingProgress } =
-    useUpdateProgress();
 
   const {
     name,
@@ -119,73 +136,68 @@ function DetailsHeading({ project, userProgress, role }) {
     prerequisites = [],
   } = project || {};
 
-  const isCompleted =
-    userProgress?.completedProjectsIds &&
-    userProgress.completedProjectsIds.includes(project?._id);
+  // ✅ Get project status from userProgress
+  const currentProject = userProgress?.currentProjectsIds?.find(
+    (p) => p.id === project?._id,
+  );
+  const projectStatus = currentProject?.status ?? null;
 
-  const isCurrent =
-    userProgress?.currentProjectsIds &&
-    userProgress.currentProjectsIds.includes(project?._id);
-
-  const handleStartClick = (e) => {
+  const handleNavigate = (e) => {
     e.stopPropagation();
-
-    if (project && project.name && project._id) {
-      // Check if the project is already in currentProjectsIds
-      const isAlreadySaved = userProgress?.currentProjectsIds?.includes(
-        project._id,
-      );
-
-      if (isAlreadySaved) {
-        // If the project is already saved, navigate directly without updating progress
-        navigate(
-          `/project/${project.name.toLowerCase().replace(/\s+/g, '-')}/${project._id}`,
-        );
-        return;
-      }
-
-      // If the project is not saved, add it to currentProjectsIds and update progress
-      const updatedProgress = {
-        ...userProgress,
-        currentProjectsIds: [
-          ...new Set([
-            ...(userProgress?.currentProjectsIds || []),
-            project._id,
-          ]),
-        ],
-      };
-
-      updateProgress(updatedProgress);
-      navigate(
-        `/project/${project.name.toLowerCase().replace(/\s+/g, '-')}/${project._id}`,
-      );
-    }
+    navigate(
+      `/project/${project.name.toLowerCase().replace(/\s+/g, '-')}/${project._id}`,
+    );
   };
 
   const handleBookmark = () => {
-    if (!userProgress) return;
+    const newBookmark = {
+      itemId: project._id,
+      type: 'project',
+    };
 
-    updateProgress({
+    const isAlreadyBookmarked = userProgress?.BookmarksIds?.some(
+      (bookmark) => bookmark.itemId === project._id,
+    );
+
+    if (isAlreadyBookmarked) {
+      toast.success('🚀 Project already bookmarked!');
+      return;
+    }
+
+    const updatedProgress = {
       ...userProgress,
-      BookmarksIds: [
-        ...userProgress.BookmarksIds,
-        { itemId: project._id, type: 'project' },
-      ],
-    });
+      userId: userProgress.user._id,
+      BookmarksIds: [...userProgress.BookmarksIds, newBookmark],
+    };
+
+    updateProgress(updatedProgress);
   };
 
   return (
     <Container>
       <Topic>{name}</Topic>
       <Buttons>
-        {role === '5' ? (
-          <Button onClick={handleStartClick}>Update Project</Button>
-        ) : isCompleted ? (
-          <Button disabled>Completed</Button>
-        ) : isCurrent ? (
-          <Button onClick={handleStartClick}>Continue</Button>
+        {role === '6' ? (
+          <>
+            {projectStatus === '2' ? (
+              <PassedButton onClick={handleNavigate}>Passed</PassedButton>
+            ) : projectStatus === '0' || projectStatus === '1' ? (
+              <SubmittedButton onClick={handleNavigate}>
+                Submitted
+              </SubmittedButton>
+            ) : (
+              <Button
+                onClick={handleNavigate}
+                bgColor="#cce5ff"
+                color="#0056b3"
+                borderColor="#0056b3"
+              >
+                Start
+              </Button>
+            )}
+          </>
         ) : (
-          <Button onClick={handleStartClick}>Start</Button>
+          <Button onClick={handleNavigate}>Update Project</Button>
         )}
 
         {role === '6' && (
@@ -198,7 +210,7 @@ function DetailsHeading({ project, userProgress, role }) {
       <Stats>
         <Span>
           <LuClock3 style={{ fontSize: '1.6rem', marginTop: '0px' }} />
-          <span>{duration && formatDuration(duration)}</span>
+          <span>{formatDurationCard(duration || 20)}</span>
         </Span>
         <Span>
           <span>Participants:</span>

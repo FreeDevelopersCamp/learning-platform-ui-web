@@ -22,7 +22,10 @@ function Library() {
   const { userProgress } = useOutletContext();
 
   const bookmarksIds = userProgress?.BookmarksIds || [];
+  const currentRoadmapsIds = userProgress?.currentRoadmapsIds || [];
   const currentCoursesIds = userProgress?.currentCoursesIds || [];
+  const currentProjectsIds = userProgress?.currentProjectsIds || [];
+
   const completedCoursesIds = userProgress?.completedCoursesIds || [];
   const completedProjectsIds = userProgress?.completedProjectsIds || [];
 
@@ -53,15 +56,25 @@ function Library() {
         onFilterChange={handleFilterChange}
       />
       {(filter === 'all' || filter === 'bookmarks') && (
-        <Bookmarks courses={bookmarkedCourses} projects={bookmarkedProjects} />
+        <Bookmarks
+          courses={bookmarkedCourses}
+          projects={bookmarkedProjects}
+          userProgress={userProgress}
+        />
       )}
       {(filter === 'all' || filter === 'in-progress') && (
-        <InProgress courses={currentCoursesIds} />
+        <InProgress
+          roadmaps={currentRoadmapsIds}
+          courses={currentCoursesIds}
+          projects={currentProjectsIds}
+          userProgress={userProgress}
+        />
       )}
       {(filter === 'all' || filter === 'completed') && (
         <Completed
           courses={completedCoursesIds}
           projects={completedProjectsIds}
+          userProgress={userProgress}
         />
       )}
     </Container>

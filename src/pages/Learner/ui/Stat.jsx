@@ -3,28 +3,17 @@ import styled from 'styled-components';
 const StyledStat = styled.div`
   border-radius: var(--border-radius-md);
   padding: 20px;
-
   display: flex;
   flex-direction: row;
-  gap: 1rem;
   align-items: center;
-
-  position: relative;
-  height: auto;
-
-  /* background-color: ${({ bgColor }) => bgColor || '#f9fafb'}; */
-  border: 1px;
-
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-    padding: 15px;
-  }
+  justify-content: center;
+  gap: 1rem;
+  width: 200px;
+  height: 120px;
 `;
 
 const Title = styled.h2`
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   text-transform: uppercase;
   letter-spacing: 0.4px;
   font-weight: 600;
@@ -43,15 +32,15 @@ const IconContainer = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  font-size: 5rem; /* This affects non-MUI icons */
-  color: ${({ iconColor }) => iconColor || '#6b7280'};
+  height: 75px;
+  width: 90px;
+  font-size: 2rem;
   background-color: ${({ iconBgColor }) => iconBgColor || '#e5e7eb'};
-  border-radius: 15%;
+  border-radius: 10px;
 
   & > svg {
-    font-size: 3rem; /* Explicitly target MUI icons */
+    font-size: 2.8rem;
+    color: ${({ iconColor }) => iconColor || '#6b7280'};
   }
 `;
 
@@ -61,7 +50,7 @@ const Values = styled.div`
   gap: 0.5rem;
   text-align: center;
   align-items: center;
-  width: 100%;
+  flex-grow: 1;
 `;
 
 function Stat({ title, data, children, bgColor, iconColor, iconBgColor }) {

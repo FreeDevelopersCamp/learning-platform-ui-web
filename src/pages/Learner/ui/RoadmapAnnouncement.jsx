@@ -55,7 +55,7 @@ const Hours = styled.p`
   font-weight: 500; /* Tailwind's font-medium */
 `;
 
-export default function RoadmapAnnouncement() {
+export default function RoadmapAnnouncement({ userProgress }) {
   const navigate = useNavigate();
 
   function handleClick() {

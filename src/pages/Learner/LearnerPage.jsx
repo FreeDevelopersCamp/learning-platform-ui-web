@@ -2,7 +2,7 @@ import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAuth } from '../../contexts/auth/AuthContext';
-import { useGetUser } from '../../apis/core/User/hooks/useGetUser.ts';
+import { useFetchRoadmapById } from '../../hooks/roadmaps/useRoadmap';
 
 import MainSection from './ui/MainSection';
 import ProgressSection from './ui/ProgressSection';
@@ -15,50 +15,61 @@ import Spinner from '../../ui/Spinner';
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 1fr;
   grid-template-columns: 3fr 1fr;
   gap: 5rem;
   height: auto;
 `;
 
+const StatsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const StatsContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  gap: 5rem;
-  margin-bottom: 5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3rem;
+  margin: 0 20px;
+  flex-wrap: wrap;
 `;
 
 const MainContainer = styled.div`
   width: 100%;
-  display: grid;
-  grid-template-rows: 1fr;
+  display: flex;
+  flex-direction: column;
 `;
 
 function LearnerPage() {
-  const { auth, isLoading } = useAuth();
+  const { isLoading } = useAuth();
+  const { user, userProgress } = useOutletContext();
 
-  const { user, isLoading: userLoading } = useGetUser(auth?.username, {
-    enabled: !!auth?.username && !isLoading, // Trigger only when username is available and auth is not loading
-  });
+  const roadmapId = userProgress.currentRoadmapsIds[0].itemId;
 
-  const { userProgress } = useOutletContext();
+  // ✅ Fetch roadmap data only when roadmapId is available
+  const { data: roadmap, isLoading: isLoadingRoadmap } =
+    useFetchRoadmapById(roadmapId);
 
-  if (isLoading || userLoading || !auth || !user) return <Spinner />;
+  if (isLoading || isLoadingRoadmap) return <Spinner />;
 
   return (
     <Container>
       <MainContainer>
         <Welcome user={user} />
-        <StatsContainer>
-          <Stats userProgress={userProgress} />
-        </StatsContainer>
-        <MainSection userProgress={userProgress} />
+
+        <StatsWrapper>
+          <StatsContainer>
+            <Stats userProgress={userProgress} />
+          </StatsContainer>
+          <MainSection roadmap={roadmap} userProgress={userProgress} />
+        </StatsWrapper>
+
         <CoursesSection userProgress={userProgress} />
       </MainContainer>
+
       <div className="flex flex-col gap-4">
-        <ProgressSection user={user} />
-        <RoadmapAnnouncement />
+        <ProgressSection user={user} userProgress={userProgress} />
+        <RoadmapAnnouncement userProgress={userProgress} />
       </div>
     </Container>
   );

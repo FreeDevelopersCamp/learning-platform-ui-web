@@ -8,14 +8,11 @@ import { useAuth } from '../../contexts/auth/AuthContext';
 
 function LearnerLayout() {
   const { isLoading: isSessionLoading, session } = useAuth();
-
   const { user, isLoading: userLoading } = useGetUser(session?.username);
-
   const { data: userProgress, isLoading: userProgressLoading } =
     useFetchProgressByUserId(user?._id);
 
   const isLoading = userLoading || isSessionLoading || userProgressLoading;
-
   if (isLoading || !user?._id) {
     return <Spinner />;
   }

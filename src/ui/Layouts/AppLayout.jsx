@@ -13,16 +13,15 @@ const StyledAppLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  background-color: #fff !important;
 `;
 
 const Main = styled.main`
-  background-color: var(--color-grey-0);
+  background-color: #fff !important;
   padding-top: var(--header-height);
-
   position: relative;
   display: flex;
   flex-grow: 1;
-  height: 100vh var(--header-height);
 `;
 
 const Container = styled.div`
@@ -31,7 +30,6 @@ const Container = styled.div`
   align-items: center;
   width: 75%;
   margin: 30px auto;
-  height: 100vh - var(--header-height);
 `;
 
 function AppLayout() {
