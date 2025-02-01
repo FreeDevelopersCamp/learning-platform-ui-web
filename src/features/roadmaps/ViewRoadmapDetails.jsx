@@ -7,7 +7,7 @@ import {
   useFetchRoadmapById,
   useUpdateRoadmap,
 } from '../../hooks/roadmaps/useRoadmap';
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
+import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
 
 import Row from './Row';
 import DetailsHeading from './DetailsHeading';

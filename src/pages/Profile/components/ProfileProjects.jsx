@@ -82,35 +82,37 @@ const StyledButton = styled.button`
   }
 `;
 
-function ProfileCourses({ progress }) {
+function ProfileProjects({ progress }) {
   const navigate = useNavigate();
 
   return (
     <StyledContainer>
-      <Title>Courses Completion</Title>
+      <Title>Projects Completion</Title>
 
-      {progress?.completedCourses?.length === 0 ? (
-        <h1>You haven't finished any courses yet.</h1>
-      ) : (
-        <>
-          {/* Courses  */}
-          <CertificationCards itemsNumber={progress.completedCourses?.length}>
-            {progress.completedCourses?.map((course) => (
-              <CertificationItem key={`${course._id}`}>
-                <h1>{course.name}</h1>
+      {progress.completedProjects?.length === 0 && (
+        // Projects
+        <CertificationCards itemsNumber={progress.completedProjects?.length}>
+          {progress.completedProjects?.length > 0 ? (
+            progress.completedProjects.map((project) => (
+              <CertificationItem key={`${project._id}`}>
+                <h1>{project.name}</h1>
                 <p>
-                  {course.category} | {course.topic}
+                  {project.category} | {project.topic}
                 </p>
-                <StyledButton onClick={() => navigate(`/course/${course._id}`)}>
+                <StyledButton
+                  onClick={() => navigate(`/project/${project._id}`)}
+                >
                   See details
                 </StyledButton>
               </CertificationItem>
-            ))}
-          </CertificationCards>
-        </>
+            ))
+          ) : (
+            <h2>You haven't finished any projects yet.</h2>
+          )}
+        </CertificationCards>
       )}
     </StyledContainer>
   );
 }
 
-export default ProfileCourses;
+export default ProfileProjects;

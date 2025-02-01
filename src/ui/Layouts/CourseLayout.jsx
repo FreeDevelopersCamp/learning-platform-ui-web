@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { useAuth } from '../../contexts/auth/AuthContext';
 import { useGetUser } from '../../apis/core/User/hooks/useGetUser.ts';
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
-import { useFetchProgressByUserId } from '../../hooks/learner/useProgress';
+import { useFetchProgressByUserId } from '../../apis/learn/Progress/hooks/useProgress';
 
 import Header from '../Header/Header';
 import CourseSidebar from '../../ui/Sidebar/CourseSidebar';

@@ -73,6 +73,8 @@ import { CoursesProvider } from './contexts/courses/CoursesContext';
 import { PracticesProvider } from './contexts/practices/PracticesContext';
 import { ProjectsProvider } from './contexts/projects/ProjectsContext';
 import ChatPage from '@/pages/Chat/ChatPage.jsx';
+import PracticesPage from './pages/Learner/PracticesPage';
+import Practice from './pages/Learner/Practice';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -467,6 +469,22 @@ function App() {
                             element={
                               <ProtectedRoute role="6">
                                 <Projects />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/practices"
+                            element={
+                              <ProtectedRoute role="6">
+                                <PracticesPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/practice/:practiceId"
+                            element={
+                              <ProtectedRoute role="6">
+                                <Practice />
                               </ProtectedRoute>
                             }
                           />

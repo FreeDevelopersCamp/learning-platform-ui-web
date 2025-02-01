@@ -1,5 +1,5 @@
-import { ContentType, HttpClient } from '../../apis/http-client';
-import { getDefaultHeaders } from '../../utils/headers.js';
+import { ContentType, HttpClient } from '../../http-client';
+import { getDefaultHeaders } from '../../../utils/headers.js';
 
 export default class Progress extends HttpClient {
   /**
@@ -33,6 +33,26 @@ export default class Progress extends HttpClient {
   getById(id: string, params = {}) {
     return this.request({
       path: `/progress/${id}`,
+      method: 'GET',
+      secure: true,
+      headers: getDefaultHeaders(),
+
+      ...params,
+    });
+  }
+
+  /**
+   * Fetch progress details by ID.
+   *
+   * @tags Progress
+   * @name GetById
+   * @request GET:/progress/details/{id}
+   * @secure
+   * @response `default` Progress information
+   */
+  getDetails(id: string, params = {}) {
+    return this.request({
+      path: `/progress/details/${id}`,
       method: 'GET',
       secure: true,
       headers: getDefaultHeaders(),

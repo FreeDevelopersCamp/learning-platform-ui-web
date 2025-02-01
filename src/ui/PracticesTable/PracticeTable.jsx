@@ -4,8 +4,7 @@ import Table from '@/ui/Tables/Table.jsx';
 import Pagination from '../Tables/Pagination.jsx';
 import PracticeRow from './PracticeRow.jsx';
 
-function PracticeTable({ practices, count }) {
-  console.log(practices);
+function PracticeTable({ practices, count, role }) {
   if (!practices?.length) return <Empty resourceName="Practices Table" />;
 
   return (
@@ -13,8 +12,8 @@ function PracticeTable({ practices, count }) {
       <Table columns="2fr 2fr 2fr 2fr 0.5fr">
         <Table.Header>
           <div>Practice Name</div>
-          <div>Category</div>
           <div>Topic</div>
+          <div>Prerequisites</div>
           <div>XP</div>
           <div>Actions</div>
         </Table.Header>
@@ -22,7 +21,7 @@ function PracticeTable({ practices, count }) {
         <Table.Body
           data={practices}
           render={(practice) => (
-            <PracticeRow key={practice._id} practice={practice} />
+            <PracticeRow role={role} key={practice._id} practice={practice} />
           )}
         />
 

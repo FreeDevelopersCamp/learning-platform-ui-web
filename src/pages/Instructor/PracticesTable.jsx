@@ -37,7 +37,11 @@ function PracticesTable() {
           </Modal.Window>
         </Modal>
       </Row>
-      <PracticeTable practices={instructorPractices} count={count} />
+      <PracticeTable
+        role="instructor"
+        practices={instructorPractices}
+        count={count}
+      />
     </>
   );
 }
