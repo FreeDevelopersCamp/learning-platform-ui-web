@@ -84,6 +84,7 @@ function CoursesLayout() {
   if (isLoading || userLoading || userProgressLoading || isLoadingRoadmap)
     return <Spinner />;
 
+  console.log('userProgress: ', userProgress);
   return (
     <StyledCoursesLayout>
       <Header page={'courses'} />

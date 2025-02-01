@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams, useOutletContext } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
+import { FaArrowLeftLong, FaArrowRightLong } from 'react-icons/fa6';
 
 import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
@@ -8,149 +9,149 @@ import Resources from './Resources';
 import Exercises from './Exercises';
 import Spinner from '../../ui/Spinner';
 
-import { FaArrowLeftLong } from 'react-icons/fa6';
-import { FaArrowRightLong } from 'react-icons/fa6';
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start; /* Ensure content starts from the top */
+  justify-content: flex-start;
   width: 100%;
-  gap: 1.5rem;
+  height: 100%;
+  padding: 0 3rem;
+  overflow-y: auto;
+  box-sizing: border-box;
+  margin-top: 0 !important;
 `;
 
-const Description = styled.div`
-  line-height: 1.6;
-  font-size: 1.4rem;
-`;
-
+/* ✅ Styled Title */
 const Title = styled.h1`
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  color: var(--color-grey-900);
+  margin-bottom: 1rem;
+  border-left: 5px solid var(--color-blue-600);
+  padding-left: 1rem;
+  text-transform: capitalize;
 `;
 
-const Topic = styled.h2`
-  font-size: 1.6rem;
+/* ✅ Styled Description */
+const Description = styled.p`
+  font-size: 1.4rem;
   color: var(--color-grey-700);
-  font-weight: 500;
+  line-height: 1.6;
   margin-bottom: 1.5rem;
 `;
 
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-start;
-  gap: 15px;
-  border-top: 1px solid var(--color-grey-300);
   width: 100%;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  margin-bottom: 2rem;
+  gap: 2rem;
+  margin-top: 2.5rem;
+  padding: 2.5rem 0 3rem;
+  border-top: 1px solid var(--color-grey-300);
 `;
 
-const Button = styled.button`
+const Previous = styled.button`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  padding: 1.1rem 1.4rem;
-  font-size: 1.35rem;
-  font-weight: bold;
+  gap: 0.8rem;
+  color: var(--color-blue-600);
   border: 2px solid var(--color-blue-600);
   border-radius: 3px;
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
-
-  background-color: ${(props) =>
-    props.type === 'previous'
-      ? 'var(--color-grey-0)' // Light background for "Previous"
-      : props.disabled
-        ? 'var(--color-blue-200)' // Disabled "Next" background
-        : 'var(--color-blue-600)'}; // Default "Next" background
-
-  color: ${(props) =>
-    props.type === 'previous'
-      ? 'var(--color-blue-600)' // Blue text for "Previous"
-      : props.disabled
-        ? 'var(--color-blue-600)' // Disabled "Next" text
-        : 'var(--color-grey-0)'}; // Default "Next" text
+  padding: 1rem 1.2rem;
+  font-size: 1.4rem;
+  cursor: pointer;
 
   &:hover {
-    background-color: ${(props) =>
-      props.type === 'previous'
-        ? 'var(--color-blue-100)' // Hover effect for "Previous"
-        : props.disabled
-          ? 'var(--color-blue-200)' // No hover effect for disabled "Next"
-          : 'var(--color-blue-800)'}; // Hover effect for "Next"
+    background-color: var(--color-blue-700);
+    color: var(--color-blue-100);
+  }
+
+  &:disabled {
+    background-color: var(--color-blue-200);
+    color: var(--color-blue-600);
+    cursor: not-allowed;
+  }
+`;
+
+const Next = styled.button`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+  background-color: var(--color-blue-600);
+  color: var(--color-grey-0);
+  border: 2px solid var(--color-blue-600);
+  border-radius: 3px;
+  padding: 1rem 1.2rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-blue-800);
+    color: var(--color-grey-100);
+  }
+
+  &:disabled {
+    background-color: var(--color-blue-200);
+    color: var(--color-blue-600);
+    cursor: not-allowed;
   }
 `;
 
 function ViewOneCourseOutline() {
-  const navigate = useNavigate();
-  const { courseId, subCourseId } = useParams();
+  const { subCourseId, courseId } = useParams();
   const { course, userProgress } = useOutletContext();
 
-  const [flatStructure, setFlatStructure] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  console.log('course:', course);
   const { mutate: updateProgress, isLoading: updatingProgress } =
     useUpdateProgress();
 
-  // ✅ UseRef to prevent duplicate updates
-  const updatedCoursesRef = useRef(new Set());
+  const [flatStructure, setFlatStructure] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if (course?.subCourses) {
-      const flattenStructure = (items) => {
-        const flat = [];
-        items.forEach((item) => {
-          flat.push(item);
-          if (item.subCourses && item.subCourses.length > 0) {
-            flat.push(...flattenStructure(item.subCourses));
-          }
-        });
-        return flat;
-      };
+    if (!course || course.length === 0) return;
 
-      const flattened = flattenStructure(course.subCourses);
-      setFlatStructure(flattened);
+    // Flatten the course and sub-course structure
+    const structuredCourses = course.subCourses.reduce((acc, course) => {
+      acc.push({ ...course, isSubCourse: false });
 
-      const selectedIndex = flattened.findIndex(
-        (item) => item._id === subCourseId,
-      );
-      if (selectedIndex !== -1) {
-        setCurrentIndex(selectedIndex);
-      } else {
-        setCurrentIndex(0);
+      if (course.subCourses && course.subCourses.length > 0) {
+        acc.push(
+          ...course.subCourses.map((sub) => ({
+            ...sub,
+            parentCourse: course,
+            isSubCourse: true,
+          })),
+        );
       }
-    }
-  }, [course, subCourseId]);
+      return acc;
+    }, []);
 
-  const updatePath = (item) => {
-    if (!item) return;
+    setFlatStructure(structuredCourses);
 
-    const formattedParentName = course.name.toLowerCase().replace(/\s+/g, '-');
-    const formattedName = item.name.toLowerCase().replace(/\s+/g, '-');
-
-    navigate(
-      `/course/${formattedParentName}/${course._id}/${formattedName}/${item._id}`,
+    // Find the index of the current subCourseId or courseId
+    let selectedIndex = structuredCourses.findIndex(
+      (item) => item._id === subCourseId || item._id === courseId,
     );
-  };
 
-  const saveProgress = (course) => {
-    if (!course || !userProgress || !userProgress._id || !course._id) return;
+    setCurrentIndex(selectedIndex !== -1 ? selectedIndex : 0);
+  }, [course, subCourseId, courseId]);
 
-    // ✅ Prevent duplicate updates
-    if (updatedCoursesRef.current.has(course._id)) return;
-    updatedCoursesRef.current.add(course._id);
+  const saveProgress = (item) => {
+    if (!item || !userProgress?._id || !item._id) return;
 
-    if (!userProgress.completedCoursesIds.includes(course._id)) {
+    if (!userProgress.completedCoursesIds.includes(item._id)) {
       const updatedProgress = {
         _id: userProgress._id,
         userId: userProgress.user?._id,
         completedCoursesIds: [
-          ...new Set([...userProgress.completedCoursesIds, course._id]),
+          ...new Set([...userProgress.completedCoursesIds, item._id]),
         ],
-        spentTime: (userProgress.spentTime || 0) + (course.duration || 0),
-        xp: (userProgress.xp || 0) + (course.xp || 0),
+        spentTime: (userProgress.spentTime || 0) + (item.duration || 0),
+        xp: (userProgress.xp || 0) + (item.xp || 0),
       };
 
       updateProgress(updatedProgress, {
@@ -164,34 +165,30 @@ function ViewOneCourseOutline() {
     }
   };
 
-  // ✅ Save progress once when component renders
-  useEffect(() => {
-    if (flatStructure.length > 0) {
-      saveProgress(flatStructure[currentIndex]);
-    }
-  }, [flatStructure]); // Removed `currentIndex` dependency to prevent multiple calls
-
   const handleNext = () => {
     if (currentIndex < flatStructure.length - 1) {
-      const nextIndex = currentIndex + 1;
+      saveProgress(flatStructure[currentIndex]);
+      let nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
-      updatePath(flatStructure[nextIndex]);
     } else {
-      alert('You have completed all sub-courses!');
+      alert('You have completed all courses!');
     }
   };
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
-      const previousIndex = currentIndex - 1;
+      let previousIndex = currentIndex - 1;
       setCurrentIndex(previousIndex);
-      updatePath(flatStructure[previousIndex]);
+    } else {
+      alert('You are at the first course.');
     }
   };
 
-  if (!flatStructure.length || updatingProgress) return <Spinner />;
+  if (updatingProgress) return <Spinner />;
+  if (!flatStructure.length) return <p>No courses available.</p>;
 
-  const currentItem = flatStructure[currentIndex] || {};
+  const currentItem = flatStructure[currentIndex];
+
   const groupedResources =
     currentItem.resources?.reduce((acc, resource) => {
       const type = resource.type || 'Unknown';
@@ -202,39 +199,33 @@ function ViewOneCourseOutline() {
 
   return (
     <Container>
-      <Title>{currentItem.name || course?.name}</Title>
-      <Topic>Video: {currentItem.name || course?.name}</Topic>
-      <Description>
-        {currentItem.description || course?.description}
-      </Description>
-      {Object.entries(groupedResources).length > 0 &&
-        Object.entries(groupedResources).map(([type, resources]) => (
-          <div key={type}>
-            {resources.map((resource, idx) => (
-              <Resources key={idx} resource={resource} />
-            ))}
-          </div>
-        ))}
+      <Title>{currentItem.name}</Title>
+      <Description>{currentItem.description}</Description>
+
+      {Object.entries(groupedResources).map(([type, resources]) => (
+        <div key={type}>
+          {resources.map((resource, idx) => (
+            <Resources key={idx} resource={resource} />
+          ))}
+        </div>
+      ))}
+
       {currentItem.exercises?.length > 0 && (
         <Exercises exercises={currentItem.exercises} />
       )}
+
       <Buttons>
-        <Button
-          type="previous"
-          onClick={handlePrevious}
-          disabled={currentIndex === 0}
-        >
+        <Previous onClick={handlePrevious} disabled={currentIndex === 0}>
           <FaArrowLeftLong />
           Previous
-        </Button>
-        <Button
-          type="next"
+        </Previous>
+        <Next
           onClick={handleNext}
-          disabled={currentIndex === flatStructure.length - 1}
+          disabled={currentIndex >= flatStructure.length - 1}
         >
           Next
           <FaArrowRightLong />
-        </Button>
+        </Next>
       </Buttons>
     </Container>
   );

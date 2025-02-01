@@ -52,8 +52,6 @@ function LearnerPage() {
 
   if (isLoading || isLoadingRoadmap) return <Spinner />;
 
-  console.log('roadmap: ', roadmap);
-
   return (
     <Container>
       <MainContainer>

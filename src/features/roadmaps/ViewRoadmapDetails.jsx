@@ -84,7 +84,6 @@ function ViewRoadmapDetails() {
     coursesIds = [],
     projectsIds = [],
     practicesIds = [],
-    participants = 0,
     order = [],
     instructor,
   } = roadmap;
@@ -117,6 +116,7 @@ function ViewRoadmapDetails() {
         userProgress={userProgress}
         updateProgress={updateProgress}
         role={session.role}
+        setPercentage={setPercentage}
       >
         {session.role === '6' && <ProgressBar percentage={percentage} />}
       </DetailsHeading>

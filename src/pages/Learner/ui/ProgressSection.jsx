@@ -191,7 +191,7 @@ function ProgressSection({ user, userProgress }) {
   // **Extract user progress statistics**
   const totalHours = formatDuration(userProgress?.spentTime || 0);
   const completedCourses = userProgress?.completedCoursesIds?.length || 0;
-  const completedRoadmaps = userProgress?.completedRoadmapsIds?.length || 0;
+  const currentRoadmaps = userProgress?.currentRoadmapsIds?.length || 0;
 
   // **Filter projects that have `status === '2'` (Passed)**
   const completedProjects =
@@ -260,15 +260,15 @@ function ProgressSection({ user, userProgress }) {
       <CompletionStats>
         <div>
           <p>{completedCourses}</p>
-          <span>Courses completed</span>
+          <span>Completed Courses</span>
         </div>
         <div>
-          <p>{completedRoadmaps}</p>
-          <span>Roadmaps completed</span>
+          <p>{currentRoadmaps}</p>
+          <span>Current Roadmaps</span>
         </div>
         <div>
           <p>{completedProjects}</p>
-          <span>Projects completed</span>
+          <span>Completed Projects</span>
         </div>
       </CompletionStats>
     </StyledProgressSection>

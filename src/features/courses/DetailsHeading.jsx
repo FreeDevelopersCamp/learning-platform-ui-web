@@ -134,7 +134,9 @@ function DetailsHeading({ course, role, userProgress, updateProgress }) {
   const { currentCoursesIds = [], completedCoursesIds = [] } =
     userProgress || {};
 
-  const isCurrent = currentCoursesIds.includes(courseId);
+  const isCurrent = currentCoursesIds.some(
+    (course) => course.itemId === courseId,
+  );
   const isCompleted = completedCoursesIds.includes(courseId);
 
   const handleUpdateCourse = () => {
@@ -142,15 +144,15 @@ function DetailsHeading({ course, role, userProgress, updateProgress }) {
   };
 
   const handleContinueCourse = () => {
-    navigate(`/course/${courseId}`);
+    navigate(`/course/${name}/${courseId}`);
   };
 
   const handlePracticeCourse = () => {
-    const sanitizedCourseName = name
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, '')
-      .replace(/\s+/g, '-');
-    navigate(`/course/${sanitizedCourseName}/${courseId}`);
+    // const sanitizedCourseName = name
+    //   .toLowerCase()
+    //   .replace(/[^a-z0-9\s]/g, '')
+    //   .replace(/\s+/g, '-');
+    navigate(`/course/${name}/${courseId}`);
   };
 
   const handleBookmarkCourse = () => {

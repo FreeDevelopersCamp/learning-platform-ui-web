@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
 import { formatDurationCard } from '../../utils/helpers';
 import Spinner from '../../ui/Spinner';
@@ -126,13 +125,17 @@ const Button = styled.button`
   }
 `;
 
-function CourseCard({ courseId, role, progressStatus, userProgress }) {
+function CourseCard({
+  courseId,
+  role,
+  progressStatus,
+  userProgress,
+  updateProgress,
+}) {
   const navigate = useNavigate();
   const { data: course, isLoading, error } = useFetchCourseById(courseId);
-  const { mutate: updateProgress, isLoading: updatingProgress } =
-    useUpdateProgress();
 
-  if (isLoading || updatingProgress) return <Spinner />;
+  if (isLoading) return <Spinner />;
   if (error || !course) return <p>Error loading course.</p>;
 
   const { name, description, duration, instructor, topic } = course;
@@ -166,7 +169,7 @@ function CourseCard({ courseId, role, progressStatus, userProgress }) {
 
     updateProgress(updatedProgress, {
       onSuccess: () => {
-        navigate(`/course/${courseId}/start`);
+        navigate(`/course/${courseId}`);
       },
       onError: (error) => {
         console.error(

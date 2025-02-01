@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { useOutletContext } from 'react-router-dom';
 import { useFetchCourseList } from '../../hooks/courses/useCourse';
+import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
 import Row from '../instructor/roadmaps/Row';
 import Heading from '../instructor/roadmaps/Heading';
@@ -57,6 +58,9 @@ function Courses() {
     error,
   } = useFetchCourseList();
 
+  const { mutate: updateProgress, isLoading: updatingProgress } =
+    useUpdateProgress();
+
   useEffect(() => {
     if (!courses?.items) return;
 
@@ -67,7 +71,7 @@ function Courses() {
     setFilteredCourses(filtered);
   }, [searchQuery, courses]);
 
-  if (isCoursesLoading) return <Spinner />;
+  if (isCoursesLoading || updatingProgress) return <Spinner />;
   if (error) return <p>Error fetching courses. Please try again.</p>;
   if (!courses?.items || courses.items.length === 0)
     return <NoCoursesMessage>No courses available.</NoCoursesMessage>;
@@ -107,6 +111,7 @@ function Courses() {
                   role={session.role}
                   progressStatus={progressStatus}
                   userProgress={userProgress}
+                  updateProgress={updateProgress}
                 />
               );
             })

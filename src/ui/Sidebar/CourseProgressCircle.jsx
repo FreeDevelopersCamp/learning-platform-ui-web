@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import FetchCourseSubCourses from './FetchCourseSubCourses';
 import { useUpdateProgress } from '../../hooks/learner/useProgress';
 
+import Spinner from '../../ui/Spinner';
+
 const ProgressContainer = styled.div`
   height: 42px;
   width: 42px;
@@ -41,7 +43,8 @@ function ProgressCircle({
 }) {
   const [progress, setProgress] = useState(0);
   const [allSubCourses, setAllSubCourses] = useState([]);
-  const { mutate: updateProgress } = useUpdateProgress();
+  const { mutate: updateProgress, isLoading: updatingProgress } =
+    useUpdateProgress();
 
   useEffect(() => {
     const calculateProgress = () => {
@@ -57,16 +60,22 @@ function ProgressCircle({
 
       setProgress(percentage);
 
-      if (courseId && userProgress) {
+      if (courseId && !userProgress.completedCoursesIds.includes(courseId)) {
         const updatedProgress = {
-          ...userProgress,
-          currentCoursesIds: userProgress.currentCoursesIds.map((course) =>
-            course.itemId === courseId
-              ? { ...course.itemId, progress: percentage }
-              : course.itemId,
-          ),
+          _id: userProgress._id,
+          userId: userProgress.user?._id,
+          completedCoursesIds: [
+            ...new Set([...userProgress.completedCoursesIds, courseId]),
+          ],
         };
-        updateProgress(updatedProgress);
+        updateProgress(updatedProgress, {
+          onError: (error) => {
+            console.error(
+              '❌ Failed to update progress:',
+              error.response?.data || error,
+            );
+          },
+        });
       }
     };
 
@@ -78,6 +87,8 @@ function ProgressCircle({
     userProgress,
     updateProgress,
   ]);
+
+  if (updatingProgress) return <Spinner />;
 
   return (
     <>

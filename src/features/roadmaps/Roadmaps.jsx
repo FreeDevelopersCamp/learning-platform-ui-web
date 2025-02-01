@@ -16,7 +16,7 @@ const StyledDashboardLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 3rem;
+  gap: 5rem 3rem;
   overflow: auto;
   margin-top: 2rem; /* ✅ Added margin-top to push roadmaps down */
 
