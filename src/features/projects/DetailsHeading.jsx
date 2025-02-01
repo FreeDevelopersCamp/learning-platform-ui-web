@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { toast } from 'react-hot-toast';
-
 import { LuClock3 } from 'react-icons/lu';
 import { FaRegBookmark } from 'react-icons/fa6';
 

@@ -37,6 +37,10 @@ import InstructorDashboard from './pages/Instructor/Dashboard';
 import InstructorRoadmaps from './features/instructor/roadmaps/InstructorRoadmaps';
 import InstructorProjects from './features/instructor/roadmaps/InstructorProjects';
 import InstructorPractices from './features/instructor/roadmaps/InstructorPractices';
+import CoursesTable from './pages/Instructor/CoursesTable';
+import ProjectsTable from './pages/Instructor/ProjectsTable';
+import PracticesTable from './pages/Instructor/PracticesTable';
+import RoadmapsTable from './pages/Instructor/RoadmapsTable';
 
 import LearnerPage from './pages/Learner/LearnerPage';
 import Library from './pages/Learner/Library';
@@ -69,6 +73,8 @@ import { CoursesProvider } from './contexts/courses/CoursesContext';
 import { PracticesProvider } from './contexts/practices/PracticesContext';
 import { ProjectsProvider } from './contexts/projects/ProjectsContext';
 import ChatPage from '@/pages/Chat/ChatPage.jsx';
+import PracticesPage from './pages/Learner/PracticesPage';
+import Practice from './pages/Learner/Practice';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -357,6 +363,39 @@ function App() {
                           }
                         />
 
+                        <Route
+                          path="instructor/courses_table"
+                          element={
+                            <ProtectedRoute role="5">
+                              <CoursesTable />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/projects_table"
+                          element={
+                            <ProtectedRoute role="5">
+                              <ProjectsTable />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/practices_table"
+                          element={
+                            <ProtectedRoute role="5">
+                              <PracticesTable />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="instructor/roadmaps_table"
+                          element={
+                            <ProtectedRoute role="5">
+                              <RoadmapsTable />
+                            </ProtectedRoute>
+                          }
+                        />
+
                         <Route element={<LearnerLayout />}>
                           <Route
                             path="learner"
@@ -423,6 +462,22 @@ function App() {
                             element={
                               <ProtectedRoute role="6">
                                 <Projects />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/practices"
+                            element={
+                              <ProtectedRoute role="6">
+                                <PracticesPage />
+                              </ProtectedRoute>
+                            }
+                          />
+                          <Route
+                            path="learner/practice/:practiceId"
+                            element={
+                              <ProtectedRoute role="6">
+                                <Practice />
                               </ProtectedRoute>
                             }
                           />

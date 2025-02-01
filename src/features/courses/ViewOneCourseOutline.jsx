@@ -3,7 +3,7 @@ import { useParams, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaArrowLeftLong, FaArrowRightLong } from 'react-icons/fa6';
 
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
+import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
 
 import Resources from './Resources';
 import Exercises from './Exercises';

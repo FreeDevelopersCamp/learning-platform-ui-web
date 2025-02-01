@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import FetchAllSubCourses from './FetchAllSubCourses';
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
+import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
 
 const ProgressContainer = styled.div`
   height: 42px;

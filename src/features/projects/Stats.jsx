@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-import { useInstructor } from '../../hooks/instructor/useInstructor';
+import { useGetInstructor } from '../../apis/core/Instructor/hooks/useGetInstructor';
 import { useInstructorData } from '../../contexts/instructor/InstructorContext';
 
 import Stat from './Stat';
@@ -18,7 +18,7 @@ function Stats({ userId, filter, onFilterCount }) {
   });
 
   const { instructor, instructorLoading, instructorError } =
-    useInstructor(userId);
+    useGetInstructor(userId);
   const { setInstructorData } = useInstructorData();
 
   useEffect(() => {
