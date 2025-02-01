@@ -48,6 +48,8 @@ function CoursesSection({ userProgress }) {
     return;
   }
 
+  const limitedCourses = userProgress.currentCoursesIds.slice(0, 3);
+
   return (
     <SectionWrapper>
       <Header>
@@ -60,11 +62,11 @@ function CoursesSection({ userProgress }) {
         </button>
       </Header>
 
-      {userProgress.currentCoursesIds.map((course, index) => (
+      {limitedCourses.map((course, index) => (
         <CourseCard
           key={index}
           courseId={course.itemId}
-          progress={course.progress || 57}
+          progress={course.progress || 0}
         />
       ))}
     </SectionWrapper>
