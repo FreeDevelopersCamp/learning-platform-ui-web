@@ -29,7 +29,10 @@ function Library() {
   const completedCoursesIds = userProgress?.completedCoursesIds || [];
   const completedProjectsIds = userProgress?.completedProjectsIds || [];
 
-  // Separate courses and projects from bookmarksIds
+  // Separate roadmaps, courses and projects from bookmarksIds
+  const bookmarkedRoadmaps = bookmarksIds.filter(
+    (item) => item.type === 'roadmap',
+  );
   const bookmarkedCourses = bookmarksIds.filter(
     (item) => item.type === 'course',
   );
@@ -57,6 +60,7 @@ function Library() {
       />
       {(filter === 'all' || filter === 'bookmarks') && (
         <Bookmarks
+          roadmaps={bookmarkedRoadmaps}
           courses={bookmarkedCourses}
           projects={bookmarkedProjects}
           userProgress={userProgress}
