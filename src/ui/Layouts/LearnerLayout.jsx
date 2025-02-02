@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 
 import { useGetUser } from '../../apis/core/User/hooks/useGetUser';
-import { useFetchProgressByUserId } from '../../hooks/learner/useProgress';
+import { useFetchProgressByUserId } from '../../apis/learn/Progress/hooks/useProgress';
 
 import Spinner from '../Spinner';
 import { useAuth } from '../../contexts/auth/AuthContext';

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { FaCheck } from 'react-icons/fa';
 
 import Spinner from '../../ui/Spinner';

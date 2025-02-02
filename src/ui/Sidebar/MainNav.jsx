@@ -12,6 +12,7 @@ import { FaTasks } from 'react-icons/fa';
 import { GoProjectRoadmap } from 'react-icons/go';
 import { BiTask } from 'react-icons/bi';
 import { MdOutlineLibraryBooks } from 'react-icons/md';
+import { MdLeaderboard, MdOutlineLibraryBooks } from 'react-icons/md';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import InsightsIcon from '@mui/icons-material/Insights';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
@@ -94,6 +95,18 @@ function MainNav({ isOpen, role, onMenuSelect }) {
       { id: 'projects', icon: <GoProjectRoadmap />, label: 'Projects' },
       { id: 'practices', icon: <BiTask />, label: 'Practices' },
       { id: 'learner', icon: <HiOutlineUsers />, label: 'Learner' },
+      { id: 'courses_table', icon: <FaTasks />, label: 'Courses Table' },
+      {
+        id: 'projects_table',
+        icon: <GoProjectRoadmap />,
+        label: 'Projects Table',
+      },
+      { id: 'practices_table', icon: <BiTask />, label: 'Practices Table' },
+      {
+        id: 'roadmaps_table',
+        icon: <HiPresentationChartLine />,
+        label: 'Roadmaps Table',
+      },
     ];
 
     const learnerMenu = [
@@ -126,6 +139,12 @@ function MainNav({ isOpen, role, onMenuSelect }) {
         path: '/learner/projects',
         icon: <AccountTreeIcon />,
         label: 'Projects',
+      },
+      {
+        id: 'practices',
+        path: '/learner/practices',
+        icon: <FitnessCenterIcon />,
+        label: 'Practices',
       },
       {
         id: 'certifications',

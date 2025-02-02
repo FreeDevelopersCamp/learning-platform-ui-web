@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import Progress from '../../services/learner/progress';
 import toast from 'react-hot-toast';
+import Progress from '../Progress';
 
 // Fetch Progress by ID
 export function useFetchProgressById(progressId?: string) {

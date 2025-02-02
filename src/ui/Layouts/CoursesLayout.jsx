@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { useAuth } from '../../contexts/auth/AuthContext';
 import { useGetUser } from '../../apis/core/User/hooks/useGetUser.ts';
-import { useFetchProgressByUserId } from '../../hooks/learner/useProgress';
+import { useFetchProgressByUserId } from '../../apis/learn/Progress/hooks/useProgress';
 import { useFetchRoadmapById } from '../../hooks/roadmaps/useRoadmap';
 
 import Header from '../Header/Header';
