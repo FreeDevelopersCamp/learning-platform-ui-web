@@ -13,6 +13,7 @@ const StyledFilterbar = styled.div`
   flex-wrap: wrap;
   gap: 0.5rem;
   overflow: hidden;
+  margin-bottom: 5rem;
 `;
 
 function Filterbar({ onSearchChange }) {

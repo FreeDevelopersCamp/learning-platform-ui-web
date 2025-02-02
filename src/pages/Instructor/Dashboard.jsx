@@ -19,6 +19,7 @@ const StyledDashboardLayout = styled.div`
   grid-template-rows: repeat(auto-fit, minmax(250, 1fr));
   height: 100%;
   gap: 3rem;
+  margin-top: 5rem;
 `;
 
 function Dashboard() {
@@ -48,9 +49,9 @@ function Dashboard() {
   return (
     <Row>
       <Heading title={title} description={description} />
-      <Filterbar filterOptions={filterOptions} onFilterChange={setFilter}>
+      {/* <Filterbar filterOptions={filterOptions} onFilterChange={setFilter}>
         <Total filter={filter} count={filterCount} />
-      </Filterbar>
+      </Filterbar> */}
       <DashboardLayout>
         <StyledDashboardLayout>
           <Stats

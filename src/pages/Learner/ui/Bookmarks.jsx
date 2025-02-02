@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import CourseFetcher from './CourseFetcher';
 import ProjectFetcher from './ProjectFetcher';
+import RoadmapFetcher from './RoadmapFetcher';
 
 const BookmarksContainer = styled.div`
   margin: 2rem 18rem;
@@ -36,12 +37,32 @@ const Grid = styled.div`
   }
 `;
 
-function Bookmarks({ courses = [], projects = [], userProgress }) {
-  const isEmpty = !courses.length && !projects.length;
+function Bookmarks({
+  roadmaps = [],
+  courses = [],
+  projects = [],
+  userProgress,
+}) {
+  const isEmpty = !roadmaps.length && !courses.length && !projects.length;
   if (isEmpty) return <p>No Bookmarks Available</p>;
 
   return (
     <BookmarksContainer>
+      {roadmaps.length > 0 && (
+        <Section>
+          <SectionTitle>📌 Bookmarked Roadmaps</SectionTitle>
+          <Grid>
+            {roadmaps.map((roadmap) => (
+              <RoadmapFetcher
+                key={roadmap.itemId}
+                id={roadmap.itemId}
+                userProgress={userProgress}
+              />
+            ))}
+          </Grid>
+        </Section>
+      )}
+      {courses.length > 0 && <div style={{ height: '30px' }}></div>}{' '}
       {courses.length > 0 && (
         <Section>
           <SectionTitle>📚 Bookmarked Courses</SectionTitle>
