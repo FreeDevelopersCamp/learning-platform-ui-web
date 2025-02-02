@@ -12,64 +12,51 @@ import Header from '../Header/Header';
 import CourseSidebar from '../../ui/Sidebar/CourseSidebar';
 import Spinner from '../Spinner';
 
-import { FaListUl } from 'react-icons/fa';
-
 const StyledCoursesLayout = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   height: 100vh;
+  background-color: #fff !important;
+  z-index: 999;
+  overflow: hidden; /* No outer scrollbar */
 `;
 
 const Main = styled.main`
-  padding-top: var(--header-height);
-  position: relative;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-grow: 1;
+  width: 100%;
   height: calc(100vh - var(--header-height));
-  background-color: var(--color-grey-0);
-  transition:
-    margin-left 0.3s ease-in-out,
-    width 0.3s ease-in-out;
+  background-color: #fff !important;
+  overflow: hidden;
+  padding-top: 0 !important;
+`;
+
+const SidebarWrapper = styled.div`
+  width: ${(props) =>
+    props.isOpen ? '14%' : '0px'}; /* ✅ Sidebar has fixed width */
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+  background-color: #fff;
+  height: 100%;
+  border-right: 1px solid var(--color-grey-300);
 `;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  margin: ${(props) =>
-    props.isSidebarOpen ? '3.5rem 0 3.5rem 14%' : '3.5rem auto'};
-  width: ${(props) => (props.isSidebarOpen ? '70%' : '90%')};
-  height: calc(100vh - var(--header-height));
-  padding: 3rem 1rem;
-  transition:
-    margin 0.3s ease-in-out,
-    width 0.3s ease-in-out;
-`;
-
-const Button = styled.div`
-  position: absolute;
-  top: 8rem;
-  left: 0;
-  border: 2px solid var(--color-grey-700);
-  border-radius: 5px;
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%;
-  padding: 1rem;
-  cursor: pointer;
-  transition: all 1s;
-
-  &:hover {
-    background-color: var(--color-grey-300);
-  }
+  align-items: center; /* ✅ Centers content horizontally */
+  justify-content: flex-start; /* ✅ Keeps content at the top */
+  width: 100%;
+  max-width: 1300px; /* ✅ Ensures content does not stretch too wide */
+  margin: 0 auto; /* ✅ Centers the container itself */
+  padding: 2rem 3rem 3rem;
+  overflow-y: auto; /* ✅ Enables scrolling */
+  margin-top: 9vh;
 `;
 
 function CourseLayout() {
-  const { name, courseId } = useParams();
+  const { courseId } = useParams();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [persentage, setPersentage] = useState(true);
 
   const { auth, session, isLoading } = useAuth();
   const { user, isLoading: userLoading } = useGetUser(session?.username, {
@@ -93,7 +80,8 @@ function CourseLayout() {
     !auth.isAuthenticated ||
     !user ||
     !userProgress ||
-    !course
+    !course ||
+    error
   )
     return <Spinner />;
 
@@ -101,21 +89,16 @@ function CourseLayout() {
     <StyledCoursesLayout>
       <Header page={'courses'} />
       <Main>
-        {!isSidebarOpen && (
-          <Button onClick={() => setSidebarOpen((prev) => !prev)}>
-            <FaListUl
-              style={{ fontSize: '2rem', color: 'var(--color-grey-700)' }}
-            />
-          </Button>
-        )}
-        <CourseSidebar
-          isOpen={isSidebarOpen}
-          toggleSidebar={() => setSidebarOpen((prev) => !prev)}
-          course={course}
-          userProgress={userProgress}
-          setPersentage={setPersentage}
-          key={userProgress.completedCoursesIds.length}
-        />
+        <SidebarWrapper isOpen={isSidebarOpen}>
+          <CourseSidebar
+            isOpen={isSidebarOpen}
+            toggleSidebar={() => setSidebarOpen((prev) => !prev)}
+            course={course}
+            userProgress={userProgress}
+            key={userProgress.completedCoursesIds.length}
+          />
+        </SidebarWrapper>
+
         <Container isSidebarOpen={isSidebarOpen}>
           <Outlet
             context={{

@@ -1,72 +1,75 @@
-import { useSearchParams } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import { useState } from 'react';
+import styled from 'styled-components';
+import SearchIcon from '@mui/icons-material/Search';
 
-const StyledFilter = styled.div`
+const SearchContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  padding: 1.4rem 0;
-  gap: 0.8rem;
+  align-items: center;
   width: 100%;
-  border: none;
-`;
-
-const FilterButton = styled.button`
+  max-width: 500px;
+  height: 45px;
+  border: 2px solid var(--color-grey-400);
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
   background-color: var(--color-grey-100);
-  border: none;
-  border-radius: 3px;
-  font-weight: 500;
-  font-size: 1.4rem;
-  padding: 0.8rem 1rem;
-  transition: all 0.1s;
-  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  margin: 1.5rem 0;
 
-  ${(props) =>
-    props.active &&
-    css`
-      background-color: var(--color-mutedblue-900);
-      color: white;
-    `}
+  &:hover {
+    border-color: var(--color-grey-500);
+  }
 
-  &:disabled {
-    background-color: var(--color-mutedblue-900);
-    cursor: not-allowed;
+  &:focus-within {
+    border-color: var(--color-brand-500);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
   }
 `;
 
-function Filter({ options = [], filterField, onFilterChange }) {
-  const [searchParams, setSearchParams] = useSearchParams();
+const SearchInput = styled.input`
+  flex: 1;
+  border: none !important;
+  outline: none !important;
+  background: transparent;
+  font-size: 1.4rem;
+  padding-left: 0.8rem;
+  width: 100%;
 
-  const currentFilter =
-    searchParams?.get(filterField) ||
-    (options?.length > 0 ? options[0]?.value : '');
+  &::placeholder {
+    color: var(--color-grey-500);
+    font-size: 1.4rem;
+  }
 
-  const handleClick = (option) => {
-    if (option?.value !== currentFilter) {
-      searchParams?.set(filterField, option?.value);
-      setSearchParams(searchParams);
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+`;
 
-      onFilterChange(option?.label);
-    }
+const StyledSearchIcon = styled(SearchIcon)`
+  font-size: 1.8rem !important;
+  color: var(--color-grey-600);
+  flex-shrink: 0;
+`;
+
+function Filter({ onSearchChange }) {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    onSearchChange(query); // ✅ Update search in real-time
   };
 
   return (
-    <StyledFilter>
-      {options?.length > 0 ? (
-        options?.map((option) => (
-          <FilterButton
-            key={option?.value}
-            onClick={() => handleClick(option)}
-            active={option?.value === currentFilter}
-            disabled={option?.value === currentFilter}
-            aria-pressed={option?.value === currentFilter}
-          >
-            {option?.label}
-          </FilterButton>
-        ))
-      ) : (
-        <span>No options available</span>
-      )}
-    </StyledFilter>
+    <SearchContainer>
+      <StyledSearchIcon />
+      <SearchInput
+        type="text"
+        placeholder="Search Projects..."
+        value={searchQuery}
+        onChange={handleChange}
+      />
+    </SearchContainer>
   );
 }
 

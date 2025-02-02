@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+
 import PeopleIcon from '@mui/icons-material/People';
 import { MdMenuOpen, MdOutlineMenu, MdTranslate } from 'react-icons/md';
 import {
@@ -30,7 +31,6 @@ import { useGetNotifications } from '../../apis/communication/Notification/hooks
 
 import AuthButtons from './AuthButtons';
 import ShortcutsMenus from './ShortcutsMenu';
-import SearchBar from './SearchBar';
 import Menus from './ProfileMenu';
 import SpinnerMini from '../SpinnerMini';
 import NavBar from './NavBar';
@@ -194,6 +194,22 @@ const Header = ({ page, toggleSidebar, atHome = false }) => {
               <BsFire />
             </span>
             <span>)</span>
+            {isSidebarOpen ? (
+              <MdOutlineMenu style={{ fontSize: '2.4rem', zIndex: 1 }} />
+            ) : (
+              <MdMenuOpen style={{ fontSize: '2.4rem' }} />
+            )}
+          </div>
+        )}
+        <NavBar hidden={!atHome} />
+      </div>
+
+      {session && session?.active ? (
+        <div className="right-section">
+          <div className="icon-container">
+            <button className="flex items-center">
+              <MdTranslate />
+            </button>
           </div>
           {page === 'course' && (
             <div

@@ -42,16 +42,21 @@ const Description = styled.p`
 `;
 
 const CtaButton = styled.button`
-  padding: 12px 20px;
-  font-size: 1.5rem;
+  padding: 15px;
+  font-size: 1.6rem;
+  font-weight: 500;
+
+  color: var(--color-grey-0);
   background-color: var(--color-mutedblue-800);
-  color: var(--color-grey-50);
   border: none;
   border-radius: 5px;
+  text-decoration: none;
+  transition: color 0.3s;
   cursor: pointer;
 
   &:hover {
-    background-color: var(--color-mutedblue-600);
+    color: var(--color-grey-300);
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 `;
 

@@ -69,12 +69,11 @@ const Button = styled.div`
 function CoursesLayout() {
   const { roadmapId } = useParams();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [persentage, setPersentage] = useState(true);
+  const [persentage, setPersentage] = useState(0);
 
-  const { auth, session, isLoading } = useAuth();
-  const { user, isLoading: userLoading } = useGetUser(session?.username, {
-    enabled: !!session?.username,
-  });
+  const { session, isLoading } = useAuth();
+
+  const { user, isLoading: userLoading } = useGetUser(session?.username);
 
   const { data: userProgress, isLoading: userProgressLoading } =
     useFetchProgressByUserId(user?._id);
@@ -82,16 +81,10 @@ function CoursesLayout() {
   const { data: roadmap, isLoading: isLoadingRoadmap } =
     useFetchRoadmapById(roadmapId);
 
-  if (
-    isLoading ||
-    userLoading ||
-    userProgressLoading ||
-    !auth.isAuthenticated ||
-    !user ||
-    !userProgress
-  )
+  if (isLoading || userLoading || userProgressLoading || isLoadingRoadmap)
     return <Spinner />;
 
+  console.log('userProgress: ', userProgress);
   return (
     <StyledCoursesLayout>
       <Header page={'courses'} />

@@ -92,6 +92,7 @@ const EducationStats = () => {
             <img src={BookIcon} alt="Book Icon" width="60" height="60" />
           </Icon>
           <CardHeading>9 instructors</CardHeading>
+
           <CardParagraph>
             Collaborate with educators around the world who enhance their lesson
             plans and workstreams with GitHub tools.
@@ -101,7 +102,7 @@ const EducationStats = () => {
           <Icon>
             <img src={BuildIcon} alt="Build Icon" width="60" height="60" />
           </Icon>
-          <CardHeading>+2K educational institutions</CardHeading>
+          <CardHeading>+2 educational institutions</CardHeading>
           <CardParagraph>
             Join thousands of schools globally that incorporate GitHub into
             their tech curriculum.

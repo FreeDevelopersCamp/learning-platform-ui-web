@@ -60,6 +60,7 @@ function ProgressCircle({
       if (roadmapId && userProgress) {
         const updatedProgress = {
           ...userProgress,
+          userId: userProgress.user._id,
           currentRoadmapsIds: userProgress.currentRoadmapsIds.map((roadmap) =>
             roadmap.itemId === roadmapId
               ? { ...roadmap, progress: percentage }

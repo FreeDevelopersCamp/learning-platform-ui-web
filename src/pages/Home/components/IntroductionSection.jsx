@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 import PythonLogo from '../../../assets/Icons/python.svg';
 import GitLogo from '../../../assets/Icons/git.svg';
@@ -94,40 +95,27 @@ const Buttons = styled.div`
   margin-top: 1.5rem;
 `;
 
-const BrowseCoursesButton = styled.button`
-  height: 55px;
-  background-color: var(--color-mutedblue-800);
-  color: var(--color-grey-0);
-  padding: 0.7rem 1.5rem;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: var(--color-mutedblue-600);
-  }
-`;
-
 const StartLearningLink = styled.a`
-  color: var(--color-grey-700);
+  color: var(--color-grey-0);
+  background-color: var(--color-mutedblue-800);
+  padding: 15px;
+  border-radius: 5px;
+
   font-size: 1.6rem;
   font-weight: 500;
   text-decoration: none;
   transition: color 0.3s;
+  cursor: pointer;
 
   &:hover {
-    color: var(--color-darkmidnightblue-700);
+    color: var(--color-grey-300);
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 `;
 
-// Component
 const IntroductionSection = () => {
+  const navigate = useNavigate();
   const logos = [PythonLogo, JavascriptIcon, GitLogo, ReactLogo, NodejsLogo];
-
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
@@ -147,17 +135,13 @@ const IntroductionSection = () => {
     <IntroductionSectionWrapper id="courses">
       <IntroductionContent>
         <IntroductionImageWrapper>
-          {/* Display the programming team image */}
           <IntroductionImage
             src={programmingTeamImage}
             alt="Programming Team"
           />
           <IconBackground>
-            {/* Display the rotating SVG logos */}
             <IconOverlay
-              className={`w-20 h-20 transition-opacity duration-500 ${
-                fade ? 'opacity-100' : 'opacity-0'
-              }`}
+              className={`w-20 h-20 transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}
             >
               <IconImage src={logos[currentLogoIndex]} alt="Rotating Logo" />
             </IconOverlay>
@@ -169,8 +153,7 @@ const IntroductionSection = () => {
             in Tech
           </IntroductionTitle>
           <Buttons>
-            <BrowseCoursesButton>Browse Courses</BrowseCoursesButton>
-            <StartLearningLink href="#start-learning">
+            <StartLearningLink onClick={() => navigate('/login')}>
               Start learning for free{' '}
               <FontAwesomeIcon
                 icon={faArrowRight}
