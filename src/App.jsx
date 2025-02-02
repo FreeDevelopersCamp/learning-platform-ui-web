@@ -77,6 +77,7 @@ import PracticesPage from './pages/Learner/PracticesPage';
 import Practice from './pages/Learner/Practice';
 import NotificationsPage from './pages/Notifications/NotificationsPage';
 import SubmissionsReviewTable from './pages/Instructor/SubmissionsReviewTable';
+import CertificationsPage from './pages/Learner/CertificationsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -90,7 +91,7 @@ function App() {
   return (
     <DarkModeProvider>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         <GlobalStyles />
         <BrowserRouter>
           <AuthProvider>
@@ -470,7 +471,7 @@ function App() {
                             path="learner/certifications"
                             element={
                               <ProtectedRoute role="6">
-                                <LearnerPage />
+                                <CertificationsPage />
                               </ProtectedRoute>
                             }
                           />

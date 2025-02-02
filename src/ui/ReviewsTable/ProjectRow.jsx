@@ -19,11 +19,11 @@ function ProjectRow({ submission, progress }) {
 
   const updateProgressStatus = (submissionId, review) => {
     if (!progress || !Array.isArray(progress.currentProjectsIds)) {
-      console.error('Progress or currentProjectsIds is missing:', progress);
+      console.error('❌ Progress or currentProjectsIds is missing:', progress);
       return;
     }
 
-    console.log(submissionId, review);
+    console.log('✅ Updating Progress for:', submissionId, review);
 
     const updatedProjects = progress.currentProjectsIds.map((item) => {
       if (item.id === submissionId) return { ...item, status: '2', review };
@@ -49,8 +49,8 @@ function ProjectRow({ submission, progress }) {
 
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={project?._id} />
-          <Menus.List id={`${project?._id}-${submission._id}`}>
+          <Menus.Toggle id={`menu-${project?._id}`} />
+          <Menus.List id={`menu-${project?._id}`}>
             <Menus.Button
               icon={<HiEye />}
               onClick={() =>
@@ -60,19 +60,21 @@ function ProjectRow({ submission, progress }) {
               Go To GitHub
             </Menus.Button>
 
+            {/* ✅ Re-Added Modal.Open */}
             <Modal.Open opens={`pass-${project?._id}`}>
               <Menus.Button icon={<HiPencil />}>Mark Passed</Menus.Button>
             </Modal.Open>
           </Menus.List>
         </Menus.Menu>
 
+        {/* ✅ Ensure Modal.Window has the same name as the Modal.Open */}
         <Modal.Window name={`pass-${project?._id}`}>
           <ConfirmReview
             resourceName="project"
             disabled={isLoading}
             submissionId={submission._id} // ✅ Pass submission ID
-            onConfirm={(submissionId, reviewText) =>
-              updateProgressStatus(submissionId, reviewText)
+            onConfirm={(reviewText) =>
+              updateProgressStatus(submission._id, reviewText)
             }
           />
         </Modal.Window>

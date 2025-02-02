@@ -81,7 +81,7 @@ const EducationStats = () => {
           <Icon>
             <img src={CapIcon} alt="Cap Icon" width="60" height="60" />
           </Icon>
-          <CardHeading>5 million students</CardHeading>
+          <CardHeading>24 learners</CardHeading>
           <CardParagraph>
             Connect with millions of peers who've expanded their skills through
             GitHub Education.
@@ -91,7 +91,7 @@ const EducationStats = () => {
           <Icon>
             <img src={BookIcon} alt="Book Icon" width="60" height="60" />
           </Icon>
-          <CardHeading>200K verified educators</CardHeading>
+          <CardHeading>9 instructors</CardHeading>
           <CardParagraph>
             Collaborate with educators around the world who enhance their lesson
             plans and workstreams with GitHub tools.

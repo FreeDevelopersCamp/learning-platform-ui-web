@@ -126,7 +126,7 @@ const HeaderContainer = styled.div`
     }
 
     .icon-notifications {
-      margin-top: 0.75rem;
+      /* margin-top: 0.75rem; */
       font-size: 2.2rem;
       color: var(--color-grey-900);
       font-weight: 700;

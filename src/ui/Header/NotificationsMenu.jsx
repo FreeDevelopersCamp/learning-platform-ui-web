@@ -16,7 +16,7 @@ const StyledToggle = styled.button`
   border: none;
   cursor: pointer;
   font-size: 2.4rem;
-  color: var(--color-grey-900);
+  color: var(--color-grey-700);
   position: relative;
   display: flex;
   align-items: center;

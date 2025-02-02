@@ -24,6 +24,23 @@ const ProfilePageContainer = styled.div`
   gap: 3rem;
 `;
 
+const StyledCertificateImage = styled.img`
+  max-width: 800px;
+  width: 100%;
+  height: auto;
+  border: 3px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin: 2rem 0;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+`;
 const ProfilePage = () => {
   const [searchParams] = useSearchParams();
   const username = searchParams.get('username') || '';
@@ -32,7 +49,8 @@ const ProfilePage = () => {
   const { user, userLoading } = useGetUser(username);
   const { progress, isLoading: progressLoading } = useGetDetails(user?._id);
 
-  if (profileLoading || progressLoading || userLoading) return <Spinner />;
+  if (profileLoading || progressLoading || userLoading || !user)
+    return <Spinner />;
 
   return (
     <ProfilePageContainer>
@@ -46,6 +64,10 @@ const ProfilePage = () => {
       <ProfileAbout about={profile.about} />
       <ProfileWork work={profile.work} />
       <ProfileCertifications certifications={profile.certifications} />
+      <StyledCertificateImage
+        src="https://storage.googleapis.com/free-developers-camp-images/uploads/bara.png"
+        alt="Front-End Beginner Certificate"
+      />
       <ProfileCourses progress={progress} />
       <ProfileProjects progress={progress} />
       <ProfileRoadmaps progress={progress} />
