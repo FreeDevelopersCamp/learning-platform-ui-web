@@ -5,7 +5,7 @@ import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
 
 const ProgressContainer = styled.div`
   height: 42px;
-  width: 50px;
+  width: 60px;
   border-radius: 50%;
   background: conic-gradient(
     var(--color-yellow-green-800) ${(props) => props.progress || 0}%,

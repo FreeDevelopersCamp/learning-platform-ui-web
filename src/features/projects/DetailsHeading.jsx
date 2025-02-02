@@ -214,7 +214,7 @@ function DetailsHeading({ project, role, userProgress, updateProgress }) {
         </Span>
         <Span>
           <span>Participants:</span>
-          <span>{participants}</span>
+          <span>{3}</span>
         </Span>
         <Span>
           Prerequisites:
