@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { useOutletContext } from 'react-router-dom';
 import { useFetchCourseList } from '../../hooks/courses/useCourse';
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
+import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
 
 import Row from '../instructor/roadmaps/Row';
 import Heading from '../instructor/roadmaps/Heading';
