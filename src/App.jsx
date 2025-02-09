@@ -78,6 +78,7 @@ import Practice from './pages/Learner/Practice';
 import NotificationsPage from './pages/Notifications/NotificationsPage';
 import SubmissionsReviewTable from './pages/Instructor/SubmissionsReviewTable';
 import CertificationsPage from './pages/Learner/CertificationsPage';
+import CertificatesPage from './pages/Learner/CertificatesPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {

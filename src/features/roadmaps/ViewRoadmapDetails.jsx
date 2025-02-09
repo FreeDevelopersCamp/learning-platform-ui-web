@@ -124,7 +124,7 @@ function ViewRoadmapDetails() {
         <OrderCardsContainer>
           <Title>Description</Title>
           <Description>{description}</Description>
-          {orderCards.map((card, index) => (
+          {orderCards?.map((card, index) => (
             <OrderCards
               key={index}
               index={index + 1}

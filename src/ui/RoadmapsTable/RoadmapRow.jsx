@@ -14,6 +14,7 @@ import UpdateRoadmapForm from './UpdateRoadmapForm.jsx';
 
 function RoadmapRow({ roadmap }) {
   let { name, category, topic, xp } = roadmap;
+  console.log(name);
 
   const navigate = useNavigate();
   const { isDeleting, deleteRoadmap } = useDeleteRoadmap();

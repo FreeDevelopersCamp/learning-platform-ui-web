@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import styled from 'styled-components';
 
 import { useFetchProjectById } from '../../hooks/projects/useProject';
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
+import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
 
 import Spinner from '../../ui/Spinner';
 

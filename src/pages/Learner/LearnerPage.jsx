@@ -41,16 +41,16 @@ const MainContainer = styled.div`
 `;
 
 function LearnerPage() {
-  const { isLoading } = useAuth();
+  const { isLoading, session } = useAuth();
   const { user, userProgress } = useOutletContext();
 
-  const roadmapId = userProgress.currentRoadmapsIds[0].itemId;
+  const roadmapId = userProgress?.currentRoadmapsIds[0]?.itemId;
 
   // ✅ Fetch roadmap data only when roadmapId is available
   const { data: roadmap, isLoading: isLoadingRoadmap } =
     useFetchRoadmapById(roadmapId);
 
-  if (isLoading || isLoadingRoadmap) return <Spinner />;
+  if (isLoading || isLoadingRoadmap || session?.active) return <Spinner />;
 
   return (
     <Container>

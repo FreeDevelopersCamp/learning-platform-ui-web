@@ -12,6 +12,10 @@ import ProjectCard from '../../projects/ProjectCard';
 
 import Spinner from '../../../ui/Spinner';
 import { useOutletContext } from 'react-router-dom';
+import { useAuth } from '../../../contexts/auth/AuthContext';
+import { useListProject } from '../../../apis/learn/Project/hooks/useListProject';
+import { useGetUser } from '../../../apis/core/User/hooks/useGetUser';
+import { useGetInstructor } from '../../../apis/core/Instructor/hooks/useGetInstructor';
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -34,13 +38,17 @@ const StyledDashboardLayout = styled.div`
 
 function InstructorProjects() {
   const [filter, setFilter] = useState('all');
-  const { count } = useCount();
-  const { instructorData } = useInstructorData();
-  const { session } = useOutletContext();
+  const { session, isLoading } = useAuth();
+  const { user, userLoading } = useGetUser(session?.username);
+  const { instructor, instructorLoading } = useGetInstructor(user?._id);
+  const {
+    projectsData,
+    isLoading: projectsLoading,
+    count,
+  } = useListProject(instructor?._id);
 
-  const { projectsIds = [] } = instructorData || {};
-
-  if (!instructorData) return <Spinner />;
+  if (userLoading || instructorLoading || projectsLoading || isLoading)
+    return <Spinner />;
 
   function handleFilterChange(selectedFilter) {
     setFilter(selectedFilter);
@@ -65,6 +73,8 @@ function InstructorProjects() {
     { value: 'docker', label: 'Docker' },
   ];
 
+  console.log(projectsData);
+
   return (
     <Row>
       <Heading title={title} description={description} />
@@ -76,10 +86,10 @@ function InstructorProjects() {
       </Filterbar>
       <DashboardLayout>
         <StyledDashboardLayout>
-          {projectsIds.map((projectId) => (
+          {projectsData?.map((project) => (
             <ProjectCard
-              key={projectId}
-              projectId={projectId}
+              key={project._id}
+              projectId={project._id}
               filter={filter}
               role={session.role}
             />

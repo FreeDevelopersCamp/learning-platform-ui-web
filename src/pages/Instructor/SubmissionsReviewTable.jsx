@@ -1,8 +1,4 @@
-import { useGetInstructor } from '../../apis/core/Instructor/hooks/useGetInstructor';
-import { useListProject } from '../../apis/learn/Project/hooks/useListProject';
 import { useListProgress } from '../../apis/learn/Progress/hooks/useListProgress';
-import { useGetUser } from '../../apis/core/User/hooks/useGetUser';
-import { useAuth } from '../../contexts/auth/AuthContext';
 
 import Heading from '../../ui/Heading';
 import Row from '../../ui/Row';
@@ -20,7 +16,6 @@ function SubmissionsReviewTable() {
 
   const currentProjects = currentProgresses?.flat();
 
-  console.log(currentProjects);
   return (
     <>
       <Row type="horizontal">

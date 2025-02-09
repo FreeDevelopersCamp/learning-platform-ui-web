@@ -28,6 +28,8 @@ function RoadmapsTable() {
   if (isLoading || userLoading || instructorLoading || roadmapLoading)
     return <Spinner />;
 
+  console.log(roadmaps);
+
   return (
     <>
       <Row type="horizontal">

@@ -72,7 +72,7 @@ export default function RoadmapAnnouncement({ userProgress }) {
         }}
       >
         <Badge className="track">Roadmap</Badge>
-        <Badge className="new">New</Badge>
+        <Badge className="new">Coming</Badge>
       </div>
       <Title>AWS Cloud Practitioner</Title>
       <Hours>10 hours</Hours>
