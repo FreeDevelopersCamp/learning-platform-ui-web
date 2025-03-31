@@ -1,4 +1,4 @@
-import { useUpdateProgress } from '../../../hooks/learner/useProgress';
+import { useUpdateProgress } from '../../../apis/learn/Progress/hooks/useProgress';
 
 import CourseCard from '../../../features/courses/CourseCard';
 import Spinner from '../../../ui/Spinner';

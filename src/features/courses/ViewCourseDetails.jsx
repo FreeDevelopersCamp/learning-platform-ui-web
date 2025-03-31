@@ -5,7 +5,7 @@ import { LuGraduationCap } from 'react-icons/lu';
 import { FaCheckCircle } from 'react-icons/fa';
 
 import { useFetchCourseById } from '../../hooks/courses/useCourse';
-import { useUpdateProgress } from '../../hooks/learner/useProgress';
+import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
 
 import Row from '../instructor/roadmaps/Row';
 import DetailsHeading from './DetailsHeading';
