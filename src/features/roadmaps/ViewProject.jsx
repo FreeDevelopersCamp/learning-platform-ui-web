@@ -6,7 +6,6 @@ import { useFetchProjectById } from '../../hooks/projects/useProject';
 import { useUpdateProgress } from '../../apis/learn/Progress/hooks/useProgress';
 
 import Spinner from '../../ui/Spinner';
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
