@@ -93,6 +93,65 @@ const AuthProvider = ({ children }) => {
     [fetchSession, navigate],
   );
 
+  const signup = useCallback(
+    async ({
+      username,
+      password,
+      email,
+      roles,
+      firstName,
+      lastName,
+      gender,
+    }) => {
+      setIsLoading(true);
+      console.log(
+        username,
+        password,
+        email,
+        roles,
+        firstName,
+        lastName,
+        gender,
+      );
+      try {
+        const requestData = {
+          userName: username,
+          password,
+          roles,
+          personalInformation: {
+            name: {
+              firstName,
+              lastName,
+            },
+            gender: gender,
+          },
+          contacts: {
+            email,
+          },
+        };
+
+        const response = await new Auth().register(requestData);
+
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          setAuth({ isAuthenticated: true, role: roles[0], username });
+          toast.success('Registration successful! Redirecting...');
+          await fetchSession(); // Fetch session after registration
+          navigate('/home');
+        } else {
+          throw new Error('No token received');
+        }
+      } catch (err) {
+        const errorMessage =
+          err.response?.data?.message || 'Registration failed';
+        toast.error(errorMessage);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [fetchSession, navigate],
+  );
+
   // Logout method
   const logout = useCallback(async () => {
     try {
@@ -121,11 +180,12 @@ const AuthProvider = ({ children }) => {
       session,
       sessions,
       login,
+      signup,
       logout,
       isLoading,
       listSessions,
     }),
-    [auth, session, sessions, login, logout, isLoading, listSessions],
+    [auth, session, sessions, login, logout, isLoading, signup, listSessions],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

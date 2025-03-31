@@ -11,12 +11,13 @@ import { BsShieldLock } from 'react-icons/bs';
 import { FaTasks } from 'react-icons/fa';
 import { GoProjectRoadmap } from 'react-icons/go';
 import { BiTask } from 'react-icons/bi';
-import { MdOutlineLibraryBooks } from 'react-icons/md';
 import { MdLeaderboard, MdOutlineLibraryBooks } from 'react-icons/md';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import InsightsIcon from '@mui/icons-material/Insights';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import CastForEducationIcon from '@mui/icons-material/CastForEducation';
 
 const NavList = styled.ul`
   display: flex;
@@ -34,7 +35,7 @@ const MenuItem = styled.li`
   width: 100%;
   color: ${(props) => (props.isActive ? 'white' : '#9ca3af')};
   background-color: ${(props) =>
-    props.isActive ? 'var(--color-brand-900)' : 'transparent'};
+    props.isActive ? 'var(--color-darkmidnight-600)' : 'transparent'};
   border-radius: ${(props) =>
     props.isActive ? 'var(--border-radius-sm)' : '0'};
 
@@ -92,7 +93,7 @@ function MainNav({ isOpen, role, onMenuSelect }) {
       { id: 'dashboard', icon: <HiOutlineHome />, label: 'Dashboard' },
       { id: 'roadmaps', icon: <HiPresentationChartLine />, label: 'Roadmaps' },
       { id: 'courses', icon: <FaTasks />, label: 'Courses' },
-      { id: 'projects', icon: <GoProjectRoadmap />, label: 'Projects' },
+      // { id: 'projects', icon: <GoProjectRoadmap />, label: 'Projects' },
       { id: 'practices', icon: <BiTask />, label: 'Practices' },
       { id: 'learner', icon: <HiOutlineUsers />, label: 'Learner' },
       { id: 'courses_table', icon: <FaTasks />, label: 'Courses Table' },
@@ -123,6 +124,12 @@ function MainNav({ isOpen, role, onMenuSelect }) {
         label: 'My Library',
       },
       {
+        id: 'leaderboard',
+        path: '/learner/leaderboard',
+        icon: <MdLeaderboard />,
+        label: 'Leaderboard',
+      },
+      {
         id: 'roadmaps',
         path: '/learner/roadmaps',
         icon: <InsightsIcon />,
@@ -151,6 +158,12 @@ function MainNav({ isOpen, role, onMenuSelect }) {
         path: '/learner/certifications',
         icon: <WorkspacePremiumIcon />,
         label: 'Certifications',
+      },
+      {
+        id: 'tutorials',
+        path: '/learner/tutorials',
+        icon: <CastForEducationIcon />,
+        label: 'Tutorials',
       },
     ];
 

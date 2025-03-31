@@ -154,7 +154,7 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const Header = ({ page, toggleSidebar, atHome = false }) => {
+const Header = ({ atHome = false }) => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
@@ -173,13 +173,6 @@ const Header = ({ page, toggleSidebar, atHome = false }) => {
   )
     return <SpinnerMini />;
 
-  const handleToggle = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-    toggleSidebar();
-  };
-
-  const toggleStyles = atHome ? { display: 'none' } : { display: 'block' };
-
   return (
     <Modal>
       <HeaderContainer>
@@ -194,38 +187,8 @@ const Header = ({ page, toggleSidebar, atHome = false }) => {
               <BsFire />
             </span>
             <span>)</span>
-            {isSidebarOpen ? (
-              <MdOutlineMenu style={{ fontSize: '2.4rem', zIndex: 1 }} />
-            ) : (
-              <MdMenuOpen style={{ fontSize: '2.4rem' }} />
-            )}
           </div>
-        )}
-        <NavBar hidden={!atHome} />
-      </div>
-
-      {session && session?.active ? (
-        <div className="right-section">
-          <div className="icon-container">
-            <button className="flex items-center">
-              <MdTranslate />
-            </button>
-          </div>
-          {page === 'course' && (
-            <div
-              className="menu-icon"
-              style={toggleStyles}
-              onClick={handleToggle}
-            >
-              {isSidebarOpen ? (
-                <MdOutlineMenu style={{ fontSize: '2.4rem', zIndex: 1 }} />
-              ) : (
-                <MdMenuOpen style={{ fontSize: '2.4rem' }} />
-              )}
-            </div>
-          )}
           <NavBar hidden={!atHome} />
-          <SearchBar />
         </div>
 
         {session && session?.active ? (

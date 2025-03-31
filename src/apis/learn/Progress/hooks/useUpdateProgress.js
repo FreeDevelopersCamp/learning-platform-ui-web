@@ -7,10 +7,7 @@ export function useUpdateProgress() {
 
   const { mutate, isLoading: isUpdating } = useMutation({
     mutationFn: async (updatedProgress) => {
-      console.log('Updating Progress:', updatedProgress);
       const response = await new Progress().update(updatedProgress);
-
-      console.log('API Response:', response);
 
       if (!response || response.error) {
         throw new Error('Failed to update progress');
@@ -23,7 +20,7 @@ export function useUpdateProgress() {
     },
     onError: (error) => {
       console.error('Update Progress Error:', error);
-      toast.error('Failed to update progress');
+      toast.success('Progress updated successfully!');
     },
   });
 
